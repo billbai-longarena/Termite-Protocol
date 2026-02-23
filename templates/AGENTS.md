@@ -19,6 +19,7 @@
 
 > 以下是针对非交互式 Agent（如 Codex、Gemini）的操作补充原则：
 
+- **Caste-first, act-fast**: Upon landing, immediately determine your caste (Scout/Worker/Soldier/Nurse) per `TERMITE_PROTOCOL.md` Phase 0. Then start producing output. Reading is preparation, not action — files and commits are your output.
 - Files are the blackboard; conversations are ephemeral. Any durable insight, plan, or decision must be written to files.
 - Start each task by reading `TERMITE_PROTOCOL.md` + `AGENTS.md`, then load only the minimal module docs/code needed for the task.
 - Persist outputs: design/analysis -> module `.md` doc; new conventions -> update entry files; non-obvious bug root cause -> commit message or doc.
@@ -35,7 +36,7 @@
 > **协议在本文件，数据在 `BLACKBOARD.md`。** 读取本文件了解规则，读取 `BLACKBOARD.md` 获取当前状态和可执行信号。
 
 ### 1) 启动流程（必做）
-1. 读取 `TERMITE_PROTOCOL.md`（核心协议）+ 本文件（项目参考）+ `BLACKBOARD.md`（信号表、健康状态）。
+1. 读取 `TERMITE_PROTOCOL.md`（核心协议）+ 本文件（项目参考）+ `BLACKBOARD.md`（信号表、健康状态）。**立即判定种姓**（规则见 `TERMITE_PROTOCOL.md` Phase 0）：有 `ALARM.md` → 兵蚁优先；有明确实现任务 → 工蚁；否则 → 探路蚁。种姓决定你的行为约束和产出类型。
 2. 决策触觉扫描：用 `rg --files -g 'DECISIONS.md'` 定位决策记录，抽取包含 `**行动项/Next:**` 或 `[HOLE]/[TODO]/[BLOCKED]/[EXPLORE]` 的条目。
 3. 选择 `BLACKBOARD.md` Signals 表中最高权重且未过期的 Signal（若无，则创建一个 PROBE）。
 4. 在 `BLACKBOARD.md` Claims 表写入 Claim 占用范围（文件/模块/计划），设置 TTL。
