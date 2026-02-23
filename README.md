@@ -87,74 +87,104 @@ The file system is your colony. Markdown files are pheromones. Git commits are i
 
 ---
 
-## 两个文件，两个场景 / Two Files, Two Scenarios
+## 三个文件，各司其职 / Three Files, Each with a Role
 
-本仓库提供两套通用模板：
-This repository provides two generic templates:
+v2.0 采用了**协议与项目信息分离**的架构：
+v2.0 adopts a **protocol-project separation** architecture:
 
-### `CLAUDE.generic.md` — 给 Claude Code 用
-### `CLAUDE.generic.md` — For Claude Code
+```
+your-project/
+  TERMITE_PROTOCOL.md   ← 通用协议（所有 Agent 共享）/ Universal protocol (shared by all agents)
+  CLAUDE.md             ← Claude Code 入口（项目特有信息）/ Claude Code entry (project-specific info)
+  AGENTS.md             ← Codex/Gemini 入口（项目特有信息 + 自启动协议）/ Codex/Gemini entry (project-specific + self-boot protocol)
+  BLACKBOARD.md         ← 动态状态（健康、信号、热点）/ Dynamic state (health, signals, hotspots)
+```
+
+### `TERMITE_PROTOCOL.md` — 通用协议 / Universal Protocol
+
+所有 AI Agent 共享的核心协议，定义了：
+The core protocol shared by all AI agents, defining:
+
+- 种姓分工系统（Scout / Worker / Soldier / Nurse）
+- Caste system (Scout / Worker / Soldier / Nurse)
+
+- Phase 0-6 生命周期（降落 → 定向 → 路由 → 施工 → 验证 → 沉积 → 交接）
+- Phase 0-6 lifecycle (Land → Orient → Route → Build → Verify → Deposit → Handoff)
+
+- 信息素规则（签名、保鲜、浓度叠加）
+- Pheromone rules (signatures, expiration, concentration stacking)
+
+- 全局触发-动作规则表
+- Global trigger-action rule table
+
+- 报警、故障恢复、蜕皮机制
+- Alarm, failure recovery, context molting
+
+**这个文件不包含任何项目特有信息，可以直接复制到任何项目中。**
+**This file contains no project-specific info and can be copied directly into any project.**
+
+### `CLAUDE.md` — Claude Code 入口 / Claude Code Entry
 
 适用于 **Claude Code** (Anthropic 官方 CLI)。Claude Code 会自动读取项目根目录的 `CLAUDE.md`。
 Designed for **Claude Code** (Anthropic's official CLI). Claude Code automatically reads `CLAUDE.md` from the project root.
 
-**特点：**
-**Characteristics:**
+**只包含项目特有信息：**
+**Contains only project-specific info:**
 
-- 面向交互式开发：人类在终端与 Agent 实时对话
-- Oriented toward interactive development: humans converse with agents in real-time via terminal
+- 项目概述和技术栈
+- Project overview and tech stack
 
-- Phase 驱动的生命周期（定向 → 路由 → 施工 → 验证 → 沉积 → 交接）
-- Phase-driven lifecycle (Orient → Route → Build → Verify → Deposit → Handoff)
+- 路由表（任务关键词 → 局部黑板）
+- Route table (task keywords → local blackboards)
 
-- 触发-动作规则表：简单的 IF-THEN 规则，无需理解全局
-- Trigger-action rule table: simple IF-THEN rules, no global understanding required
+- 项目特有的触发-动作规则
+- Project-specific trigger-action rules
 
-- 验证清单 + 故障恢复协议
-- Verification checklist + failure recovery protocol
+- 项目特有的验证清单（构建/测试命令）
+- Project-specific verification checklist (build/test commands)
 
-### `AGENTS.generic.md` — 给 Codex / 异步 Agent 用
-### `AGENTS.generic.md` — For Codex / Async Agents
+- 黑板索引
+- Blackboard index
 
-适用于 **OpenAI Codex**、**Devin** 等异步执行的 Agent。这类 Agent 通常无人值守运行。
-Designed for **OpenAI Codex**, **Devin**, and similar async-execution agents that typically run unattended.
+### `AGENTS.md` — Codex / 异步 Agent 入口 / Codex / Async Agent Entry
 
-**在 CLAUDE.generic.md 基础上额外包含：**
-**In addition to everything in CLAUDE.generic.md, it includes:**
+适用于 **OpenAI Codex**、**Gemini** 等异步执行的 Agent。
+Designed for **OpenAI Codex**, **Gemini**, and similar async-execution agents.
 
-- 自启动黑板协议：Agent 读完文件就能自主选择任务并开始执行
-- Self-boot blackboard protocol: agent reads the file and autonomously picks a task to execute
+**在 CLAUDE.md 的项目信息基础上，额外包含：**
+**In addition to project info (same as CLAUDE.md), it includes:**
 
-- Signal/Claim/Plan/Result 表格体系：结构化的任务追踪，支持多 Agent 并发
-- Signal/Claim/Plan/Result table system: structured task tracking supporting multi-agent concurrency
+- Agent Operating Protocol：无人值守操作原则
+- Agent Operating Protocol: unattended operation principles
 
-- 信息素权重与衰减机制：成功 +10，失败 -10，每天衰减 *0.9
-- Pheromone weight and decay: success +10, failure -10, daily decay *0.9
+- 自启动黑板协议：Signal/Claim/Plan/Result 表格体系
+- Self-boot blackboard protocol: Signal/Claim/Plan/Result table system
 
-- 微探索配额：至少 5% 的行动预算用于尝试新路径
-- Micro-exploration quota: at least 5% of action budget devoted to trying new paths
+- 信息素权重与衰减机制
+- Pheromone weight and decay mechanism
+
+- 微探索配额
+- Micro-exploration quota
 
 ---
 
 ## 怎么使用？ / How to Use?
 
-### 第一步：选择模板 / Step 1: Pick a Template
+### 第一步：复制模板 / Step 1: Copy Templates
 
 ```
-如果你用 Claude Code     → 复制 CLAUDE.generic.md 为你的项目根目录的 CLAUDE.md
-If you use Claude Code   → Copy CLAUDE.generic.md as CLAUDE.md in your project root
-
-如果你用 Codex/Devin     → 复制 AGENTS.generic.md 为你的项目根目录的 AGENTS.md
-If you use Codex/Devin   → Copy AGENTS.generic.md as AGENTS.md in your project root
-
-如果两者都用             → 两个都放，各服务各的 Agent
-If you use both          → Place both files, each serving its respective agent
+templates/TERMITE_PROTOCOL.md  → 复制到你的项目根目录 / Copy to your project root
+templates/CLAUDE.md            → 复制为项目根目录的 CLAUDE.md / Copy as CLAUDE.md in project root
+templates/AGENTS.md            → 复制为项目根目录的 AGENTS.md / Copy as AGENTS.md in project root
 ```
+
+**协议文件 (`TERMITE_PROTOCOL.md`) 直接复制，无需修改。** 只需填写入口文件中的项目信息。
+**The protocol file (`TERMITE_PROTOCOL.md`) is copied as-is, no modification needed.** Only fill in project info in the entry files.
 
 ### 第二步：填写项目信息 / Step 2: Fill in Project Info
 
-模板中用 `<!-- 注释 -->` 标记了所有需要你填写的位置：
-The template marks all sections you need to fill with `<!-- comments -->`:
+入口文件（`CLAUDE.md` / `AGENTS.md`）中用 `<!-- 注释 -->` 标记了所有需要你填写的位置：
+The entry files (`CLAUDE.md` / `AGENTS.md`) mark all sections you need to fill with `<!-- comments -->`:
 
 1. **项目概述**：一句话描述你的项目是什么
 1. **Project overview**: One-sentence description of what your project is
@@ -165,11 +195,11 @@ The template marks all sections you need to fill with `<!-- comments -->`:
 3. **路由表**：任务关键词 → 局部黑板路径（如果你的项目有多个模块）
 3. **Route table**: Task keywords → local blackboard paths (if your project has multiple modules)
 
-4. **验证清单**：你的构建和测试命令
-4. **Verification checklist**: Your build and test commands
+4. **项目特有规则**：你的项目独有的触发-动作规则
+4. **Project-specific rules**: Trigger-action rules unique to your project
 
-5. **已知限制**：当前存在的技术债或环境限制
-5. **Known limitations**: Current tech debt or environment constraints
+5. **验证清单**：你的构建和测试命令
+5. **Verification checklist**: Your build and test commands
 
 ### 第三步：创建局部黑板（可选）/ Step 3: Create Local Blackboards (Optional)
 
@@ -178,7 +208,10 @@ If your project has multiple modules, create a `BLACKBOARD.md` for each:
 
 ```
 your-project/
-  CLAUDE.md              ← 全局协议 / Global protocol
+  TERMITE_PROTOCOL.md    ← 通用协议 / Universal protocol
+  CLAUDE.md              ← Claude Code 入口 / Claude Code entry
+  AGENTS.md              ← Codex/Gemini 入口 / Codex/Gemini entry
+  BLACKBOARD.md          ← 根目录动态状态 / Root dynamic state
   module-a/
     BLACKBOARD.md        ← 模块 A 的局部知识 / Module A local knowledge
     DECISIONS.md         ← 模块 A 的设计决策 / Module A design decisions
@@ -214,8 +247,8 @@ You'll notice behavioral changes in the agent:
 白蚁协议是自演化的。每只 Agent 在工作过程中都会更新协议文件本身：
 The Termite Protocol is self-evolving. Each agent updates the protocol files themselves during work:
 
-- 发现新约定 → 更新 CLAUDE.md
-- Discovers new convention → Updates CLAUDE.md
+- 发现新约定 → 更新入口文件
+- Discovers new convention → Updates entry files
 
 - 做了设计决策 → 写入 DECISIONS.md
 - Makes design decision → Writes to DECISIONS.md
@@ -228,6 +261,22 @@ The Termite Protocol is self-evolving. Each agent updates the protocol files the
 
 你不需要手动维护这些文件。Agent 自己会维护。你只需要在关键节点审阅。
 You don't need to maintain these files manually. The agents maintain them. You only need to review at key checkpoints.
+
+---
+
+## v1.0 → v2.0 的变化 / Changes from v1.0 to v2.0
+
+| 变化 / Change | v1.0 | v2.0 |
+| --- | --- | --- |
+| 文件结构 / File structure | 协议和项目信息混在一个文件中 | 协议层 (`TERMITE_PROTOCOL.md`) 与项目层 (`CLAUDE.md`/`AGENTS.md`) 分离 |
+| 信息素签名 / Pheromone signature | 无 | `[termite:YYYY-MM-DD:caste]` 统一签名格式 |
+| 决策触觉扫描 / Decision tactile scan | 无 | Phase 1 自动扫描 `DECISIONS.md` 提取行动项 |
+| EXPLORE 浓度扫描 / EXPLORE concentration scan | 手动升级热点 | 自动计数，>= 3 条自动创建 HOLE 信号 |
+| 文档基础设施自检 / Genesis self-check | 无 | Phase 1 后自动检查必需文件是否存在 |
+| 分析先落盘 / Analysis-first-to-disk | 无 | 审查/评审产出必须先写文件，后出对话 |
+| 动态状态 / Dynamic state | 内嵌在入口文件中 | 迁移到独立的 `BLACKBOARD.md` |
+| 压力测试 / Stress test | 项目特有的洪水演习 | 通用化的压力测试协议 |
+| 自动卫生 / Automated hygiene | 无 | 建议配置 Termite GC 机制 |
 
 ---
 
