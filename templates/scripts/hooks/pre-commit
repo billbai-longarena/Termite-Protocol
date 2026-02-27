@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# pre-commit — Termite Protocol safety check
+# Warns on large commits without [WIP], blocks sensitive files.
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+
+# ── Check: staged line count ────────────────────────────────────────
+
+staged_lines=$(git diff --cached --numstat 2>/dev/null | awk '{s+=$1+$2} END {print s+0}')
+
+if [ "$staged_lines" -gt 200 ]; then
+  commit_msg_file="${PROJECT_ROOT}/.git/COMMIT_EDITMSG"
+  is_wip=false
+  if [ -f "$commit_msg_file" ] && grep -qi '\[WIP\]' "$commit_msg_file" 2>/dev/null; then
+    is_wip=true
+  fi
+  if [ "$is_wip" = "false" ]; then
+    echo "[termite:pre-commit] WARNING: ${staged_lines} staged lines without [WIP] tag."
+    echo "  Consider breaking into smaller commits or adding [WIP] to the message."
+    # Warning only — do not block
+  fi
+fi
+
+# ── Check: sensitive files ───────────────────────────────────────────
+
+sensitive_patterns=('.env' '.env.local' '.env.production' 'credentials.json' 'secrets.yaml' '*.pem' '*.key' 'id_rsa' 'id_ed25519')
+
+blocked=false
+for pattern in "${sensitive_patterns[@]}"; do
+  matches=$(git diff --cached --name-only 2>/dev/null | grep -E "(^|/)${pattern}$" || true)
+  if [ -n "$matches" ]; then
+    echo "[termite:pre-commit] BLOCKED: Sensitive file staged: ${matches}"
+    blocked=true
+  fi
+done
+
+if [ "$blocked" = "true" ]; then
+  echo "[termite:pre-commit] Remove sensitive files from staging before committing."
+  exit 1
+fi
+
+exit 0

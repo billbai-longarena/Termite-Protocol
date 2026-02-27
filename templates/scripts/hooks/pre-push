@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# pre-push — Termite Protocol branch protection
+# Blocks termite-signed commits from being pushed to protected branches.
+
+set -euo pipefail
+
+# Protected branches (configurable via TERMITE_PROTECTED_BRANCHES)
+PROTECTED="${TERMITE_PROTECTED_BRANCHES:-master main production}"
+
+# Read push info from stdin
+while read -r local_ref local_sha remote_ref remote_sha; do
+  # Extract target branch name
+  target_branch=$(echo "$remote_ref" | sed 's|refs/heads/||')
+
+  # Check if target is a protected branch
+  for protected in $PROTECTED; do
+    if [ "$target_branch" = "$protected" ]; then
+      # Check if any commits in the push range have termite signatures
+      if [ "$remote_sha" = "0000000000000000000000000000000000000000" ]; then
+        # New branch — check all commits
+        range="$local_sha"
+      else
+        range="${remote_sha}..${local_sha}"
+      fi
+
+      termite_commits=$(git log --oneline "$range" 2>/dev/null | grep '\[termite:' || true)
+      if [ -n "$termite_commits" ]; then
+        echo "[termite:pre-push] BLOCKED: Cannot push termite-signed commits to protected branch '${target_branch}'."
+        echo "  Termite commits found:"
+        echo "$termite_commits" | sed 's/^/    /'
+        echo "  Please merge through the proper pipeline (e.g., dev → staging → production)."
+        exit 1
+      fi
+    fi
+  done
+done
+
+exit 0

@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# post-commit — Trigger metabolism cycle in background
+# Runs field-cycle.sh after each commit to maintain signal health.
+
+PROJECT_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+CYCLE_SCRIPT="${PROJECT_ROOT}/scripts/field-cycle.sh"
+
+if [ -x "$CYCLE_SCRIPT" ]; then
+  # Run in background to avoid slowing down commits
+  "$CYCLE_SCRIPT" >/dev/null 2>&1 &
+fi
+
+exit 0

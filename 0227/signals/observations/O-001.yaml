@@ -1,0 +1,7 @@
+id: O-001
+pattern: "grep -c 在 0 匹配时返回 exit 1 导致 || echo 0 产生双行输出"
+context: "field-decay.sh, field-pulse.sh, field-drain.sh 三个脚本同时中招"
+reporter: "termite:2026-02-27:soldier"
+confidence: high
+created: 2026-02-27
+detail: "grep -c 在 0 匹配时既输出 0 又返回 exit 1，|| echo 0 导致捕获到 '0\\n0'（双行），后续 [ \"$var\" -lt N ] 静默失败。正确模式：VAR=$(grep -c pattern file || true); VAR=${VAR:-0}"

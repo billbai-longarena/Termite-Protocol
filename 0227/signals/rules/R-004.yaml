@@ -1,0 +1,8 @@
+id: R-004
+trigger: "新增/修改写接口（UPDATE/DELETE/mutation）"
+action: "ownership 约束放进同一条 SQL（organizationId 优先，无组织时回退 userId），禁止先查权限再无约束写入的两段式；补 authz 回归测试"
+source_observations: [O-102, O-103, O-104]
+hit_count: 15
+last_triggered: 2026-02-27
+created: 2026-01-08
+tags: [security, multi-tenant, authz, sql]

@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# prepare-commit-msg — Auto-sign commits with termite caste
+# Appends [termite:YYYY-MM-DD:caste] to commit messages.
+
+set -euo pipefail
+
+COMMIT_MSG_FILE="$1"
+COMMIT_SOURCE="${2:-}"
+
+# Skip for merge/squash/amend commits
+case "$COMMIT_SOURCE" in
+  merge|squash) exit 0 ;;
+esac
+
+# Don't double-sign
+if grep -q '\[termite:' "$COMMIT_MSG_FILE" 2>/dev/null; then
+  exit 0
+fi
+
+# Read caste from .birth (default: worker)
+PROJECT_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+caste="worker"
+if [ -f "${PROJECT_ROOT}/.birth" ]; then
+  birth_caste=$(grep '^caste:' "${PROJECT_ROOT}/.birth" 2>/dev/null | sed 's/^caste:[[:space:]]*//')
+  [ -n "$birth_caste" ] && caste="$birth_caste"
+fi
+
+# Append signature
+today=$(date +%Y-%m-%d)
+echo "" >> "$COMMIT_MSG_FILE"
+echo "[termite:${today}:${caste}]" >> "$COMMIT_MSG_FILE"
+
+exit 0

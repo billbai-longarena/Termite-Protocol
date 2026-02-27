@@ -1,0 +1,8 @@
+id: R-007
+trigger: "新增 BLACKBOARD 信号涉及 max_blackboard 数据流"
+action: "检查信号是否覆盖完整闭环：写入→消费→反馈→权重更新；缺任何一环 = 反馈断路"
+source_observations: [O-201, O-202, O-226]
+hit_count: 6
+last_triggered: 2026-02-24
+created: 2026-02-08
+tags: [feedback-loop, blackboard, signals]

@@ -3,6 +3,10 @@
 **一套面向无状态 AI Agent 的跨会话协作框架**
 **A cross-session collaboration framework for stateless AI agents**
 
+> v3.0 "协议消融" — Protocol Dissolution
+> 协议从"Agent 直接阅读的文档"转变为"Agent 感知的环境"。
+> The protocol transforms from "a document agents read" into "an environment agents sense."
+
 ---
 
 ## 为什么需要白蚁协议？ / Why Termite Protocol?
@@ -66,6 +70,49 @@ The file system is your colony. Markdown files are pheromones. Git commits are i
 
 ---
 
+## 协议即环境 / Protocol as Environment
+
+v3.0 的核心转变：协议从一份 Agent 必须阅读的长文档，消融为 Agent 到达时自动感知的环境基础设施。
+The core shift of v3.0: the protocol dissolves from a long document agents must read into environment infrastructure that agents sense automatically upon arrival.
+
+### BEFORE: v2 — Agent 阅读协议 / Agent reads protocol
+
+```
+Agent 启动 → 读取 TERMITE_PROTOCOL.md (28K tokens)
+           → 读取 CLAUDE.md / AGENTS.md
+           → 遵循规则
+           → 上下文消耗 ~40%
+```
+
+### AFTER: v3 — 协议消融为环境 / Protocol dissolves into environment
+
+```
+Agent 启动 → field-arrive.sh 读取环境 + 协议
+           → 计算 .birth 文件 (≤800 tokens)
+           → Agent 读取 .birth
+           → 开始工作
+           → 上下文消耗 ~2%
+```
+
+### 关键洞察 / Key Insight
+
+`TERMITE_PROTOCOL.md` 不再是"Agent 必须阅读的文档"，而是：
+`TERMITE_PROTOCOL.md` is no longer "a document agents must read," but rather:
+
+- **人类参考文档**：供人类理解完整协议逻辑
+- **Human reference**: for humans to understand the full protocol logic
+
+- **脚本配置源**：`field-arrive.sh` 从中提取 8 条语法规则 + 4 条安全网，压缩为 `.birth`
+- **Script configuration source**: `field-arrive.sh` extracts 8 grammar rules + 4 safety nets, compresses into `.birth`
+
+- **降级后备**：如果脚本不可用，Agent 仍可直接阅读协议（优雅降级）
+- **Degradation fallback**: if scripts are unavailable, agents can still read the protocol directly (graceful degradation)
+
+协议消融了，但秩序没有消失——它沉入了环境的基础设施层。
+The protocol dissolves, but order does not vanish — it sinks into the infrastructure layer of the environment.
+
+---
+
 ## 协议解决了什么？ / What Does the Protocol Solve?
 
 | 问题 / Problem | 白蚁方案 / Termite Solution |
@@ -95,77 +142,65 @@ The file system is your colony. Markdown files are pheromones. Git commits are i
 
 ```
 your-project/
-  TERMITE_PROTOCOL.md   ← 通用协议（所有 Agent 共享）/ Universal protocol (shared by all agents)
-  CLAUDE.md             ← Claude Code 入口（项目特有信息 + 心跳内核）/ Claude Code entry (project-specific + heartbeat kernel)
-  AGENTS.md             ← Codex/Gemini 入口（项目特有信息 + 自启动协议）/ Codex/Gemini entry (project-specific + self-boot protocol)
+  TERMITE_PROTOCOL.md   ← 人类参考 + 脚本配置源 / Human reference + script config source
+  CLAUDE.md             ← Claude Code 入口 / Claude Code entry
+  AGENTS.md             ← Codex/Gemini 入口 / Codex/Gemini entry
   BLACKBOARD.md         ← 动态状态（健康、信号、热点）/ Dynamic state (health, signals, hotspots)
   DECISIONS.md          ← 设计决策记录 / Design decision records
   WIP.md                ← 会话间交接 / Cross-session handoff
+  scripts/
+    field-lib.sh        ← 共享函数库 / Shared function library
+    field-arrive.sh     ← 到达脚本：计算 .birth 文件 / Arrival: computes .birth file
+    field-cycle.sh      ← 心跳循环 / Heartbeat cycle
+    field-deposit.sh    ← 信息素沉积 / Pheromone deposit
+    field-decay.sh      ← 信息素衰减 / Pheromone decay
+    field-drain.sh      ← 信息素排水 / Pheromone drain
+    field-pulse.sh      ← 场脉冲 / Field pulse
+    field-claim.sh      ← 任务认领 / Task claim
+    hooks/
+      install.sh        ← 安装 git hooks / Install git hooks
+      pre-commit        ← 提交前检查 / Pre-commit checks
+      pre-push          ← 推送前检查 / Pre-push checks
+      prepare-commit-msg← 提交信息自动签名 / Auto-sign commit messages
+      post-commit       ← 提交后信息素沉积 / Post-commit pheromone deposit
+  signals/              ← YAML 信号 schema / YAML signal schema
 ```
 
 ### 协议层级 / Protocol Layers
 
-| 层级 / Layer | 文件 / File | 内容 / Content |
+| 层级 / Layer | 文件 / Files | 内容 / Content |
 | --- | --- | --- |
-| 通用协议层 | `TERMITE_PROTOCOL.md` | §0-§13 + 附录 A-F：种姓、生命周期、信息素、触发-动作规则、免疫系统等 |
-| Universal protocol | | §0-§13 + Appendices A-F: castes, lifecycle, pheromones, trigger-action rules, immune system, etc. |
-| 平台入口层 | `CLAUDE.md` / `AGENTS.md` | 心跳内核 + 项目特有信息（概述、技术栈、路由表、触发规则、验证命令） |
-| Platform entry | | Heartbeat kernel + project-specific info (overview, tech stack, route table, triggers, verification) |
-| 动态状态层 | `BLACKBOARD.md` | 蚁丘健康、活跃信号、认领表、热点区域、已知限制 |
-| Dynamic state | | Colony health, active signals, claims, hotspots, known limitations |
+| 协议源层 | `TERMITE_PROTOCOL.md` | 完整协议文本（人类参考 + 脚本配置源），4 部分结构 |
+| Protocol Source | | Full protocol text (human reference + script config source), 4-Part structure |
+| 场脚本层 | `scripts/` | field-arrive.sh 读取协议源 + 环境状态，计算 ≤800 token `.birth` 文件 |
+| Field Scripts | | field-arrive.sh reads protocol source + environment state, computes ≤800 token `.birth` file |
+| Agent 入口层 | `CLAUDE.md` / `AGENTS.md` + `.birth` | Agent 实际阅读的内容：入口文件 + .birth（极低上下文成本） |
+| Agent Entry | | What agents actually read: entry file + .birth (minimal context cost) |
 
-### 协议核心模块 / Core Protocol Modules
+### 协议 4 部分结构 / Protocol 4-Part Structure
 
-`TERMITE_PROTOCOL.md` 包含以下 § 编号的核心模块：
-`TERMITE_PROTOCOL.md` contains the following §-numbered core modules:
+`TERMITE_PROTOCOL.md` v3.0 采用新的 4 部分结构：
+`TERMITE_PROTOCOL.md` v3.0 uses a new 4-Part structure:
 
-| § | 模块 / Module | 说明 / Description |
+| Part | 内容 / Content | 面向 / Audience |
 | --- | --- | --- |
-| §0 | 核心 + 启动 + 通道校准 | 三丘哲学、心跳内核引导、通道特性校准（高带宽/深共振） |
-| | Core + Bootstrap + Channel Calibration | Three-colony philosophy, heartbeat kernel bootstrap, channel calibration |
-| §1 | 触发解释器 | 8 种触发变体的决策树（bootstrap/crisis/directed/continuation/genesis/restricted/self-boot/autonomous） |
-| | Trigger Interpreter | Decision tree for 8 trigger variants |
-| §2 | 心跳引擎 | Sense→Act→Notice→Deposit 循环，4 尺度自相似（原子/会话/冲刺/项目） |
-| | Heartbeat Engine | Sense→Act→Notice→Deposit cycle, self-similar at 4 scales |
-| §3 | 种姓系统 v2 | 探路蚁/工蚁/兵蚁/育幼蚁的权限和转换规则 |
-| | Caste System v2 | Scout/Worker/Soldier/Nurse permissions and transition rules |
-| §4 | 生命周期 | Phase 0-6 + Lock-File 并发控制机制 |
-| | Lifecycle | Phase 0-6 + Lock-File concurrency control |
-| §5 | 自检矩阵 | 5 级严重度的诊断检查项（INFO/WARN/ERROR/CRITICAL/FATAL） |
-| | Self-Check Matrix | Diagnostic checks at 5 severity levels |
-| §6 | 信息素系统 | EXPLORE 生命周期、浓度叠加、强制关闭规则 |
-| | Pheromone System | EXPLORE lifecycle, concentration stacking, forced closure rules |
-| §7 | 感知与探针 | 环境探测机制（测试/日志/文档漂移检测） |
-| | Sensing & Probes | Environmental probing mechanisms |
-| §8 | 规则引擎 | 全局触发-动作规则表 |
-| | Rules Engine | Global trigger-action rule table |
-| §9 | 通信协议 | 蚁丘内信息传递规范 |
-| | Communication Protocols | Colony information passing specifications |
-| §10 | 三丘模型 | 开发丘·产品丘·客户丘的共生演化框架 |
-| | Three-Colony Model | Dev Colony · Product Colony · Customer Colony symbiosis framework |
-| §11 | 特殊协议 | 非交互式启动、平台检测表、优雅降级矩阵 |
-| | Special Protocols | Non-interactive boot, platform detection, graceful degradation matrix |
-| §12 | 验证 | 改动类型→验证方式的通用清单 |
-| | Verification | Change type → verification method universal checklist |
-| §13 | 蚁群免疫系统 | 被动免疫（到达审计/合规评分）、适应层（合规梯度/行为信息素）、主动防御（文件保护/恶意模式检测） |
-| | Colony Immune System | Passive immunity (arrival audit/compliance scoring), adaptive layer (compliance tiers/behavioral pheromone), active defense (file protection/malicious pattern detection) |
+| **I: Grammar** | 8 条语法规则 + 4 条安全网 — 协议的最小内核 | field-arrive.sh 提取 → .birth / Extracted by field-arrive.sh → .birth |
+| **II: Environment Config** | 种姓、信号 schema、降级矩阵、脚本配置 | field-arrive.sh 读取 / Read by field-arrive.sh |
+| **III: Human Reference** | 完整设计理由、三丘模型、免疫系统、触发解释器 | 人类阅读 / Human reading |
+| **IV: Appendices** | 模板、快速参考卡、Git Worktree 工作流 | 按需查阅 / On-demand reference |
 
-### 附录 / Appendices
+### 上下文预算对比 / Context Budget Comparison
 
-| 附录 / Appendix | 内容 / Content |
-| --- | --- |
-| A | 快速参考卡（种姓判定、自检严重度、信号权重一页速查） |
-| | Quick reference card (caste determination, self-check severity, signal weights) |
-| B | BLACKBOARD.md 模板 |
-| | BLACKBOARD.md template |
-| C | 建议的场基础设施脚本清单 |
-| | Suggested field infrastructure script inventory |
-| D | WIP.md 模板 |
-| | WIP.md template |
-| E | Git Worktree 工作流 |
-| | Git Worktree workflow |
-| F | 心跳内核（可嵌入入口文件的自引导代码） |
-| | Heartbeat Kernel (self-bootstrapping code embeddable in entry files) |
+| 配置 / Configuration | Agent 上下文消耗 / Agent Context Cost | 说明 / Notes |
+| --- | --- | --- |
+| v2（直接阅读协议）| ~40% | Agent 阅读完整 TERMITE_PROTOCOL.md |
+| v2 (read protocol directly) | | Agent reads full TERMITE_PROTOCOL.md |
+| v3 + 脚本 | ~2% | field-arrive.sh 计算 .birth，Agent 仅读 .birth |
+| v3 with scripts | | field-arrive.sh computes .birth, agent reads .birth only |
+| v3 无脚本（入口文件含精简规则）| ~5% | Agent 读入口文件中的内联规则摘要 |
+| v3 without scripts | | Agent reads inline rule summary in entry file |
+| v3 极简（无协议文件）| ~1% | 仅入口文件，无协议加载 |
+| v3 nothing | | Entry file only, no protocol loaded |
 
 ---
 
@@ -174,15 +209,23 @@ your-project/
 ### 第一步：复制模板 / Step 1: Copy Templates
 
 ```
-templates/TERMITE_PROTOCOL.md  → 复制到你的项目根目录 / Copy to your project root
+templates/TERMITE_PROTOCOL.md  → 复制到项目根目录 / Copy to project root
 templates/CLAUDE.md            → 复制为项目根目录的 CLAUDE.md / Copy as CLAUDE.md in project root
 templates/AGENTS.md            → 复制为项目根目录的 AGENTS.md / Copy as AGENTS.md in project root
+templates/scripts/             → 复制到项目根目录的 scripts/ / Copy to project root scripts/
+templates/signals/             → 复制到项目根目录的 signals/ / Copy to project root signals/
 ```
 
-**协议文件 (`TERMITE_PROTOCOL.md`) 直接复制，无需修改。** 只需填写入口文件中的项目信息。
-**The protocol file (`TERMITE_PROTOCOL.md`) is copied as-is, no modification needed.** Only fill in project info in the entry files.
+### 第二步：安装 Git Hooks / Step 2: Install Git Hooks
 
-### 第二步：填写项目信息 / Step 2: Fill in Project Info
+```bash
+./scripts/hooks/install.sh
+```
+
+这将安装以下 git hooks：自动签名提交信息、提交前安全检查、推送前验证、提交后信息素沉积。
+This installs the following git hooks: auto-sign commit messages, pre-commit safety checks, pre-push verification, post-commit pheromone deposit.
+
+### 第三步：填写项目信息 / Step 3: Fill in Project Info
 
 入口文件（`CLAUDE.md` / `AGENTS.md`）中用 `<!-- 注释 -->` 标记了所有需要你填写的位置：
 The entry files (`CLAUDE.md` / `AGENTS.md`) mark all sections you need to fill with `<!-- comments -->`:
@@ -193,8 +236,8 @@ The entry files (`CLAUDE.md` / `AGENTS.md`) mark all sections you need to fill w
 2. **技术栈**：前端、后端、数据库、主要框架
 2. **Tech stack**: Frontend, backend, database, key frameworks
 
-3. **路由表**：任务关键词 → 局部黑板路径（如果你的项目有多个模块）
-3. **Route table**: Task keywords → local blackboard paths (if your project has multiple modules)
+3. **路由表**：任务关键词 → 局部黑板路径
+3. **Route table**: Task keywords → local blackboard paths
 
 4. **项目特有规则**：你的项目独有的触发-动作规则
 4. **Project-specific rules**: Trigger-action rules unique to your project
@@ -202,40 +245,26 @@ The entry files (`CLAUDE.md` / `AGENTS.md`) mark all sections you need to fill w
 5. **验证清单**：你的构建和测试命令
 5. **Verification checklist**: Your build and test commands
 
-6. **分支治理**（可选）：如果使用多分支流水线，取消模板中的注释并填写分支名
-6. **Branch governance** (optional): If using a multi-branch pipeline, uncomment the template section and fill in branch names
-
-### 第三步：创建动态状态文件 / Step 3: Create Dynamic State Files
-
-```
-your-project/
-  TERMITE_PROTOCOL.md    ← 通用协议 / Universal protocol
-  CLAUDE.md              ← Claude Code 入口 / Claude Code entry
-  AGENTS.md              ← Codex/Gemini 入口 / Codex/Gemini entry
-  BLACKBOARD.md          ← 根目录动态状态（模板在 TERMITE_PROTOCOL.md 附录 B）/ Root dynamic state (template in Appendix B)
-  module-a/
-    BLACKBOARD.md        ← 模块 A 的局部知识 / Module A local knowledge
-    DECISIONS.md         ← 模块 A 的设计决策 / Module A design decisions
-  module-b/
-    BLACKBOARD.md
-```
-
-局部黑板应包含：模块架构、数据库表、API 接口、模块特有的触发-动作规则。
-Local blackboards should contain: module architecture, DB tables, API endpoints, module-specific trigger-action rules.
-
 ### 第四步：让 Agent 开始工作 / Step 4: Let the Agent Work
 
-不需要额外配置。Agent 会自动读取协议文件并遵循其中的规则。
-No extra configuration needed. The agent will automatically read the protocol file and follow its rules.
+Agent 到达时的流程：
+The flow when an agent arrives:
+
+```
+Agent 启动 → field-arrive.sh 自动执行
+           → 读取 TERMITE_PROTOCOL.md + 环境状态（git/BLACKBOARD/WIP/ALARM）
+           → 计算 .birth 文件（≤800 tokens，含语法规则 + 种姓 + 当前状态摘要）
+           → Agent 读取 .birth → 立即开始工作
+```
 
 你会观察到 Agent 的行为变化：
 You'll notice behavioral changes in the agent:
 
-- 它会在开始任务前检查 `ALARM.md` 和 `WIP.md`
-- It checks `ALARM.md` and `WIP.md` before starting tasks
+- 它会在开始任务前自动感知环境状态（通过 `.birth` 文件）
+- It automatically senses environment state before starting tasks (via `.birth` file)
 
-- 它会频繁 commit 带 `[WIP]` 标签，而不是做完所有事才一次性提交
-- It commits frequently with `[WIP]` tags instead of one big commit at the end
+- 它会频繁 commit 带签名标记，git hooks 自动处理签名和安全检查
+- It commits frequently with signatures, git hooks auto-handle signing and safety checks
 
 - 它会在任务未完成时主动写交接文件
 - It proactively writes handoff files when tasks are incomplete
@@ -243,31 +272,71 @@ You'll notice behavioral changes in the agent:
 - 它会在发现文档与代码不一致时修正文档
 - It fixes documentation when it finds discrepancies with code
 
-- 它会用 `[termite:YYYY-MM-DD:caste]` 签名标记自己的 commit
-- It marks its commits with `[termite:YYYY-MM-DD:caste]` signatures
-
 ### 第五步：持续演化 / Step 5: Continuous Evolution
 
-白蚁协议是自演化的。每只 Agent 在工作过程中都会更新协议文件本身：
-The Termite Protocol is self-evolving. Each agent updates the protocol files themselves during work:
+白蚁协议是自演化的。v3.0 引入了观察 → 规则自动晋升机制：
+The Termite Protocol is self-evolving. v3.0 introduces an observation → rule auto-promotion mechanism:
 
-- 发现新约定 → 更新入口文件的触发-动作规则表
-- Discovers new convention → Updates entry file trigger-action rule table
+- 发现新约定 → 记录为观察（observation）→ 多次验证后自动晋升为规则
+- Discovers new convention → recorded as observation → auto-promoted to rule after repeated validation
 
 - 做了设计决策 → 写入 DECISIONS.md
-- Makes design decision → Writes to DECISIONS.md
+- Makes design decision → writes to DECISIONS.md
 
-- 发现可能更优的做法 → 以 `[EXPLORE]` 标签记录（14 天内自动关闭或升级）
-- Finds potentially better approach → Records with `[EXPLORE]` tag (auto-closed or escalated within 14 days)
+- `field-decay.sh` 自动衰减过期信号，`field-cycle.sh` 维护心跳循环
+- `field-decay.sh` auto-decays expired signals, `field-cycle.sh` maintains heartbeat cycle
 
-- 多个 Agent 反复遇到同一问题 → 自动升级为热点区域
-- Multiple agents hit the same problem → Auto-escalated to hotspot
+- 多个 Agent 反复遇到同一问题 → 信息素浓度叠加 → 自动升级为规则
+- Multiple agents hit the same problem → pheromone concentration stacking → auto-escalated to rule
 
-- 免疫系统检测到违规模式 → 自动记录并升级应对策略
-- Immune system detects violation patterns → Auto-recorded and response strategy escalated
+- git hooks 自动化代谢过程（签名、安全检查、信息素沉积）
+- Git hooks automate metabolism processes (signing, safety checks, pheromone deposit)
 
-你不需要手动维护这些文件。Agent 自己会维护。你只需要在关键节点审阅。
-You don't need to maintain these files manually. The agents maintain them. You only need to review at key checkpoints.
+你不需要手动维护这些文件。Agent 和脚本自己会维护。你只需要在关键节点审阅。
+You don't need to maintain these files manually. Agents and scripts maintain them. You only need to review at key checkpoints.
+
+---
+
+## 场基础设施 / Field Infrastructure
+
+场基础设施是 v3.0 "协议消融"的核心实现层。所有脚本位于 `scripts/` 目录。
+Field infrastructure is the core implementation layer of v3.0 "Protocol Dissolution." All scripts are in the `scripts/` directory.
+
+### 场脚本清单 / Field Script Inventory
+
+| 脚本 / Script | 用途 / Purpose |
+| --- | --- |
+| `field-lib.sh` | 共享函数库：路径解析、日志、YAML 解析、信号读写等基础函数 |
+| | Shared function library: path resolution, logging, YAML parsing, signal read/write |
+| `field-arrive.sh` | 到达脚本：读取协议 + 环境状态，计算 ≤800 token `.birth` 文件 |
+| | Arrival script: reads protocol + environment state, computes ≤800 token `.birth` file |
+| `field-cycle.sh` | 心跳循环：执行 Sense → Act → Notice → Deposit 单次循环 |
+| | Heartbeat cycle: executes one Sense → Act → Notice → Deposit cycle |
+| `field-deposit.sh` | 信息素沉积：将观察/决策/状态写入 YAML 信号文件 |
+| | Pheromone deposit: writes observations/decisions/state to YAML signal files |
+| `field-decay.sh` | 信息素衰减：清理过期信号，维持信息新鲜度 |
+| | Pheromone decay: cleans expired signals, maintains information freshness |
+| `field-drain.sh` | 信息素排水：批量清除指定类型的信号 |
+| | Pheromone drain: bulk-clears signals of a given type |
+| `field-pulse.sh` | 场脉冲：生成项目状态快照（构建/测试/git 状态） |
+| | Field pulse: generates project status snapshot (build/test/git status) |
+| `field-claim.sh` | 任务认领：原子化的任务锁定/释放/查询机制 |
+| | Task claim: atomic task lock/release/query mechanism |
+
+### Git Hooks 清单 / Git Hooks Inventory
+
+| Hook | 用途 / Purpose |
+| --- | --- |
+| `hooks/install.sh` | 安装所有 git hooks 到 `.git/hooks/` |
+| | Installs all git hooks to `.git/hooks/` |
+| `hooks/pre-commit` | 提交前检查：防止提交敏感文件、验证文件大小、检查冲突标记 |
+| | Pre-commit: prevents committing sensitive files, validates file sizes, checks conflict markers |
+| `hooks/pre-push` | 推送前检查：验证分支保护规则、运行安全扫描 |
+| | Pre-push: validates branch protection rules, runs security scan |
+| `hooks/prepare-commit-msg` | 自动为提交信息添加 `[termite:YYYY-MM-DD:caste]` 签名 |
+| | Auto-appends `[termite:YYYY-MM-DD:caste]` signature to commit messages |
+| `hooks/post-commit` | 提交后自动触发信息素沉积（调用 field-deposit.sh） |
+| | Post-commit auto-triggers pheromone deposit (calls field-deposit.sh) |
 
 ---
 
@@ -281,8 +350,8 @@ You don't need to maintain these files manually. The agents maintain them. You o
 | | Protocol-project separation; pheromone signatures; decision tactile scan; EXPLORE concentration scan; Genesis self-check; analysis-first-to-disk; dynamic state moved to BLACKBOARD.md |
 | **v2.1** | Boot Sequence 启动序列：心跳内核 v6.0 嵌入入口文件，Agent 自初始化 + 种姓检测 + 动作偏向 |
 | | Boot Sequence: heartbeat kernel v6.0 embedded in entry files, agent self-initialization + caste detection + action bias |
-| **当前 / Current** | §编号模块化架构；触发解释器（8 种触发变体）；心跳引擎（4 尺度自相似循环）；通道特性校准；Lock-File 并发控制；蚁群免疫系统（被动/适应/主动三层）；三丘共生模型；优雅降级矩阵；平台检测表（8 平台）；EXPLORE 完整生命周期（14 天强制关闭）；场基础设施工具链 |
-| | §-numbered modular architecture; trigger interpreter (8 variants); heartbeat engine (4-scale self-similar cycle); channel calibration; Lock-File concurrency; colony immune system (passive/adaptive/active); three-colony model; graceful degradation matrix; platform detection (8 platforms); EXPLORE full lifecycle (14-day forced closure); field infrastructure toolchain |
+| **v3.0** | 协议消融：协议从"Agent 直接阅读的文档"转变为"人类参考 + 脚本配置源"；field-arrive.sh 计算 ≤800 token .birth 文件；8 条语法规则 + 4 条安全网替代叙事心跳；观察→规则自动晋升机制；YAML 信号 schema；git hooks 自动化（签名/代谢/安全）；优雅降级矩阵（5 层） |
+| | Protocol Dissolution: protocol transforms from "document agents read" to "human reference + script config source"; field-arrive.sh computes ≤800 token .birth file; 8 grammar rules + 4 safety nets replace narrative heartbeat; observation → rule auto-promotion; YAML signal schema; git hooks automation (signing/metabolism/safety); graceful degradation matrix (5 levels) |
 
 ---
 
@@ -293,8 +362,8 @@ The Termite Protocol adapts to different AI platforms through entry files:
 
 | 平台 / Platform | 入口文件 / Entry File | 特点 / Characteristics |
 | --- | --- | --- |
-| Claude Code | `CLAUDE.md` | 交互式，Boot Sequence 快速启动，心跳内核自动加载 |
-| | | Interactive, Boot Sequence quick start, heartbeat kernel auto-loaded |
+| Claude Code | `CLAUDE.md` | 交互式，field-arrive.sh 自动计算 .birth，心跳内核自动加载 |
+| | | Interactive, field-arrive.sh auto-computes .birth, heartbeat kernel auto-loaded |
 | OpenAI Codex | `AGENTS.md` | 非交互式，自启动黑板协议，Claim/Verify/Release 循环 |
 | | | Non-interactive, self-boot blackboard protocol, Claim/Verify/Release cycle |
 | Google Gemini | `AGENTS.md` | 同 Codex / Same as Codex |
@@ -304,12 +373,15 @@ The Termite Protocol adapts to different AI platforms through entry files:
 | Windsurf | `.windsurfrules` | |
 | GitHub Copilot | `.github/copilot-instructions.md` | |
 
+> **注意 / Note**: `field-arrive.sh` 目前完整支持 Claude Code 和 AGENTS.md 平台。其他平台可通过入口文件内联规则摘要实现优雅降级（上下文消耗 ~5%）。
+> `field-arrive.sh` currently has full support for Claude Code and AGENTS.md platforms. Other platforms gracefully degrade via inline rule summaries in entry files (context cost ~5%).
+
 ---
 
 ## 设计哲学 / Design Philosophy
 
-**简单规则，复杂涌现。**
-**Simple rules, complex emergence.**
+**简单规则，复杂涌现。协议消融为环境。**
+**Simple rules, complex emergence. Protocol dissolves into environment.**
 
 白蚁协议没有试图设计一个完美的 AI Agent 工作流。
 The Termite Protocol doesn't try to design a perfect AI agent workflow.
@@ -317,11 +389,14 @@ The Termite Protocol doesn't try to design a perfect AI agent workflow.
 它只做了一件事：给无状态的 Agent 一套最小化的局部规则，然后让秩序从混沌中自发涌现。
 It does one thing: give stateless agents a minimal set of local rules, then let order emerge spontaneously from chaos.
 
+v3.0 更进一步：协议本身消融为环境基础设施。Agent 不再需要"阅读协议"，正如白蚁不需要"阅读蚁丘蓝图"——它只需要感知脚下的信息素浓度。
+v3.0 goes further: the protocol itself dissolves into environment infrastructure. Agents no longer need to "read the protocol," just as termites don't need to "read the colony blueprint" — they only need to sense the pheromone concentration underfoot.
+
 就像真正的白蚁丘一样——没有建筑师，但建筑矗立。
 Just like a real termite mound — no architect, yet the architecture stands.
 
-**"无蚁后"原则：** 协议中没有任何角色拥有特殊的审批权。决策通过 EXPLORE 浓度叠加涌现共识——不是某个角色"审批"，而是足够多的白蚁在同一方向沉积信息素。人类是同丘成员，不是外部管理者。
-**"No Queen" principle:** No role in the protocol has special approval authority. Decisions emerge through EXPLORE concentration stacking — not "approval" by a role, but enough termites depositing pheromones in the same direction. Humans are colony members, not external managers.
+**"无蚁后"原则：** 协议中没有任何角色拥有特殊的审批权。决策通过信息素浓度叠加涌现共识——不是某个角色"审批"，而是足够多的白蚁在同一方向沉积信息素。人类是同丘成员，不是外部管理者。
+**"No Queen" principle:** No role in the protocol has special approval authority. Decisions emerge through pheromone concentration stacking — not "approval" by a role, but enough termites depositing pheromones in the same direction. Humans are colony members, not external managers.
 
 ---
 

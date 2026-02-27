@@ -1,0 +1,8 @@
+id: R-006
+trigger: "新增 pool.getConnection() 端点且涉及 org 权限"
+action: "使用 hasOrg ? org-scoped : user-scoped 双轨鉴权模式；标准模式：const hasOrg = organizationId && organizationId !== 0"
+source_observations: [O-225, O-244, O-245]
+hit_count: 10
+last_triggered: 2026-02-27
+created: 2026-02-10
+tags: [security, multi-tenant, authz]

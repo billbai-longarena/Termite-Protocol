@@ -1,0 +1,7 @@
+id: O-002
+pattern: "BLACKBOARD 信号标记需实现但代码已存在"
+context: "S-202 信号声称 PHEROMONE 手势反馈未实现，但 gestures.ts:118 已完成"
+reporter: "termite:2026-02-26:scout"
+confidence: high
+created: 2026-02-26
+detail: "信号写着需实现但 grep 生产代码发现 gestures.ts:118 已完成。教训：先 grep 生产代码确认是否已实现，查调用链而非仅查函数定义。"
