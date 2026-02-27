@@ -77,6 +77,7 @@ trigger: "When I observe: ${pattern}"
 action: "${detail:-Follow the pattern described in trigger}"
 source_observations: [${obs_ids}]
 hit_count: 0
+disputed_count: 0
 last_triggered: $(today_iso)
 created: $(today_iso)
 tags: []

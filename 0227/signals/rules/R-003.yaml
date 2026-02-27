@@ -3,6 +3,7 @@ trigger: "新增/修改 Living Canvas 的 PHEROMONE 手势反馈链路（confirm
 action: "保证 max_strategy_weights 具备三件套：空表先建行 + 固定步长更新（+0.1/-0.1）+ 权重限幅（[0.05,0.99]）；补回归覆盖 confirm/dismiss 双分支"
 source_observations: [O-231, O-232, O-234]
 hit_count: 5
+disputed_count: 0
 last_triggered: 2026-02-20
 created: 2026-02-01
 tags: [living-canvas, pheromone, feedback-loop]

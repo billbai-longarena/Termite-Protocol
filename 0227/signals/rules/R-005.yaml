@@ -3,6 +3,7 @@ trigger: "产出大段分析/审查/设计评估（>10 行）"
 action: "先写文件（DECISIONS.md 用 [AUDIT]/[EXPLORE] 标签）后出对话，对话只放结论摘要+文件路径"
 source_observations: [O-236, O-237, O-225]
 hit_count: 7
+disputed_count: 0
 last_triggered: 2026-02-26
 created: 2026-02-05
 tags: [deposit, anti-hallucination, workflow]

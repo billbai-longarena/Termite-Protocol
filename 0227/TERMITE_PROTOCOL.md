@@ -391,6 +391,32 @@ platforms:
 
 **并发协调**：信号认领使用 `signals/claims/*.lock` + git 乐观并发。工具：`./scripts/field-claim.sh claim|release|check|list|expired`。work 和 audit 互斥，review 不阻塞。
 
+## 协议审计导出
+
+> 协议的可优化性取决于产物的可审计性。`field-export-audit.sh` 导出一个**不含任何项目源码**的审计包，
+> 供第三方（Protocol Nurse）仅凭协议定义 + 产物来评估协议本身的健康状态。
+
+**工具**：`./scripts/field-export-audit.sh [--out <dir>] [--tar] [--project-name <name>]`
+
+**审计包内容**：
+
+| 文件 | 用途 |
+|------|------|
+| `metadata.yaml` | 项目上下文：协议版本、运行天数、签名率、信号库存 |
+| `signals/` | 完整信号树（rules / observations / active / archive） |
+| `rule-health.yaml` | 每条规则的 hit_count vs disputed_count，标记争议率 > 30% 的规则 |
+| `handoff-quality.yaml` | predecessor_useful 统计：交接有效率 |
+| `caste-distribution.yaml` | 种姓出现频次分布 |
+| `git-signatures.txt` | 带签名的 commit 时间线（无代码 diff） |
+| `pheromone-chain.jsonl` | .pheromone 的 git 历史链（JSONL 格式） |
+| `immune-log.txt` | BLACKBOARD 免疫日志段落 |
+| `breath-snapshot.yaml` | 最新 .field-breath 健康快照 |
+
+**隔离原则**：审计包刻意不包含项目代码。如果 Protocol Nurse 仅凭审计包无法判断协议是否有效，
+这本身就是一个信号——说明信号 schema 需要补充字段，而不是需要打破隔离去看源码。
+
+**跨项目聚合**：多个项目的审计包可拷贝到协议仓库的 `audit-packages/` 目录进行横向对比。
+
 ## 免疫系统
 
 > 类比真实白蚁的免疫系统——包容共生菌（弱模型的部分贡献），只攻击病原体（恶意破坏）。
@@ -520,6 +546,10 @@ platforms:
 | 黑板已知限制 | 1 月 | 审计是否仍存在 |
 | DECISIONS [DECISION]/[AUDIT] | 永久 | 标注日期即可 |
 | DECISIONS [EXPLORE] | 14 天 | 必须闭环 |
+
+**交接质量反馈**：每只白蚁离开时在 `.pheromone` 中评价前任的信息素是否有用（`predecessor_useful: true/false`）。git history 中的 `.pheromone` 链形成交接质量的时间序列，第三方可据此评估跨会话协作的实际效果。
+
+**规则争议**：当白蚁遇到规则触发条件但发现动作不适用时，通过 `field-deposit.sh --dispute R-xxx --reason "..."` 递增规则的 `disputed_count`。当 `disputed_count / hit_count > 0.3` 时，规则被标记为需要审查——可能需要修改动作、缩窄触发条件、或降级归档。
 
 **浓度叠加**：2+ 只独立白蚁记录同类问题 → 高浓度区域 → 必须在 BLACKBOARD 热点区域标记并创建 HOLE 信号。
 
@@ -730,6 +760,7 @@ trigger: "When I observe..."
 action: "I must do..."
 source_observations: [O-001, O-005, O-012]
 hit_count: 0
+disputed_count: 0
 last_triggered: 2026-02-27
 created: 2026-02-27
 tags: [tag1]

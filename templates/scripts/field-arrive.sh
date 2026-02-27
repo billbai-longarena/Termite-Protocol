@@ -153,6 +153,12 @@ if [ -f "$PHEROMONE_FILE" ]; then
   if [ -n "$ph_unresolved" ] && [ "$ph_unresolved" != "null" ]; then
     situation="${situation}Handoff: ${ph_unresolved}\n"
   fi
+
+  # Read predecessor's evaluation of THEIR predecessor
+  ph_pred_useful=$(grep '"predecessor_useful"' "$PHEROMONE_FILE" 2>/dev/null | sed 's/.*"predecessor_useful"[[:space:]]*:[[:space:]]*//' | tr -d ' ,')
+  if [ "$ph_pred_useful" = "false" ]; then
+    log_warn "Previous agent reported predecessor handoff was NOT useful — pheromone quality may need attention"
+  fi
 fi
 
 # Top signals

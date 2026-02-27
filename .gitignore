@@ -4,3 +4,12 @@
 *~
 .env
 node_modules/
+
+# Termite Protocol — ephemeral runtime files
+.birth
+.field-breath
+.pheromone
+
+# Audit packages (exported, not stored in project repo)
+audit-package-*/
+audit-packages/

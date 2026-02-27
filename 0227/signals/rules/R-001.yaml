@@ -3,6 +3,7 @@ trigger: "使用 organizationId 的新代码"
 action: "禁止 parseInt()/Number() 转换 — orgId 是 UUID 字符串，用 String(raw).trim()"
 source_observations: [O-110, O-111, O-218]
 hit_count: 12
+disputed_count: 0
 last_triggered: 2026-02-27
 created: 2026-01-15
 tags: [multi-tenant, data-integrity, organizationId]

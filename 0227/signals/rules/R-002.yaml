@@ -3,6 +3,7 @@ trigger: "新增 DB 连接/脚本/迁移代码"
 action: "只用 process.env.DB_*，DB_HOST 缺失时必须 throw，严禁 || 'localhost' 兜底"
 source_observations: [O-140, O-141, O-142]
 hit_count: 8
+disputed_count: 0
 last_triggered: 2026-02-25
 created: 2026-01-10
 tags: [database, security, rds]

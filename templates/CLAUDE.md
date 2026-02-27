@@ -76,6 +76,7 @@
 | `scripts/field-arrive.sh` | 到达仪式 — 注入 .birth、感受场脉搏 |
 | `scripts/field-cycle.sh` | 完整呼吸 — 衰减→排水→脉搏（post-commit hook） |
 | `scripts/field-deposit.sh` | 信息素沉淀 — 会话结束时生成 .pheromone |
+| `scripts/field-export-audit.sh` | 审计包导出 — 导出协议产物供第三方审计（不含项目代码） |
 | `scripts/field-claim.sh` | 认领锁 — claim/release/check |
 | `signals/rules/*.yaml` | 触发-动作规则（由 field-arrive 注入 .birth） |
 | `signals/active/*.yaml` | 活跃信号数据 |

@@ -124,6 +124,7 @@ trigger: "When I encounter organizationId in any expression"
 action: "Never use parseInt() or Number(). Always use String().trim()."
 source_observations: [O-001, O-005, O-012]
 hit_count: 7
+disputed_count: 1
 last_triggered: 2026-02-27
 created: 2026-02-27
 tags: [auth, multi-tenant, data-integrity]
@@ -138,6 +139,7 @@ tags: [auth, multi-tenant, data-integrity]
 | `action` | yes | "I must do..." response |
 | `source_observations` | yes | List of observation IDs that led to promotion |
 | `hit_count` | no | Times this rule has been triggered (default 0) |
+| `disputed_count` | no | Times an agent found this rule inapplicable or incorrect (default 0). When `disputed_count / hit_count > 0.3`, the rule should be reviewed. |
 | `last_triggered` | no | Date of last trigger |
 | `created` | yes | Date rule was promoted |
 | `tags` | no | Categorization tags |
@@ -146,6 +148,8 @@ tags: [auth, multi-tenant, data-integrity]
 
 - **Promotion:** ≥3 observations with same `pattern` → auto-promoted by `field-cycle.sh`
 - **Active use:** `field-arrive.sh` selects top-N rules by relevance for `.birth`
+- **Dispute:** Agent encounters trigger but finds action wrong/inapplicable → increments `disputed_count`
+- **Review:** `disputed_count / hit_count > 0.3` → rule flagged for human review or demotion
 - **Archival:** `last_triggered` > 60 days → moved to `signals/archive/rules/`
 
 ---
