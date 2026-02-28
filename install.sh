@@ -43,6 +43,8 @@ PROTOCOL_SCRIPTS=(
   scripts/termite-db.sh
   scripts/termite-db-migrate.sh
   scripts/termite-db-export.sh
+  scripts/termite-db-reimport.sh
+  scripts/field-submit-audit.sh
 )
 
 # Git hooks (updated during --upgrade)
@@ -72,6 +74,7 @@ CLAUDE_PLUGIN_FILES=(
 ENTRY_FILES=(
   CLAUDE.md
   AGENTS.md
+  .termite-telemetry.yaml
 )
 
 # Signal directories to create
@@ -91,7 +94,8 @@ GITIGNORE_RULES=".birth
 .pheromone
 .termite.db
 .termite.db-wal
-.termite.db-shm"
+.termite.db-shm
+.termite-upstream-check"
 
 # ---------- Helper Functions ----------
 
