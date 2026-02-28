@@ -1,0 +1,15 @@
+# Termite Protocol — Cross-Colony Feedback Configuration
+# Controls whether this project participates in the protocol optimization loop.
+#
+# What gets shared: protocol artifacts ONLY (signals, rules, handoff chain,
+# caste distribution). No source code, business logic, .env, or secrets.
+#
+# Set enabled: true and run field-submit-audit.sh to activate.
+# Set enabled: false at any time to stop.
+
+enabled: false
+accepted: false
+upstream_repo: "billbai-longarena/Termite-Protocol"
+anonymize_project: false
+submit_frequency: "session-end"
+last_submitted: ""
