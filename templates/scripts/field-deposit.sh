@@ -31,10 +31,15 @@ UNRESOLVED=""
 PREDECESSOR_USEFUL=""  # true | false | "" (not evaluated)
 DISPUTE_RULE=""
 DISPUTE_REASON=""
+SOURCE="autonomous"
+COMPRESS_SIGNAL=""
 
 while [ $# -gt 0 ]; do
   case "$1" in
     --pheromone)  MODE="pheromone"; shift ;;
+    --compress)   MODE="compress"; shift ;;
+    --signal)     COMPRESS_SIGNAL="$2"; shift 2 ;;
+    --source)     SOURCE="$2"; shift 2 ;;
     --dispute)    MODE="dispute"; DISPUTE_RULE="$2"; shift 2 ;;
     --reason)     DISPUTE_REASON="$2"; shift 2 ;;
     --pattern)    PATTERN="$2"; shift 2 ;;
@@ -84,6 +89,7 @@ context: "${CONTEXT:-unknown}"
 reporter: "${reporter}"
 confidence: ${CONFIDENCE}
 created: $(today_iso)
+source: ${SOURCE}
 EOF
 
   # Add detail as multiline if provided
@@ -179,5 +185,100 @@ EOF
   fi
 
   log_info "Disputed ${DISPUTE_RULE}: disputed_count ${current} → ${new_count}"
+  exit 0
+fi
+
+# ── Compress Mode ────────────────────────────────────────────────────
+
+if [ "$MODE" = "compress" ]; then
+  if [ ! -d "$OBS_DIR" ]; then
+    log_info "No observations directory — nothing to compress"
+    exit 0
+  fi
+
+  ensure_signal_dirs
+
+  # Build signal reference groups: date+signal → observation files
+  tmpfile=$(mktemp)
+  obs_count=0
+
+  while IFS= read -r obs_file; do
+    [ -f "$obs_file" ] || continue
+    obs_count=$((obs_count + 1))
+    local_pattern=$(yaml_read "$obs_file" "pattern")
+    local_context=$(yaml_read "$obs_file" "context")
+    local_created=$(yaml_read "$obs_file" "created")
+
+    # Extract signal references from pattern and context
+    signal_refs=$(echo "${local_pattern} ${local_context}" | grep -oE 'S-[0-9]+' | sort -u | tr '\n' ',' | sed 's/,$//')
+
+    if [ -n "$signal_refs" ]; then
+      group_key="${local_created}:${signal_refs}"
+      echo "${group_key}|${obs_file}" >> "$tmpfile"
+    fi
+  done < <(list_observations)
+
+  if [ "$obs_count" -eq 0 ] || [ ! -s "$tmpfile" ]; then
+    log_info "No observations with signal references to compress"
+    rm -f "$tmpfile"
+    exit 0
+  fi
+
+  # Find groups with >= 3 observations
+  merged_total=0
+  cut -d'|' -f1 "$tmpfile" | sort | uniq -c | sort -rn | while read -r gcount group_key; do
+    gcount=$(echo "$gcount" | tr -d ' ')
+    if [ "$gcount" -ge 3 ]; then
+      log_info "Compressing group (${gcount} observations): ${group_key}"
+
+      # Collect observation files and IDs for this group
+      group_files=""
+      group_ids=""
+      last_pattern=""
+      last_context=""
+
+      while IFS='|' read -r gk gf; do
+        if [ "$gk" = "$group_key" ]; then
+          group_files="${group_files:+${group_files} }${gf}"
+          local_id=$(yaml_read "$gf" "id")
+          group_ids="${group_ids:+${group_ids}, }${local_id}"
+          last_pattern=$(yaml_read "$gf" "pattern")
+          last_context=$(yaml_read "$gf" "context")
+        fi
+      done < "$tmpfile"
+
+      # Create merged observation
+      merged_id="O-$(date +%Y%m%d%H%M%S)-merged"
+      merged_file="${OBS_DIR}/${merged_id}.yaml"
+
+      cat > "$merged_file" <<MEOF
+id: ${merged_id}
+pattern: "${last_pattern}"
+context: "${last_context}"
+reporter: "termite:$(today_iso):system"
+confidence: high
+created: $(today_iso)
+source: autonomous
+merged_count: ${gcount}
+merged_from: [${group_ids}]
+detail: |
+  Merged from ${gcount} observations referencing ${group_key#*:}.
+  Original observations archived to archive/merged/.
+MEOF
+
+      log_info "Created merged observation ${merged_id} from [${group_ids}]"
+
+      # Move originals to archive/merged/
+      mkdir -p "${ARCHIVE_DIR}/merged"
+      for f in $group_files; do
+        [ -f "$f" ] && mv "$f" "${ARCHIVE_DIR}/merged/"
+      done
+
+      merged_total=$((merged_total + 1))
+    fi
+  done
+
+  rm -f "$tmpfile"
+  log_info "Compression complete"
   exit 0
 fi

@@ -6,13 +6,13 @@
 > "白蚁协议"是心跳指令——收到后自动执行节律，自主判断并行动。
 > 完整协议在 `TERMITE_PROTOCOL.md`，本文件足够驱动日常行动。
 
-<!-- termite-kernel:v7.0 -->
-## 白蚁协议 — 最小内核 v7.0
+<!-- termite-kernel:v8.0 -->
+## 白蚁协议 — 最小内核 v8.0
 
 > **"白蚁协议"四个字 = 启动心跳，自动执行。**
 > **终极目标：维持三丘（开发丘·产品丘·客户丘）的持续发展与繁荣。**
 
-### 协议语法（8 条不可化约规则）
+### 协议语法（9 条不可化约规则）
 
 ```
 1. ARRIVE->SENSE->STATE        到达后感知环境，建立态势
@@ -23,6 +23,7 @@
 6. weight>threshold->ESCALATE  高权重信号升级为热点
 7. count(agents,same_signal)>=3->EMERGE  >=3条独立观察->涌现为规则
 8. context>80%->MOLT           上下文将满->蜕皮（写WIP+.pheromone，结束会话）
+9. DO(generate_agent)->SEED  生成Agent系统时注入协议种子（参见TERMITE_SEED.md）
 ```
 
 ### 执行流程

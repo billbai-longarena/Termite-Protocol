@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # field-cycle.sh — Post-commit metabolism cycle
-# Sequence: decay → drain → pulse → observation promotion → rule archival
+# Sequence: decay → drain → boundary detection → pulse → observation promotion → compression → rule archival
 # Typically triggered by post-commit hook.
 
 set -euo pipefail
@@ -10,24 +10,48 @@ source "${SCRIPT_DIR}/field-lib.sh"
 
 log_info "=== Metabolism cycle starting ==="
 
-# ── Step 1: Decay ────────────────────────────────────────────────────
+# ── Step 1/7: Decay ────────────────────────────────────────────────────
 
-log_info "Step 1/5: Decay"
+log_info "Step 1/7: Decay"
 "${SCRIPT_DIR}/field-decay.sh" || log_warn "Decay had warnings"
 
-# ── Step 2: Drain ────────────────────────────────────────────────────
+# ── Step 2/7: Drain ────────────────────────────────────────────────────
 
-log_info "Step 2/5: Drain"
+log_info "Step 2/7: Drain"
 "${SCRIPT_DIR}/field-drain.sh" || log_warn "Drain had warnings"
 
-# ── Step 3: Pulse ────────────────────────────────────────────────────
+# ── Step 3/7: Boundary detection ───────────────────────────────────────
 
-log_info "Step 3/5: Pulse"
+log_info "Step 3/7: Boundary detection"
+if has_signal_dir; then
+  parked_count=0
+  while IFS= read -r signal_file; do
+    [ -f "$signal_file" ] || continue
+    local_status=$(yaml_read "$signal_file" "status")
+    local_type=$(yaml_read "$signal_file" "type")
+    local_tc=$(get_signal_touch_count "$signal_file")
+    if [ "$local_status" != "parked" ] && [ "$local_status" != "done" ] && [ "$local_status" != "archived" ]; then
+      if [ "$local_tc" -ge "$BOUNDARY_TOUCH_THRESHOLD" ]; then
+        if [ "$local_type" = "BLOCKED" ] || [ "$local_type" = "HOLE" ]; then
+          log_info "Parking $(basename "$signal_file") — touched ${local_tc}x without resolution"
+          park_signal "$signal_file" "environment_boundary" \
+            "Touched ${local_tc}x without status change. Likely requires external resource."
+          parked_count=$((parked_count + 1))
+        fi
+      fi
+    fi
+  done < <(list_active_signals)
+  [ "$parked_count" -gt 0 ] && log_info "Parked ${parked_count} signals"
+fi
+
+# ── Step 4/7: Pulse ────────────────────────────────────────────────────
+
+log_info "Step 4/7: Pulse"
 "${SCRIPT_DIR}/field-pulse.sh" || log_warn "Pulse had warnings"
 
-# ── Step 4: Observation → Rule Promotion ─────────────────────────────
+# ── Step 5/7: Observation → Rule Promotion ─────────────────────────────
 
-log_info "Step 4/5: Observation promotion scan"
+log_info "Step 5/7: Observation promotion scan"
 
 if [ -d "$OBS_DIR" ]; then
   # Group observations by pattern (normalized: lowercase, stripped)
@@ -98,9 +122,16 @@ RULEEOF
   rm -f "$tmpfile"
 fi
 
-# ── Step 5: Rule Archival ────────────────────────────────────────────
+# ── Step 6/7: Observation compression ──────────────────────────────────
 
-log_info "Step 5/5: Rule archival scan"
+log_info "Step 6/7: Observation compression"
+"${SCRIPT_DIR}/field-deposit.sh" --compress 2>&1 | while IFS= read -r line; do
+  log_info "  compress: $line"
+done || true
+
+# ── Step 7/7: Rule Archival ────────────────────────────────────────────
+
+log_info "Step 7/7: Rule archival scan"
 
 if [ -d "$RULES_DIR" ]; then
   archived_rules=0

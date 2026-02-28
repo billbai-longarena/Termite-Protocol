@@ -31,9 +31,11 @@ sig_ratio=$(termite_signature_ratio 20)
 
 active_count=0
 high_holes=0
+parked_count=0
 if has_signal_dir; then
   active_count=$(count_active_signals)
   high_holes=$(count_high_weight_holes)
+  parked_count=$(count_parked_signals)
 fi
 
 # ── Sense: Claim expiry ─────────────────────────────────────────────
@@ -81,10 +83,11 @@ build: ${build}
 signature_ratio: ${sig_ratio}
 active_signals: ${active_count}
 high_weight_holes: ${high_holes}
+parked_signals: ${parked_count}
 expired_claims: ${expired_claims}
 blackboard: ${bb_status}
 branch: $(current_branch)
 commit: $(current_commit_short)
 EOF
 
-log_info "Pulse written: alarm=${alarm} wip=${wip} build=${build} signals=${active_count} holes=${high_holes}"
+log_info "Pulse written: alarm=${alarm} wip=${wip} build=${build} signals=${active_count} holes=${high_holes} parked=${parked_count}"

@@ -89,6 +89,7 @@ EOF
     yaml_write "$signal_file" "status" "claimed"
     yaml_write "$signal_file" "owner" "$owner"
     yaml_write "$signal_file" "last_touched" "$(today_iso)"
+    increment_signal_touch "$signal_file"
   fi
 
   log_info "Claimed ${signal_id} for ${op} by ${owner}"

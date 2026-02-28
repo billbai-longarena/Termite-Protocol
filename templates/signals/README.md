@@ -23,6 +23,7 @@ signals/
   archive/         # Completed / promoted / expired items
     done-YYYY-MM/
     promoted/
+    merged/
     rules/
 ```
 
@@ -46,6 +47,8 @@ owner: unassigned        # "unassigned" or "termite:DATE:caste"
 module: "backend/src/auth"
 tags: [auth, multi-tenant]
 next: "Add organizationId JOIN to all write endpoints"
+touch_count: 0           # incremented each time an agent claims/touches this signal
+source: autonomous       # autonomous | directive | emergent
 ```
 
 ### Signal Types
@@ -64,10 +67,24 @@ next: "Add organizationId JOIN to all write endpoints"
 ```
 open → claimed → done → archived
          ↓
-       stale (TTL expired, no activity)
+       stale (TTL expired)
          ↓
        archived
+
+open → claimed → parked (boundary detected)
+                   ↓
+                 re-opened (conditions change)
+                   ↓
+                 claimed → done → archived
 ```
+
+#### Parked Status Fields
+
+| Field | Description |
+|-------|-------------|
+| `parked_reason` | Why the signal was parked (e.g., `environment_boundary`) |
+| `parked_conditions` | Human-readable conditions for re-opening |
+| `parked_at` | ISO date when signal was parked |
 
 ### Weight Rules
 
@@ -109,6 +126,9 @@ detail: |
 | `confidence` | yes | `high` / `medium` / `low` |
 | `created` | yes | Date of observation |
 | `detail` | no | Extended description with specifics |
+| `merged_count` | no | Number of observations merged into this one |
+| `merged_from` | no | List of original observation IDs |
+| `source` | no | `autonomous` / `directive` / `emergent` |
 
 ---
 
@@ -203,3 +223,5 @@ These values are read from `TERMITE_PROTOCOL.md Part II` or environment variable
 | `wip_freshness_days` | 14 | `TERMITE_WIP_FRESHNESS_DAYS` | Days before WIP.md considered stale |
 | `explore_max_days` | 14 | `TERMITE_EXPLORE_MAX_DAYS` | Max age for EXPLORE signals |
 | `claim_ttl_hours` | 24 | `TERMITE_CLAIM_TTL_HOURS` | Default claim lock duration |
+| `scout_breath_interval` | 5 | `TERMITE_SCOUT_BREATH_INTERVAL` | Consecutive same-caste sessions before forced scout breath |
+| `boundary_touch_threshold` | 3 | `TERMITE_BOUNDARY_TOUCH_THRESHOLD` | Touches before parking a BLOCKED/HOLE signal |

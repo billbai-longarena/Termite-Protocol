@@ -37,6 +37,7 @@ PROTOCOL_SCRIPTS=(
   scripts/field-deposit.sh
   scripts/field-drain.sh
   scripts/field-export-audit.sh
+  scripts/field-genesis.sh
   scripts/field-pulse.sh
 )
 

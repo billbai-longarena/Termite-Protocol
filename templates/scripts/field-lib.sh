@@ -35,6 +35,8 @@ WIP_FRESHNESS_DAYS="${TERMITE_WIP_FRESHNESS_DAYS:-14}"
 EXPLORE_MAX_DAYS="${TERMITE_EXPLORE_MAX_DAYS:-14}"
 CLAIM_TTL_HOURS="${TERMITE_CLAIM_TTL_HOURS:-24}"
 BREATH_MAX_AGE_MIN="${TERMITE_BREATH_MAX_AGE_MIN:-30}"
+SCOUT_BREATH_INTERVAL="${TERMITE_SCOUT_BREATH_INTERVAL:-5}"
+BOUNDARY_TOUCH_THRESHOLD="${TERMITE_BOUNDARY_TOUCH_THRESHOLD:-3}"
 
 # ── Logging ──────────────────────────────────────────────────────────
 
@@ -46,7 +48,7 @@ log_error() { echo "[termite:error] $*" >&2; }
 
 ensure_signal_dirs() {
   mkdir -p "$ACTIVE_DIR" "$OBS_DIR" "$RULES_DIR" "$CLAIMS_DIR"
-  mkdir -p "$ARCHIVE_DIR/done-$(date +%Y-%m)" "$ARCHIVE_DIR/promoted" "$ARCHIVE_DIR/rules"
+  mkdir -p "$ARCHIVE_DIR/done-$(date +%Y-%m)" "$ARCHIVE_DIR/promoted" "$ARCHIVE_DIR/rules" "$ARCHIVE_DIR/merged"
 }
 
 has_signal_dir() {
@@ -135,6 +137,49 @@ count_high_weight_holes() {
     fi
   done < <(list_active_signals)
   echo "$count"
+}
+
+count_parked_signals() {
+  local count=0
+  while IFS= read -r f; do
+    [ -f "$f" ] || continue
+    local s; s=$(yaml_read "$f" "status")
+    [ "$s" = "parked" ] && count=$((count + 1))
+  done < <(list_active_signals)
+  echo "$count"
+}
+
+count_high_weight_holes_excluding_parked() {
+  local count=0
+  while IFS= read -r f; do
+    [ -f "$f" ] || continue
+    local t w s
+    t=$(yaml_read "$f" "type"); w=$(yaml_read "$f" "weight"); s=$(yaml_read "$f" "status")
+    if [ "$t" = "HOLE" ] && [ "${w:-0}" -ge "$ESCALATE_THRESHOLD" ] && [ "$s" != "parked" ]; then
+      count=$((count + 1))
+    fi
+  done < <(list_active_signals)
+  echo "$count"
+}
+
+get_signal_touch_count() {
+  local tc; tc=$(yaml_read "$1" "touch_count"); echo "${tc:-0}"
+}
+
+increment_signal_touch() {
+  local current; current=$(get_signal_touch_count "$1")
+  yaml_write "$1" "touch_count" "$((current + 1))"
+}
+
+park_signal() {
+  local signal_file="$1" reason="$2" conditions="$3"
+  yaml_write "$signal_file" "status" "parked"
+  yaml_write "$signal_file" "parked_reason" "$reason"
+  yaml_write "$signal_file" "parked_conditions" "$conditions"
+  yaml_write "$signal_file" "parked_at" "$(today_iso)"
+  local w; w=$(yaml_read "$signal_file" "weight")
+  local reduced=$((ESCALATE_THRESHOLD - 10))
+  [ "${w:-0}" -gt "$reduced" ] && yaml_write "$signal_file" "weight" "$reduced"
 }
 
 list_rules() {
@@ -253,6 +298,30 @@ termite_signature_ratio() {
   signed=$(git -C "$PROJECT_ROOT" log --oneline -n "$n" 2>/dev/null | grep -c '\[termite:' || true)
   # Calculate ratio with 2 decimal places using awk
   awk "BEGIN { printf \"%.2f\", ${signed}/${total} }"
+}
+
+count_consecutive_caste() {
+  # Read .pheromone git history, count consecutive same-caste sessions
+  # Returns: "count last_caste"
+  local max_depth="${1:-10}"
+  local count=0 last_caste=""
+  local commits
+  commits=$(git -C "$PROJECT_ROOT" log --format="%H" -n "$max_depth" -- ".pheromone" 2>/dev/null || true)
+  if [ -z "$commits" ]; then
+    if [ -f "$PHEROMONE_FILE" ]; then
+      last_caste=$(grep '"caste"' "$PHEROMONE_FILE" 2>/dev/null | sed 's/.*"caste"[[:space:]]*:[[:space:]]*"//' | tr -d '",')
+      [ -n "$last_caste" ] && count=1
+    fi
+    echo "${count} ${last_caste:-unknown}"; return
+  fi
+  for h in $commits; do
+    local c; c=$(git -C "$PROJECT_ROOT" show "${h}:.pheromone" 2>/dev/null | grep '"caste"' | sed 's/.*"caste"[[:space:]]*:[[:space:]]*"//' | tr -d '",')
+    [ -z "$c" ] && continue
+    if [ -z "$last_caste" ]; then last_caste="$c"; count=1
+    elif [ "$c" = "$last_caste" ]; then count=$((count + 1))
+    else break; fi
+  done
+  echo "${count} ${last_caste:-unknown}"
 }
 
 # ── Date Utilities ───────────────────────────────────────────────────

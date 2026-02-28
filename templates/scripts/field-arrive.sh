@@ -53,6 +53,7 @@ if [ -f "$BREATH_FILE" ]; then
   sig_ratio=$(yaml_read "$BREATH_FILE" "signature_ratio")
   active_signals=$(yaml_read "$BREATH_FILE" "active_signals")
   high_holes=$(yaml_read "$BREATH_FILE" "high_weight_holes")
+  parked_signals=$(yaml_read "$BREATH_FILE" "parked_signals")
   branch=$(yaml_read "$BREATH_FILE" "branch")
 else
   # Direct sensing fallback
@@ -62,25 +63,44 @@ else
   branch=$(current_branch)
 fi
 
+# ── Step 3.5: Genesis detection ────────────────────────────────────────
+
+genesis=false
+if [ ! -f "$BLACKBOARD" ] && [ "$(count_active_signals 2>/dev/null || echo 0)" -eq 0 ] && [ "$wip" = "absent" ]; then
+  genesis=true
+  log_info "Genesis conditions — running field-genesis.sh"
+  if [ -x "${SCRIPT_DIR}/field-genesis.sh" ]; then
+    "${SCRIPT_DIR}/field-genesis.sh" 2>&1 | while IFS= read -r line; do log_info "  genesis: $line"; done || true
+    "${SCRIPT_DIR}/field-pulse.sh" 2>/dev/null || true
+    # Re-read health
+    [ -f "$BREATH_FILE" ] && active_signals=$(yaml_read "$BREATH_FILE" "active_signals")
+  fi
+fi
+
 # ── Step 4: Caste determination (waterfall, first hit wins) ──────────
 
-caste="scout"  # default
+caste="scout"
+breath_needed=false
 
 if [ "$alarm" = "true" ]; then
-  caste="soldier"
-  caste_reason="ALARM.md present"
+  caste="soldier"; caste_reason="ALARM.md present"
 elif [ "$build" = "fail" ]; then
-  caste="soldier"
-  caste_reason="build/test failure"
+  caste="soldier"; caste_reason="build/test failure"
 elif [ "$wip" = "fresh" ]; then
-  caste="worker"
-  caste_reason="WIP.md is fresh — continuing work"
+  # Breath cycle check: N consecutive same-caste sessions → force Scout
+  breath_info=$(count_consecutive_caste "$SCOUT_BREATH_INTERVAL")
+  consecutive_count=$(echo "$breath_info" | awk '{print $1}')
+  consecutive_caste=$(echo "$breath_info" | awk '{print $2}')
+  if [ "$consecutive_count" -ge "$SCOUT_BREATH_INTERVAL" ]; then
+    breath_needed=true
+    caste="scout"; caste_reason="strategic breath — ${consecutive_count} consecutive ${consecutive_caste} sessions"
+  else
+    caste="worker"; caste_reason="WIP.md is fresh — continuing work"
+  fi
 elif [ "${high_holes:-0}" -gt 0 ]; then
-  caste="worker"
-  caste_reason="${high_holes} high-weight HOLE signals"
+  caste="worker"; caste_reason="${high_holes} high-weight HOLE signals"
 else
-  caste="scout"
-  caste_reason="default — no urgency detected"
+  caste="scout"; caste_reason="default — no urgency detected"
 fi
 
 log_info "Caste: ${caste} (${caste_reason})"
@@ -186,6 +206,19 @@ if [ "$alarm" = "true" ] && [ -f "$ALARM_FILE" ]; then
   situation="${situation}ALARM: ${alarm_line}\n"
 fi
 
+# Breath cycle context
+if [ "$breath_needed" = "true" ]; then
+  situation="${situation}BREATH CYCLE: Strategic review session. Review BLACKBOARD, evaluate signal landscape, check parked signals, write DECISIONS.md [AUDIT].\n"
+fi
+# Parked signal awareness
+if [ "${parked_signals:-0}" -gt 0 ]; then
+  situation="${situation}Parked: ${parked_signals} signal(s) at environment boundary (skipped)\n"
+fi
+# Genesis context
+if [ "$genesis" = "true" ]; then
+  situation="${situation}GENESIS: First session. BLACKBOARD + S-001 auto-generated. Verify build/test, map project, refine BLACKBOARD.\n"
+fi
+
 # ── Step 7: Write .birth ─────────────────────────────────────────────
 
 alarm_display="none"
@@ -199,6 +232,7 @@ cat > "$BIRTH_FILE" <<BIRTHEOF
 caste: ${caste}
 branch: ${branch}
 alarm: ${alarm_display}
+channel: heartbeat
 health: build=${build} wip=${wip} signals=${active_signals}
 
 ## situation
