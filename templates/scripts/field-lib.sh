@@ -23,6 +23,8 @@ ALARM_FILE="${PROJECT_ROOT}/ALARM.md"
 BIRTH_FILE="${PROJECT_ROOT}/.birth"
 BREATH_FILE="${PROJECT_ROOT}/.field-breath"
 PHEROMONE_FILE="${PROJECT_ROOT}/.pheromone"
+TERMITE_DB="${PROJECT_ROOT}/.termite.db"
+AGENT_ID=""  # Set by field-arrive.sh after registration
 
 # ── Configurable Thresholds ─────────────────────────────────────────
 
@@ -53,6 +55,38 @@ ensure_signal_dirs() {
 
 has_signal_dir() {
   [ -d "$SIGNALS_DIR" ] && [ -d "$ACTIVE_DIR" ]
+}
+
+# ── SQLite Detection & Bridge ─────────────────────────────────────────
+
+has_db() {
+  [ -f "$TERMITE_DB" ]
+}
+
+has_sqlite() {
+  command -v sqlite3 >/dev/null 2>&1
+}
+
+ensure_db() {
+  # Create or migrate DB. Call early in any entry-point script.
+  if [ -f "$TERMITE_DB" ]; then
+    return 0
+  fi
+  if ! has_sqlite; then
+    log_warn "sqlite3 not found — falling back to YAML mode"
+    return 1
+  fi
+  # Auto-migrate if YAML signals exist, otherwise create fresh
+  if [ -d "$ACTIVE_DIR" ] && ls "$ACTIVE_DIR"/*.yaml >/dev/null 2>&1; then
+    "${SCRIPT_DIR}/termite-db-migrate.sh" 2>&1 | while IFS= read -r l; do log_info "  migrate: $l"; done || true
+  else
+    source "${SCRIPT_DIR}/termite-db.sh"
+    db_ensure
+  fi
+}
+
+generate_agent_id() {
+  echo "termite-$(date +%s)-$$"
 }
 
 # ── YAML Read/Write (flat key: value only) ───────────────────────────

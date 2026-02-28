@@ -7,6 +7,13 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 source "${SCRIPT_DIR}/field-lib.sh"
 
+if has_db; then
+  source "${SCRIPT_DIR}/termite-db.sh"
+  db_drain_done
+  log_info "Drain complete (DB atomic)"
+  exit 0
+fi
+
 if ! has_signal_dir; then
   log_info "No signals directory — skipping drain"
   exit 0

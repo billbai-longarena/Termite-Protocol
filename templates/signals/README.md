@@ -1,5 +1,9 @@
 # Termite Protocol — Signal YAML Schema
 
+> **v3.4+**: Primary storage is `.termite.db` (SQLite). YAML files in this directory
+> are exported snapshots. Use `./scripts/termite-db-export.sh` to regenerate.
+> For backward compatibility, scripts fall back to YAML when SQLite is unavailable.
+
 > This document defines the canonical YAML schema for all signal types
 > used by the Termite Protocol's field infrastructure scripts.
 

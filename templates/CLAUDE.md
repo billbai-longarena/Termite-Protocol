@@ -6,8 +6,8 @@
 "白蚁协议"是心跳指令——收到后 Agent 自动执行节律，自主判断并行动。
 完整协议在 `TERMITE_PROTOCOL.md`。
 
-<!-- termite-kernel:v9.0 -->
-## 白蚁协议 — 最小内核 v9.0
+<!-- termite-kernel:v10.0 -->
+## 白蚁协议 — 最小内核 v10.0
 
 > **9 条文法 + 4 条安全底线 = 完整行为规范。规则由 `signals/rules/*.yaml` 注入，本文件不膨胀。**
 

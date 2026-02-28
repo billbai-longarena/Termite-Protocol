@@ -1,5 +1,5 @@
-<!-- termite-protocol:v3.3 -->
-# 白蚁协议 v3.3 (Termite Protocol)
+<!-- termite-protocol:v3.4 -->
+# 白蚁协议 v3.4 (Termite Protocol)
 
 白蚁协议的目的，是让多个不同水平的 Agent 同时工作，工作的目的是让三丘模型中提到的开发、产品和客户能共同成功、共同成长。成为各自最好的自己，也能共同达成非凡的成就。
 
@@ -242,6 +242,48 @@ boundary_touch_threshold: 3     # signal touch count before parking (BLOCKED/HOL
 
 > **环境变量覆盖**：每个阈值可通过 `TERMITE_` 前缀的环境变量覆盖。
 > 例如 `TERMITE_DECAY_FACTOR=0.95` 覆盖 `decay_factor`。
+
+## 并发架构 (Concurrency Architecture)
+
+> v3.4 起，协议使用 SQLite (WAL 模式) 作为共享状态的单一事实源。
+> YAML 文件保留为导出格式（审计包、人类阅读），不再是运行时主存储。
+
+### 存储层
+
+| 组件 | 存储 | 并发保证 |
+|------|------|----------|
+| 信号 (signals) | `.termite.db` signals 表 | WAL + row-level atomic |
+| 观察 (observations) | `.termite.db` observations 表 | WAL + auto-ID with PID |
+| 规则 (rules) | `.termite.db` rules 表 | WAL + atomic increment |
+| 认领 (claims) | `.termite.db` claims 表 | EXCLUSIVE transaction |
+| 信息素 (pheromone) | `.termite.db` pheromone_history 表 | Append-only, no overwrite |
+| 蚁丘状态 (colony state) | `.termite.db` colony_state 表 | INSERT OR REPLACE |
+| Agent 注册 | `.termite.db` agents 表 | Unique ID per process |
+
+### Agent 身份
+
+每个 Agent 进程在 `field-arrive.sh` 中注册唯一 ID：`termite-{epoch}-{pid}`。
+Per-agent `.birth.{agent_id}` 文件支持多 Agent 同时运行。
+同时保留 `.birth`（无后缀）供不理解 per-agent 的旧流程读取。
+
+### 降级策略
+
+| 条件 | 行为 |
+|------|------|
+| SQLite 可用 + DB 存在 | 正常 DB 模式 |
+| SQLite 可用 + 无 DB + 有 YAML | 自动迁移 → DB 模式 |
+| SQLite 可用 + 无 DB + 无 YAML | 创建新 DB |
+| SQLite 不可用 | YAML 文件模式（v3.3 行为） |
+
+### 运行时文件
+
+```yaml
+# runtime-files (added to .gitignore)
+- .termite.db        # SQLite 主数据库
+- .termite.db-wal    # WAL 日志（SQLite 自动管理）
+- .termite.db-shm    # 共享内存（SQLite 自动管理）
+- .birth.*           # Per-agent birth 文件
+```
 
 ## 保护文件列表 (Protected Files)
 
@@ -908,7 +950,7 @@ git worktree remove ../<project>-<feature>
 > 入口文件的心跳内核也从此处派生。
 
 ```
-# termite-kernel:v3.3
+# termite-kernel:v3.4
 # 白蚁协议 — 最小内核（9 语法规则 + 4 安全网）
 
 [语法]

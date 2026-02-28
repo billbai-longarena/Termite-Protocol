@@ -69,6 +69,18 @@ if [ "$MODE" = "observation" ]; then
     exit 1
   fi
 
+  # DB-first path
+  if has_db; then
+    source "${SCRIPT_DIR}/termite-db.sh"
+    obs_id="O-$(date +%Y%m%d%H%M%S)-$$"
+    reporter="termite:$(today_iso):${CASTE}"
+    db_obs_create "$obs_id" "$PATTERN" "${CONTEXT:-unknown}" "$reporter" "$CONFIDENCE" "$SOURCE" "$DETAIL"
+    log_info "Deposited observation ${obs_id}: ${PATTERN} (DB)"
+    echo "$obs_id"
+    exit 0
+  fi
+
+  # YAML fallback
   ensure_signal_dirs
   reporter="termite:$(today_iso):${CASTE}"
 
@@ -106,7 +118,16 @@ fi
 # ── Pheromone Mode ───────────────────────────────────────────────────
 
 if [ "$MODE" = "pheromone" ]; then
-  # Write .pheromone JSON for cross-model handoff
+  # DB-first path
+  if has_db; then
+    source "${SCRIPT_DIR}/termite-db.sh"
+    local_agent_id="${AGENT_ID:-$(generate_agent_id)}"
+    db_pheromone_deposit "$local_agent_id" "$CASTE" "$(current_branch)" "$(current_commit_short)" \
+      "$COMPLETED" "$UNRESOLVED" "$PREDECESSOR_USEFUL"
+    log_info "Deposited pheromone (DB, caste=${CASTE}, predecessor_useful=${PREDECESSOR_USEFUL:-not_evaluated})"
+  fi
+
+  # Always write .pheromone file too for backward compat
   # predecessor_useful: did the previous agent's .pheromone help this session?
   pred_useful_json="null"
   if [ "$PREDECESSOR_USEFUL" = "true" ]; then
@@ -142,7 +163,22 @@ if [ "$MODE" = "dispute" ]; then
     exit 1
   fi
 
-  # Find the rule file
+  # DB-first path
+  if has_db; then
+    source "${SCRIPT_DIR}/termite-db.sh"
+    db_rule_increment_dispute "$DISPUTE_RULE"
+    if [ -n "$DISPUTE_REASON" ]; then
+      obs_id="O-$(date +%Y%m%d%H%M%S)-$$"
+      db_obs_create "$obs_id" "dispute:${DISPUTE_RULE}" "rule dispute" \
+        "termite:$(today_iso):${CASTE}" "high" "autonomous" \
+        "Rule ${DISPUTE_RULE} was found inapplicable. Reason: ${DISPUTE_REASON}"
+      log_info "Dispute observation ${obs_id} deposited for ${DISPUTE_RULE}"
+    fi
+    log_info "Disputed ${DISPUTE_RULE} (DB atomic)"
+    exit 0
+  fi
+
+  # YAML fallback
   rule_file="${RULES_DIR}/${DISPUTE_RULE}.yaml"
   if [ ! -f "$rule_file" ]; then
     log_error "Rule file not found: ${rule_file}"
@@ -191,6 +227,15 @@ fi
 # ── Compress Mode ────────────────────────────────────────────────────
 
 if [ "$MODE" = "compress" ]; then
+  # DB-first path
+  if has_db; then
+    source "${SCRIPT_DIR}/termite-db.sh"
+    db_obs_compress
+    log_info "Compression complete (DB)"
+    exit 0
+  fi
+
+  # YAML fallback
   if [ ! -d "$OBS_DIR" ]; then
     log_info "No observations directory — nothing to compress"
     exit 0

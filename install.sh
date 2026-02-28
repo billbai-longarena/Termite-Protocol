@@ -39,6 +39,10 @@ PROTOCOL_SCRIPTS=(
   scripts/field-export-audit.sh
   scripts/field-genesis.sh
   scripts/field-pulse.sh
+  scripts/termite-db-schema.sql
+  scripts/termite-db.sh
+  scripts/termite-db-migrate.sh
+  scripts/termite-db-export.sh
 )
 
 # Git hooks (updated during --upgrade)
@@ -68,8 +72,12 @@ SIGNAL_DIRS=(
 # .gitignore rules for termite runtime files
 GITIGNORE_MARKER="# Termite Protocol — ephemeral runtime files"
 GITIGNORE_RULES=".birth
+.birth.*
 .field-breath
-.pheromone"
+.pheromone
+.termite.db
+.termite.db-wal
+.termite.db-shm"
 
 # ---------- Helper Functions ----------
 

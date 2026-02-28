@@ -27,6 +27,15 @@ else
   log_info "No signal directory — will use BLACKBOARD fallback"
 fi
 
+# ── Step 1.5: Database initialization ────────────────────────────────
+
+ensure_db || true
+if has_db; then
+  source "${SCRIPT_DIR}/termite-db.sh"
+  AGENT_ID=$(db_agent_register)
+  log_info "Agent registered: ${AGENT_ID}"
+fi
+
 # ── Step 2: Refresh breath if stale ──────────────────────────────────
 
 if ! check_breath_freshness; then
@@ -46,7 +55,21 @@ active_signals=0
 high_holes=0
 branch="unknown"
 
-if [ -f "$BREATH_FILE" ]; then
+if has_db; then
+  alarm=$(db_colony_get "alarm" 2>/dev/null || echo "false")
+  wip=$(db_colony_get "wip" 2>/dev/null || echo "absent")
+  build=$(db_colony_get "build" 2>/dev/null || echo "unknown")
+  sig_ratio=$(db_colony_get "signature_ratio" 2>/dev/null || echo "0.00")
+  active_signals=$(db_signal_count "status NOT IN ('archived','parked')" 2>/dev/null || echo "0")
+  high_holes=$(db_signal_count "type='HOLE' AND weight>=${ESCALATE_THRESHOLD} AND status!='parked'" 2>/dev/null || echo "0")
+  parked_signals=$(db_signal_count "status='parked'" 2>/dev/null || echo "0")
+  branch=$(db_colony_get "branch" 2>/dev/null || current_branch)
+  # Fill missing colony state via direct sensing
+  [ "$alarm" = "false" ] && check_alarm && alarm="true"
+  [ "$wip" = "absent" ] || [ -z "$wip" ] && wip=$(check_wip)
+  [ "$build" = "unknown" ] || [ -z "$build" ] && build=$(check_build)
+  [ "$branch" = "unknown" ] || [ -z "$branch" ] && branch=$(current_branch)
+elif [ -f "$BREATH_FILE" ]; then
   alarm=$(yaml_read "$BREATH_FILE" "alarm")
   wip=$(yaml_read "$BREATH_FILE" "wip")
   build=$(yaml_read "$BREATH_FILE" "build")
@@ -66,7 +89,13 @@ fi
 # ── Step 3.5: Genesis detection ────────────────────────────────────────
 
 genesis=false
-if [ ! -f "$BLACKBOARD" ] && [ "$(count_active_signals 2>/dev/null || echo 0)" -eq 0 ] && [ "$wip" = "absent" ]; then
+active_count_check=0
+if has_db; then
+  active_count_check=$(db_signal_count "status NOT IN ('archived')" 2>/dev/null || echo "0")
+else
+  active_count_check=$(count_active_signals 2>/dev/null || echo "0")
+fi
+if [ ! -f "$BLACKBOARD" ] && [ "$active_count_check" -eq 0 ] && [ "$wip" = "absent" ]; then
   genesis=true
   log_info "Genesis conditions — running field-genesis.sh"
   if [ -x "${SCRIPT_DIR}/field-genesis.sh" ]; then
@@ -88,7 +117,11 @@ elif [ "$build" = "fail" ]; then
   caste="soldier"; caste_reason="build/test failure"
 elif [ "$wip" = "fresh" ]; then
   # Breath cycle check: N consecutive same-caste sessions → force Scout
-  breath_info=$(count_consecutive_caste "$SCOUT_BREATH_INTERVAL")
+  if has_db; then
+    breath_info=$(db_pheromone_consecutive_caste "$SCOUT_BREATH_INTERVAL")
+  else
+    breath_info=$(count_consecutive_caste "$SCOUT_BREATH_INTERVAL")
+  fi
   consecutive_count=$(echo "$breath_info" | awk '{print $1}')
   consecutive_caste=$(echo "$breath_info" | awk '{print $2}')
   if [ "$consecutive_count" -ge "$SCOUT_BREATH_INTERVAL" ]; then
@@ -166,7 +199,18 @@ if [ "$wip" = "fresh" ] && [ -f "$WIP_FILE" ]; then
 fi
 
 # Pheromone context
-if [ -f "$PHEROMONE_FILE" ]; then
+if has_db; then
+  ph_row=$(db_pheromone_latest 2>/dev/null || true)
+  if [ -n "$ph_row" ]; then
+    IFS=$'\t' read -r _ph_agent _ph_ts _ph_caste _ph_branch _ph_commit _ph_completed ph_unresolved ph_pred_useful _ph_wip _ph_sigcount <<< "$ph_row"
+    if [ -n "$ph_unresolved" ] && [ "$ph_unresolved" != "null" ] && [ "$ph_unresolved" != "" ]; then
+      situation="${situation}Handoff: ${ph_unresolved}\n"
+    fi
+    if [ "$ph_pred_useful" = "0" ]; then
+      log_warn "Previous agent reported predecessor handoff was NOT useful — pheromone quality may need attention"
+    fi
+  fi
+elif [ -f "$PHEROMONE_FILE" ]; then
   ph_unresolved=""
   # Simple JSON extraction without jq
   ph_unresolved=$(grep '"unresolved"' "$PHEROMONE_FILE" 2>/dev/null | sed 's/.*"unresolved"[[:space:]]*:[[:space:]]*//' | tr -d '",')
@@ -182,7 +226,14 @@ if [ -f "$PHEROMONE_FILE" ]; then
 fi
 
 # Top signals
-if has_signal_dir; then
+if has_db; then
+  top_signals=$(db_signal_by_weight 3 "status NOT IN ('archived','parked')" | while IFS=$'\t' read -r sid stype stitle sstatus sw sowner; do
+    echo -n "${sid}(w:${sw} ${stype}) "
+  done)
+  if [ -n "$top_signals" ]; then
+    situation="${situation}Top signals: ${top_signals}\n"
+  fi
+elif has_signal_dir; then
   top_signals=$(list_signals_by_weight | head -3 | while read -r w path; do
     sid=$(yaml_read "$path" "id")
     tags=$(yaml_read "$path" "tags" | tr -d '[]' | awk '{print $1}')
@@ -219,7 +270,18 @@ if [ "$genesis" = "true" ]; then
   situation="${situation}GENESIS: First session. BLACKBOARD + S-001 auto-generated. Verify build/test, map project, refine BLACKBOARD.\n"
 fi
 
+# ── Step 6.5: Update agent caste in DB ──────────────────────────────
+
+if has_db && [ -n "$AGENT_ID" ]; then
+  db_agent_set_caste "$AGENT_ID" "$caste"
+fi
+
 # ── Step 7: Write .birth ─────────────────────────────────────────────
+
+# Per-agent .birth for multi-agent support
+if [ -n "$AGENT_ID" ]; then
+  BIRTH_FILE="${PROJECT_ROOT}/.birth.${AGENT_ID}"
+fi
 
 alarm_display="none"
 if [ "$alarm" = "true" ] && [ -f "$ALARM_FILE" ]; then
@@ -257,6 +319,11 @@ ${rules_section:-No rules yet — observe patterns and deposit observations.}
 - ALARM.md → stop and fix
 - Before end: ./scripts/field-deposit.sh
 BIRTHEOF
+
+# Also write default .birth for backward compatibility
+if [ -n "$AGENT_ID" ] && [ "$BIRTH_FILE" != "${PROJECT_ROOT}/.birth" ]; then
+  cp "$BIRTH_FILE" "${PROJECT_ROOT}/.birth"
+fi
 
 # ── Token budget check ───────────────────────────────────────────────
 

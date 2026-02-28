@@ -42,6 +42,17 @@ is_compatible() {
 
 do_claim() {
   local signal_id="$1" op="$2" owner="$3"
+
+  # DB-first path: atomic claim via SQLite
+  if has_db; then
+    source "${SCRIPT_DIR}/termite-db.sh"
+    db_claim_create "$signal_id" "$op" "$owner" "$(current_commit_short)" "$CLAIM_TTL_HOURS" \
+      || { log_error "Claim blocked or failed"; exit 1; }
+    log_info "Claimed ${signal_id} for ${op} by ${owner} (atomic)"
+    return
+  fi
+
+  # YAML fallback
   ensure_signal_dirs
 
   # Validate operation
@@ -107,6 +118,14 @@ EOF
 
 do_release() {
   local signal_id="$1" op="$2"
+
+  if has_db; then
+    source "${SCRIPT_DIR}/termite-db.sh"
+    db_claim_release "$signal_id" "$op"
+    log_info "Released ${signal_id} ${op} claim (DB)"
+    return
+  fi
+
   local lock_file="${CLAIMS_DIR}/${signal_id}.${op}.lock"
 
   if [ ! -f "$lock_file" ]; then
@@ -137,6 +156,12 @@ do_release() {
 do_check() {
   local signal_id="$1" op="$2"
 
+  if has_db; then
+    source "${SCRIPT_DIR}/termite-db.sh"
+    db_claim_check "$signal_id" "$op"
+    return
+  fi
+
   for existing_lock in "$CLAIMS_DIR"/${signal_id}.*.lock; do
     [ -f "$existing_lock" ] || continue
     local existing_op
@@ -152,6 +177,18 @@ do_check() {
 # ── List ─────────────────────────────────────────────────────────────
 
 do_list() {
+  if has_db; then
+    source "${SCRIPT_DIR}/termite-db.sh"
+    local result
+    result=$(db_claim_list)
+    if [ -z "$result" ]; then
+      echo "No active claims"
+    else
+      echo "$result"
+    fi
+    return
+  fi
+
   if [ ! -d "$CLAIMS_DIR" ]; then
     echo "No claims directory"
     return 0
@@ -175,6 +212,12 @@ do_list() {
 # ── Expired ──────────────────────────────────────────────────────────
 
 do_expired() {
+  if has_db; then
+    source "${SCRIPT_DIR}/termite-db.sh"
+    db_claim_expire
+    return
+  fi
+
   if [ ! -d "$CLAIMS_DIR" ]; then
     return 0
   fi

@@ -32,7 +32,13 @@ sig_ratio=$(termite_signature_ratio 20)
 active_count=0
 high_holes=0
 parked_count=0
-if has_signal_dir; then
+
+if has_db; then
+  source "${SCRIPT_DIR}/termite-db.sh"
+  active_count=$(db_signal_count "status NOT IN ('archived')" 2>/dev/null || echo "0")
+  high_holes=$(db_signal_count "type='HOLE' AND weight>=${ESCALATE_THRESHOLD} AND status!='parked'" 2>/dev/null || echo "0")
+  parked_count=$(db_signal_count "status='parked'" 2>/dev/null || echo "0")
+elif has_signal_dir; then
   active_count=$(count_active_signals)
   high_holes=$(count_high_weight_holes)
   parked_count=$(count_parked_signals)
@@ -41,7 +47,9 @@ fi
 # ── Sense: Claim expiry ─────────────────────────────────────────────
 
 expired_claims=0
-if [ -d "$CLAIMS_DIR" ]; then
+if has_db; then
+  expired_claims=$(db_exec "SELECT COUNT(*) FROM claims WHERE datetime(claimed_at, '+' || ttl_hours || ' hours') < datetime('now');" 2>/dev/null || echo "0")
+elif [ -d "$CLAIMS_DIR" ]; then
   now_epoch=$(date +%s)
   for lock_file in "$CLAIMS_DIR"/*.lock; do
     [ -f "$lock_file" ] || continue
@@ -73,7 +81,13 @@ if [ -f "$BLACKBOARD" ]; then
   fi
 fi
 
-# ── Write .field-breath ─────────────────────────────────────────────
+# ── Write colony state to DB ─────────────────────────────────────────
+
+if has_db; then
+  db_colony_pulse "$alarm" "$wip" "$build" "$sig_ratio" "$active_count" "$high_holes" "$parked_count" "$expired_claims"
+fi
+
+# ── Write .field-breath (always, for backward compat) ─────────────────
 
 cat > "$BREATH_FILE" <<EOF
 timestamp: $(now_iso)

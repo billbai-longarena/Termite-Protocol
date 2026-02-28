@@ -123,22 +123,36 @@ fi
 
 # ── Step 5: Generate initial S-001 signal ─────────────────────────────
 
-ensure_signal_dirs
+# Derive title from README or project type
+explore_title=""
+if [ -n "$readme_desc" ]; then
+  explore_title="Map project: $(echo "$readme_desc" | head -c 60)"
+elif [ -n "$git_summary" ]; then
+  explore_title="Map project: $(echo "$git_summary" | head -1 | head -c 60)"
+else
+  explore_title="Map ${project_type} project — verify build, test, document structure"
+fi
 
-if [ "$(count_active_signals 2>/dev/null || echo 0)" -eq 0 ]; then
-  signal_id=$(next_signal_id S)
-  signal_file="${ACTIVE_DIR}/${signal_id}.yaml"
-
-  # Derive title from README or project type
-  if [ -n "$readme_desc" ]; then
-    explore_title="Map project: $(echo "$readme_desc" | head -c 60)"
-  elif [ -n "$git_summary" ]; then
-    explore_title="Map project: $(echo "$git_summary" | head -1 | head -c 60)"
+if has_db; then
+  source "${SCRIPT_DIR}/termite-db.sh"
+  existing=$(db_signal_count "status NOT IN ('archived')" 2>/dev/null || echo "0")
+  if [ "$existing" -eq 0 ]; then
+    signal_id=$(db_next_signal_id "S")
+    db_signal_create "$signal_id" "EXPLORE" "$explore_title" "open" 35 "$EXPLORE_MAX_DAYS" \
+      "$(today_iso)" "$(today_iso)" "unassigned" "project-root" "[genesis, explore]" \
+      "Run build/test, map directory structure, refine BLACKBOARD.md" 0 "autonomous"
+    log_info "Generated ${signal_id}: ${explore_title} (DB)"
   else
-    explore_title="Map ${project_type} project — verify build, test, document structure"
+    log_info "Active signals already exist — skipping signal generation"
   fi
+else
+  ensure_signal_dirs
 
-  cat > "$signal_file" <<SIGEOF
+  if [ "$(count_active_signals 2>/dev/null || echo 0)" -eq 0 ]; then
+    signal_id=$(next_signal_id S)
+    signal_file="${ACTIVE_DIR}/${signal_id}.yaml"
+
+    cat > "$signal_file" <<SIGEOF
 id: ${signal_id}
 type: EXPLORE
 title: "${explore_title}"
@@ -155,9 +169,10 @@ touch_count: 0
 source: autonomous
 SIGEOF
 
-  log_info "Generated ${signal_id}: ${explore_title}"
-else
-  log_info "Active signals already exist — skipping signal generation"
+    log_info "Generated ${signal_id}: ${explore_title}"
+  else
+    log_info "Active signals already exist — skipping signal generation"
+  fi
 fi
 
 log_info "=== Genesis sequence complete ==="

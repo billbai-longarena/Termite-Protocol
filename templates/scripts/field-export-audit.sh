@@ -77,7 +77,21 @@ mkdir -p "$OUT_DIR"
 
 log_info "Step 1/7: Copying signals directory"
 
-if [ -d "$SIGNALS_DIR" ]; then
+if has_db; then
+  source "${SCRIPT_DIR}/termite-db.sh"
+  source "${SCRIPT_DIR}/termite-db-export.sh" --out "${OUT_DIR}" 2>/dev/null || {
+    # Direct export if sourcing doesn't work
+    db_export_signals_dir "${OUT_DIR}/signals/active"
+    db_export_obs_dir "${OUT_DIR}/signals/observations"
+    db_export_rules_dir "${OUT_DIR}/signals/rules"
+  }
+  mkdir -p "${OUT_DIR}/signals/archive"
+  rule_count=$(db_exec "SELECT COUNT(*) FROM rules;" 2>/dev/null || echo "0")
+  obs_count=$(db_obs_count 2>/dev/null || echo "0")
+  active_count=$(db_signal_count "status NOT IN ('archived')" 2>/dev/null || echo "0")
+  archive_count=$(db_exec "SELECT COUNT(*) FROM archive;" 2>/dev/null || echo "0")
+  log_info "  rules: ${rule_count}, observations: ${obs_count}, active: ${active_count}, archived: ${archive_count} (from DB)"
+elif [ -d "$SIGNALS_DIR" ]; then
   # Copy entire signals tree, preserving structure
   cp -R "$SIGNALS_DIR" "${OUT_DIR}/signals"
 
@@ -132,7 +146,20 @@ log_info "Step 3/7: Extracting pheromone chain"
 chain_file="${OUT_DIR}/pheromone-chain.jsonl"
 > "$chain_file"
 
-if git -C "$PROJECT_ROOT" rev-parse --git-dir >/dev/null 2>&1; then
+if has_db; then
+  chain_count=0
+  db_pheromone_chain | while IFS=$'\t' read -r agent_id timestamp caste branch commit_hash completed unresolved pred_useful wip_status active_sig_count; do
+    [ -z "$agent_id" ] && continue
+    pred_json="null"
+    case "$pred_useful" in
+      1) pred_json="true" ;;
+      0) pred_json="false" ;;
+    esac
+    echo "{\"timestamp\":\"${timestamp}\",\"caste\":\"${caste}\",\"branch\":\"${branch}\",\"commit\":\"${commit_hash}\",\"completed\":\"${completed}\",\"unresolved\":\"${unresolved}\",\"predecessor_useful\":${pred_json},\"agent_id\":\"${agent_id}\"}" >> "$chain_file"
+    chain_count=$((chain_count + 1))
+  done
+  log_info "  ${chain_count} pheromone snapshots from DB"
+elif git -C "$PROJECT_ROOT" rev-parse --git-dir >/dev/null 2>&1; then
   # Find all commits that touched .pheromone, extract the file content at each
   pheromone_commits=$(git -C "$PROJECT_ROOT" log --all --follow --format="%H" -- ".pheromone" 2>/dev/null || true)
   chain_count=0
@@ -294,7 +321,11 @@ if [ -d "${OUT_DIR}/signals/rules" ]; then
 
     # Flag if ratio > 0.3
     flag=""
-    needs_review=$(awk "BEGIN { print (${disputed}/${hits:-1} > 0.3) ? \"true\" : \"false\" }")
+    if [ "${hits:-0}" -gt 0 ]; then
+      needs_review=$(awk "BEGIN { print (${disputed}/${hits} > 0.3) ? \"true\" : \"false\" }")
+    else
+      needs_review="false"
+    fi
     if [ "$needs_review" = "true" ] && [ "$hits" -gt 0 ]; then
       flag="  # REVIEW NEEDED"
     fi
