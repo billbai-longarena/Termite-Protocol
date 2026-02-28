@@ -68,9 +68,35 @@ has_sqlite() {
   command -v sqlite3 >/dev/null 2>&1
 }
 
+yaml_newer_than_db() {
+  # Check if any YAML file in signals/ is newer than .termite.db
+  # Returns 0 (true) if YAML edits detected, 1 otherwise
+  [ -f "$TERMITE_DB" ] || return 1
+  local db_mtime
+  db_mtime=$(stat -f "%m" "$TERMITE_DB" 2>/dev/null || stat -c "%Y" "$TERMITE_DB" 2>/dev/null || echo 0)
+  for dir in "$ACTIVE_DIR" "$OBS_DIR" "$RULES_DIR"; do
+    [ -d "$dir" ] || continue
+    for f in "$dir"/*.yaml; do
+      [ -f "$f" ] || continue
+      local f_mtime
+      f_mtime=$(stat -f "%m" "$f" 2>/dev/null || stat -c "%Y" "$f" 2>/dev/null || echo 0)
+      if [ "$f_mtime" -gt "$db_mtime" ]; then
+        return 0
+      fi
+    done
+  done
+  return 1
+}
+
 ensure_db() {
   # Create or migrate DB. Call early in any entry-point script.
   if [ -f "$TERMITE_DB" ]; then
+    # Warn if YAML files were edited after last DB write
+    if yaml_newer_than_db; then
+      log_warn "YAML files are newer than .termite.db — manual edits detected"
+      log_warn "These edits are NOT reflected in the DB (runtime source of truth)"
+      log_warn "Run ./scripts/termite-db-reimport.sh to sync YAML→DB"
+    fi
     return 0
   fi
   if ! has_sqlite; then
@@ -132,6 +158,119 @@ yaml_read_list() {
     | tr -d '[]' \
     | tr ',' '\n' \
     | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//'
+}
+
+# ── Telemetry Configuration ──────────────────────────────────────────
+
+TELEMETRY_FILE="${PROJECT_ROOT}/.termite-telemetry.yaml"
+UPSTREAM_CACHE="${PROJECT_ROOT}/.termite-upstream-check"
+
+telemetry_enabled() {
+  # Returns 0 if telemetry is fully opted-in (enabled + accepted)
+  [ -f "$TELEMETRY_FILE" ] || return 1
+  local enabled accepted
+  enabled=$(yaml_read "$TELEMETRY_FILE" "enabled")
+  accepted=$(yaml_read "$TELEMETRY_FILE" "accepted")
+  [ "$enabled" = "true" ] && [ "$accepted" = "true" ]
+}
+
+telemetry_needs_acceptance() {
+  # Returns 0 if enabled but not yet accepted
+  [ -f "$TELEMETRY_FILE" ] || return 1
+  local enabled accepted
+  enabled=$(yaml_read "$TELEMETRY_FILE" "enabled")
+  accepted=$(yaml_read "$TELEMETRY_FILE" "accepted")
+  [ "$enabled" = "true" ] && [ "$accepted" != "true" ]
+}
+
+telemetry_upstream_repo() {
+  yaml_read "$TELEMETRY_FILE" "upstream_repo" 2>/dev/null || echo "billbai-longarena/Termite-Protocol"
+}
+
+telemetry_project_name() {
+  local name
+  name=$(basename "$PROJECT_ROOT")
+  local anon
+  anon=$(yaml_read "$TELEMETRY_FILE" "anonymize_project" 2>/dev/null || echo "false")
+  if [ "$anon" = "true" ]; then
+    echo "$name" | shasum -a 256 | cut -c1-8
+  else
+    echo "$name"
+  fi
+}
+
+telemetry_submit_frequency() {
+  yaml_read "$TELEMETRY_FILE" "submit_frequency" 2>/dev/null || echo "session-end"
+}
+
+telemetry_should_submit() {
+  # Check if submission is due based on frequency setting
+  telemetry_enabled || return 1
+  local freq
+  freq=$(telemetry_submit_frequency)
+  case "$freq" in
+    session-end) return 0 ;;
+    manual) return 1 ;;
+    weekly)
+      local last
+      last=$(yaml_read "$TELEMETRY_FILE" "last_submitted" 2>/dev/null || echo "")
+      [ -z "$last" ] && return 0
+      local age
+      age=$(days_since "$last")
+      [ "$age" -ge 7 ]
+      ;;
+    *) return 1 ;;
+  esac
+}
+
+local_protocol_version() {
+  # Extract version from TERMITE_PROTOCOL.md
+  local proto_file="${PROJECT_ROOT}/TERMITE_PROTOCOL.md"
+  [ -f "$proto_file" ] || { echo "unknown"; return; }
+  grep -m1 'termite-protocol:v' "$proto_file" 2>/dev/null \
+    | sed 's/.*termite-protocol:\(v[0-9.]*\).*/\1/' || echo "unknown"
+}
+
+upstream_protocol_version() {
+  # Check upstream version with 24h cache
+  if [ -f "$UPSTREAM_CACHE" ]; then
+    local cache_time
+    cache_time=$(yaml_read "$UPSTREAM_CACHE" "checked_at" 2>/dev/null || echo "")
+    if [ -n "$cache_time" ]; then
+      local cache_age
+      cache_age=$(days_since "$cache_time" 2>/dev/null || echo "999")
+      if [ "$cache_age" -eq 0 ]; then
+        yaml_read "$UPSTREAM_CACHE" "upstream_version" 2>/dev/null || echo "unknown"
+        return
+      fi
+    fi
+  fi
+
+  local upstream
+  upstream=$(telemetry_upstream_repo)
+  local version="unknown"
+
+  if command -v gh >/dev/null 2>&1 && gh auth status >/dev/null 2>&1; then
+    version=$(gh api "repos/${upstream}/releases/latest" --jq '.tag_name' 2>/dev/null || echo "")
+    if [ -z "$version" ] || [ "$version" = "null" ]; then
+      version=$(gh api "repos/${upstream}/contents/templates/TERMITE_PROTOCOL.md" \
+        --jq '.content' 2>/dev/null \
+        | base64 -d 2>/dev/null \
+        | head -1 \
+        | sed 's/.*termite-protocol:\(v[0-9.]*\).*/\1/' || echo "unknown")
+    fi
+  elif command -v curl >/dev/null 2>&1; then
+    version=$(curl -fsSL "https://raw.githubusercontent.com/${upstream}/main/templates/TERMITE_PROTOCOL.md" 2>/dev/null \
+      | head -1 \
+      | sed 's/.*termite-protocol:\(v[0-9.]*\).*/\1/' || echo "unknown")
+  fi
+
+  cat > "$UPSTREAM_CACHE" <<CEOF
+checked_at: $(today_iso)
+upstream_version: ${version}
+CEOF
+
+  echo "$version"
 }
 
 # ── Signal Queries ───────────────────────────────────────────────────
