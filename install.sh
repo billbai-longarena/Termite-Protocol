@@ -54,6 +54,20 @@ HOOK_FILES=(
   scripts/hooks/post-commit
 )
 
+# Claude Code plugin files (updated during --upgrade)
+CLAUDE_PLUGIN_FILES=(
+  claude-plugin/plugin.json
+  claude-plugin/hooks/hooks.json
+  claude-plugin/scripts/termite-hook-lib.sh
+  claude-plugin/scripts/hook-session-start.sh
+  claude-plugin/scripts/hook-post-edit.sh
+  claude-plugin/scripts/hook-stop.sh
+  claude-plugin/scripts/hook-pre-compact.sh
+  claude-plugin/scripts/hook-user-prompt.sh
+  claude-plugin/scripts/hook-pre-bash.sh
+  claude-plugin/scripts/hook-post-commit.sh
+)
+
 # Entry files (skipped during --upgrade)
 ENTRY_FILES=(
   CLAUDE.md
@@ -310,6 +324,48 @@ if [ -d "${TARGET_DIR}/.git" ]; then
   log "Git hooks installed: ${hooks_installed}"
 fi
 
+# ---------- Install Claude Code Plugin ----------
+
+CLAUDE_PLUGIN_TARGET="${TARGET_DIR}/.claude/plugins/termite-protocol"
+
+install_claude_plugin() {
+  mkdir -p "$CLAUDE_PLUGIN_TARGET/hooks" "$CLAUDE_PLUGIN_TARGET/scripts"
+  local plugin_copied=0
+
+  for f in "${CLAUDE_PLUGIN_FILES[@]}"; do
+    local rel="${f#claude-plugin/}"
+    local dst="${CLAUDE_PLUGIN_TARGET}/${rel}"
+
+    if [ "$SOURCE_MODE" = "local" ]; then
+      local src="${TEMPLATE_DIR}/${f}"
+      if [ ! -f "$src" ]; then
+        warn "Claude plugin source not found: ${f}"
+        continue
+      fi
+      mkdir -p "$(dirname "$dst")"
+      cp "$src" "$dst"
+    else
+      local url="${GITHUB_RAW_BASE}/${f}"
+      mkdir -p "$(dirname "$dst")"
+      if ! curl -fsSL "$url" -o "$dst" 2>/dev/null; then
+        warn "Failed to download: ${f}"
+        continue
+      fi
+    fi
+
+    case "$rel" in
+      scripts/*.sh) chmod +x "$dst" ;;
+    esac
+    plugin_copied=$((plugin_copied + 1))
+  done
+
+  if [ "$plugin_copied" -gt 0 ]; then
+    log "Claude Code plugin installed: ${CLAUDE_PLUGIN_TARGET} (${plugin_copied} files)"
+  fi
+}
+
+install_claude_plugin
+
 # ---------- Update .gitignore ----------
 
 GITIGNORE="${TARGET_DIR}/.gitignore"
@@ -353,4 +409,5 @@ if [ "$UPGRADE" = false ]; then
   log "  1. Edit CLAUDE.md / AGENTS.md — fill in project info"
   log "  2. Run: cd ${TARGET_DIR} && ./scripts/field-arrive.sh"
   log "  3. Start working with your AI agent!"
+  log "  4. Claude Code plugin installed at .claude/plugins/termite-protocol/"
 fi
