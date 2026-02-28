@@ -410,6 +410,63 @@ platforms:
     file: "CLAUDE.md"
 ```
 
+## Claude Code Hook 集成 (Claude Code Hook Integration)
+
+> **白蚁协议通过 Claude Code Plugin Hook 机制将协议行为嵌入 Agent 生命周期。**
+> 安装后，Hook 在后台自动运行——到达仪式、安全网强制、信息素沉淀、上下文保护均无需 Agent 主动配合。
+
+```yaml
+# hook-event-mapping — Claude Code lifecycle → Termite Protocol behavior
+hooks:
+  SessionStart:
+    script: hook-session-start.sh
+    behavior: "运行 field-arrive.sh 生成 .birth，注入 TERMITE_BIRTH_B64 环境变量"
+    timeout: 30
+
+  UserPromptSubmit:
+    script: hook-user-prompt.sh
+    behavior: "检测'白蚁协议'触发词，自动注入 .birth 内容作为 systemMessage"
+    timeout: 5
+
+  PreToolUse(Bash):
+    script: hook-pre-bash.sh
+    behavior: "安全网 S2 强制——拦截 rm *.md 和 rm -rf 关键目录"
+    timeout: 5
+
+  PostToolUse(Write|Edit):
+    script: hook-post-edit.sh
+    behavior: "安全网 S3 预警——未提交改动 ≥50 行时警告"
+    timeout: 10
+
+  PostToolUse(Bash):
+    script: hook-post-commit.sh
+    behavior: "检测 git commit，后台触发 field-cycle.sh 代谢循环"
+    timeout: 10
+
+  PreCompact:
+    script: hook-pre-compact.sh
+    behavior: "压缩前注入 .birth + .pheromone 到 systemMessage，防止协议状态丢失"
+    timeout: 5
+
+  Stop:
+    script: hook-stop.sh
+    behavior: "禁止无声死亡——未提交改动或未沉淀信息素时阻止退出"
+    timeout: 15
+
+# installation — two distribution channels
+installation:
+  embedded: "install.sh 自动安装到 .claude/plugins/termite-protocol/"
+  standalone: "手动复制 templates/claude-plugin/ 到 .claude/plugins/termite-protocol/"
+
+# shared-library
+shared_library: "termite-hook-lib.sh"
+capabilities:
+  - "3-tier JSON 解析: jq → python3 → grep/sed"
+  - "is_termite_project() 检测: .birth / TERMITE_PROTOCOL.md / CLAUDE.md[termite-kernel]"
+  - "find_field_script() 定位: $PROJECT_ROOT/scripts/"
+  - "hook_approve/block/allow/deny 标准输出格式"
+```
+
 ## 传播配置 (Propagation Config)
 
 ```yaml
