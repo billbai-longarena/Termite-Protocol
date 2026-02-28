@@ -102,8 +102,8 @@ Agent 启动 → field-arrive.sh 读取环境 + 协议
 - **人类参考文档**：供人类理解完整协议逻辑
 - **Human reference**: for humans to understand the full protocol logic
 
-- **脚本配置源**：`field-arrive.sh` 从中提取 8 条语法规则 + 4 条安全网，压缩为 `.birth`
-- **Script configuration source**: `field-arrive.sh` extracts 8 grammar rules + 4 safety nets, compresses into `.birth`
+- **脚本配置源**：`field-arrive.sh` 从中提取 9 条语法规则 + 4 条安全网，压缩为 `.birth`
+- **Script configuration source**: `field-arrive.sh` extracts 9 grammar rules + 4 safety nets, compresses into `.birth`
 
 - **降级后备**：如果脚本不可用，Agent 仍可直接阅读协议（优雅降级）
 - **Degradation fallback**: if scripts are unavailable, agents can still read the protocol directly (graceful degradation)
@@ -133,6 +133,8 @@ The protocol dissolves, but order does not vanish — it sinks into the infrastr
 | Same pitfall hit repeatedly | Pheromone concentration: 2+ agents report the same issue → escalated to hotspot |
 | 新白蚁不遵守协议 | 蚁群免疫系统：到达审计、合规评分、自我修复、免疫记忆 |
 | New agents don't follow protocol | Colony immune system: arrival audit, compliance scoring, self-repair, immune memory |
+| 生成的 Agent 不携带协议 DNA | 协议传播：生成 Agent 系统时自动注入协议种子（TERMITE_SEED.md） |
+| Generated agents lack protocol DNA | Protocol propagation: auto-inject protocol seed (TERMITE_SEED.md) when generating agent systems |
 
 ---
 
@@ -145,6 +147,7 @@ your-project/
   TERMITE_PROTOCOL.md   ← 人类参考 + 脚本配置源 / Human reference + script config source
   CLAUDE.md             ← Claude Code 入口 / Claude Code entry
   AGENTS.md             ← Codex/Gemini 入口 / Codex/Gemini entry
+  TERMITE_SEED.md       ← 协议种子（注入生成的 Agent 系统）/ Protocol seed (injected into generated agent systems)
   BLACKBOARD.md         ← 动态状态（健康、信号、热点）/ Dynamic state (health, signals, hotspots)
   DECISIONS.md          ← 设计决策记录 / Design decision records
   WIP.md                ← 会话间交接 / Cross-session handoff
@@ -184,7 +187,7 @@ your-project/
 
 | Part | 内容 / Content | 面向 / Audience |
 | --- | --- | --- |
-| **I: Grammar** | 8 条语法规则 + 4 条安全网 — 协议的最小内核 | field-arrive.sh 提取 → .birth / Extracted by field-arrive.sh → .birth |
+| **I: Grammar** | 9 条语法规则 + 4 条安全网 — 协议的最小内核 | field-arrive.sh 提取 → .birth / Extracted by field-arrive.sh → .birth |
 | **II: Environment Config** | 种姓、信号 schema、降级矩阵、脚本配置 | field-arrive.sh 读取 / Read by field-arrive.sh |
 | **III: Human Reference** | 完整设计理由、三丘模型、免疫系统、触发解释器 | 人类阅读 / Human reading |
 | **IV: Appendices** | 模板、快速参考卡、Git Worktree 工作流 | 按需查阅 / On-demand reference |
@@ -206,7 +209,44 @@ your-project/
 
 ## 怎么使用？ / How to Use?
 
-### 第一步：复制模板 / Step 1: Copy Templates
+### 第一步：安装协议 / Step 1: Install the Protocol
+
+**方法 A：一键安装脚本（推荐）/ Method A: One-click Install (Recommended)**
+
+Clone 白蚁协议仓库后，在你的项目目录中运行安装脚本：
+After cloning the Termite Protocol repo, run the install script in your project directory:
+
+```bash
+# Clone 白蚁协议仓库 / Clone the Termite Protocol repo
+git clone https://github.com/<owner>/白蚁协议.git
+
+# 在你的项目中运行安装 / Run install in your project
+cd your-project
+bash /path/to/白蚁协议/install.sh
+```
+
+或通过远程一键安装（需配置 `TERMITE_REPO_URL`）：
+Or via remote one-click install (requires `TERMITE_REPO_URL`):
+
+```bash
+cd your-project
+curl -fsSL <github-raw-url>/install.sh | bash
+```
+
+升级协议（保留你填写的 CLAUDE.md / AGENTS.md）：
+Upgrade the protocol (preserves your customized CLAUDE.md / AGENTS.md):
+
+```bash
+bash /path/to/白蚁协议/install.sh --upgrade
+```
+
+安装脚本会自动完成：复制所有模板文件、创建 signals/ 目录结构、安装 git hooks、更新 .gitignore。
+The install script automatically: copies all template files, creates signals/ directory structure, installs git hooks, updates .gitignore.
+
+> 详细选项：`bash install.sh --help`
+> Full options: `bash install.sh --help`
+
+**方法 B：手动复制 / Method B: Manual Copy**
 
 ```
 templates/TERMITE_PROTOCOL.md  → 复制到项目根目录 / Copy to project root
@@ -216,16 +256,14 @@ templates/scripts/             → 复制到项目根目录的 scripts/ / Copy t
 templates/signals/             → 复制到项目根目录的 signals/ / Copy to project root signals/
 ```
 
-### 第二步：安装 Git Hooks / Step 2: Install Git Hooks
+手动安装 Git Hooks：
+Install Git Hooks manually:
 
 ```bash
 ./scripts/hooks/install.sh
 ```
 
-这将安装以下 git hooks：自动签名提交信息、提交前安全检查、推送前验证、提交后信息素沉积。
-This installs the following git hooks: auto-sign commit messages, pre-commit safety checks, pre-push verification, post-commit pheromone deposit.
-
-### 第三步：填写项目信息 / Step 3: Fill in Project Info
+### 第二步：填写项目信息 / Step 2: Fill in Project Info
 
 入口文件（`CLAUDE.md` / `AGENTS.md`）中用 `<!-- 注释 -->` 标记了所有需要你填写的位置：
 The entry files (`CLAUDE.md` / `AGENTS.md`) mark all sections you need to fill with `<!-- comments -->`:
@@ -245,7 +283,7 @@ The entry files (`CLAUDE.md` / `AGENTS.md`) mark all sections you need to fill w
 5. **验证清单**：你的构建和测试命令
 5. **Verification checklist**: Your build and test commands
 
-### 第四步：让 Agent 开始工作 / Step 4: Let the Agent Work
+### 第三步：让 Agent 开始工作 / Step 3: Let the Agent Work
 
 Agent 到达时的流程：
 The flow when an agent arrives:
@@ -272,7 +310,7 @@ You'll notice behavioral changes in the agent:
 - 它会在发现文档与代码不一致时修正文档
 - It fixes documentation when it finds discrepancies with code
 
-### 第五步：持续演化 / Step 5: Continuous Evolution
+### 第四步：持续演化 / Step 4: Continuous Evolution
 
 白蚁协议是自演化的。v3.0 引入了观察 → 规则自动晋升机制：
 The Termite Protocol is self-evolving. v3.0 introduces an observation → rule auto-promotion mechanism:
@@ -352,6 +390,10 @@ Field infrastructure is the core implementation layer of v3.0 "Protocol Dissolut
 | | Boot Sequence: heartbeat kernel v6.0 embedded in entry files, agent self-initialization + caste detection + action bias |
 | **v3.0** | 协议消融：协议从"Agent 直接阅读的文档"转变为"人类参考 + 脚本配置源"；field-arrive.sh 计算 ≤800 token .birth 文件；8 条语法规则 + 4 条安全网替代叙事心跳；观察→规则自动晋升机制；YAML 信号 schema；git hooks 自动化（签名/代谢/安全）；优雅降级矩阵（5 层） |
 | | Protocol Dissolution: protocol transforms from "document agents read" to "human reference + script config source"; field-arrive.sh computes ≤800 token .birth file; 8 grammar rules + 4 safety nets replace narrative heartbeat; observation → rule auto-promotion; YAML signal schema; git hooks automation (signing/metabolism/safety); graceful degradation matrix (5 levels) |
+| **v3.1** | 协议元反馈回路：disputed_count 规则争议机制、predecessor_useful 交接质量追踪、审计包导出 |
+| | Protocol meta-feedback loop: disputed_count rule dispute mechanism, predecessor_useful handoff quality tracking, audit export |
+| **v3.2** | 协议传播：规则 9（PROPAGATE）— 生成 Agent 系统时注入协议种子（TERMITE_SEED.md）；传播层级（Full/Core/Micro/None）；跨蚁丘信号交换；种子版本追踪；免疫检查 IC-5 |
+| | Protocol Propagation: Rule 9 (PROPAGATE) — inject protocol seed when generating agent systems (TERMITE_SEED.md); propagation tiers (Full/Core/Micro/None); cross-colony signal exchange; seed version tracking; immune check IC-5 |
 
 ---
 
