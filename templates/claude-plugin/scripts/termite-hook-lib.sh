@@ -92,7 +92,7 @@ birth_field() {
   local birth_file="${PROJECT_ROOT}/.birth"
   if [ -f "$birth_file" ]; then
     grep -m1 "^${field}:" "$birth_file" 2>/dev/null \
-      | sed "s/^${field}:[[:space:]]*//"
+      | sed "s/^${field}:[[:space:]]*//" || true
   fi
 }
 
