@@ -196,6 +196,29 @@ if [ -d "$SIGNALS_DIR" ] && [ "$migrated_signals" -gt 0 ]; then
   fi
 fi
 
+# ── Mark YAML as read-only ────────────────────────────────────────────
+
+if [ -d "$SIGNALS_DIR" ]; then
+  cat > "${SIGNALS_DIR}/_READ_ONLY.md" <<'ROEOF'
+# signals/ — Read-Only After Migration
+
+These YAML files are **auto-exported snapshots** from `.termite.db`.
+The SQLite database is the single source of truth for all runtime data.
+
+**Do NOT edit YAML files directly** — changes will be silently ignored.
+
+To modify signals:
+- Use `./scripts/field-deposit.sh` to create new signals
+- Use `./scripts/field-claim.sh` to claim/release signals
+- Run `./scripts/termite-db-reimport.sh` if you must edit YAML and sync back to DB
+
+To refresh these snapshots:
+- Run `./scripts/termite-db-export.sh`
+- Or wait for the next `field-cycle.sh` (auto-exports after metabolism)
+ROEOF
+  log_info "Created signals/_READ_ONLY.md"
+fi
+
 # ── Summary ──────────────────────────────────────────────────────────
 
 log_info "=== Migration complete ==="

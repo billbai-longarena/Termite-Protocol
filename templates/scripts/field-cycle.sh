@@ -238,4 +238,11 @@ fi
 # Re-run pulse to capture post-cycle state
 "${SCRIPT_DIR}/field-pulse.sh" 2>/dev/null || true
 
+# ── Auto-export: Keep YAML audit snapshots in sync with DB ──────────
+
+if has_db; then
+  "${SCRIPT_DIR}/termite-db-export.sh" 2>/dev/null || log_warn "Auto-export had warnings"
+  log_info "YAML snapshots refreshed from DB"
+fi
+
 log_info "=== Metabolism cycle complete ==="

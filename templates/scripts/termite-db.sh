@@ -441,6 +441,8 @@ db_export_signal_yaml() {
 
   IFS=$'\t' read -r id type title status weight ttl_days created last_touched owner module tags next_hint touch_count source parked_reason parked_conditions parked_at <<< "$row"
   cat <<EOF
+# READ-ONLY — auto-exported from .termite.db ($(now_iso))
+# To modify signals, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
 id: ${id}
 type: ${type}
 title: "${title}"
@@ -486,6 +488,8 @@ db_export_obs_dir() {
   while IFS=$'\t' read -r id pattern context reporter confidence created source detail merged_count merged_from; do
     [ -z "$id" ] && continue
     cat > "${out_dir}/${id}.yaml" <<EOF
+# READ-ONLY — auto-exported from .termite.db ($(now_iso))
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
 id: ${id}
 pattern: "${pattern}"
 context: "${context}"
@@ -511,6 +515,8 @@ db_export_rules_dir() {
   while IFS=$'\t' read -r id trigger action source_obs hit_count disputed_count last_triggered created tags; do
     [ -z "$id" ] && continue
     cat > "${out_dir}/${id}.yaml" <<EOF
+# READ-ONLY — auto-exported from .termite.db ($(now_iso))
+# To modify rules, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
 id: ${id}
 trigger: "${trigger}"
 action: "${action}"
