@@ -842,6 +842,41 @@ parent_colony: "<parent-project-name>"
 propagation_depth: 1          # 每代递增，max_depth: 3
 ```
 
+### 跨蚁丘反馈闭环
+
+当多个蚁丘使用白蚁协议时，可通过审计提交形成协议优化闭环：
+
+```
+项目蚁丘 ──(field-submit-audit.sh)──▶ 协议仓库 audit-packages/
+                                              │
+                                      Protocol Nurse 分析
+                                              │
+                                      优化提案 → merge
+                                              │
+项目蚁丘 ◀──(field-arrive.sh 检测版本)──────────┘
+```
+
+**参与方式**：通过 `.termite-telemetry.yaml` 控制（默认关闭）。
+
+```yaml
+enabled: true       # 启用跨蚁丘反馈
+accepted: true      # 已确认免责声明
+upstream_repo: "billbai-longarena/Termite-Protocol"
+anonymize_project: false
+submit_frequency: "session-end"  # session-end | weekly | manual
+```
+
+**工作机制**：
+
+1. **审计提交**：`./scripts/field-submit-audit.sh` 导出审计包 → fork 上游 → 创建 PR
+2. **版本检测**：`field-arrive.sh` 到达时检查上游协议版本（24h 缓存），有更新则生成 HOLE 信号
+3. **半自主升级**：Scout 审查 changelog 后决定是否执行 `install.sh --upgrade`
+
+**免责声明**：首次启用时强制展示。审计包只含协议产物（参见"协议审计导出"），不含项目源码。
+
+**不参与的蚁丘**：`enabled: false`（默认）时，一切照旧。不联网、不导出、不 fork。
+等价于自给自足的蚁丘——独立运行，不与外部交换信息素。完全合法的生存方式。
+
 ### 免疫检查 IC-5：种子完整性
 
 | 检查项 | 内容 | 判定 |
