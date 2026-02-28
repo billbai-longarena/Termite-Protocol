@@ -15,7 +15,14 @@ log_info "=== Metabolism cycle starting ==="
 log_info "Step 1/7: Decay"
 if has_db; then
   source "${SCRIPT_DIR}/termite-db.sh"
-  db_decay_all
+  concentration=$(signal_concentration)
+  case "$concentration" in
+    concentrated) adj_factor=$(awk "BEGIN { f=${DECAY_FACTOR}-0.02; if(f<0.90) f=0.90; printf \"%.4f\",f }") ;;
+    dispersed)    adj_factor=$(awk "BEGIN { f=${DECAY_FACTOR}+0.01; if(f>0.995) f=0.995; printf \"%.4f\",f }") ;;
+    *)            adj_factor="$DECAY_FACTOR" ;;
+  esac
+  log_info "Decay: concentration=${concentration} factor=${adj_factor}"
+  db_decay_all "$adj_factor"
   log_info "Decay complete (DB atomic)"
 else
   "${SCRIPT_DIR}/field-decay.sh" || log_warn "Decay had warnings"

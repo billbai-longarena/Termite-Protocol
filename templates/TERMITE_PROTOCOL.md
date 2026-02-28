@@ -238,10 +238,35 @@ context_critical_pct: 80       # context usage % to force immediate molt
 uncommitted_lines_limit: 50     # lines changed before forced [WIP] commit
 scout_breath_interval: 5        # consecutive same-caste sessions before forced scout breath
 boundary_touch_threshold: 3     # signal touch count before parking (BLOCKED/HOLE)
+adaptive_decay: true            # adjust decay_factor based on signal concentration
 ```
 
 > **环境变量覆盖**：每个阈值可通过 `TERMITE_` 前缀的环境变量覆盖。
 > 例如 `TERMITE_DECAY_FACTOR=0.95` 覆盖 `decay_factor`。
+
+## 自适应衰减 (Adaptive Decay)
+
+> 借鉴遗传算法的自适应变异率：信号集中时加速衰减鼓励探索，信号分散时减缓衰减允许积累。
+> `field-decay.sh` 在每个代谢周期自动调节 `decay_factor`。
+
+```yaml
+# adaptive-decay — applied in field-decay.sh per cycle
+concentration_metric:
+  source: "module field distribution of active non-parked signals"
+  thresholds:
+    concentrated: "max_module_share >= 60%"
+    balanced: "30% < max_module_share < 60%"
+    dispersed: "max_module_share <= 30%"
+
+factor_adjustment:
+  concentrated: "decay_factor - 0.02 (min 0.90)"
+  balanced: "decay_factor (unchanged)"
+  dispersed: "decay_factor + 0.01 (max 0.995)"
+
+observability:
+  field_breath: "concentration + effective_decay fields"
+  log: "[termite:info] Decay: concentration=X factor=Y (base=Z)"
+```
 
 ## 能力握手 (Capability Handshake)
 

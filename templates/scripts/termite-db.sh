@@ -379,7 +379,7 @@ db_colony_pulse() {
 
 db_decay_all() {
   # Single atomic operation — no per-file race
-  local factor="${DECAY_FACTOR:-0.98}"
+  local factor="${1:-${DECAY_FACTOR:-0.98}}"
   local threshold="${DECAY_THRESHOLD:-5}"
 
   db_transaction "

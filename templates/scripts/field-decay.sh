@@ -8,9 +8,22 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 source "${SCRIPT_DIR}/field-lib.sh"
 
+# ── Source DB layer early (needed by signal_concentration) ────────────
 if has_db; then
   source "${SCRIPT_DIR}/termite-db.sh"
-  db_decay_all
+fi
+
+# ── Adaptive Decay: compute adjusted factor ──────────────────────────
+concentration=$(signal_concentration)
+case "$concentration" in
+  concentrated) adj_factor=$(awk "BEGIN { f=${DECAY_FACTOR}-0.02; if(f<0.90) f=0.90; printf \"%.4f\",f }") ;;
+  dispersed)    adj_factor=$(awk "BEGIN { f=${DECAY_FACTOR}+0.01; if(f>0.995) f=0.995; printf \"%.4f\",f }") ;;
+  *)            adj_factor="$DECAY_FACTOR" ;;
+esac
+log_info "Decay: concentration=${concentration} factor=${adj_factor} (base=${DECAY_FACTOR})"
+
+if has_db; then
+  db_decay_all "$adj_factor"
   log_info "Decay complete (DB atomic)"
   exit 0
 fi
@@ -29,8 +42,8 @@ while IFS= read -r signal_file; do
   weight=$(yaml_read "$signal_file" "weight")
   [ -z "$weight" ] && continue
 
-  # Apply decay: weight × factor, truncated to integer
-  new_weight=$(awk "BEGIN { w = int(${weight} * ${DECAY_FACTOR}); if (w < 0) w = 0; print w }")
+  # Apply decay: weight × adj_factor, truncated to integer
+  new_weight=$(awk "BEGIN { w = int(${weight} * ${adj_factor}); if (w < 0) w = 0; print w }")
 
   if [ "$new_weight" -lt "$DECAY_THRESHOLD" ]; then
     # Archive signal

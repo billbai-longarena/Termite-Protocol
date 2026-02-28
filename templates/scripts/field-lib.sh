@@ -344,6 +344,39 @@ detect_platform() {
   echo "unknown"
 }
 
+signal_concentration() {
+  # Returns: "concentrated" | "balanced" | "dispersed"
+  # Based on module-field distribution of active non-parked signals.
+  local total=0 max_count=0
+  if has_db && has_sqlite; then
+    total=$(db_exec "SELECT COUNT(*) FROM signals WHERE status NOT IN ('archived','parked');")
+    if [ "${total:-0}" -le 2 ]; then echo "dispersed"; return; fi
+    max_count=$(db_exec "SELECT COUNT(*) as c FROM signals WHERE status NOT IN ('archived','parked') GROUP BY COALESCE(NULLIF(module,''),'_none_') ORDER BY c DESC LIMIT 1;")
+  elif has_signal_dir; then
+    local tmpfile; tmpfile=$(mktemp)
+    while IFS= read -r f; do
+      [ -f "$f" ] || continue
+      local s; s=$(yaml_read "$f" "status")
+      [ "$s" = "parked" ] && continue
+      local m; m=$(yaml_read "$f" "module")
+      echo "${m:-_none_}" >> "$tmpfile"
+      total=$((total + 1))
+    done < <(list_active_signals)
+    if [ "$total" -le 2 ]; then rm -f "$tmpfile"; echo "dispersed"; return; fi
+    max_count=$(sort "$tmpfile" | uniq -c | sort -rn | head -1 | awk '{print $1}')
+    rm -f "$tmpfile"
+  else
+    echo "balanced"; return
+  fi
+  [ "${total:-0}" -eq 0 ] && { echo "dispersed"; return; }
+  # max_share = max_count / total (percentage, integer)
+  local max_share=$((max_count * 100 / total))
+  if [ "$max_share" -ge 60 ]; then echo "concentrated"
+  elif [ "$max_share" -le 30 ]; then echo "dispersed"
+  else echo "balanced"
+  fi
+}
+
 termite_signature_ratio() {
   # Ratio of recent N commits that have [termite:...] signature
   local n="${1:-20}"

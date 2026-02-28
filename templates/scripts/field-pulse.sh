@@ -68,6 +68,15 @@ elif [ -d "$CLAIMS_DIR" ]; then
   done
 fi
 
+# ── Sense: Signal concentration (adaptive decay) ───────────────────
+
+concentration=$(signal_concentration)
+case "$concentration" in
+  concentrated) effective_decay=$(awk "BEGIN { f=${DECAY_FACTOR}-0.02; if(f<0.90) f=0.90; printf \"%.4f\",f }") ;;
+  dispersed)    effective_decay=$(awk "BEGIN { f=${DECAY_FACTOR}+0.01; if(f>0.995) f=0.995; printf \"%.4f\",f }") ;;
+  *)            effective_decay="$DECAY_FACTOR" ;;
+esac
+
 # ── Sense: Blackboard freshness ─────────────────────────────────────
 
 bb_status="absent"
@@ -85,6 +94,8 @@ fi
 
 if has_db; then
   db_colony_pulse "$alarm" "$wip" "$build" "$sig_ratio" "$active_count" "$high_holes" "$parked_count" "$expired_claims"
+  db_colony_set "concentration" "$concentration"
+  db_colony_set "effective_decay" "$effective_decay"
 fi
 
 # ── Write .field-breath (always, for backward compat) ─────────────────
@@ -100,6 +111,8 @@ high_weight_holes: ${high_holes}
 parked_signals: ${parked_count}
 expired_claims: ${expired_claims}
 blackboard: ${bb_status}
+concentration: ${concentration}
+effective_decay: ${effective_decay}
 branch: $(current_branch)
 commit: $(current_commit_short)
 EOF
