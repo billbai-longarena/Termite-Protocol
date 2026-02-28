@@ -115,7 +115,8 @@ if telemetry_enabled; then
     log_info "Protocol update available: ${local_ver} → ${upstream_ver}"
     update_signal_exists=false
     if has_db; then
-      existing=$(db_signal_count "module='termite-protocol' AND title LIKE '%${upstream_ver}%' AND status NOT IN ('archived','done')" 2>/dev/null || echo "0")
+      escaped_ver=$(db_escape "$upstream_ver")
+      existing=$(db_signal_count "module='termite-protocol' AND title LIKE '%${escaped_ver}%' AND status NOT IN ('archived','done')" 2>/dev/null || echo "0")
       [ "${existing:-0}" -gt 0 ] && update_signal_exists=true
     fi
     if ! $update_signal_exists; then

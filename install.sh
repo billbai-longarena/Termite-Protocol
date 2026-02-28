@@ -95,7 +95,8 @@ GITIGNORE_RULES=".birth
 .termite.db
 .termite.db-wal
 .termite.db-shm
-.termite-upstream-check"
+.termite-upstream-check
+audit-package-*"
 
 # ---------- Helper Functions ----------
 

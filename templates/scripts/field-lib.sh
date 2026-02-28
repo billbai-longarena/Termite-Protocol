@@ -184,7 +184,9 @@ telemetry_needs_acceptance() {
 }
 
 telemetry_upstream_repo() {
-  yaml_read "$TELEMETRY_FILE" "upstream_repo" 2>/dev/null || echo "billbai-longarena/Termite-Protocol"
+  local repo
+  repo=$(yaml_read "$TELEMETRY_FILE" "upstream_repo" 2>/dev/null || true)
+  echo "${repo:-billbai-longarena/Termite-Protocol}"
 }
 
 telemetry_project_name() {
@@ -265,10 +267,17 @@ upstream_protocol_version() {
       | sed 's/.*termite-protocol:\(v[0-9.]*\).*/\1/' || echo "unknown")
   fi
 
-  cat > "$UPSTREAM_CACHE" <<CEOF
+  # Validate version looks like vN.N (reject garbage from failed API calls)
+  if ! echo "$version" | grep -qE '^v[0-9]+\.[0-9]'; then
+    version="unknown"
+  fi
+
+  if [ "$version" != "unknown" ]; then
+    cat > "$UPSTREAM_CACHE" <<CEOF
 checked_at: $(today_iso)
 upstream_version: ${version}
 CEOF
+  fi
 
   echo "$version"
 }

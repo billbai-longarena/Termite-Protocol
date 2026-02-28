@@ -106,7 +106,11 @@ fi
 
 PROJECT_NAME=$(telemetry_project_name)
 UPSTREAM=$(telemetry_upstream_repo)
-AUDIT_DIR="${PROJECT_ROOT}/audit-package-$(today_iso)"
+AUDIT_DIR=$(mktemp -d "${TMPDIR:-/tmp}/termite-audit-XXXXXX")
+trap 'rm -rf "$AUDIT_DIR"' EXIT
+
+# Sanitize project name for use in git branch names
+SAFE_NAME=$(echo "$PROJECT_NAME" | tr -cs 'A-Za-z0-9._-' '-' | sed 's/^-//;s/-$//')
 
 log_info "=== Audit submission starting ==="
 log_info "Project: ${PROJECT_NAME}"
@@ -120,10 +124,11 @@ if $DRY_RUN; then
 fi
 
 "${SCRIPT_DIR}/field-export-audit.sh" --project-name "$PROJECT_NAME" --out "$AUDIT_DIR" 2>&1 \
-  | while IFS= read -r l; do log_info "  export: $l"; done || {
-    log_error "Audit export failed"
-    exit 1
-  }
+  | while IFS= read -r l; do log_info "  export: $l"; done
+if [ "${PIPESTATUS[0]}" -ne 0 ]; then
+  log_error "Audit export failed"
+  exit 1
+fi
 
 # ── Step 2: Fork upstream (idempotent) ────────────────────────────
 
@@ -134,7 +139,6 @@ gh repo fork "$UPSTREAM" --clone=false 2>/dev/null || true
 GH_USER=$(gh api user --jq '.login' 2>/dev/null || echo "")
 if [ -z "$GH_USER" ]; then
   log_error "Cannot determine GitHub username"
-  rm -rf "$AUDIT_DIR"
   exit 1
 fi
 
@@ -146,6 +150,7 @@ log_info "Fork: ${FORK_REPO}"
 TEMP_DIR=$(mktemp -d)
 trap 'rm -rf "$TEMP_DIR" "$AUDIT_DIR"' EXIT
 
+
 log_info "Cloning fork (shallow)"
 gh repo clone "$FORK_REPO" "$TEMP_DIR" -- --depth 1 2>/dev/null || {
   log_error "Cannot clone fork ${FORK_REPO}"
@@ -154,7 +159,7 @@ gh repo clone "$FORK_REPO" "$TEMP_DIR" -- --depth 1 2>/dev/null || {
 
 # ── Step 4: Create audit branch + commit ──────────────────────────
 
-BRANCH_NAME="audit/${PROJECT_NAME}/$(today_iso)"
+BRANCH_NAME="audit/${SAFE_NAME}/$(today_iso)"
 cd "$TEMP_DIR"
 
 # Sync fork with upstream first
