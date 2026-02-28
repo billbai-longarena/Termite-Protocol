@@ -243,6 +243,80 @@ boundary_touch_threshold: 3     # signal touch count before parking (BLOCKED/HOL
 > **环境变量覆盖**：每个阈值可通过 `TERMITE_` 前缀的环境变量覆盖。
 > 例如 `TERMITE_DECAY_FACTOR=0.95` 覆盖 `decay_factor`。
 
+## 能力握手 (Capability Handshake)
+
+> `field-arrive.sh` 在到达时探测运行时能力，将结果注入 `.birth`，使 Agent 了解自身环境约束。
+
+```yaml
+# capability-detection — injected into .birth ## capabilities
+platform:
+  detect:
+    - env: "CLAUDE_PROJECT_DIR or CLAUDE_ENV_FILE"
+      result: "claude-code"
+    - env: "CODEX_CLI"
+      result: "codex-cli"
+    - file: "AGENTS.md exists AND CLAUDE.md absent"
+      result: "codex-cli"
+    - fallback: "unknown"
+
+git:
+  detect: "command -v git && .git directory exists"
+  values: ["yes", "no"]
+
+push:
+  detect: "git remote -v has entries"
+  values: ["available", "no-remote", "unknown"]
+
+sandbox:
+  mapping:
+    claude-code: "full"
+    codex-cli: "restricted"
+    unknown: "unknown"
+```
+
+## 努力预算 (Effort Budget)
+
+> 用可观测的代理指标替代不可观测的 token 预算，帮助 Agent 自我调节工作节奏。
+> `field-arrive.sh` 计算两个指标注入 `.birth`。
+
+```yaml
+# effort-budget — injected into .birth ## effort_budget
+uncommitted_lines:
+  source: "git diff --cached --numstat + git diff --numstat"
+  limit: "${TERMITE_UNCOMMITTED_LINES_LIMIT:-50}"
+  action: "超过 limit 时立即 commit [WIP]"
+
+breath_age:
+  source: "stat .field-breath modification time"
+  unit: "minutes"
+  action: "age > breath_max_age_min 时触发 field-cycle.sh 刷新"
+```
+
+## 恢复提示 (Recovery Hints)
+
+> 静态启发式恢复策略，注入 `.birth` 的 `## recovery_hints` 段落。
+> Agent 遇到异常时按提示快速决策，无需查阅完整协议文档。
+
+```yaml
+# recovery-hints — injected into .birth ## recovery_hints
+strategies:
+  tool_fail:
+    condition: "工具调用返回错误"
+    action: "retry once, then ALARM"
+  permission_denied:
+    condition: "操作被拒绝（sandbox/权限不足）"
+    action: "ALARM immediately"
+  context_pressure:
+    condition: "context > 80%"
+    action: "MOLT now"
+  build_fail:
+    condition: "构建或测试失败"
+    action: "soldier, fix first"
+  stuck_3_turns:
+    condition: "连续 3 轮无进展"
+    action: "deposit, end session"
+```
+
 ## 并发架构 (Concurrency Architecture)
 
 > v3.4 起，协议使用 SQLite (WAL 模式) 作为共享状态的单一事实源。

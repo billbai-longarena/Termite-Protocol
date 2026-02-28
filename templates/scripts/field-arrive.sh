@@ -276,6 +276,23 @@ if has_db && [ -n "$AGENT_ID" ]; then
   db_agent_set_caste "$AGENT_ID" "$caste"
 fi
 
+# ── Step 6.7: Capability detection ──────────────────────────────────
+cap_platform=$(detect_platform)
+cap_git="no"; command -v git >/dev/null 2>&1 && [ -d "${PROJECT_ROOT}/.git" ] && cap_git="yes"
+cap_push="unknown"
+if [ "$cap_git" = "yes" ]; then
+  git -C "$PROJECT_ROOT" remote -v 2>/dev/null | grep -q . && cap_push="available" || cap_push="no-remote"
+fi
+case "$cap_platform" in
+  claude-code) cap_sandbox="full" ;;
+  codex-cli)   cap_sandbox="restricted" ;;
+  *)           cap_sandbox="unknown" ;;
+esac
+
+# ── Step 6.8: Effort budget ─────────────────────────────────────────
+uncommitted_lines=$(count_uncommitted_lines)
+breath_age=$(breath_age_minutes)
+
 # ── Step 7: Write .birth ─────────────────────────────────────────────
 
 # Per-agent .birth for multi-agent support
@@ -318,6 +335,22 @@ ${rules_section:-No rules yet — observe patterns and deposit observations.}
 - Don't delete .md files
 - ALARM.md → stop and fix
 - Before end: ./scripts/field-deposit.sh
+
+## capabilities
+platform: ${cap_platform}
+shell: yes  git: ${cap_git}  push: ${cap_push}
+sandbox: ${cap_sandbox}
+
+## effort_budget
+uncommitted: ${uncommitted_lines}/${UNCOMMITTED_LINES_LIMIT} lines
+breath_age: ${breath_age}min
+
+## recovery_hints
+tool_fail: retry once, then ALARM
+permission_denied: ALARM immediately
+context_pressure: MOLT now
+build_fail: soldier, fix first
+stuck_3_turns: deposit, end session
 BIRTHEOF
 
 # Also write default .birth for backward compatibility

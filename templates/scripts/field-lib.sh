@@ -39,6 +39,7 @@ CLAIM_TTL_HOURS="${TERMITE_CLAIM_TTL_HOURS:-24}"
 BREATH_MAX_AGE_MIN="${TERMITE_BREATH_MAX_AGE_MIN:-30}"
 SCOUT_BREATH_INTERVAL="${TERMITE_SCOUT_BREATH_INTERVAL:-5}"
 BOUNDARY_TOUCH_THRESHOLD="${TERMITE_BOUNDARY_TOUCH_THRESHOLD:-3}"
+UNCOMMITTED_LINES_LIMIT="${TERMITE_UNCOMMITTED_LINES_LIMIT:-50}"
 
 # ── Logging ──────────────────────────────────────────────────────────
 
@@ -318,6 +319,29 @@ current_branch() {
 
 current_commit_short() {
   git -C "$PROJECT_ROOT" rev-parse --short HEAD 2>/dev/null || echo "0000000"
+}
+
+count_uncommitted_lines() {
+  if [ ! -d "${PROJECT_ROOT}/.git" ]; then echo "0"; return; fi
+  local staged unstaged
+  staged=$(git -C "$PROJECT_ROOT" diff --cached --numstat 2>/dev/null | awk '{s+=$1+$2} END {print s+0}')
+  unstaged=$(git -C "$PROJECT_ROOT" diff --numstat 2>/dev/null | awk '{s+=$1+$2} END {print s+0}')
+  echo $((staged + unstaged))
+}
+
+breath_age_minutes() {
+  if [ ! -f "$BREATH_FILE" ]; then echo "unknown"; return; fi
+  local mod_epoch now_epoch
+  mod_epoch=$(stat -f "%m" "$BREATH_FILE" 2>/dev/null || stat -c "%Y" "$BREATH_FILE" 2>/dev/null || echo 0)
+  now_epoch=$(date +%s)
+  echo $(( (now_epoch - mod_epoch) / 60 ))
+}
+
+detect_platform() {
+  if [ -n "${CLAUDE_PROJECT_DIR:-}" ] || [ -n "${CLAUDE_ENV_FILE:-}" ]; then echo "claude-code"; return; fi
+  if [ -n "${CODEX_CLI:-}" ]; then echo "codex-cli"; return; fi
+  if [ -f "${PROJECT_ROOT}/AGENTS.md" ] && [ ! -f "${PROJECT_ROOT}/CLAUDE.md" ]; then echo "codex-cli"; return; fi
+  echo "unknown"
 }
 
 termite_signature_ratio() {

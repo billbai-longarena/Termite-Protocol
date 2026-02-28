@@ -39,5 +39,6 @@ fi
 caste=$(birth_field "caste")
 branch=$(birth_field "branch")
 health=$(birth_field "health")
+platform=$(birth_field "platform")
 
-echo "[termite] Arrived. Caste: ${caste:-unknown}. Branch: ${branch:-unknown}. ${health:-no health data}."
+echo "[termite] Arrived. Caste: ${caste:-unknown}. Platform: ${platform:-unknown}. Branch: ${branch:-unknown}. ${health:-no health data}."
