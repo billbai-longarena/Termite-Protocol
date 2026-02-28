@@ -106,6 +106,53 @@ if [ ! -f "$BLACKBOARD" ] && [ "$active_count_check" -eq 0 ] && [ "$wip" = "abse
   fi
 fi
 
+# ── Step 3.7: Protocol version detection ─────────────────────────────
+
+if telemetry_enabled; then
+  local_ver=$(local_protocol_version)
+  upstream_ver=$(upstream_protocol_version)
+  if [ "$upstream_ver" != "unknown" ] && [ "$local_ver" != "unknown" ] && [ "$upstream_ver" != "$local_ver" ]; then
+    log_info "Protocol update available: ${local_ver} → ${upstream_ver}"
+    update_signal_exists=false
+    if has_db; then
+      existing=$(db_signal_count "module='termite-protocol' AND title LIKE '%${upstream_ver}%' AND status NOT IN ('archived','done')" 2>/dev/null || echo "0")
+      [ "${existing:-0}" -gt 0 ] && update_signal_exists=true
+    fi
+    if ! $update_signal_exists; then
+      if has_db; then
+        update_id=$(db_next_signal_id "S")
+        db_signal_create "$update_id" "HOLE" \
+          "Protocol update available: ${local_ver} → ${upstream_ver}" \
+          "open" "35" "14" "$(today_iso)" "$(today_iso)" "unassigned" \
+          "termite-protocol" "[]" \
+          "Scout: review changelog at https://github.com/$(telemetry_upstream_repo), decide whether to install.sh --upgrade" \
+          "0" "autonomous"
+        log_info "Created signal ${update_id} for protocol update"
+      else
+        ensure_signal_dirs
+        update_id=$(next_signal_id S)
+        cat > "${ACTIVE_DIR}/${update_id}.yaml" <<SIGEOF
+id: ${update_id}
+type: HOLE
+title: "Protocol update available: ${local_ver} → ${upstream_ver}"
+status: open
+weight: 35
+ttl_days: 14
+created: $(today_iso)
+last_touched: $(today_iso)
+owner: unassigned
+module: "termite-protocol"
+tags: []
+next: "Scout: review changelog, decide whether to install.sh --upgrade"
+touch_count: 0
+source: autonomous
+SIGEOF
+        log_info "Created signal ${update_id} for protocol update"
+      fi
+    fi
+  fi
+fi
+
 # ── Step 4: Caste determination (waterfall, first hit wins) ──────────
 
 caste="scout"
