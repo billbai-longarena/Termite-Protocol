@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-01T14:56:28Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260301201951-68572
+pattern: "phase_quality:pass_with_guardrails"
+context: "S-023阶段质量评估"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: directive
+detail: |
+  结论可放行; 门槛达成; 风险为warning和收敛度; 下一步: 清warning/冻结RC/加旧档兼容回归
