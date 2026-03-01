@@ -93,6 +93,7 @@ docs/plans/             ← Design documents for major features.
 ### Nurse 自检流程
 
 ```
+0. git pull origin main                       ← 拉取最新（其他白蚁通过 PR 提交审计包）
 1. 读 audit-analysis/REGISTRY.yaml           ← 你的工作台面，从这里开始
 2. 检查 status: open 的条目                    ← 有未处理的审计或未修复的问题吗？
 3. 读对应的 audit-packages/*/metadata.yaml    ← 了解宿主项目蚁丘的健康指标
