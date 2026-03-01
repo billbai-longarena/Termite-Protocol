@@ -87,7 +87,7 @@ The cross-colony feedback loop design document (Component 2) specifies
   that `field-submit-audit.sh` depends on
 
 A project that installs the protocol cannot participate in the feedback loop
-without manually copying files from the template repo.
+without manually copying files from the protocol source repo.
 
 **Recommendation**: Add to `install.sh`: copy `field-submit-audit.sh`,
 generate default `.termite-telemetry.yaml` (enabled: false), ensure
@@ -98,14 +98,14 @@ generate default `.termite-telemetry.yaml` (enabled: false), ensure
 **Severity: Low — edge case for solo developers**
 
 The script assumes fork-based workflow: `gh repo fork` → clone fork → push to
-fork → PR from fork to upstream. When the project owner and protocol repo owner
+fork → PR from fork to protocol source repo. When the host project owner and protocol source repo owner
 are the same GitHub account (common for solo devs), `gh repo fork` is a no-op,
 and the PR creation fails because there's no fork relationship.
 
 **Workaround used**: Created PR directly with `gh pr create --head branch-name`.
 
 **Recommendation**: Detect same-owner case and skip fork, push branch directly
-to upstream.
+to protocol source repo.
 
 ### Finding 5: `.gitignore` in protocol repo blocks `audit-packages/`
 

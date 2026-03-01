@@ -2,9 +2,9 @@
 
 ## 致人类开发者
 
-本文件是 Claude Code 的入口文件，包含白蚁协议内核与项目参考信息。
+本文件是 Claude Code 的入口文件，包含白蚁协议内核与宿主项目参考信息。
 "白蚁协议"是心跳指令——收到后 Agent 自动执行节律，自主判断并行动。
-完整协议在 `TERMITE_PROTOCOL.md`。
+完整协议规范在 `TERMITE_PROTOCOL.md`。
 
 <!-- termite-kernel:v10.0 -->
 ## 白蚁协议 — 最小内核 v10.0
@@ -49,6 +49,7 @@
 
 | 遇到什么 | 读哪里 |
 |----------|--------|
+| 术语定义 | `TERMITE_PROTOCOL.md` Part I 术语表 |
 | 种姓疑问 | `TERMITE_PROTOCOL.md` Part III |
 | 信号格式 | `signals/README.md` |
 | 并发冲突 | `TERMITE_PROTOCOL.md` Part II §4.5 |
@@ -57,9 +58,9 @@
 
 ---
 
-## 项目概述
+## 宿主项目概述
 
-<!-- 在此填写你的项目概述，一句话描述项目是什么 -->
+<!-- 在此填写宿主项目概述，一句话描述项目是什么 -->
 
 ## 技术栈
 
@@ -73,13 +74,13 @@
 
 ## 场基础设施 / Field Infrastructure
 
-<!-- 如果你的项目配置了场基础设施，取消注释并填写实际路径 -->
+<!-- 如果宿主项目配置了场基础设施，取消注释并填写实际路径 -->
 <!-- | 工具 | 作用 |
 |------|------|
 | `scripts/field-arrive.sh` | 到达仪式 — 注入 .birth、感受场脉搏 |
 | `scripts/field-cycle.sh` | 完整呼吸 — 衰减→排水→脉搏（post-commit hook） |
 | `scripts/field-deposit.sh` | 信息素沉淀 — 会话结束时生成 .pheromone |
-| `scripts/field-export-audit.sh` | 审计包导出 — 导出协议产物供第三方审计（不含项目代码） |
+| `scripts/field-export-audit.sh` | 审计包导出 — 导出蚁丘协议产物供协议源仓库审计（不含宿主项目代码） |
 | `scripts/field-claim.sh` | 认领锁 — claim/release/check |
 | `signals/rules/*.yaml` | 触发-动作规则（由 field-arrive 注入 .birth） |
 | `signals/active/*.yaml` | 活跃信号数据 |
@@ -88,7 +89,7 @@
 
 ## 路由表：任务 → 局部黑板
 
-<!-- 根据项目模块填写路由表 -->
+<!-- 根据宿主项目模块填写路由表 -->
 | 任务关键词 | 局部黑板 |
 | ---------- | -------- |
 <!-- | 模块 A 相关关键词 | `path/to/module-a/BLACKBOARD.md` | -->
@@ -96,7 +97,7 @@
 
 ## 验证清单
 
-<!-- 根据项目实际的构建/测试命令填写 -->
+<!-- 根据宿主项目实际的构建/测试命令填写 -->
 <!-- | 改动类型 | 验证方式 |
 | -------- | -------- |
 | 后端代码 | `cd backend && npm run build` 无报错 |
@@ -104,7 +105,7 @@
 
 ## Build / Test / Dev Commands
 
-<!-- 根据项目实际情况填写 -->
+<!-- 根据宿主项目实际情况填写 -->
 <!-- | 操作 | 命令 |
 | ---- | ---- |
 | 安装依赖 | `npm install` |

@@ -6,13 +6,13 @@ Protocol Version: v3.4
 
 ## Problem
 
-Projects using the Termite Protocol generate valuable protocol-level data (signal patterns, rule effectiveness, handoff quality), but this data stays isolated within each project. The protocol cannot self-improve without cross-project feedback. Additionally, projects have no mechanism to detect or pull protocol updates.
+Host projects using the Termite Protocol generate valuable protocol-level data (signal patterns, rule effectiveness, handoff quality), but this data stays isolated within each host project's colony. The protocol cannot self-improve without cross-colony feedback. Additionally, host projects have no mechanism to detect or pull protocol updates.
 
 ## Architecture
 
 ```
                          +-----------------------------+
-                         |  Termite-Protocol Repo      |
+                         |  Protocol Source Repo        |
                          |  (protocol + audit database)|
                          |                             |
                          |  audit-packages/            |
@@ -28,7 +28,7 @@ Projects using the Termite Protocol generate valuable protocol-level data (signa
                     (gh api)      |          | (gh pr create)
                                   |          |
           +-----------------------v----------+-------------------+
-          |  Project Colony (e.g. OpenAgentEngine)               |
+          |  Host Project Colony (e.g. OpenAgentEngine)            |
           |                                                      |
           |  field-arrive.sh -> version check -> HOLE signal     |
           |  field-submit-audit.sh -> export -> fork -> PR       |
@@ -57,7 +57,7 @@ When `enabled: true` but `accepted: false`, `field-submit-audit.sh` displays:
 
 - Audit packages contain ONLY protocol artifacts (signals, rules, handoff chain, caste distribution)
 - No source code, business logic, .env files, or secrets
-- Submitted as PR to upstream protocol repo for Nurse analysis
+- Submitted as PR to protocol source repo for Nurse analysis
 - Can disable at any time by setting `enabled: false`
 - `anonymize_project: true` hashes the project name
 
@@ -75,7 +75,7 @@ User must type 'accept' to confirm. Script writes `accepted: true` to the YAML.
 
 ### `install.sh` Integration
 
-New install step asks whether to enable feedback (default: No), generates `.termite-telemetry.yaml`. `--upgrade` does not overwrite existing config.
+New install step asks host project whether to enable feedback (default: No), generates `.termite-telemetry.yaml`. `--upgrade` does not overwrite existing config.
 
 ## Component 2: Audit Submission (Outbound)
 
@@ -97,7 +97,7 @@ Trigger: After `field-deposit.sh --pheromone` at session end, or via hook.
    field-export-audit.sh --tar --project-name "$PROJECT_NAME"
 
 4. Fork/clone upstream (idempotent)
-   gh repo fork $upstream --clone=false (skip if already forked)
+   gh repo fork $protocol_source_repo --clone=false (skip if already forked)
    git clone --depth 1 fork to temp directory
 
 5. Create audit branch + commit
@@ -185,12 +185,12 @@ audit-analysis/
 
 ### Nurse Workflow
 
-Nurse is a termite in the Termite-Protocol repo with nurse caste. Input: audit packages. Output: optimization proposals.
+Nurse is a termite in the protocol source repo with nurse caste. Input: audit packages from host project colonies. Output: optimization proposals.
 
 1. **Sense**: Detect new audit packages in `audit-packages/`
 2. **Cross-project comparison**:
-   - Rule health across projects (which rules are highly disputed everywhere?)
-   - Handoff quality distribution (useful_ratio across projects)
+   - Rule health across host projects (which rules are highly disputed everywhere?)
+   - Handoff quality distribution (useful_ratio across host project colonies)
    - Caste distribution (healthy balance?)
    - Decay rate effectiveness (signals disappearing too fast/slow?)
 3. **Produce optimization proposals**:
@@ -223,7 +223,7 @@ Nurse is a termite in the Termite-Protocol repo with nurse caste. Input: audit p
 | Rule 4: DO -> DEPOSIT | Audit package = deposit. Each colony's action traces converge at protocol repo |
 | Rule 5: weight < threshold -> EVAPORATE | Old audit packages naturally superseded by new ones. History in git. |
 | Rule 6: weight > threshold -> ESCALATE | Cross-project high-dispute rules -> Nurse escalates to optimization proposal |
-| Rule 7: count >= 3 -> EMERGE | 3+ projects observe same pattern -> auto-promote to protocol-level rule |
+| Rule 7: count >= 3 -> EMERGE | 3+ host project colonies observe same pattern -> auto-promote to protocol-level rule |
 | Safety S2: Don't delete .md files | Audit packages and configs are append-only |
 
 ## Non-Participating Projects
@@ -236,7 +236,7 @@ For `enabled: false` (default), behavior is completely unchanged:
 - All field-*.sh scripts work normally
 - `.termite-telemetry.yaml` exists but produces zero side effects
 
-Equivalent to a self-sufficient colony -- running independently, not exchanging pheromones with the outside. A perfectly valid way to exist.
+Equivalent to a self-sufficient colony -- the host project runs independently, not exchanging pheromones with the protocol source repo. A perfectly valid way to exist.
 
 ## Exit Mechanism
 
@@ -254,5 +254,5 @@ Already-submitted PRs remain (git history is immutable), but no new submissions 
 | `templates/.termite-telemetry.yaml` | Template | Default opt-in config (enabled: false) |
 | Protocol additions to `field-arrive.sh` | Modification | Version detection step |
 | Protocol additions to `install.sh` | Modification | Telemetry config generation + ask |
-| `audit-packages/` directory in protocol repo | Convention | Landing zone for audit PRs |
-| `audit-analysis/` directory in protocol repo | Convention | Nurse output |
+| `audit-packages/` directory in protocol source repo | Convention | Landing zone for audit PRs |
+| `audit-analysis/` directory in protocol source repo | Convention | Nurse output |

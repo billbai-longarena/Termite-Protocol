@@ -4,7 +4,7 @@
 
 > 本文件 (`AGENTS.md`) 是 Codex / Gemini 等非交互平台的入口文件。
 > "白蚁协议"是心跳指令——收到后自动执行节律，自主判断并行动。
-> 完整协议在 `TERMITE_PROTOCOL.md`，本文件足够驱动日常行动。
+> 完整协议规范在 `TERMITE_PROTOCOL.md`，本文件足够驱动日常行动。
 
 <!-- termite-kernel:v10.0 -->
 ## 白蚁协议 — 最小内核 v10.0
@@ -46,7 +46,7 @@ IF 不可执行:
 3. 改动超过 50 行就 commit 一次（`[WIP]` 标签）
 4. 看到 ALARM.md → 停下来读它
 
-> 做到这四点，你就是一只有用的白蚁。完整协议参阅 `TERMITE_PROTOCOL.md`。
+> 做到这四点，你就是一只有用的白蚁。完整协议规范参阅 `TERMITE_PROTOCOL.md`。
 
 ---
 
@@ -79,13 +79,13 @@ IF 不可执行:
 
 ---
 
-## Project Overview
+## Host Project Overview
 
-<!-- 在此填写你的项目概述 -->
+<!-- 在此填写宿主项目概述 -->
 
-## Project Structure & Module Organization
+## Host Project Structure & Module Organization
 
-<!-- 在此填写你的项目目录结构说明 -->
+<!-- 在此填写宿主项目目录结构说明 -->
 
 ---
 

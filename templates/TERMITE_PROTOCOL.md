@@ -3,10 +3,22 @@
 
 白蚁协议的目的，是让多个不同水平的 Agent 同时工作，工作的目的是让三丘模型中提到的开发、产品和客户能共同成功、共同成长。成为各自最好的自己，也能共同达成非凡的成就。
 
-> **本文件是通用的 AI Agent 协作协议。**
+> **本文件是协议规范 (protocol spec)——通用的 AI Agent 协作协议。**
 > v3.0 架构变更：协议从"Agent 直接阅读的文档"转变为"人类参考 + 脚本配置源"。
 > `field-arrive.sh` 从环境中计算出 `.birth` 文件（≤800 tokens），Agent 只需读取 `.birth` 即可开始工作。
-> 本协议文件为人类提供完整参考，为场脚本提供可解析的配置数据。
+> 本协议规范为人类提供完整参考，为场脚本提供可解析的配置数据。
+
+### 术语表 (Glossary)
+
+| 中文术语 | 英文术语 | 定义 |
+|----------|---------|------|
+| **白蚁协议** | **Termite Protocol** | 本框架的总称，仅在泛指时使用 |
+| **协议规范** | **protocol spec** | 本文件 (`TERMITE_PROTOCOL.md`) 及其定义的 9 条文法 + 4 条安全网 |
+| **协议源仓库** | **protocol source repo** | 包含协议模板和工具的 Git 仓库 (`billbai-longarena/Termite-Protocol`) |
+| **宿主项目** | **host project** | 通过 `install.sh` 安装了协议模板和脚本的外部项目 |
+| **蚁丘** | **colony** | 宿主项目中协议运行时产生的信号生态 (signals/ + rules/ + .pheromone + .birth) |
+| **协议模板** | **protocol template(s)** | 协议源仓库 `/templates/` 中会被 `install.sh` 拷贝到宿主项目的文件 |
+| **反馈回路** | **feedback loop** | 蚁丘 → 审计包 → 协议源仓库 → Nurse 分析 → 模板修复 → 宿主项目升级 |
 
 ```
 v3.0 信息流：
@@ -26,7 +38,7 @@ v3.0 信息流：
 ### 三步采用
 
 ```
-1. 把 TERMITE_PROTOCOL.md 放到项目根目录
+1. 把 TERMITE_PROTOCOL.md 放到宿主项目根目录
 2. 在 AI 编码工具中输入"白蚁协议"
 3. Agent 自动：检测平台 → 生成/强化入口文件 → 运行 field-arrive.sh → 读 .birth → 开始工作
 以后每次新会话，输入"白蚁协议"即可继续。
@@ -847,13 +859,13 @@ propagation_depth: 1          # 每代递增，max_depth: 3
 当多个蚁丘使用白蚁协议时，可通过审计提交形成协议优化闭环：
 
 ```
-项目蚁丘 ──(field-submit-audit.sh)──▶ 协议仓库 audit-packages/
-                                              │
-                                      Protocol Nurse 分析
-                                              │
-                                      优化提案 → merge
-                                              │
-项目蚁丘 ◀──(field-arrive.sh 检测版本)──────────┘
+宿主项目蚁丘 ──(field-submit-audit.sh)──▶ 协议源仓库 audit-packages/
+                                                │
+                                        Protocol Nurse 分析
+                                                │
+                                        优化提案 → merge
+                                                │
+宿主项目蚁丘 ◀──(field-arrive.sh 检测版本)────────┘
 ```
 
 **参与方式**：通过 `.termite-telemetry.yaml` 控制（默认关闭）。
@@ -868,11 +880,11 @@ submit_frequency: "session-end"  # session-end | weekly | manual
 
 **工作机制**：
 
-1. **审计提交**：`./scripts/field-submit-audit.sh` 导出审计包 → fork 上游 → 创建 PR
-2. **版本检测**：`field-arrive.sh` 到达时检查上游协议版本（24h 缓存），有更新则生成 HOLE 信号
+1. **审计提交**：`./scripts/field-submit-audit.sh` 导出审计包 → fork 协议源仓库 → 创建 PR
+2. **版本检测**：`field-arrive.sh` 到达时检查协议源仓库版本（24h 缓存），有更新则生成 HOLE 信号
 3. **半自主升级**：Scout 审查 changelog 后决定是否执行 `install.sh --upgrade`
 
-**免责声明**：首次启用时强制展示。审计包只含协议产物（参见"协议审计导出"），不含项目源码。
+**免责声明**：首次启用时强制展示。审计包只含蚁丘协议产物（参见"协议审计导出"），不含宿主项目源码。
 
 **不参与的蚁丘**：`enabled: false`（默认）时，一切照旧。不联网、不导出、不 fork。
 等价于自给自足的蚁丘——独立运行，不与外部交换信息素。完全合法的生存方式。
