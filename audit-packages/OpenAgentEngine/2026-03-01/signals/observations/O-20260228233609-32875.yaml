@@ -1,0 +1,9 @@
+id: O-20260228233609-32875
+pattern: "Signal source drift: S-003 present in signals/active YAML but absent from .termite.db signals table"
+context: "heartbeat cycle after v10.0 sync"
+reporter: "termite:2026-02-28:worker"
+confidence: high
+created: 2026-02-28
+source: autonomous
+detail: |
+  Potential migration gap between file-based signals and DB source of truth; reconcile before relying on top-signal ranking.

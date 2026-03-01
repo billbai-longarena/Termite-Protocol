@@ -1,0 +1,9 @@
+id: O-20260228234947-54507
+pattern: "S-003 synchronized BLACKBOARD signal weights with DB"
+context: "Updated BLACKBOARD Signals table (S-001/S-002/S-003) to match current DB weights and avoid stale planning cues"
+reporter: "termite:2026-02-28:worker"
+confidence: high
+created: 2026-02-28
+source: autonomous
+detail: |
+  After recent decay cycles, BLACKBOARD still showed 45/86/90 while DB had 44/84/88.

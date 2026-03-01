@@ -1,0 +1,9 @@
+id: O-20260228235659-66795
+pattern: "field-claim release can reopen signals finalized as done"
+context: "S-001 was marked done in DB, then release S-001 work reset status to open/unassigned"
+reporter: "termite:2026-02-28:worker"
+confidence: high
+created: 2026-02-28
+source: autonomous
+detail: |
+  Release workflow appears to assume every claim ends with open status. If finalization happens before release, done state is lost. Consider release mode flag or idempotent done-preserving behavior.

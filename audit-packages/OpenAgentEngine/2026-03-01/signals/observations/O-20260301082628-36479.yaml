@@ -1,0 +1,9 @@
+id: O-20260301082628-36479
+pattern: "S-022 slice-2 landed with postgres adapter and advisory-lock redeem path"
+context: "apps/gateway invite store backend"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Implemented WORLD_INVITE_STORE_DRIVER=postgres with JSONB invite persistence and pg_advisory_xact_lock redeem serialization. Default file/filesystem behavior remains unchanged. Verified by pnpm --filter @openagentengine/gateway build, pnpm run verify:s021, and pnpm run verify:gate. Attempted postgres runtime verification via docker compose, but local Docker daemon was unavailable (cannot connect to /var/run/docker.sock), so dedicated verify:s022 remains pending.

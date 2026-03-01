@@ -1,0 +1,9 @@
+id: O-20260301044254-50474
+pattern: "S-017 secret configured for live drift audit"
+context: "repository settings"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Configured repository secret BRANCH_PROTECTION_AUDIT_TOKEN for billbai-longarena/OpenAgentEngine and validated verify-s015 required-live mode locally against live branch protection.

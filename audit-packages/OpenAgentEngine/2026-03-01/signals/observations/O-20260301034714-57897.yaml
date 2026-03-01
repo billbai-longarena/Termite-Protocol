@@ -1,0 +1,9 @@
+id: O-20260301034714-57897
+pattern: "S-014 governance policy/runbook baseline implemented and quality-gated"
+context: "Branch protection required-check policy + setup runbook"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Added branch-protection policy artifacts (.github/branch-protection.policy.json and .github/branch-protection.api.json), authored S-014 runbook, added verify:s014, and integrated phase-9-governance-runbook into verify:gate. verify:s014 and verify:gate both pass.

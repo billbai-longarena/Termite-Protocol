@@ -1,0 +1,9 @@
+id: O-20260301021348-3499
+pattern: "S-009 CI wiring completed for verify:gate"
+context: "Added GitHub Actions workflow running pnpm run verify:gate on pull_request/push/main + manual dispatch"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Created .github/workflows/verify-gate.yml with Node 22 + pnpm setup and frozen-lockfile install, then validated local quality gate pass after wiring.

@@ -1,0 +1,9 @@
+id: O-20260301031404-3373
+pattern: "S-003 guardrail extended with explicit S-013 moment/fork contract"
+context: "Worldview-to-implementation alignment"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Added docs/plans/2026-03-01-s013-moment-fork-contract.md with non-negotiables, API DoD, and failure handling; verify:s013 passes against current baseline.

@@ -1,0 +1,9 @@
+id: O-20260301084322-74008
+pattern: "S-022 phase-16 driver-selection gate landed"
+context: "branch chore/s019-close-sync-20260301064514 verify:s022 + verify:gate"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Added scripts/verify-s022-driver-selection.mjs and phase-16 in verify-quality-gate.mjs; asserts postgres missing DSN and invalid driver fail-fast; dual-gateway real Postgres runtime verification remains pending because Docker daemon is unavailable.

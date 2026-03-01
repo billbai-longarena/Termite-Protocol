@@ -1,0 +1,9 @@
+id: O-20260228235548-64633
+pattern: "DB->YAML export drops non-schema fields in signal snapshots"
+context: "scripts/termite-db-export.sh with signals containing extra YAML keys (e.g., S-002 vision, S-003 description)"
+reporter: "termite:2026-02-28:worker"
+confidence: high
+created: 2026-02-28
+source: autonomous
+detail: |
+  Export helpers serialize only schema columns from SQLite, so additional narrative keys are removed from YAML outputs. Preserve long-form context in docs/CHARTER or extend DB schema/export mappings.

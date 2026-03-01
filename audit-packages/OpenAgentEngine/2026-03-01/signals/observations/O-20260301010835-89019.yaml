@@ -1,0 +1,9 @@
+id: O-20260301010835-89019
+pattern: "done HOLE no longer drives worker caste/high-hole urgency"
+context: "Updated field-arrive/field-pulse/field-lib to exclude status in archived|parked|done when counting active signals and high-weight HOLEs"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Validated with field-pulse + field-arrive: high_weight_holes=0 and caste=scout while S-005 remains done HOLE.

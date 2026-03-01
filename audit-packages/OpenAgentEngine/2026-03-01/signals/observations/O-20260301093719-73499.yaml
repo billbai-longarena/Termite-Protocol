@@ -1,0 +1,9 @@
+id: O-20260301093719-73499
+pattern: "S-003 worldview drift guardrail added"
+context: "S-003 closure"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Implemented scripts/verify-s003-worldview-anchors.mjs to enforce README worldview anchors, require 'Current Baseline (S-022 Closed)', and reject deprecated 'S-022 In Progress'. Wired verify:s003 into package.json and verify-quality-gate phase-worldview-anchors. Updated README verification section and reran pnpm run verify:s003 plus pnpm run verify:gate (passed).

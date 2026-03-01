@@ -1,0 +1,9 @@
+id: O-20260301020407-81142
+pattern: "Narrative fields restored after DB-export drift and S-003 continuity rolled to S-008"
+context: "Reconciled YAML/BLACKBOARD with runtime phase state after S-007 verification"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Restored S-002 vision and O-001 charter detail blocks; synchronized S-003 open/unassigned with updated next_hint toward S-008 quality gate; retained S-006/S-007 done state.

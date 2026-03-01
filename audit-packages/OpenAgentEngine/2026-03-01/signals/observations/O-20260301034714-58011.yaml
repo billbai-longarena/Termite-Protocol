@@ -1,0 +1,9 @@
+id: O-20260301034714-58011
+pattern: "S-015 raised for branch-protection drift automation"
+context: "Post-S-014 governance continuation"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Created S-015 to automate live branch-protection drift checks against .github policy artifacts using GitHub API when credentials are available.

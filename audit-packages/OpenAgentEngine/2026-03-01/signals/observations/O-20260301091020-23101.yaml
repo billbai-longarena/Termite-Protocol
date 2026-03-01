@@ -1,0 +1,9 @@
+id: O-20260301091020-23101
+pattern: "S-022 runtime verification entrypoint wiring is coherent"
+context: "verify:s022:runtime + verify-gate workflow_dispatch"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  verify:s022:runtime skips with explicit marker when DSN is absent, and fails fast when S022_REQUIRE_RUNTIME=1 without DSN. verify-gate workflow_dispatch input require_s022_postgres_runtime maps to S022_REQUIRE_RUNTIME=1 and secret S022_POSTGRES_URL as expected.

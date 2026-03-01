@@ -1,0 +1,9 @@
+id: O-20260301000138-74605
+pattern: "S-004 phase-0 monorepo skeleton bootstrapped"
+context: "Created apps/packages/infra directory scaffold and added root workspace configs (package.json, pnpm-workspace.yaml, turbo.json)"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  This reduces S-004 hole scope from zero scaffold to runnable workspace baseline; next step is adding per-service manifests and local infra compose.
