@@ -494,58 +494,25 @@
 - date: 2026-03-01
   type: finding-open
   id: F-010
-  status: open
+  status: wontfix
   title: "Audit package lacks result verification — only process data, no outcome quality"
   source: "A-003 ReactiveArmor analysis: pheromone chain claims '174 tests passing' but no verification"
-  severity: high
+  severity: low
   description: >
     Current audit package design captures process metrics (commits, observations,
-    handoffs, pheromone chain) but no result verification. For development projects,
-    we cannot evaluate:
-    (1) Build status — does the code compile?
-    (2) Test results — do tests actually pass? what's the coverage?
-    (3) Demo output — does the feature work as claimed?
-    (4) Code metrics — LOC, complexity, dependencies
-
-    ReactiveArmor claims "174 tests passing" and "Production-ready ECS" but the
-    audit package provides no evidence. The pheromone chain is self-reported by
-    agents with no external validation.
-
-    This creates a gap: we can audit protocol compliance (process) but not
-    deliverable quality (outcome). For weak models that mechanically execute
-    protocol steps, process compliance may mask result degradation.
-  impact: >
-    Without result snapshots, Nurse cannot distinguish between:
-    - High-quality work with poor protocol compliance (strong model, sloppy process)
-    - Low-quality work with good protocol compliance (weak model, mechanical process)
-    ReactiveArmor may be either — we cannot tell from current audit data.
-  proposed_solution:
-    new_file: "result-snapshot.yaml"
-    added_to: "field-export-audit.sh"
-    contents:
-      build_status:
-        description: "Output of language-specific build command (cargo check, npm run build, etc.)"
-        fields: ["command", "exit_code", "timestamp", "stderr_excerpt"]
-      test_status:
-        description: "Output of test runner"
-        fields: ["command", "total", "passed", "failed", "skipped", "coverage", "output_excerpt"]
-      demo_verification:
-        description: "Optional evidence that the feature works"
-        fields: ["type (screenshot|log|video)", "path", "description"]
-      code_metrics:
-        description: "Basic code health indicators"
-        fields: ["total_loc", "test_loc", "test_ratio", "dependency_count"]
-  implementation_notes: >
-    1. field-export-audit.sh should detect project type (Cargo.toml, package.json, etc.)
-    2. Run build/test commands and capture output (timeout: 60s)
-    3. Parse test output for pass/fail counts (language-specific parsers)
-    4. Generate result-snapshot.yaml with structured data
-    5. For projects without standard tooling, allow manual result-snapshot.yaml
-  dependencies:
-    - Language detection logic
-    - Test output parsers (cargo, jest, pytest, go test)
-    - Timeout handling for long builds
-  complexity: medium
-  next_action: >
-    Design result-snapshot.yaml schema and implement in field-export-audit.sh.
-    Start with Rust (cargo) support since ReactiveArmor is Rust-based.
+    handoffs, pheromone chain) but no result verification. ReactiveArmor claims
+    "174 tests passing" but the audit package provides no evidence.
+  wontfix_rationale: >
+    Result verification is OUT OF PROTOCOL SCOPE:
+    (1) Protocol is an agent coordination framework, not a CI/CD system
+    (2) Language-agnostic result verification would require maintaining parsers
+        for cargo, npm, pytest, go test, mvn, gradle, etc. — complexity explosion
+    (3) Existing solutions (GitHub Actions, GitLab CI) already do this well
+    (4) Protocol philosophy: "白蚁是瞎的" — keep protocol minimal and focused
+    (5) Correct responsibility: host project owns build/test verification, not protocol
+  alternative: >
+    For result evaluation, access the host project codebase directly and run
+    tests manually. This is a one-time evaluation task, not a protocol feature.
+    If host projects want CI integration, they can add external_verification
+    links to their BLACKBOARD or signals.
+  closed_date: 2026-03-01
