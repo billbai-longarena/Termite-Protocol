@@ -152,6 +152,63 @@ manual.
 self-improvement, but the implementation gap means bugs persist across projects
 and across time.
 
+### Finding 8: `--upgrade` overwrites project-specific enhancements without merge
+
+**Severity: High — breaks host project tests**
+
+Running `install.sh --upgrade` copies ALL template scripts over the project's
+versions, creating `.backup` files. But it does not merge — it fully replaces.
+
+OpenAgentEngine had custom enhancements in `termite-db-export.sh` (YAML block
+preservation logic) and `termite-db.sh` (improved claim status queries, detail
+field handling with multiline preservation). The upgrade from the template
+wiped these, causing the S-011 `export-preserve` quality gate to fail.
+
+**What happened**:
+- Upgrade replaced OAE's `termite-db-export.sh` (with `extract_yaml_block` /
+  `preserve_yaml_block_if_missing` functions) with template version (without)
+- Upgrade replaced OAE's `termite-db.sh` (with detail field multiline handling)
+  with template version (which skips empty detail fields differently)
+- Quality gate S-011 failed immediately after upgrade
+- Had to manually restore both files from `.backup`
+
+**Root cause**: The upgrade treats all scripts as "protocol core" but some
+scripts (`termite-db-export.sh`, `termite-db.sh`) serve as extension points
+that projects legitimately customize.
+
+**Recommendation**: Either:
+1. Distinguish "protocol core" scripts (never customized) from "extension"
+   scripts (may be customized) — only overwrite core scripts
+2. Or run the project's test suite BEFORE committing upgrade, auto-rollback
+   if tests fail
+3. At minimum: warn when overwriting files that differ from the previous
+   template version (i.e., files the project has customized)
+
+### Finding 9: Upgrade changelog quality is good, but version detection is wrong
+
+**Severity: Low**
+
+The upgrade printed a clean changelog (`v10.0 → v3.4`) with specific bug
+references (TF-001, F-001, etc.) and clear Action Required / Action Optional
+sections. The `UPGRADE_NOTES.md` file is well-structured.
+
+However, the "from" version was detected as `v10.0` (the kernel version in
+CLAUDE.md), not the actual protocol template version. This is misleading —
+the project was running v3.2 template scripts, not "v10.0".
+
+### Finding 10: Claude Code plugin installed — promising but untested
+
+The upgrade installed a Claude Code plugin at
+`.claude/plugins/termite-protocol/` with hooks for SessionStart,
+UserPromptSubmit, PreToolUse(Bash), PostToolUse(Write|Edit, Bash),
+PreCompact, and Stop events. This is a new v3.4 feature that wasn't in
+the previous install.
+
+This plugin could be the mechanism that makes the protocol truly
+"dissolve into environment" as the v3.0 design intended — instead of
+relying on the agent reading CLAUDE.md, the hooks enforce protocol
+behavior automatically. Not tested in this session.
+
 ## Recommendations Summary
 
 | Priority | Action | Effort |
@@ -160,8 +217,10 @@ and across time.
 | P0 | Auto-install git hooks in `install.sh` | Trivial — add one line |
 | P1 | Include `field-submit-audit.sh` + telemetry in standard install | Small |
 | P1 | Run Protocol Nurse on first audit package to validate the loop | Medium |
+| P1 | Add upgrade merge strategy — don't blindly overwrite customized scripts | Medium |
 | P2 | Add template script version tracking + upgrade detection | Medium |
 | P2 | Handle same-owner fork edge case in submit script | Small |
+| P2 | Fix version detection (protocol template version, not kernel version) | Small |
 | P3 | Flexible BLACKBOARD section header matching | Small |
 
 ## Agent Reflection
