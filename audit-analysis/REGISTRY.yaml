@@ -516,3 +516,39 @@
     If host projects want CI integration, they can add external_verification
     links to their BLACKBOARD or signals.
   closed_date: 2026-03-01
+
+# ── 2026-03-02 ────────────────────────────────────────────────────────
+
+- date: 2026-03-02
+  type: audit-received
+  id: A-004
+  status: open
+  host_project: ReactiveArmor
+  package: audit-packages/ReactiveArmor/2026-03-01/
+  significance: "Second export — continued development after A-003 analysis"
+  key_metrics:
+    total_commits: 128
+    signed_commits: 128
+    signature_ratio_last_50: 0.00
+    handoff_quality: 0.00
+    pheromone_snapshots: 7
+    pending_observations: 16
+    active_rules: 0
+    agent_count: "29+ (Agent AC last seen)"
+    signals_completed: 25
+  delta_from_A003:
+    new_commits: 7
+    new_observations: 2
+    new_pheromone: 1
+    new_signals: "S-025 (Asset Migration), 3D rendering"
+  findings: 0
+  notes: >
+    Second export from ReactiveArmor, ~3 hours after A-003. Colony still active:
+    S-025 Asset Migration (5 phases: Unity→JSON→FBX→glTF→Textures→GUID) and
+    3D mech rendering added. Two new observations (O-...68572, O-...77720) are
+    HIGH QUALITY — complete pattern/context/detail, unlike the 9/14 degenerate
+    observations in A-003. This suggests stronger model or human guidance in
+    later sessions. New pheromone entry shows predecessor_useful=false (first
+    explicit negative evaluation, vs previous nulls). All W-001~W-005 findings
+    remain open — no structural change to weak model behavior patterns.
+    No new findings beyond existing W-series.
