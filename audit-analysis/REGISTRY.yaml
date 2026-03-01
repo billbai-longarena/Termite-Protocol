@@ -320,3 +320,65 @@
     (6) Both templates/CLAUDE.md and templates/AGENTS.md: added "协议升级变更 |
     UPGRADE_NOTES.md" to lookup index.
     (7) Design docs updated to replace all "changelog" references with UPGRADE_NOTES.md.
+
+# ── 2026-03-01 session 4: Blind premise audit ───────────────────────
+
+- date: 2026-03-01
+  type: finding-open
+  id: F-009
+  status: open
+  title: "Protocol concept surface area exceeds blind agent cognitive budget"
+  source: "Human-directed audit: does protocol evolution respect the 'termites are blind, context is limited' premise?"
+  severity: high
+  description: >
+    The protocol has accumulated ~79 distinct concepts (9 grammar rules, 4 safety
+    nets, 11 caste waterfall levels, 7 signal types, 6 signal lifecycle states,
+    5 immunity checks, 5 compliance scoring factors, 4 compliance tiers, 5 malicious
+    behavior patterns, 5 freshness rules, 4 propagation layers, 5 caste transitions,
+    5 recovery hints, etc.) while .birth is constrained to ≤800 tokens. The protocol
+    expects agents to perform "judgmental behaviors" (三丘价值自觉, rule disputes,
+    IC-5 seed integrity, EXPLORE→DECISION closure, mid-session caste transitions,
+    session-end deposit of three categories) that cannot be pre-computed by
+    infrastructure and are not encoded in .birth. Strong models (Claude Opus, Codex)
+    compensate with general intelligence; weak models will break at these exact points.
+  sub_findings:
+    - id: F-009a
+      title: "Entry files reference 1193-line TERMITE_PROTOCOL.md"
+      description: >
+        CLAUDE.md lookup index directs agents to read Part II and Part III
+        of TERMITE_PROTOCOL.md for caste details, concurrency, and 三丘 philosophy.
+        This contradicts the v3.0 design that agents should only read .birth.
+        A weak model reading the full spec would consume ~15-20% of its context window.
+    - id: F-009b
+      title: ".birth spends 25% token budget on static content"
+      description: >
+        The grammar (8 rules) and safety (4 items) sections in .birth are identical
+        for every agent in every session. ~200 tokens of the 800-token budget are
+        used for content that could live in the entry file (which agents always read).
+        Freeing this space would allow more dynamic situation information.
+    - id: F-009c
+      title: "Undeclared assumption: agent general intelligence fills protocol gaps"
+      description: >
+        The protocol has an implicit contract split: .birth handles mechanical startup,
+        agent intelligence handles judgmental behavior. This is unstated and untested.
+        When weak models arrive, they will fail silently — producing work that looks
+        correct but misses deposit obligations, caste transitions, and value checks.
+    - id: F-009d
+      title: "field-arrive.sh complexity (434 lines, 13 steps) creates opaque black box"
+      description: >
+        The arrival script has grown from simple sensing to a full preprocessor with
+        network calls (upstream version check), DB operations, genesis detection, and
+        8-factor situation assembly. 40+ instances of || true / 2>/dev/null mask
+        failures. Agent cannot verify whether .birth is correct or complete.
+  observed_in: "protocol source repo self-audit (strong model: Claude Opus)"
+  next_action: >
+    Observation only. Monitor how strong models (Claude Code, Codex) perform with
+    current protocol. When weak model testing begins, use this finding as the
+    checklist of expected breakpoints. Potential future actions:
+    (1) Define .birth as sole interface contract — anything not in .birth does not
+    exist for the agent;
+    (2) Move grammar/safety from .birth to entry files;
+    (3) Classify protocol behaviors into infrastructure-handled vs agent-judged,
+    and progressively move the latter into the former;
+    (4) Formalize protocol capability tiers (T0: safety nets only, T1: .birth
+    conditional reflexes, T2: judgmental behaviors requiring strong models).
