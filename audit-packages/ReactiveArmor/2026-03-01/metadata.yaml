@@ -1,0 +1,27 @@
+# Audit Package Metadata
+# This file describes the context of the export.
+# Protocol Nurse: read this first to understand the project context.
+
+project_name: "ReactiveArmor"
+export_date: "2026-03-01T11:58:38Z"
+protocol_version: "v3.4"
+kernel_version: "v10.0"
+
+# Duration & Volume
+run_duration_days: 0
+total_commits: 121
+signed_commits: 121
+signature_ratio_last_50: 0.00
+
+# Signal Inventory
+active_signals: 0
+pending_observations: 14
+active_rules: 0
+archived_items: 6
+pheromone_snapshots: 6
+
+# Current State
+current_branch: "master"
+current_alarm: false
+current_wip: "fresh"
+current_build: "unknown"

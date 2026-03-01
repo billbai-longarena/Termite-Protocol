@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-01T11:58:38Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260301162300-54919
+pattern: "S-00[2-5]"
+context: "unknown"
+reporter: "termite:2026-03-01:worker"
+confidence: medium
+created: 2026-03-01
+source: autonomous
+detail: |
+  0

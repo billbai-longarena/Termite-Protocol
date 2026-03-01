@@ -1,0 +1,244 @@
+04484d8 2026-03-01 19:56:57 +0800 chore(WIP): Record Agent AC scout session — S-024 Settings System proposed
+c1cd316 2026-03-01 19:56:09 +0800 chore(signals): Agent AC scout report — S-024 Settings System proposed
+966accf 2026-03-01 19:50:33 +0800 chore(WIP): Record Agent AC session — S-023 Phase 3 completion
+63ab53d 2026-03-01 19:50:12 +0800 feat(persistence): Implement S-023 Phase 3 - Persistence UI/CLI Integration
+ed3cee8 2026-03-01 19:49:06 +0800 test(S-023-edge-cases): Comprehensive edge case testing for save/load system
+66d4229 2026-03-01 19:42:34 +0800 chore(signals): record Agent AA S-023 Phase 3 UI integration observation
+19bd003 2026-03-01 19:36:59 +0800 feat(S-023): Phase 3 - Save/Load UI Integration with pause menu
+8e71fbd 2026-03-01 19:36:35 +0800 chore(WIP): Record Agent AB session — S-023 Phase 2 refinement and verification
+25dc0d4 2026-03-01 19:32:50 +0800 chore(signals): Agent Z work record — S-023 Phase 2 integration complete, 174 tests passing
+72230ae 2026-03-01 19:31:34 +0800 feat(S-023): Phase 2 - Save/Load integration into EcsGameLoop
+05ec156 2026-03-01 19:20:37 +0800 chore(WIP): Record Agent AA session — S-023 Phase 1 integration completion
+d63dfce 2026-03-01 19:20:02 +0800 chore(signals): Agent Y work record — S-023 Phase 1 foundation complete, 168 tests passing
+963d396 2026-03-01 19:18:54 +0800 feat(S-023): Implement save/load game state persistence framework
+c5fe051 2026-03-01 19:18:48 +0800 fix(persistence): Complete serde-based serialization infrastructure for world state
+871d069 2026-03-01 19:12:23 +0800 chore(signals): Agent Z work record — S-023 Complete (all phases)
+ccd4e5a 2026-03-01 19:11:48 +0800 feat(S-023): Save/Load System Phase 3 — File-based persistence
+49ad47d 2026-03-01 19:07:58 +0800 chore(signals): Agent Y work record — S-023 Save/Load System Phases 1-2 complete
+9a778e5 2026-03-01 19:07:36 +0800 feat(S-023): Save/Load System — Game State Persistence (Phases 1-2)
+0912846 2026-03-01 19:04:03 +0800 chore(signals): Agent X work record — S-022 Physics Integration Phases 1-2 complete
+b758c72 2026-03-01 19:03:42 +0800 feat(S-022): Physics Integration — Ballistics & Trajectory systems
+0f4c2fb 2026-03-01 19:03:37 +0800 chore(molt): Agent V MOLT ceremony — S-021 victory conditions complete, 128 tests passing
+d68c8fb 2026-03-01 18:57:44 +0800 feat(S-021): Implement victory conditions and persistent leaderboard
+c368a6a 2026-03-01 18:57:20 +0800 chore(signals): Agent W work record — S-021 Multi-Target Coordination complete
+71a83bd 2026-03-01 18:57:00 +0800 feat(S-021): Multi-Target Coordination Phase 3 — Threat distribution system
+dca1773 2026-03-01 18:55:45 +0800 feat(S-021): Multi-Target Coordination — Phases 1-2 complete
+2a549a9 2026-03-01 18:50:20 +0800 chore(signals): Agent V work record — S-020 Tactical Behaviors complete
+11769df 2026-03-01 18:49:52 +0800 feat(S-020): Integrate tactical behaviors into EcsGameLoop (Phase 4)
+d8da13f 2026-03-01 18:48:50 +0800 feat(S-020): Tactical AI Behaviors — Phases 1-3 complete
+6b046ac 2026-03-01 18:48:29 +0800 chore(wip): Update session log for Agent U MOLT — S-020 complete, S-021 ready
+2a7f596 2026-03-01 18:47:45 +0800 chore(molt): Agent U MOLT ceremony — Phase 3 complete, S-021 proposal ready, handoff to Agent V
+39e31b0 2026-03-01 18:43:40 +0800 chore(molt): Agent U MOLT ceremony — S-020 interactive combat complete, 93 tests passing
+ea1f8a7 2026-03-01 18:42:55 +0800 feat(S-020): Implement interactive AI combat with WASD controls and threat HUD
+9242663 2026-03-01 18:42:54 +0800 chore(signals): Agent U MOLT ceremony complete — Scout audit finalized
+1264460 2026-03-01 18:40:42 +0800 chore(scout-audit): Agent U Strategic Review — Phase 3 Complete
+18e9983 2026-03-01 18:39:02 +0800 chore(molt): Agent T MOLT ceremony — S-019 GameLoop integration complete, 93 tests passing, Phase 3 ready
+87d8ed7 2026-03-01 18:37:41 +0800 chore(wip): Agent T S-019 implementation completion record
+68aa4c5 2026-03-01 18:36:44 +0800 feat(S-019): Implement GameLoop integration with ECS
+0143c62 2026-03-01 18:31:09 +0800 chore(wip): Agent S S-019 design proposal record
+48e68c4 2026-03-01 18:30:12 +0800 feat(S-019): Design proposal — GameLoop integration with ECS
+0ff41f4 2026-03-01 18:27:33 +0800 chore(molt): Agent S MOLT ceremony — S-018 implementation complete, 87 tests passing, Phase 3 ready
+1131ebd 2026-03-01 18:26:46 +0800 chore(wip): Agent R S-018 Phase 2 completion record
+019cc66 2026-03-01 18:25:09 +0800 feat(S-018): Implement Combat Decision System for AI firing logic
+c69ff84 2026-03-01 18:22:59 +0800 chore(molt): Agent R MOLT ceremony — S-018 design complete, 318 LOC proposal, ready for implementation
+d468119 2026-03-01 18:17:04 +0800 chore(S-018): Design proposal — Combat Decision System
+9d35723 2026-03-01 18:16:44 +0800 chore(wip): Agent Q S-017 Phase 2 completion record
+b1bd71e 2026-03-01 18:14:31 +0800 chore(molt): Agent Q MOLT ceremony — S-017 complete, 77 tests passing, ready for S-018
+d52452e 2026-03-01 18:13:49 +0800 fix: remove redundant engine_core import in game_app/lib.rs
+b60f30c 2026-03-01 18:13:20 +0800 feat(S-017): Implement AI Perception & Targeting System
+eb2e91d 2026-03-01 18:08:21 +0800 chore(molt): Agent P MOLT ceremony — S-017 Phase 1 complete, Perception framework ready
+c287d59 2026-03-01 18:07:34 +0800 feat(S-017): Implement AI Perception component framework — Phase 1 complete
+d367d75 2026-03-01 18:05:46 +0800 chore(molt): Agent P MOLT ceremony — S-017 design complete, 299 LOC proposal, ready for implementation
+7b4330d 2026-03-01 18:04:59 +0800 chore(S-017): Design proposal — AI Perception & Targeting System
+f9b8438 2026-03-01 18:02:18 +0800 chore(molt): Agent N MOLT ceremony — S-015 complete, parallel S-016 detected, 66 tests passing, handoff ready for Agent P
+7beac86 2026-03-01 18:00:50 +0800 chore(molt): Agent N MOLT ceremony — S-015 complete, 66 tests passing, ready for S-016
+ab67253 2026-03-01 18:00:03 +0800 feat(S-015): Implement Combat System core components and mechanics
+b6de2db 2026-03-01 17:57:56 +0800 chore(WIP): record Agent N session (S-015 camera system completion + build incident)
+58139b9 2026-03-01 17:57:40 +0800 fix: revert unauthorized Combat system scaffolding in S-015 session
+f894de3 2026-03-01 17:56:14 +0800 feat(S-015): Implement interactive camera system for mech tracking
+a66a50f 2026-03-01 17:49:03 +0800 chore(molt): Agent M MOLT ceremony — context > 80%, transferring to Agent N
+06eefcf 2026-03-01 17:47:24 +0800 chore(WIP): record Agent L session (S-014 ECS runtime completion)
+6e6b982 2026-03-01 17:44:13 +0800 chore(signals): field-cycle DB final refresh (Agent L transition)
+92c4e68 2026-03-01 17:43:06 +0800 feat(S-014): Implement ECS runtime with custom minimal architecture
+c9c13e3 2026-03-01 17:32:19 +0800 chore(signals): field-cycle DB refresh post-MOLT handoff
+7742829 2026-03-01 17:28:31 +0800 chore(molt): Agent J MOLT ceremony — Phase 2 closure complete
+3c0eca2 2026-03-01 17:23:48 +0800 feat(S-010): Implement GPU rendering integration with wgpu pipeline
+128513e 2026-03-01 17:10:26 +0800 chore(signals): finalize observation database post-S-012
+f0c68b5 2026-03-01 17:10:08 +0800 chore(WIP): record Agent I session (S-012 realistic physics)
+8aadc21 2026-03-01 17:08:39 +0800 feat(S-012): implement realistic physics with Gaussian deformation falloff
+56a082e 2026-03-01 17:04:53 +0800 chore(signals): register S-011 observation (O-20260301170417-39936)
+df80d86 2026-03-01 17:04:40 +0800 chore(signals): finalize observation database post-S-011
+097035f 2026-03-01 17:04:06 +0800 chore(WIP): record Agent H session (S-011 interactive game loop)
+aeafd7a 2026-03-01 17:02:43 +0800 feat(S-011): add interactive game loop with WASD input control
+71eea59 2026-03-01 16:58:30 +0800 chore(signals): register S-010 observation (O-20260301165755-28345)
+c3f84a7 2026-03-01 16:58:19 +0800 chore(signals): finalize observation database post-S-010
+3cf437f 2026-03-01 16:57:46 +0800 chore(WIP): record Agent G session (S-010 rendering infrastructure)
+f56656c 2026-03-01 16:56:21 +0800 feat(S-010): add rendering infrastructure and visualization step
+fced4a5 2026-03-01 16:50:54 +0800 chore(signals): finalize observation database post-S-009
+06b6318 2026-03-01 16:50:44 +0800 chore(signals): register S-009 observation (O-20260301165022-13597)
+dfc3f5a 2026-03-01 16:50:33 +0800 chore(signals): refresh observation snapshots post-S-009
+bb328d7 2026-03-01 16:50:13 +0800 chore(WIP): record Agent F session (S-009 multi-mech interaction)
+c37161b 2026-03-01 16:49:08 +0800 feat(S-009): implement multi-mech terrain interaction
+9c3fc70 2026-03-01 16:47:55 +0800 chore: MOLT ceremony — agent termite-1772354815-5543 Phase 1 closure complete
+6603851 2026-03-01 16:47:16 +0800 chore: final signal decay — Phase 1 baseline complete
+51b1786 2026-03-01 16:45:27 +0800 chore: phase 1 complete checkpoint — baseline infrastructure stable
+52e7613 2026-03-01 16:39:31 +0800 chore: signal snapshot refresh — weight decay post-S-008
+eba1796 2026-03-01 16:39:12 +0800 chore(WIP): record Agent E session (S-008 mech locomotion)
+a369818 2026-03-01 16:37:11 +0800 feat(S-008): add mech locomotion to vertical slice (MechPlacement_DeformationWalk)
+252f008 2026-03-01 16:37:09 +0800 chore: MOLT ceremony — agent termite-1772353982-79665 session complete (S-001)
+efd6590 2026-03-01 16:36:40 +0800 feat(S-001): complete project mapping and documentation (PROJECT_STRUCTURE.md)
+4b94a44 2026-03-01 16:33:42 +0800 chore: signal refresh and observation consolidation post-S-007
+ae4e3b9 2026-03-01 16:31:46 +0800 chore: MOLT ceremony — agent termite-1772353539-60704 session complete (S-007)
+888bc3a 2026-03-01 16:31:15 +0800 chore(signals): DB snapshot final refresh with pheromone deposit
+d9970d9 2026-03-01 16:31:06 +0800 chore(signals): refresh snapshots post-S-007
+cd9bce8 2026-03-01 16:31:05 +0800 feat(S-007): implement first playable vertical slice (MechPlacement_DeformationProof)
+5a1d3dd 2026-03-01 16:30:55 +0800 docs(WIP): record S-007 completion; update next signals for incoming agents
+60ffa91 2026-03-01 16:30:19 +0800 feat(S-007): implement first playable vertical slice (MechPlacement_DeformationProof)
+928351e 2026-03-01 16:27:22 +0800 chore(signals): DB snapshot refresh + pheromone deposit (S-006 observation)
+8936664 2026-03-01 16:27:04 +0800 chore(signals): DB snapshot final refresh before session close
+047a1c2 2026-03-01 16:26:51 +0800 docs(WIP): final handoff summary for S-006 (Agent C completion)
+38f109c 2026-03-01 16:26:22 +0800 chore(signals): refresh snapshots post-S-006; update WIP handoff with vertical slice completion
+b9e95c9 2026-03-01 16:25:44 +0800 feat(S-006): define first playable vertical slice boundary for ReactiveArmor
+302e1d7 2026-03-01 16:24:04 +0800 chore: MOLT ceremony — agent termite-1772353285-49811 handoff complete
+2318875 2026-03-01 16:23:06 +0800 feat(S-005): establish Rust validation baseline (check/fmt/clippy/test)
+03e812b 2026-03-01 16:22:44 +0800 chore(signals): DB snapshot refresh (final field-cycle before session close)
+ab7f942 2026-03-01 16:22:34 +0800 chore(signals): final refresh after S-005; update WIP handoff summary with session statistics
+4133f9b 2026-03-01 16:22:11 +0800 chore(signals): update DB snapshots and observations from S-004 completion
+63f7573 2026-03-01 16:21:52 +0800 feat(S-005): establish and lock Rust validation baseline
+f7610b9 2026-03-01 16:20:37 +0800 chore(signals): refresh snapshots after S-003/S-004 completion; update WIP handoff notes
+f16a2d8 2026-03-01 16:19:53 +0800 feat(S-004): port Unity PartData/MechBlueprint schemas into Rust
+240a449 2026-03-01 16:19:34 +0800 docs: record session completion (S-002 + S-003 verification, S-004 ready)
+f298c5d 2026-03-01 16:17:41 +0800 feat(data-layer): implement MapConfig schema migration (S-003)
+9be85b1 2026-03-01 16:17:25 +0800 feat(S-003): port Unity MapConfig schema into Rust game_data crate
+8f41089 2026-03-01 16:15:55 +0800 fix(deps): upgrade Rust edition from 2024 to 2021 for stability
+e0576c5 2026-03-01 16:14:46 +0800 chore: update Cargo.lock and signal metadata snapshots (field-cycle post-completion)
+7a49466 2026-03-01 16:14:37 +0800 docs(WIP): record S-002 completion and session summary
+00d904f 2026-03-01 16:14:00 +0800 chore(signals): refresh DB-exported signal snapshots post-implementation
+7a97ee9 2026-03-01 16:13:43 +0800 feat(S-002): implement concrete generators and deformers
+1d2b2b3 2026-03-01 16:13:23 +0800 fix(engine_core): resolve duplicate type definitions and fix inner attribute placement
+45c3303 2026-03-01 15:34:49 +0800 chore(signals): refresh DB-exported signal snapshots
+f9043d3 2026-03-01 15:33:45 +0800 docs: record local bare remote workflow for offline version control
+cec4855 2026-03-01 15:31:45 +0800 init: bootstrap ReactiveArmor locally with termite protocol and Rust workspace
+
+# --- Unsigned commits (for IC-3 foreign body analysis) ---
+04484d8 2026-03-01 19:56:57 +0800 chore(WIP): Record Agent AC scout session — S-024 Settings System proposed
+c1cd316 2026-03-01 19:56:09 +0800 chore(signals): Agent AC scout report — S-024 Settings System proposed
+966accf 2026-03-01 19:50:33 +0800 chore(WIP): Record Agent AC session — S-023 Phase 3 completion
+63ab53d 2026-03-01 19:50:12 +0800 feat(persistence): Implement S-023 Phase 3 - Persistence UI/CLI Integration
+ed3cee8 2026-03-01 19:49:06 +0800 test(S-023-edge-cases): Comprehensive edge case testing for save/load system
+66d4229 2026-03-01 19:42:34 +0800 chore(signals): record Agent AA S-023 Phase 3 UI integration observation
+19bd003 2026-03-01 19:36:59 +0800 feat(S-023): Phase 3 - Save/Load UI Integration with pause menu
+8e71fbd 2026-03-01 19:36:35 +0800 chore(WIP): Record Agent AB session — S-023 Phase 2 refinement and verification
+25dc0d4 2026-03-01 19:32:50 +0800 chore(signals): Agent Z work record — S-023 Phase 2 integration complete, 174 tests passing
+72230ae 2026-03-01 19:31:34 +0800 feat(S-023): Phase 2 - Save/Load integration into EcsGameLoop
+05ec156 2026-03-01 19:20:37 +0800 chore(WIP): Record Agent AA session — S-023 Phase 1 integration completion
+d63dfce 2026-03-01 19:20:02 +0800 chore(signals): Agent Y work record — S-023 Phase 1 foundation complete, 168 tests passing
+963d396 2026-03-01 19:18:54 +0800 feat(S-023): Implement save/load game state persistence framework
+c5fe051 2026-03-01 19:18:48 +0800 fix(persistence): Complete serde-based serialization infrastructure for world state
+871d069 2026-03-01 19:12:23 +0800 chore(signals): Agent Z work record — S-023 Complete (all phases)
+ccd4e5a 2026-03-01 19:11:48 +0800 feat(S-023): Save/Load System Phase 3 — File-based persistence
+49ad47d 2026-03-01 19:07:58 +0800 chore(signals): Agent Y work record — S-023 Save/Load System Phases 1-2 complete
+9a778e5 2026-03-01 19:07:36 +0800 feat(S-023): Save/Load System — Game State Persistence (Phases 1-2)
+0912846 2026-03-01 19:04:03 +0800 chore(signals): Agent X work record — S-022 Physics Integration Phases 1-2 complete
+b758c72 2026-03-01 19:03:42 +0800 feat(S-022): Physics Integration — Ballistics & Trajectory systems
+0f4c2fb 2026-03-01 19:03:37 +0800 chore(molt): Agent V MOLT ceremony — S-021 victory conditions complete, 128 tests passing
+d68c8fb 2026-03-01 18:57:44 +0800 feat(S-021): Implement victory conditions and persistent leaderboard
+c368a6a 2026-03-01 18:57:20 +0800 chore(signals): Agent W work record — S-021 Multi-Target Coordination complete
+71a83bd 2026-03-01 18:57:00 +0800 feat(S-021): Multi-Target Coordination Phase 3 — Threat distribution system
+dca1773 2026-03-01 18:55:45 +0800 feat(S-021): Multi-Target Coordination — Phases 1-2 complete
+2a549a9 2026-03-01 18:50:20 +0800 chore(signals): Agent V work record — S-020 Tactical Behaviors complete
+11769df 2026-03-01 18:49:52 +0800 feat(S-020): Integrate tactical behaviors into EcsGameLoop (Phase 4)
+d8da13f 2026-03-01 18:48:50 +0800 feat(S-020): Tactical AI Behaviors — Phases 1-3 complete
+6b046ac 2026-03-01 18:48:29 +0800 chore(wip): Update session log for Agent U MOLT — S-020 complete, S-021 ready
+2a7f596 2026-03-01 18:47:45 +0800 chore(molt): Agent U MOLT ceremony — Phase 3 complete, S-021 proposal ready, handoff to Agent V
+39e31b0 2026-03-01 18:43:40 +0800 chore(molt): Agent U MOLT ceremony — S-020 interactive combat complete, 93 tests passing
+ea1f8a7 2026-03-01 18:42:55 +0800 feat(S-020): Implement interactive AI combat with WASD controls and threat HUD
+9242663 2026-03-01 18:42:54 +0800 chore(signals): Agent U MOLT ceremony complete — Scout audit finalized
+1264460 2026-03-01 18:40:42 +0800 chore(scout-audit): Agent U Strategic Review — Phase 3 Complete
+18e9983 2026-03-01 18:39:02 +0800 chore(molt): Agent T MOLT ceremony — S-019 GameLoop integration complete, 93 tests passing, Phase 3 ready
+87d8ed7 2026-03-01 18:37:41 +0800 chore(wip): Agent T S-019 implementation completion record
+68aa4c5 2026-03-01 18:36:44 +0800 feat(S-019): Implement GameLoop integration with ECS
+0143c62 2026-03-01 18:31:09 +0800 chore(wip): Agent S S-019 design proposal record
+48e68c4 2026-03-01 18:30:12 +0800 feat(S-019): Design proposal — GameLoop integration with ECS
+0ff41f4 2026-03-01 18:27:33 +0800 chore(molt): Agent S MOLT ceremony — S-018 implementation complete, 87 tests passing, Phase 3 ready
+1131ebd 2026-03-01 18:26:46 +0800 chore(wip): Agent R S-018 Phase 2 completion record
+019cc66 2026-03-01 18:25:09 +0800 feat(S-018): Implement Combat Decision System for AI firing logic
+c69ff84 2026-03-01 18:22:59 +0800 chore(molt): Agent R MOLT ceremony — S-018 design complete, 318 LOC proposal, ready for implementation
+d468119 2026-03-01 18:17:04 +0800 chore(S-018): Design proposal — Combat Decision System
+9d35723 2026-03-01 18:16:44 +0800 chore(wip): Agent Q S-017 Phase 2 completion record
+b1bd71e 2026-03-01 18:14:31 +0800 chore(molt): Agent Q MOLT ceremony — S-017 complete, 77 tests passing, ready for S-018
+d52452e 2026-03-01 18:13:49 +0800 fix: remove redundant engine_core import in game_app/lib.rs
+b60f30c 2026-03-01 18:13:20 +0800 feat(S-017): Implement AI Perception & Targeting System
+eb2e91d 2026-03-01 18:08:21 +0800 chore(molt): Agent P MOLT ceremony — S-017 Phase 1 complete, Perception framework ready
+c287d59 2026-03-01 18:07:34 +0800 feat(S-017): Implement AI Perception component framework — Phase 1 complete
+d367d75 2026-03-01 18:05:46 +0800 chore(molt): Agent P MOLT ceremony — S-017 design complete, 299 LOC proposal, ready for implementation
+7b4330d 2026-03-01 18:04:59 +0800 chore(S-017): Design proposal — AI Perception & Targeting System
+f9b8438 2026-03-01 18:02:18 +0800 chore(molt): Agent N MOLT ceremony — S-015 complete, parallel S-016 detected, 66 tests passing, handoff ready for Agent P
+7beac86 2026-03-01 18:00:50 +0800 chore(molt): Agent N MOLT ceremony — S-015 complete, 66 tests passing, ready for S-016
+ab67253 2026-03-01 18:00:03 +0800 feat(S-015): Implement Combat System core components and mechanics
+b6de2db 2026-03-01 17:57:56 +0800 chore(WIP): record Agent N session (S-015 camera system completion + build incident)
+58139b9 2026-03-01 17:57:40 +0800 fix: revert unauthorized Combat system scaffolding in S-015 session
+f894de3 2026-03-01 17:56:14 +0800 feat(S-015): Implement interactive camera system for mech tracking
+a66a50f 2026-03-01 17:49:03 +0800 chore(molt): Agent M MOLT ceremony — context > 80%, transferring to Agent N
+06eefcf 2026-03-01 17:47:24 +0800 chore(WIP): record Agent L session (S-014 ECS runtime completion)
+6e6b982 2026-03-01 17:44:13 +0800 chore(signals): field-cycle DB final refresh (Agent L transition)
+92c4e68 2026-03-01 17:43:06 +0800 feat(S-014): Implement ECS runtime with custom minimal architecture
+c9c13e3 2026-03-01 17:32:19 +0800 chore(signals): field-cycle DB refresh post-MOLT handoff
+7742829 2026-03-01 17:28:31 +0800 chore(molt): Agent J MOLT ceremony — Phase 2 closure complete
+3c0eca2 2026-03-01 17:23:48 +0800 feat(S-010): Implement GPU rendering integration with wgpu pipeline
+128513e 2026-03-01 17:10:26 +0800 chore(signals): finalize observation database post-S-012
+f0c68b5 2026-03-01 17:10:08 +0800 chore(WIP): record Agent I session (S-012 realistic physics)
+8aadc21 2026-03-01 17:08:39 +0800 feat(S-012): implement realistic physics with Gaussian deformation falloff
+56a082e 2026-03-01 17:04:53 +0800 chore(signals): register S-011 observation (O-20260301170417-39936)
+df80d86 2026-03-01 17:04:40 +0800 chore(signals): finalize observation database post-S-011
+097035f 2026-03-01 17:04:06 +0800 chore(WIP): record Agent H session (S-011 interactive game loop)
+aeafd7a 2026-03-01 17:02:43 +0800 feat(S-011): add interactive game loop with WASD input control
+71eea59 2026-03-01 16:58:30 +0800 chore(signals): register S-010 observation (O-20260301165755-28345)
+c3f84a7 2026-03-01 16:58:19 +0800 chore(signals): finalize observation database post-S-010
+3cf437f 2026-03-01 16:57:46 +0800 chore(WIP): record Agent G session (S-010 rendering infrastructure)
+f56656c 2026-03-01 16:56:21 +0800 feat(S-010): add rendering infrastructure and visualization step
+fced4a5 2026-03-01 16:50:54 +0800 chore(signals): finalize observation database post-S-009
+06b6318 2026-03-01 16:50:44 +0800 chore(signals): register S-009 observation (O-20260301165022-13597)
+dfc3f5a 2026-03-01 16:50:33 +0800 chore(signals): refresh observation snapshots post-S-009
+bb328d7 2026-03-01 16:50:13 +0800 chore(WIP): record Agent F session (S-009 multi-mech interaction)
+c37161b 2026-03-01 16:49:08 +0800 feat(S-009): implement multi-mech terrain interaction
+9c3fc70 2026-03-01 16:47:55 +0800 chore: MOLT ceremony — agent termite-1772354815-5543 Phase 1 closure complete
+6603851 2026-03-01 16:47:16 +0800 chore: final signal decay — Phase 1 baseline complete
+51b1786 2026-03-01 16:45:27 +0800 chore: phase 1 complete checkpoint — baseline infrastructure stable
+52e7613 2026-03-01 16:39:31 +0800 chore: signal snapshot refresh — weight decay post-S-008
+eba1796 2026-03-01 16:39:12 +0800 chore(WIP): record Agent E session (S-008 mech locomotion)
+a369818 2026-03-01 16:37:11 +0800 feat(S-008): add mech locomotion to vertical slice (MechPlacement_DeformationWalk)
+252f008 2026-03-01 16:37:09 +0800 chore: MOLT ceremony — agent termite-1772353982-79665 session complete (S-001)
+efd6590 2026-03-01 16:36:40 +0800 feat(S-001): complete project mapping and documentation (PROJECT_STRUCTURE.md)
+4b94a44 2026-03-01 16:33:42 +0800 chore: signal refresh and observation consolidation post-S-007
+ae4e3b9 2026-03-01 16:31:46 +0800 chore: MOLT ceremony — agent termite-1772353539-60704 session complete (S-007)
+888bc3a 2026-03-01 16:31:15 +0800 chore(signals): DB snapshot final refresh with pheromone deposit
+d9970d9 2026-03-01 16:31:06 +0800 chore(signals): refresh snapshots post-S-007
+cd9bce8 2026-03-01 16:31:05 +0800 feat(S-007): implement first playable vertical slice (MechPlacement_DeformationProof)
+5a1d3dd 2026-03-01 16:30:55 +0800 docs(WIP): record S-007 completion; update next signals for incoming agents
+60ffa91 2026-03-01 16:30:19 +0800 feat(S-007): implement first playable vertical slice (MechPlacement_DeformationProof)
+928351e 2026-03-01 16:27:22 +0800 chore(signals): DB snapshot refresh + pheromone deposit (S-006 observation)
+8936664 2026-03-01 16:27:04 +0800 chore(signals): DB snapshot final refresh before session close
+047a1c2 2026-03-01 16:26:51 +0800 docs(WIP): final handoff summary for S-006 (Agent C completion)
+38f109c 2026-03-01 16:26:22 +0800 chore(signals): refresh snapshots post-S-006; update WIP handoff with vertical slice completion
+b9e95c9 2026-03-01 16:25:44 +0800 feat(S-006): define first playable vertical slice boundary for ReactiveArmor
+302e1d7 2026-03-01 16:24:04 +0800 chore: MOLT ceremony — agent termite-1772353285-49811 handoff complete
+2318875 2026-03-01 16:23:06 +0800 feat(S-005): establish Rust validation baseline (check/fmt/clippy/test)
+03e812b 2026-03-01 16:22:44 +0800 chore(signals): DB snapshot refresh (final field-cycle before session close)
+ab7f942 2026-03-01 16:22:34 +0800 chore(signals): final refresh after S-005; update WIP handoff summary with session statistics
+4133f9b 2026-03-01 16:22:11 +0800 chore(signals): update DB snapshots and observations from S-004 completion
+63f7573 2026-03-01 16:21:52 +0800 feat(S-005): establish and lock Rust validation baseline
+f7610b9 2026-03-01 16:20:37 +0800 chore(signals): refresh snapshots after S-003/S-004 completion; update WIP handoff notes
+f16a2d8 2026-03-01 16:19:53 +0800 feat(S-004): port Unity PartData/MechBlueprint schemas into Rust
+240a449 2026-03-01 16:19:34 +0800 docs: record session completion (S-002 + S-003 verification, S-004 ready)
+f298c5d 2026-03-01 16:17:41 +0800 feat(data-layer): implement MapConfig schema migration (S-003)
+9be85b1 2026-03-01 16:17:25 +0800 feat(S-003): port Unity MapConfig schema into Rust game_data crate
+8f41089 2026-03-01 16:15:55 +0800 fix(deps): upgrade Rust edition from 2024 to 2021 for stability
+e0576c5 2026-03-01 16:14:46 +0800 chore: update Cargo.lock and signal metadata snapshots (field-cycle post-completion)
+7a49466 2026-03-01 16:14:37 +0800 docs(WIP): record S-002 completion and session summary
+00d904f 2026-03-01 16:14:00 +0800 chore(signals): refresh DB-exported signal snapshots post-implementation
+7a97ee9 2026-03-01 16:13:43 +0800 feat(S-002): implement concrete generators and deformers
+1d2b2b3 2026-03-01 16:13:23 +0800 fix(engine_core): resolve duplicate type definitions and fix inner attribute placement
+45c3303 2026-03-01 15:34:49 +0800 chore(signals): refresh DB-exported signal snapshots
+f9043d3 2026-03-01 15:33:45 +0800 docs: record local bare remote workflow for offline version control
+cec4855 2026-03-01 15:31:45 +0800 init: bootstrap ReactiveArmor locally with termite protocol and Rust workspace
