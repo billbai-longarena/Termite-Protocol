@@ -1,0 +1,9 @@
+id: O-20260301074750-71405
+pattern: "field-arrive fixes empty unresolved parsing from DB pheromone rows"
+context: "protocol arrival parsing"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Adjusted field-arrive to read unresolved and predecessor_useful via dedicated scalar SQL queries; prevents whitespace-field collapse from rendering empty unresolved as Handoff: 1.

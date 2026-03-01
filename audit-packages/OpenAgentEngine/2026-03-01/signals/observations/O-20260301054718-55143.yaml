@@ -1,0 +1,9 @@
+id: O-20260301054718-55143
+pattern: "S-018 bug confirmed: invite redeem is non-atomic and allows over-redemption"
+context: "apps/gateway /invite/:inviteId/redeem"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Repro (2026-02-28): 12 concurrent-redeem attempts against maxRedemptions=1 invites resulted in double success every time (RACE_SUMMARY runs=12 double_success=12). Expected one 201 + one 409 invite_exhausted; actual two 201 responses with two forks created from one invite.

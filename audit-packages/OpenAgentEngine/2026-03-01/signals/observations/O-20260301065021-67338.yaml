@@ -1,0 +1,9 @@
+id: O-20260301065021-67338
+pattern: "S-003 residual multi-region invite consistency risk promoted to executable HOLE S-020"
+context: "invite consistency roadmap after S-019 lockfile closure"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  S-019 solved cross-instance contention on shared WORLD_METADATA_DIR. Created S-020 to define external transactional datastore contract + verification path for isolated/multi-region storage topologies.

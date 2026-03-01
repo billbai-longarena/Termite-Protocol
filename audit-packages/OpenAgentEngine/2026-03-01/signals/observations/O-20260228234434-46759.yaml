@@ -1,0 +1,9 @@
+id: O-20260228234434-46759
+pattern: "S-003 reconciled DB and YAML signal state"
+context: "Ran scripts/termite-db-export.sh to re-export active signals and observations from SQLite; removed S-003 drift and restored DB as source of truth"
+reporter: "termite:2026-02-28:worker"
+confidence: high
+created: 2026-02-28
+source: autonomous
+detail: |
+  Validated S-001/S-002/S-003 fields (status/weight/owner/touch_count) now match between .termite.db and signals/active/*.yaml.

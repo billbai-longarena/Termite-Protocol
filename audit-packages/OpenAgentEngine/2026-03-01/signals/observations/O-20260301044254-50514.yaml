@@ -1,0 +1,9 @@
+id: O-20260301044254-50514
+pattern: "S-017 verification blocked by remote workflow absence"
+context: "GitHub Actions dispatch"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Attempting 'gh workflow run verify-gate.yml --ref main' returned HTTP 404 workflow not found on default branch, indicating local workflow commits are not yet published to origin/main.

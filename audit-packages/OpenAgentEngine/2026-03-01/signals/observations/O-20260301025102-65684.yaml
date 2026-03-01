@@ -1,0 +1,9 @@
+id: O-20260301025102-65684
+pattern: "S-013 raised for post-S-012 product capability continuity"
+context: "Next implementation queue"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Created S-013 HOLE to advance from infrastructure hardening to substrate capabilities: moment crystallization, world forking, and lineage metadata baseline.

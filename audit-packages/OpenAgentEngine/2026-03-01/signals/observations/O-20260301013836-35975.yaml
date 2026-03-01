@@ -1,0 +1,9 @@
+id: O-20260301013836-35975
+pattern: "S-007 raised for multi-world WS routing next phase"
+context: "After closing S-006, created S-007 HOLE to track world-scoped subscription/routing work"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  S-007 sets phase-3 target: route runtime deltas by worldId and isolate per-world WS channels.

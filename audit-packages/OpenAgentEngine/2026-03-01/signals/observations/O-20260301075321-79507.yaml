@@ -1,0 +1,9 @@
+id: O-20260301075321-79507
+pattern: "S-022 seeded for non-filesystem transactional invite store backend"
+context: "phase-15 follow-up seeding"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Seeded S-022 as the next executable HOLE after S-021 closure. Scope targets PostgreSQL-first transactional invite store adapter and a future verify:s022 / phase-16 gate that preserves [201,409] consistency across gateways without shared filesystem dependency.

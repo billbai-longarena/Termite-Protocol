@@ -1,0 +1,9 @@
+id: O-20260301020126-74131
+pattern: "S-007 multi-world routing implemented and verified"
+context: "Gateway world-scoped WS subscriptions + runtime worldId emission + replay isolation verification"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Implemented /ws/world?worldId=... scoped subscriptions, runtime WORLD_ID/TICK_INTERVAL_MS controls, and verify-s007-routing script confirming per-world WS and replay isolation.

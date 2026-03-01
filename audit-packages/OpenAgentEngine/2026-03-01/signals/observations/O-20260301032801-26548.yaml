@@ -1,0 +1,9 @@
+id: O-20260301032801-26548
+pattern: "S-014 seeded for branch-protection governance follow-through"
+context: "After S-013 closure, next queue targets repository settings alignment with verify:gate"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Created HOLE S-014 to track required-check and branch-protection setup runbook, since enforcement lives in repository settings outside code.

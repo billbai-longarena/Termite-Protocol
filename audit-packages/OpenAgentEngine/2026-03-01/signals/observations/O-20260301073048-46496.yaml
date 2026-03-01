@@ -1,0 +1,9 @@
+id: O-20260301073048-46496
+pattern: "S-021 external invite store adapter shipped and quality-gated"
+context: "apps/gateway + verify gate"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Gateway invite persistence now supports WORLD_INVITE_STORE_DIR with lock default aligned to invite store; verify:s021 and verify:gate phase-15 pass with concurrent redeem statuses [201,409] across isolated metadata roots.

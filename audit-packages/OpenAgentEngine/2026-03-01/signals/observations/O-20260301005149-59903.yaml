@@ -1,0 +1,9 @@
+id: O-20260301005149-59903
+pattern: "claim release preserves done signal status"
+context: "Patched scripts/termite-db.sh db_claim_release to only reopen signals when current status is claimed"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Regression reproduced with temp signal S-999 and verified post-release status remains done.

@@ -1,0 +1,9 @@
+id: O-20260301021724-9820
+pattern: "S-010 raised for AI Presence continuous subscription baseline"
+context: "Post-S-009 queue continuity"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Created S-010 HOLE to implement continuous world.delta consumption in apps/ai-presence, aligning with tech-stack phase path after CI quality gate stabilization.
