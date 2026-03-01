@@ -1,0 +1,9 @@
+id: O-20260301023548-38215
+pattern: "S-010 ai-presence continuous subscription baseline implemented and verified"
+context: "apps/ai-presence runtime integration"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Implemented background world-scoped WS subscription with reconnect, role-state derivation, /presence/state endpoints, and verify:s010 end-to-end check (gateway+runtime+ai-presence).

@@ -1,0 +1,27 @@
+# Audit Package Metadata
+# This file describes the context of the export.
+# Protocol Nurse: read this first to understand the project context.
+
+project_name: "OpenAgentEngine"
+export_date: "2026-03-01T02:46:08Z"
+protocol_version: "v10.0"
+kernel_version: "v10.0"
+
+# Duration & Volume
+run_duration_days: 0
+total_commits: 54
+signed_commits: 3
+signature_ratio_last_50: 0.00
+
+# Signal Inventory
+active_signals: 0
+pending_observations: 74
+active_rules: 0
+archived_items: 22
+pheromone_snapshots: 44
+
+# Current State
+current_branch: "main"
+current_alarm: false
+current_wip: "absent"
+current_build: "unknown"

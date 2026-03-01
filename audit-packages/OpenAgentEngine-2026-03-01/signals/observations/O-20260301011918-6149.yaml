@@ -1,0 +1,9 @@
+id: O-20260301011918-6149
+pattern: "S-006 raised for phase-2 persistence and replay baseline"
+context: "Created new HOLE signal from known limitations after S-005 completion; phase-2 now has explicit execution target"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  S-006 covers world.delta event log persistence + single-world replay path. This restores implementation-driven worker urgency for next cycle.

@@ -1,0 +1,9 @@
+id: O-20260301061223-980
+pattern: "S-018 hardening compile fix applied and verified"
+context: "phase-13 invite lock typing"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Fixed withInviteRedeemLock resolver typing to avoid TS never optional-call compile error; gateway build + verify:s018 + verify:gate all pass with concurrent redeem assertion [201,409].

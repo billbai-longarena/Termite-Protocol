@@ -1,0 +1,9 @@
+id: O-20260301001922-972
+pattern: "S-003 reconciled occupancy state for active S-004 claim"
+context: "Re-exported DB to YAML and updated BLACKBOARD Signals/Hotspot to reflect S-004 claimed owner"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  This removes open/unassigned stale view while S-004 is actively claimed, reducing cross-agent collision risk.

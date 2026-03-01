@@ -1,0 +1,12 @@
+id: O-003
+pattern: "audit-package 打包脚本产生 signals/signals/ 嵌套重复目录"
+context: "audit-package-2026-02-28.tar.gz 中 signals/ 下又嵌套了完整的 signals/ 子树"
+reporter: "termite:2026-03-01:nurse"
+confidence: high
+created: 2026-03-01
+detail: |
+  审查 ReactArmor 导出的 audit-package-2026-02-28 时发现，
+  tar 包内 signals/ 目录下存在镜像嵌套：signals/signals/active/、
+  signals/signals/observations/、signals/signals/archive/ 与上层完全重复。
+  疑似 field-submit-audit.sh 或相关打包逻辑在 tar 时重复包含了 signals 目录。
+  包体积因此膨胀约一倍。建议排查打包脚本中的路径拼接逻辑。

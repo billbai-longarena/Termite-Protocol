@@ -1,0 +1,9 @@
+id: O-20260301020140-74704
+pattern: "S-008 raised to prevent post-S-007 verification drift"
+context: "Next implementation queue"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Created HOLE S-008 for unified build/test quality gate so multi-phase runtime/gateway baselines stay continuously verifiable in one command.

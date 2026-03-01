@@ -1,0 +1,9 @@
+id: O-20260301023722-41091
+pattern: "S-011 DB export now preserves narrative YAML context"
+context: "termite-db-export snapshot+merge keeps vision/description/detail blocks when DB payload is schema-only or placeholder"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Updated scripts/termite-db-export.sh to snapshot existing YAML and reattach selected narrative blocks after DB export; updated scripts/termite-db.sh observation export to treat standalone '|' detail as placeholder so previous rich detail can be preserved.

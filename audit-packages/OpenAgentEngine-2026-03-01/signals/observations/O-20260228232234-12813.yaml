@@ -1,0 +1,9 @@
+id: O-20260228232234-12813
+pattern: "S-002 charter-soul drift in AGENTS.md"
+context: "Aligned Project Overview with CHARTER worldview (C-005/C-033/C-305/C-400) and added worldview doc pointer"
+reporter: "termite:2026-02-28:worker"
+confidence: high
+created: 2026-02-28
+source: autonomous
+detail: |
+  Updated AGENTS.md Charter Soul from game-centric wording to world-substrate wording; corrected principle count 23->33.

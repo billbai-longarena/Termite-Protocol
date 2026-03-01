@@ -10,6 +10,5 @@ node_modules/
 .field-breath
 .pheromone
 
-# Audit packages (exported, not stored in project repo)
+# Audit package exports (host project ephemeral output)
 audit-package-*/
-audit-packages/

@@ -1,0 +1,9 @@
+id: O-20260301092557-48838
+pattern: "S-003 README worldview baseline sync landed"
+context: "root README and BLACKBOARD and S-003 signal alignment"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  README now foregrounds world-substrate anchors and current baseline capabilities instead of phase-0-only framing; verified with verify:workspace verify:s014 and verify:gate.

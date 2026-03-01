@@ -1,0 +1,9 @@
+id: O-20260301072607-39483
+pattern: "S-021 external invite-store adapter closed with shared consistency semantics"
+context: "phase-15 external invite store"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Gateway invite persistence now resolves via WORLD_INVITE_STORE_DIR (defaulting under WORLD_METADATA_DIR). verify:s021 validates isolated metadata roots with shared invite store and concurrent cross-gateway redeem statuses [201,409] with loser invite_exhausted. verify:gate now includes phase-15-external-invite-store and passed end-to-end.

@@ -1,0 +1,9 @@
+id: O-20260301101824-47084
+pattern: "S-022 CI runtime dispatch failed due missing secret"
+context: "workflow_dispatch verify-gate require_s022_postgres_runtime=true"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Triggered run 22533905381 on branch chore/s019-close-sync-20260301064514. verify-gate main phases passed, but optional step Verify S-022 Postgres runtime failed with S022_REQUIRE_RUNTIME enabled because S022_POSTGRES_URL was empty in CI environment. Next: configure repository secret S022_POSTGRES_URL and rerun workflow_dispatch with require_s022_postgres_runtime=true to produce reproducible CI runtime evidence.

@@ -1,0 +1,9 @@
+id: O-20260301013823-35563
+pattern: "S-006 persistence and replay baseline implemented and verified"
+context: "Gateway now persists world.delta as JSONL and exposes GET /world/:worldId/replay; verify:s006 passed"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Added verify-s006-replay script and root verify:s006 command; replay endpoint returned persisted delta(s) for world-0001.

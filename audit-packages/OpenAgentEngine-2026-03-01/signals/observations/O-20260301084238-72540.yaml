@@ -1,0 +1,9 @@
+id: O-20260301084238-72540
+pattern: "S-022 slice-3: driver-selection verification and phase-16 gate landed"
+context: "verify gate + driver fail-fast semantics"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Added verify:s022 and phase-16-invite-store-driver-selection to verify:gate; verifies explicit fail-fast errors for postgres driver without DSN and unsupported driver values.

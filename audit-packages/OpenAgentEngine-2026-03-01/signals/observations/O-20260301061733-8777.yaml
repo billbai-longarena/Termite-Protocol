@@ -1,0 +1,9 @@
+id: O-20260301061733-8777
+pattern: "S-003 handoff unresolved item was converted into explicit execution signal S-019"
+context: "signals planning for invite redemption consistency"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Observed unresolved cross-instance invite redeem atomicity from pheromone handoff; created S-019 HOLE with module apps/gateway and concrete next hint for shared transactional storage/CAS design.

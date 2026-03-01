@@ -1,0 +1,9 @@
+id: O-20260301024344-53516
+pattern: "S-012 quality gate now covers S-010 and S-011"
+context: "Extended verify:gate and README pass criteria; added verify-s011-export-preserve regression script"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Added scripts/verify-s011-export-preserve.mjs, wired package.json verify:s011, extended scripts/verify-quality-gate.mjs with phase-4-ai-presence and phase-6-export-preserve, and verified full gate passes.

@@ -1,0 +1,9 @@
+id: O-20260301090124-5156
+pattern: "S-022 runtime harness landed for Postgres backend"
+context: "verify:s021 driver toggle + verify:s022:runtime command + gate remains phase-16 fail-fast"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Added scripts/verify-s022-postgres-runtime.mjs; verify:s021 now supports S021_INVITE_STORE_DRIVER=postgres with S021_POSTGRES_URL; runtime script runs dual-gateway scenario when DSN exists and emits explicit skip marker otherwise. Remaining boundary is real shared Postgres DSN execution evidence for closure.

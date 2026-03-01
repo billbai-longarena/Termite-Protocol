@@ -1,0 +1,9 @@
+id: O-20260301053913-40630
+pattern: "S-018 invite redeem path has potential concurrent over-redemption race"
+context: "apps/gateway invite redeem"
+reporter: "termite:2026-03-01:worker"
+confidence: medium
+created: 2026-03-01
+source: autonomous
+detail: |
+  In /invite/:inviteId/redeem, invite is loaded then checked (remainingRedemptions>0) then persisted with redemptionCount+1. Without file-level lock or CAS, concurrent redeem requests could both pass the check and exceed maxRedemptions.

@@ -96,7 +96,7 @@
 - date: 2026-03-01
   type: finding-open
   id: F-002
-  status: open
+  status: fixed
   title: "install.sh does not auto-install git hooks"
   source: "OAE audit Finding 2"
   severity: high
@@ -104,6 +104,15 @@
     install.sh copies hooks to scripts/hooks/ but does not run
     scripts/hooks/install.sh to place them in .git/hooks/.
     Result: 94.4% of OAE commits had no termite signature.
+  fixed_by: "install.sh lines 299-330 already contain inline hook installation logic"
+  fixed_date: 2026-03-01
+  notes: >
+    Nurse review found that install.sh already has a dedicated
+    'Install Git Hooks' section that copies hooks to .git/hooks/
+    and sets permissions. The finding was recorded after the OAE
+    audit but the fix predates the finding registration. OAE's
+    low signature ratio was due to running an older install.sh
+    version. New installations are not affected.
 
 - date: 2026-03-01
   type: finding-open
@@ -119,13 +128,15 @@
 - date: 2026-03-01
   type: finding-open
   id: F-004
-  status: open
+  status: fixed
   title: ".gitignore blocks audit-packages/ in protocol source repo"
   source: "OAE audit Finding 5"
   severity: medium
   description: >
     Requires git add -f when committing audit packages to protocol
     source repo.
+  fixed_by: "Removed audit-packages/ from protocol source repo .gitignore"
+  fixed_date: 2026-03-01
 
 - date: 2026-03-01
   type: finding-open
@@ -149,3 +160,38 @@
   description: >
     Script assumes fork-based workflow. When host project owner =
     protocol source repo owner, gh repo fork is a no-op and PR fails.
+
+- date: 2026-03-01
+  type: finding-open
+  id: F-007
+  status: fixed
+  title: "field-export-audit.sh cp -R creates nested signals/signals/ directory"
+  source: "0227/signals/observations/O-003.yaml (ReactArmor audit)"
+  severity: medium
+  description: >
+    cp -R "$SIGNALS_DIR" "${OUT_DIR}/signals" can create
+    signals/signals/ nesting when the target directory already exists.
+    Audit package size doubles due to duplicate signal tree.
+    Cross-colony signal: ReactArmor (O-003) + independent path analysis.
+  affected_scripts:
+    - field-export-audit.sh
+  fixed_by: "Added rm -rf before cp -R to ensure clean target directory"
+  fixed_date: 2026-03-01
+
+# ── Nurse batch fix (2026-03-01 session 2) ──────────────────────────
+
+- date: 2026-03-01
+  type: template-fix
+  id: TF-002
+  status: fixed
+  title: "Nurse batch: O-003 nesting fix + .gitignore fix + F-002 verification"
+  trigger: "Nurse self-check identified 3 actionable items"
+  closes: ["F-002", "F-004", "F-007"]
+  files_changed:
+    - templates/scripts/field-export-audit.sh
+    - .gitignore
+  notes: >
+    F-002: Verified install.sh already has inline hook installation (lines 299-330).
+    F-004: Removed audit-packages/ from protocol source repo .gitignore.
+    F-007 (O-003): Fixed cp -R nesting bug in field-export-audit.sh by adding
+    rm -rf before copy to prevent signals/signals/ duplication.

@@ -1,0 +1,9 @@
+id: O-20260301002258-6683
+pattern: "S-003 fixed stale claimed-state residue in YAML after release"
+context: "Released S-003 and immediately re-exported DB->YAML to ensure S-003 file reflects open/unassigned state"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Verified DB and signals/active/S-003.yaml now both show status=open, owner=unassigned, touch_count=7.

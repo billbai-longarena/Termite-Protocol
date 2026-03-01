@@ -1,0 +1,9 @@
+id: O-20260301050431-85123
+pattern: "S-017 closed with first protected main run evidence"
+context: "github actions verify-gate"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  PR #1 merged as fc02c652c164acb29486a24ce3567e0cf49e4f62. Push run https://github.com/billbai-longarena/OpenAgentEngine/actions/runs/22528876571 succeeded with S015_REQUIRE_LIVE_BRANCH_PROTECTION=true and phase-10 line: mode=required live_check=aligned. Branch protection was restored to required_approving_review_count=1 after merge.

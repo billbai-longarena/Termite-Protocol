@@ -55,14 +55,16 @@ docs/plans/             ← Design documents for major features.
 ### Known Issues
 
 1. ~~`grep -c` returns exit code 1 when count is 0 under `set -euo pipefail`~~ **FIXED** — grep-c double-output, pipe-subshell variable loss, and SIGPIPE bugs fixed across field-export-audit.sh, field-cycle.sh, field-deposit.sh (first feedback loop closure: 0227 O-001 + OAE audit → Nurse → template fix)
-2. `install.sh` does not auto-run `scripts/hooks/install.sh` — git hooks sit in `scripts/hooks/` but never reach `.git/hooks/` unless manually installed
+2. ~~`install.sh` does not auto-run `scripts/hooks/install.sh`~~ **FIXED** — install.sh already has inline hook installation (lines 299-330) that copies hooks to `.git/hooks/`. OAE's low signature ratio was due to running an older install.sh version.
 3. `field-submit-audit.sh` is not included in the standard install flow
-4. `.gitignore` blocks `audit-packages/` directory, requiring `git add -f`
+4. ~~`.gitignore` blocks `audit-packages/` directory~~ **FIXED** — removed `audit-packages/` from protocol source repo `.gitignore`
 5. `field-export-audit.sh` does not match BLACKBOARD section headers correctly
 6. Observation → template fix feedback loop is entirely manual (no automated path from host project O-xxx to protocol template patches)
+7. ~~`field-export-audit.sh` `cp -R` creates nested `signals/signals/` directory~~ **FIXED** — added `rm -rf` before `cp -R` to prevent nesting when target exists (cross-colony signal: ReactArmor O-003)
 
 ### Recent Work
 
+- **Nurse batch fix TF-002** — closed F-002 (hooks verified), F-004 (.gitignore fixed), F-007/O-003 (cp -R nesting fixed in field-export-audit.sh)
 - **Terminology unification** (`docs/plans/2026-03-01-terminology-unification-design.md`) — unified referential terms across all files
 - **grep-c feedback loop MVP** (`docs/plans/2026-03-01-grep-c-feedback-loop-mvp-design.md`) — first complete feedback loop closure: 0227 O-001 + OAE audit → Nurse → template fix
 - Cross-colony feedback loop design (`docs/plans/2026-02-28-cross-colony-feedback-loop-*`)

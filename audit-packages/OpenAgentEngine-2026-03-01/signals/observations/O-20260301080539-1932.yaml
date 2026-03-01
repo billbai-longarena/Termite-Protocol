@@ -1,0 +1,9 @@
+id: O-20260301080539-1932
+pattern: "S-022 slice-1: gateway invite-store driver wiring completed"
+context: "apps/gateway invite store abstraction"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Added WORLD_INVITE_STORE_DRIVER selection and InviteStore abstraction in gateway; current file/filesystem driver preserves behavior, postgres driver now fails fast as explicit unimplemented target for next slice. verify:s021 and verify:gate passed with unchanged [201,409] semantics.

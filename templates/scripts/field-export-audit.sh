@@ -92,7 +92,9 @@ if has_db; then
   archive_count=$(db_exec "SELECT COUNT(*) FROM archive;" 2>/dev/null || echo "0")
   log_info "  rules: ${rule_count}, observations: ${obs_count}, active: ${active_count}, archived: ${archive_count} (from DB)"
 elif [ -d "$SIGNALS_DIR" ]; then
-  # Copy entire signals tree, preserving structure
+  # Copy entire signals tree, preserving structure.
+  # Remove target first to prevent cp -R nesting (signals/signals/) when target exists.
+  rm -rf "${OUT_DIR}/signals"
   cp -R "$SIGNALS_DIR" "${OUT_DIR}/signals"
 
   # Remove any claim locks (ephemeral, not useful for audit)

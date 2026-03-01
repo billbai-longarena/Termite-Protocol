@@ -1,0 +1,9 @@
+id: O-20260301041956-15909
+pattern: "S-015 branch-protection drift audit implemented with optional live GitHub API mode"
+context: "phase-10 governance verifier"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  verify:s015 now compares local policy/template and performs live branch-protection drift check when token+repo are available; verify:gate includes phase-10 step.
