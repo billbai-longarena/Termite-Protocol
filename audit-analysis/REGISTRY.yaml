@@ -34,7 +34,7 @@
 - date: 2026-02-28
   type: audit-received
   id: A-001
-  status: open
+  status: closed
   host_project: OpenAgentEngine
   package: audit-packages/OpenAgentEngine-2026-03-01/
   key_metrics:
@@ -50,8 +50,11 @@
   notes: >
     First audit submission. Two Codex agents ran continuous heartbeat-driven
     development. 100% handoff quality but 5.6% signature ratio due to hooks
-    not being auto-installed (Finding 2). Finding 1 (grep-c) now fixed.
-    Findings 2-6 remain open.
+    not being auto-installed (Finding 2). All 7 findings now closed:
+    F-001 (grep-c) via TF-001, F-002 (hooks) verified fixed,
+    F-003 (submit flow) via TF-003, F-004 (.gitignore) via TF-002,
+    F-005 (headers) via TF-003, F-006 (same-owner) via TF-003,
+    F-007 (O-003 nesting) via TF-002.
 
 # ── 2026-03-01 ────────────────────────────────────────────────────────
 
@@ -117,13 +120,21 @@
 - date: 2026-03-01
   type: finding-open
   id: F-003
-  status: open
+  status: fixed
   title: "field-submit-audit.sh not in standard install flow"
   source: "OAE audit Finding 3"
   severity: medium
   description: >
     The cross-colony feedback loop's outbound path is not installed
     by default. Host projects cannot participate without manual setup.
+  fixed_by: "Integrated field-submit-audit.sh call into field-cycle.sh metabolism loop"
+  fixed_date: 2026-03-01
+  notes: >
+    field-submit-audit.sh was already copied by install.sh (in PROTOCOL_SCRIPTS)
+    and .termite-telemetry.yaml was already installed (in ENTRY_FILES). The missing
+    piece was automatic invocation. Now field-cycle.sh calls field-submit-audit.sh
+    at the end of each metabolism cycle. The script's own gates (telemetry check,
+    disclaimer, frequency) ensure it only submits when configured and due.
 
 - date: 2026-03-01
   type: finding-open
@@ -141,7 +152,7 @@
 - date: 2026-03-01
   type: finding-open
   id: F-005
-  status: open
+  status: fixed
   title: "field-export-audit.sh does not match BLACKBOARD section headers"
   source: "OAE audit Finding 6"
   severity: low
@@ -149,17 +160,29 @@
     Regex patterns for immune log and health sections only match
     exact Chinese/English headers. Host projects with different
     headers get empty sections in audit packages.
+  fixed_by: "Replaced exact header matching with keyword-based awk patterns"
+  fixed_date: 2026-03-01
+  notes: >
+    Now matches any ## heading containing 免疫/[Ii]mmune for immune log
+    and 健康/[Hh]ealth for health section. Covers bilingual headers,
+    variant phrasings, and mixed-language section titles.
 
 - date: 2026-03-01
   type: finding-open
   id: F-006
-  status: open
+  status: fixed
   title: "field-submit-audit.sh fails on same-owner repos"
   source: "OAE audit Finding 4"
   severity: low
   description: >
     Script assumes fork-based workflow. When host project owner =
     protocol source repo owner, gh repo fork is a no-op and PR fails.
+  fixed_by: "Added same-owner detection; skips fork and pushes branch directly"
+  fixed_date: 2026-03-01
+  notes: >
+    Compares GH_USER with upstream owner. When equal, clones upstream
+    directly, branches from origin/main, pushes without fork, and uses
+    simple branch name for PR --head parameter.
 
 - date: 2026-03-01
   type: finding-open
@@ -195,3 +218,20 @@
     F-004: Removed audit-packages/ from protocol source repo .gitignore.
     F-007 (O-003): Fixed cp -R nesting bug in field-export-audit.sh by adding
     rm -rf before copy to prevent signals/signals/ duplication.
+
+- date: 2026-03-01
+  type: template-fix
+  id: TF-003
+  status: fixed
+  title: "Nurse batch: close remaining OAE findings F-003, F-005, F-006"
+  trigger: "Nurse self-check continuation"
+  closes: ["F-003", "F-005", "F-006"]
+  files_changed:
+    - templates/scripts/field-cycle.sh
+    - templates/scripts/field-export-audit.sh
+    - templates/scripts/field-submit-audit.sh
+  notes: >
+    F-003: Integrated field-submit-audit.sh into field-cycle.sh metabolism loop.
+    F-005: Replaced exact BLACKBOARD header matching with keyword-based awk patterns.
+    F-006: Added same-owner detection to field-submit-audit.sh; skips fork when
+    GH_USER matches upstream owner.

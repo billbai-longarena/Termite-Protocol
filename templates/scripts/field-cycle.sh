@@ -245,4 +245,10 @@ if has_db; then
   log_info "YAML snapshots refreshed from DB"
 fi
 
+# ── Cross-colony feedback: submit audit if enabled ──────────────────
+
+if [ -x "${SCRIPT_DIR}/field-submit-audit.sh" ]; then
+  "${SCRIPT_DIR}/field-submit-audit.sh" 2>/dev/null || true
+fi
+
 log_info "=== Metabolism cycle complete ==="

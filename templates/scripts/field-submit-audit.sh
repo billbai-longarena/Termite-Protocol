@@ -130,30 +130,35 @@ if [ "${PIPESTATUS[0]}" -ne 0 ]; then
   exit 1
 fi
 
-# ── Step 2: Fork upstream (idempotent) ────────────────────────────
+# ── Step 2: Determine workflow (fork vs same-owner) ──────────────
 
-log_info "Ensuring fork of ${UPSTREAM}"
-gh repo fork "$UPSTREAM" --clone=false 2>/dev/null || true
-
-# Get fork name (owner/repo)
 GH_USER=$(gh api user --jq '.login' 2>/dev/null || echo "")
 if [ -z "$GH_USER" ]; then
   log_error "Cannot determine GitHub username"
   exit 1
 fi
 
-FORK_REPO="${GH_USER}/$(basename "$UPSTREAM")"
-log_info "Fork: ${FORK_REPO}"
+UPSTREAM_OWNER=$(echo "$UPSTREAM" | cut -d'/' -f1)
+SAME_OWNER=false
+if [ "$GH_USER" = "$UPSTREAM_OWNER" ]; then
+  SAME_OWNER=true
+  CLONE_REPO="$UPSTREAM"
+  log_info "Same-owner mode: pushing directly to ${UPSTREAM}"
+else
+  log_info "Ensuring fork of ${UPSTREAM}"
+  gh repo fork "$UPSTREAM" --clone=false 2>/dev/null || true
+  CLONE_REPO="${GH_USER}/$(basename "$UPSTREAM")"
+  log_info "Fork: ${CLONE_REPO}"
+fi
 
-# ── Step 3: Clone fork to temp dir ────────────────────────────────
+# ── Step 3: Clone to temp dir ────────────────────────────────────
 
 TEMP_DIR=$(mktemp -d)
 trap 'rm -rf "$TEMP_DIR" "$AUDIT_DIR"' EXIT
 
-
-log_info "Cloning fork (shallow)"
-gh repo clone "$FORK_REPO" "$TEMP_DIR" -- --depth 1 2>/dev/null || {
-  log_error "Cannot clone fork ${FORK_REPO}"
+log_info "Cloning ${CLONE_REPO} (shallow)"
+gh repo clone "$CLONE_REPO" "$TEMP_DIR" -- --depth 1 2>/dev/null || {
+  log_error "Cannot clone ${CLONE_REPO}"
   exit 1
 }
 
@@ -162,10 +167,15 @@ gh repo clone "$FORK_REPO" "$TEMP_DIR" -- --depth 1 2>/dev/null || {
 BRANCH_NAME="audit/${SAFE_NAME}/$(today_iso)"
 cd "$TEMP_DIR"
 
-# Sync fork with upstream first
-git remote add upstream "https://github.com/${UPSTREAM}.git" 2>/dev/null || true
-git fetch upstream main --depth 1 2>/dev/null || true
-git checkout -B "$BRANCH_NAME" upstream/main 2>/dev/null || git checkout -B "$BRANCH_NAME"
+if [ "$SAME_OWNER" = false ]; then
+  # Fork workflow: sync with upstream first
+  git remote add upstream "https://github.com/${UPSTREAM}.git" 2>/dev/null || true
+  git fetch upstream main --depth 1 2>/dev/null || true
+  git checkout -B "$BRANCH_NAME" upstream/main 2>/dev/null || git checkout -B "$BRANCH_NAME"
+else
+  # Same-owner: branch from origin/main
+  git checkout -B "$BRANCH_NAME" origin/main 2>/dev/null || git checkout -B "$BRANCH_NAME"
+fi
 
 # Copy audit package
 AUDIT_TARGET="audit-packages/${PROJECT_NAME}/$(today_iso)"
@@ -180,14 +190,21 @@ git commit -m "audit(${PROJECT_NAME}): session $(today_iso)" 2>/dev/null || {
 
 # ── Step 5: Push + PR ─────────────────────────────────────────────
 
-log_info "Pushing to ${FORK_REPO}:${BRANCH_NAME}"
+log_info "Pushing to ${CLONE_REPO}:${BRANCH_NAME}"
 git push origin "$BRANCH_NAME" --force 2>/dev/null || {
   log_error "Push failed"
   exit 1
 }
 
+# PR head reference differs for fork vs same-owner
+if [ "$SAME_OWNER" = true ]; then
+  PR_HEAD="$BRANCH_NAME"
+else
+  PR_HEAD="${GH_USER}:${BRANCH_NAME}"
+fi
+
 # Check if PR already exists
-EXISTING_PR=$(gh pr list --repo "$UPSTREAM" --head "${GH_USER}:${BRANCH_NAME}" --json number --jq '.[0].number' 2>/dev/null || echo "")
+EXISTING_PR=$(gh pr list --repo "$UPSTREAM" --head "$PR_HEAD" --json number --jq '.[0].number' 2>/dev/null || echo "")
 
 if [ -n "$EXISTING_PR" ] && [ "$EXISTING_PR" != "null" ]; then
   log_info "PR #${EXISTING_PR} already exists — updated via force push"
@@ -204,7 +221,7 @@ else
   rules=$(yaml_read "$META_FILE" "active_rules" 2>/dev/null || echo "0")
   obs=$(yaml_read "$META_FILE" "pending_observations" 2>/dev/null || echo "0")
 
-  gh pr create --repo "$UPSTREAM" \
+  gh pr create --repo "$UPSTREAM" --head "$PR_HEAD" \
     --title "audit(${PROJECT_NAME}): $(today_iso)" \
     --body "$(cat <<PREOF
 ## audit(${PROJECT_NAME}): $(today_iso)

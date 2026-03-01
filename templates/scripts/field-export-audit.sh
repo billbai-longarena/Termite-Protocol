@@ -206,15 +206,9 @@ immune_file="${OUT_DIR}/immune-log.txt"
 > "$immune_file"
 
 if [ -f "$BLACKBOARD" ]; then
-  # Extract the immune log section: from "## 免疫日志" to the next ## heading
-  awk '/^## 免疫日志/,/^## [^免]/' "$BLACKBOARD" 2>/dev/null \
+  # Extract the immune log section: match any ## heading containing 免疫 or [Ii]mmune
+  awk '/^## .*(免疫|[Ii]mmune)/,/^## [^#]/' "$BLACKBOARD" 2>/dev/null \
     | sed '$d' >> "$immune_file" || true
-
-  # If empty, try English heading
-  if [ ! -s "$immune_file" ]; then
-    awk '/^## Immune Log/,/^## /' "$BLACKBOARD" 2>/dev/null \
-      | sed '$d' >> "$immune_file" || true
-  fi
 
   if [ -s "$immune_file" ]; then
     immune_entries=$(grep -c '|' "$immune_file" 2>/dev/null) || immune_entries=0
@@ -225,13 +219,10 @@ if [ -f "$BLACKBOARD" ]; then
   fi
 
   # Also extract the health status section (protocol-relevant, not business)
+  # Match any ## heading containing 健康 or [Hh]ealth
   health_file="${OUT_DIR}/blackboard-health.txt"
-  awk '/^## 蚁丘健康状态/,/^## /' "$BLACKBOARD" 2>/dev/null \
+  awk '/^## .*(健康|[Hh]ealth)/,/^## [^#]/' "$BLACKBOARD" 2>/dev/null \
     | sed '$d' > "$health_file" || true
-  if [ ! -s "$health_file" ]; then
-    awk '/^## Colony Health/,/^## /' "$BLACKBOARD" 2>/dev/null \
-      | sed '$d' > "$health_file" || true
-  fi
   [ ! -s "$health_file" ] && echo "(no health section found)" > "$health_file"
 else
   echo "(no BLACKBOARD.md found)" > "$immune_file"
