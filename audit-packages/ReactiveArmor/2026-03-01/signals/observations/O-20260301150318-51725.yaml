@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-01T11:58:38Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260301150318-51725
+pattern: "rust colony genesis completed"
+context: "curl install + field-genesis"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Installed protocol into /Users/bingbingbai/Desktop/ReactiveArmor via curl, then ran field-arrive.sh and field-cycle.sh; generated BLACKBOARD and S-001.

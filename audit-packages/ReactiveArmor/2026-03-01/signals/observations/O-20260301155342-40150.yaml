@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-01T11:58:38Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260301155342-40150
+pattern: "protocol-audit: interruption/claim guidance mostly sufficient, workspace-drift runbook missing"
+context: "BLACKBOARD.md##Immune Log; TERMITE_PROTOCOL.md recovery/concurrency sections"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Recorded two audit notes: (1) interruption+claim flows are covered, but no explicit in-flight workspace drift procedure; (2) audit submission channel exists but telemetry is disabled (enabled=false, accepted=false). Proposed follow-up: add workspace_drift recovery hint and owner-verified claim release semantics in protocol tooling.

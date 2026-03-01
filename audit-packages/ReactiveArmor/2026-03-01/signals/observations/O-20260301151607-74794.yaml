@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-01T11:58:38Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260301151607-74794
+pattern: "rust toolchain installed and workspace bootstrapped"
+context: "ReactiveArmor initialization"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Installed rustup/cargo, created multi-crate workspace, validated with cargo check and game_app run.
