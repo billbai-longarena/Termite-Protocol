@@ -371,14 +371,120 @@
         8-factor situation assembly. 40+ instances of || true / 2>/dev/null mask
         failures. Agent cannot verify whether .birth is correct or complete.
   observed_in: "protocol source repo self-audit (strong model: Claude Opus)"
+  validated_by: "A-003 ReactiveArmor weak model experiment"
   next_action: >
-    Observation only. Monitor how strong models (Claude Code, Codex) perform with
-    current protocol. When weak model testing begins, use this finding as the
-    checklist of expected breakpoints. Potential future actions:
-    (1) Define .birth as sole interface contract — anything not in .birth does not
-    exist for the agent;
-    (2) Move grammar/safety from .birth to entry files;
-    (3) Classify protocol behaviors into infrastructure-handled vs agent-judged,
-    and progressively move the latter into the former;
-    (4) Formalize protocol capability tiers (T0: safety nets only, T1: .birth
-    conditional reflexes, T2: judgmental behaviors requiring strong models).
+    F-009c VALIDATED by ReactiveArmor experiment (9/14 degenerate observations).
+    Remaining sub-findings (a, b, d) inconclusive — no .birth in audit package.
+    Next steps: (1) Implement R-002 observation validation to reject degenerate
+    deposits; (2) Implement R-003 observation examples in .birth; (3) Formalize
+    capability tiers (T0/T1/T2) as protocol evolution PE-003.
+
+# ── 2026-03-01 session 5: ReactiveArmor weak model experiment ──────
+
+- date: 2026-03-01
+  type: audit-received
+  id: A-003
+  status: open
+  host_project: ReactiveArmor
+  package: audit-packages/ReactiveArmor/2026-03-01/
+  significance: "First weak model field test — validates F-009"
+  experiment_config:
+    genesis_model: Codex
+    runtime_models: "2 x Claude Haiku (parallel)"
+    trigger: "白蚁协议 heartbeat input"
+    duration: "~4.5 hours"
+  key_metrics:
+    total_commits: 121
+    signed_commits: 121
+    signature_ratio_last_50: 0.00
+    handoff_quality: 0.00
+    pheromone_snapshots: 6
+    pending_observations: 14
+    active_rules: 0
+    agent_count: 29
+    signals_completed: 24
+  findings: 6
+  report: audit-analysis/optimization-proposals/2026-03-01-weak-model-experiment-reactivearmor.md
+  notes: >
+    First weak model experiment. Codex genesis, then 2 Haiku in parallel with
+    heartbeat triggers. Core protocol loop succeeded (121 commits, S-001→S-024,
+    93→174 tests). Judgmental behaviors failed: 9/14 degenerate observations,
+    0% handoff evaluation, 0 rules emerged, signature format diverged.
+    Validates F-009c. See W-001 through W-006 for details.
+
+- date: 2026-03-01
+  type: finding-open
+  id: W-001
+  status: open
+  title: "Weak models produce degenerate observation deposits"
+  source: "A-003 ReactiveArmor experiment"
+  severity: critical
+  description: >
+    9 of 14 observations have pattern=signal_id (e.g., "S-007"),
+    context="unknown", detail="0". Haiku mechanically executes deposit
+    behavior but doesn't understand WHAT to deposit. Validates F-009c.
+  recommendation: "R-002: Add observation validation in field-deposit.sh"
+
+- date: 2026-03-01
+  type: finding-open
+  id: W-002
+  status: open
+  title: "Weak models diverge from signature format"
+  source: "A-003 ReactiveArmor experiment"
+  severity: medium
+  description: >
+    Haiku used "Agent X" naming instead of "termite:YYYY-MM-DD:caste".
+    Export script regex fails to detect valid termite activity.
+    All 121 commits appear in both signed and unsigned sections.
+  recommendation: "R-001: Fix signature detection regex in field-export-audit.sh"
+
+- date: 2026-03-01
+  type: finding-open
+  id: W-003
+  status: open
+  title: "Weak models skip handoff evaluation"
+  source: "A-003 ReactiveArmor experiment"
+  severity: medium
+  description: >
+    5 of 6 handoffs have predecessor_useful=null. Weak models
+    skip the evaluation step (a judgmental behavior).
+  recommendation: "R-004: Make predecessor_useful evaluation explicit in .birth"
+
+- date: 2026-03-01
+  type: finding-open
+  id: W-004
+  status: open
+  title: "Weak models cannot trigger rule emergence"
+  source: "A-003 ReactiveArmor experiment"
+  severity: low
+  description: >
+    0 rules despite 24 signals and 14 observations across 29 sessions.
+    Rule 7 (count >= 3 -> EMERGE) requires pattern abstraction beyond
+    weak model capability.
+  recommendation: "Accept as T2 behavior (strong model only)"
+
+- date: 2026-03-01
+  type: finding-open
+  id: W-005
+  status: open
+  title: "Weak model pheromone deposits incomplete"
+  source: "A-003 ReactiveArmor experiment"
+  severity: low
+  description: >
+    6 pheromone snapshots for 29 agent sessions. Many sessions
+    terminated without proper .pheromone deposit.
+  recommendation: "Monitor; may self-correct with longer sessions"
+
+- date: 2026-03-01
+  type: finding-open
+  id: W-006
+  status: closed
+  title: "Weak model core protocol loop successful"
+  source: "A-003 ReactiveArmor experiment"
+  severity: positive
+  description: >
+    Despite judgmental failures, the mechanical protocol core works:
+    ARRIVE→SENSE→ACT→DEPOSIT loop executed, MOLT ceremonies performed,
+    signal-driven development succeeded (S-001→S-024), tests grew
+    (93→174). Weak models CAN execute structured workflows.
+  notes: "Closed as positive finding — no action needed"

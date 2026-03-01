@@ -51,7 +51,7 @@ docs/plans/             ← Design documents for major features.
 - **Protocol version**: v3.4 (SQLite WAL-mode, drift robustness)
 - **Field lib version**: v20.0
 - **Entry kernel versions**: Claude v10.0, Agents v8.0
-- **Host project colonies validated**: 0227/SalesTouch (production stable), OpenAgentEngine (audited, 7 findings)
+- **Host project colonies validated**: 0227/SalesTouch (production stable), OpenAgentEngine (audited, 7 findings closed), ReactiveArmor (weak model experiment, 6 findings)
 
 ### Known Issues
 
@@ -64,11 +64,12 @@ docs/plans/             ← Design documents for major features.
 7. ~~`field-export-audit.sh` `cp -R` creates nested `signals/signals/` directory~~ **FIXED** — added `rm -rf` before `cp -R` to prevent nesting when target exists (cross-colony signal: ReactArmor O-003)
 8. Observation → template fix feedback loop is entirely manual (no automated path from host project O-xxx to protocol template patches)
 9. ~~Upgrade information flow has three broken links — no changelog, no semantic summary, no action guidance~~ **FIXED** — created `templates/UPGRADE_NOTES.md`, install.sh --upgrade now prints change summary and writes `.termite-upgrade-report`, HOLE signal next field references UPGRADE_NOTES.md, field-arrive.sh Step 3.8 injects upgrade context into .birth
-10. Protocol concept surface area (~79 concepts) exceeds blind agent cognitive budget (F-009, status: open, observing) — .birth ≤800 tokens cannot encode the judgmental behaviors the protocol expects (三丘价值自觉, rule disputes, IC-5, EXPLORE closure, mid-session caste transitions, session-end deposit categories); strong models compensate with general intelligence, weak models will break. Sub-issues: (a) entry file lookup index references 1193-line TERMITE_PROTOCOL.md, contradicting "only read .birth" design; (b) .birth static content (grammar+safety) consumes 25% of token budget; (c) undeclared assumption that agent intelligence fills protocol gaps; (d) field-arrive.sh 434-line black box with 40+ silent error suppressions.
+10. Protocol concept surface area (~79 concepts) exceeds blind agent cognitive budget (F-009, status: **F-009c VALIDATED by ReactiveArmor**) — .birth ≤800 tokens cannot encode the judgmental behaviors the protocol expects; strong models compensate with general intelligence, **weak models break exactly as predicted** (9/14 degenerate observations, 0% handoff evaluation, 0 rule emergence). Sub-issues: (a) entry file lookup index references 1193-line TERMITE_PROTOCOL.md; (b) .birth static content consumes 25% of token budget; **(c) VALIDATED: weak models mechanically execute deposits but don't understand WHAT to deposit**; (d) field-arrive.sh 434-line black box. See W-001 through W-005 in REGISTRY.yaml.
 
 ### Recent Work
 
-- **Blind premise audit (F-009)** — human-directed audit of whether protocol evolution respects "termites are blind, context is limited"; identified concept surface area inflation, .birth budget waste, and undeclared agent-intelligence dependency. Recorded as observation; monitoring strong model performance before weak model testing.
+- **ReactiveArmor weak model experiment (A-003)** — first weak model field test: 2 Haiku parallel with Codex genesis. Core protocol loop succeeded (121 commits, S-001→S-024, 93→174 tests). Judgmental behaviors failed: 9/14 degenerate observations (W-001), signature format divergence (W-002), 0% handoff evaluation (W-003), 0 rule emergence (W-004). **Validates F-009c**. See `audit-analysis/optimization-proposals/2026-03-01-weak-model-experiment-reactivearmor.md`.
+- **Blind premise audit (F-009)** — human-directed audit of whether protocol evolution respects "termites are blind, context is limited"; identified concept surface area inflation, .birth budget waste, and undeclared agent-intelligence dependency. **F-009c now validated by ReactiveArmor experiment**.
 - **Upgrade information flow fix (F-008)** (`docs/plans/2026-03-01-upgrade-info-flow-design.md`) — created UPGRADE_NOTES.md, install.sh upgrade summary, field-arrive.sh upgrade report injection; synced CLAUDE.md + AGENTS.md templates
 - **Nurse batch fix TF-002 + TF-003** — closed all 7 OAE audit findings: F-001 grep-c, F-002 hooks, F-003 submit flow, F-004 .gitignore, F-005 header matching, F-006 same-owner, F-007 cp-R nesting
 - **Terminology unification** (`docs/plans/2026-03-01-terminology-unification-design.md`) — unified referential terms across all files
