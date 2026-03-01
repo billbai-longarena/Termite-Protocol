@@ -102,7 +102,7 @@ if has_db; then
 
   if [ -n "$groups" ]; then
     promoted=0
-    echo "$groups" | while IFS=$'\t' read -r pattern cnt ids; do
+    while IFS=$'\t' read -r pattern cnt ids; do
       [ -z "$pattern" ] && continue
       log_info "Promoting pattern (${cnt} observations): ${pattern}"
 
@@ -125,7 +125,7 @@ if has_db; then
         DELETE FROM observations WHERE id IN ($(echo "$ids" | sed "s/[^,]*/'&'/g"));
       "
       promoted=$((promoted + 1))
-    done
+    done < <(echo "$groups")
   fi
 elif [ -d "$OBS_DIR" ]; then
   # Group observations by pattern (normalized: lowercase, stripped)
