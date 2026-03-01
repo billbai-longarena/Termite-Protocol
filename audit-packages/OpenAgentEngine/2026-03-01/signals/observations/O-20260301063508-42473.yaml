@@ -1,0 +1,9 @@
+id: O-20260301063508-42473
+pattern: "S-019 cross-instance invite atomicity implemented and quality-gated"
+context: "phase-13 invite transactional storage"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Implemented distributed invite lock file path + stale cleanup + timeout handling + atomic invite file writes in gateway redeem flow. Added verify:s019 (dual gateway cross-instance concurrent redeem assertion [201,409]) and wired phase-12-invite-store into verify:gate. Verified with pnpm --filter @openagentengine/gateway build, pnpm run verify:s019, and pnpm run verify:gate.

@@ -1,0 +1,9 @@
+id: O-20260301092716-51270
+pattern: "S-022 runtime closure proven on real Postgres DSN"
+context: "S-022 verification"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Executed S022_REQUIRE_RUNTIME=1 pnpm run verify:s022:runtime against local PostgreSQL 16.12 at postgresql://postgres@127.0.0.1:55432/openagent (temporary instance). Harness reported marker: S-022 postgres runtime verified: shared Postgres invite-store backend enforces [201,409]. Also observed S-021 driver=postgres winner/loser behavior [201,409] and invite_exhausted on loser path. Local logs: .runtime-data/pgs022-1772328377/verify.log.

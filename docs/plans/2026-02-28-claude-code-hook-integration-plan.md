@@ -4,7 +4,7 @@
 
 **Goal:** Build a Claude Code plugin that automatically enforces Termite Protocol invariants (arrival, safety nets, pheromone deposit, metabolism) via hooks, and integrate it into install.sh for dual-channel distribution.
 
-**Architecture:** Plugin-First — 7 independent hook scripts sharing a common library (`termite-hook-lib.sh`), each calling existing `field-*.sh` scripts via `$CLAUDE_PROJECT_DIR`. Plugin lives in `templates/claude-plugin/` and gets copied to target projects' `.claude/plugins/termite-protocol/`.
+**Architecture:** Plugin-First — 7 independent hook scripts sharing a common library (`termite-hook-lib.sh`), each calling existing `field-*.sh` scripts via `$CLAUDE_PROJECT_DIR`. Plugin lives in `templates/claude-plugin/` and gets copied to host projects' `.claude/plugins/termite-protocol/`.
 
 **Tech Stack:** Bash (POSIX-compatible), jq (optional, with python3 and grep/sed fallbacks), Claude Code hooks API.
 
@@ -900,7 +900,7 @@ git add install.sh
 git commit -m "feat(install): integrate Claude Code plugin into install.sh
 
 Adds CLAUDE_PLUGIN_FILES array and install_claude_plugin() function.
-Plugin is copied to .claude/plugins/termite-protocol/ in target project
+Plugin is copied to .claude/plugins/termite-protocol/ in host project
 alongside existing git hooks and field scripts.
 
 [termite:2026-02-28:worker]"

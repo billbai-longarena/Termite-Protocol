@@ -1,0 +1,9 @@
+id: O-20260301042022-16744
+pattern: "S-017 raised for repository secret/application handoff"
+context: "post-S-016 governance ops"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Code-level enforcement is complete; repository secret BRANCH_PROTECTION_AUDIT_TOKEN and first push-to-main validation remain external actions.

@@ -1,0 +1,9 @@
+id: O-20260301053111-28178
+pattern: "S-018 review: invite flow baseline passes local verification and gate"
+context: "phase-13 review"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Non-blocking review under concurrent work claim. pnpm run verify:s018 passed. pnpm run verify:gate passed with phase-11-invite-flow marker and no regressions in earlier phases.

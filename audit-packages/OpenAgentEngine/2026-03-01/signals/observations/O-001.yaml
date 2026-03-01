@@ -1,0 +1,7 @@
+id: O-001
+pattern: "Termite Protocol lacks a 'Project Charter' layer between protocol and state"
+context: "TERMITE_PROTOCOL.md — information architecture"
+reporter: "termite:2026-02-28:scout"
+confidence: high
+created: 2026-02-28
+source: autonomous

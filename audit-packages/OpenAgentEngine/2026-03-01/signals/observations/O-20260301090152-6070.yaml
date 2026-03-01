@@ -1,0 +1,9 @@
+id: O-20260301090152-6070
+pattern: "S-022 review: postgres adapter path and phase-16 gate are coherent"
+context: "apps/gateway + verify gate"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Review confirmed withInviteRedeemLock prefers inviteStore.withRedeemLock for postgres (advisory lock path) and falls back to distributed file lock for file driver. verify:s022 and verify:gate phase-16 both pass. Remaining known gap: real shared Postgres dual-gateway runtime scenario is still pending.

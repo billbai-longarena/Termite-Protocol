@@ -148,7 +148,7 @@ chain_file="${OUT_DIR}/pheromone-chain.jsonl"
 
 if has_db; then
   chain_count=0
-  db_pheromone_chain | while IFS=$'\t' read -r agent_id timestamp caste branch commit_hash completed unresolved pred_useful wip_status active_sig_count; do
+  while IFS=$'\t' read -r agent_id timestamp caste branch commit_hash completed unresolved pred_useful wip_status active_sig_count; do
     [ -z "$agent_id" ] && continue
     pred_json="null"
     case "$pred_useful" in
@@ -157,7 +157,7 @@ if has_db; then
     esac
     echo "{\"timestamp\":\"${timestamp}\",\"caste\":\"${caste}\",\"branch\":\"${branch}\",\"commit\":\"${commit_hash}\",\"completed\":\"${completed}\",\"unresolved\":\"${unresolved}\",\"predecessor_useful\":${pred_json},\"agent_id\":\"${agent_id}\"}" >> "$chain_file"
     chain_count=$((chain_count + 1))
-  done
+  done < <(db_pheromone_chain)
   log_info "  ${chain_count} pheromone snapshots from DB"
 elif git -C "$PROJECT_ROOT" rev-parse --git-dir >/dev/null 2>&1; then
   # Find all commits that touched .pheromone, extract the file content at each
@@ -215,7 +215,7 @@ if [ -f "$BLACKBOARD" ]; then
   fi
 
   if [ -s "$immune_file" ]; then
-    immune_entries=$(grep -c '|' "$immune_file" 2>/dev/null || echo "0")
+    immune_entries=$(grep -c '|' "$immune_file" 2>/dev/null) || immune_entries=0
     log_info "  ${immune_entries} immune log entries"
   else
     echo "(no immune log section found in BLACKBOARD.md)" > "$immune_file"
@@ -272,16 +272,15 @@ EOF
 if [ -s "$sig_file" ] && [ "$signed_commits" -gt 0 ]; then
   # Parse [termite:DATE:CASTE] patterns and count castes
   echo "distribution:" >> "$caste_file"
-  grep -oE '\[termite:[0-9-]+:[a-z-]+\]' "$sig_file" 2>/dev/null \
+  while read -r count caste; do
+    echo "  ${caste}: ${count}" >> "$caste_file"
+  done < <(grep -oE '\[termite:[0-9-]+:[a-z-]+\]' "$sig_file" 2>/dev/null \
     | sed 's/.*:\([a-z-]*\)\]/\1/' \
-    | sort | uniq -c | sort -rn \
-    | while read -r count caste; do
-      echo "  ${caste}: ${count}" >> "$caste_file"
-    done
+    | sort | uniq -c | sort -rn || true)
 
   # Time range
-  first_sig=$(grep -oE '\[termite:[0-9-]+:' "$sig_file" 2>/dev/null | head -1 | sed 's/\[termite://;s/:$//')
-  last_sig=$(grep -oE '\[termite:[0-9-]+:' "$sig_file" 2>/dev/null | tail -1 | sed 's/\[termite://;s/:$//')
+  first_sig=$(grep -oE '\[termite:[0-9-]+:' "$sig_file" 2>/dev/null | head -1 | sed 's/\[termite://;s/:$//' || true)
+  last_sig=$(grep -oE '\[termite:[0-9-]+:' "$sig_file" 2>/dev/null | tail -1 | sed 's/\[termite://;s/:$//' || true)
   echo "first_signature: ${last_sig:-unknown}" >> "$caste_file"
   echo "last_signature: ${first_sig:-unknown}" >> "$caste_file"
 else
@@ -353,8 +352,8 @@ EOF
 
 if [ -s "$chain_file" ]; then
   total_handoffs=$(wc -l < "$chain_file" | tr -d ' ')
-  useful_count=$(grep -c '"predecessor_useful"[[:space:]]*:[[:space:]]*true' "$chain_file" 2>/dev/null || echo "0")
-  not_useful_count=$(grep -c '"predecessor_useful"[[:space:]]*:[[:space:]]*false' "$chain_file" 2>/dev/null || echo "0")
+  useful_count=$(grep -c '"predecessor_useful"[[:space:]]*:[[:space:]]*true' "$chain_file" 2>/dev/null) || useful_count=0
+  not_useful_count=$(grep -c '"predecessor_useful"[[:space:]]*:[[:space:]]*false' "$chain_file" 2>/dev/null) || not_useful_count=0
   not_evaluated=$((total_handoffs - useful_count - not_useful_count))
 
   cat >> "$handoff_file" <<EOF

@@ -1,0 +1,9 @@
+id: O-20260301032219-18299
+pattern: "S-013 moment/fork lineage baseline implemented and quality-gated"
+context: "Gateway now supports moment create/list, world fork from moment, lineage metadata endpoint, and fork replay compatibility"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Implemented /world/:worldId/moments (GET/POST), /world/:worldId/forks (POST), /world/:worldId/lineage (GET), persistent moment/lineage storage under WORLD_METADATA_DIR, and replay fallback for fork lineage. Added verify-s013-moment-fork and wired verify:s013 + phase-8-moment-fork into verify:gate.

@@ -1,0 +1,9 @@
+id: O-20260301003757-32927
+pattern: "db_claim_release now preserves non-claimed terminal states"
+context: "scripts/termite-db.sh db_claim_release CASE condition"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Release now reopens signal only when current status is claimed, avoiding done->open regression after post-release finalize workflow.

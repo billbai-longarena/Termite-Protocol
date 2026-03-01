@@ -1,0 +1,59 @@
+54c945c 2026-02-28 21:27:33 +0800 Add signals.yaml-backup/ to .gitignore
+aa1ef8f 2026-02-28 21:23:02 +0800 Add charter soul to entry files + layered transmission design
+a0c673d 2026-02-28 20:34:42 +0800 Add CHARTER.md: project identity and 23 design principles
+
+# --- Unsigned commits (for IC-3 foreign body analysis) ---
+33e6bde 2026-03-01 10:38:05 +0800 merge: close S-002/S-003/S-020~S-022 signal coverage into main
+f652ec3 2026-03-01 10:06:06 +0800 [WIP] sync S-002 closure observation evidence
+444a1c0 2026-03-01 10:05:24 +0800 [WIP] close S-002 founding precedence guardrail and gate coverage
+586d532 2026-03-01 09:53:11 +0800 chore(signals): sync S-003 done state metadata
+72c63c6 2026-03-01 09:40:37 +0800 chore(signals): add S-003 closure observation
+6ec5d76 2026-03-01 09:39:11 +0800 [WIP] close S-003 worldview anchor guardrail and gate coverage
+5bd17c5 2026-03-01 09:31:01 +0800 chore(s022): close postgres runtime evidence gap
+9a703bb 2026-03-01 09:23:47 +0800 [WIP] advance S-003 worldview anchor docs sync slice
+a2d5365 2026-03-01 09:07:36 +0800 [WIP] advance S-022 runtime verification dispatch wiring slice
+5b7ff42 2026-03-01 08:59:07 +0800 [WIP] advance S-022 postgres runtime verification harness slice
+e0459fe 2026-03-01 08:42:04 +0800 [WIP] advance S-022 driver-selection verification gate slice
+4ab582a 2026-03-01 08:27:04 +0800 [WIP] advance S-022 postgres invite store adapter slice
+91497d9 2026-03-01 08:07:40 +0800 [WIP] advance S-022 invite-store driver wiring slice
+185b0e4 2026-03-01 07:53:37 +0800 [WIP] seed S-022 non-filesystem invite store backend follow-up
+389c3ae 2026-03-01 07:48:03 +0800 [WIP] fix pheromone unresolved parsing in arrival context
+f0ba165 2026-03-01 07:41:50 +0800 [WIP] harden arrival handoff freshness and live branch context
+a7572f1 2026-03-01 07:25:44 +0800 [WIP] close S-021 external invite-store adapter and gate coverage
+e341505 2026-03-01 07:11:57 +0800 [WIP] close S-020 contract and boundary verification
+ca85f3d 2026-03-01 06:51:54 +0800 [WIP] seed S-020 external invite datastore contract
+7543c6b 2026-03-01 06:37:13 +0800 [WIP] close S-019 cross-instance invite atomicity
+eaffc5e 2026-03-01 06:20:02 +0800 [WIP] seed S-019 for cross-instance invite atomicity
+98fbd78 2026-03-01 06:12:40 +0800 [WIP] fix S-018 invite lock resolver typing regression
+8c33577 2026-03-01 06:08:07 +0800 [WIP] close S-018 concurrent redeem hardening
+ff3007e 2026-03-01 05:48:33 +0800 [WIP] close S-018 invite baseline with gate coverage and signal closure
+f297348 2026-03-01 05:09:33 +0800 Merge pull request #2 from billbai-longarena/chore/s017-sync-close-state
+d4ac612 2026-03-01 05:02:30 +0800 [WIP] close S-017 with protected main run evidence
+fc02c65 2026-03-01 04:57:24 +0800 Merge pull request #1 from billbai-longarena/chore/s017-first-main-run-evidence
+a79ba8e 2026-03-01 04:54:54 +0800 [WIP] init termite DB in CI before quality gate
+51c196c 2026-03-01 04:53:21 +0800 [WIP] install ai-presence python deps in verify-gate workflow
+dab7d7e 2026-03-01 04:44:34 +0800 [WIP] advance S-017 preflight and record remote-run blocker
+5b309ec 2026-03-01 04:31:45 +0800 [WIP] update S-017 state after applying branch protection and audit secret
+49f535f 2026-03-01 04:21:09 +0800 [WIP] close S-016 CI live-audit enforcement and seed S-017
+ddf110a 2026-03-01 04:14:46 +0800 [WIP] close S-015 drift audit and extend fork listing checks
+99f436e 2026-03-01 03:48:59 +0800 [WIP] close S-014 governance baseline and seed S-015
+8732d5e 2026-03-01 03:29:54 +0800 [WIP] implement S-013 moment/fork lineage baseline and seed S-014
+2b27658 2026-03-01 03:17:10 +0800 [WIP] extend S-003 guardrail for S-013 moment fork phase
+3fb9fa9 2026-03-01 02:51:49 +0800 [WIP] seed S-013 moment fork lineage baseline
+d9b8927 2026-03-01 02:45:04 +0800 [WIP] extend quality gate coverage and close S-012
+30404db 2026-03-01 02:38:12 +0800 [WIP] harden DB export to preserve narrative YAML fields
+3d59f88 2026-03-01 02:37:29 +0800 [WIP] implement and close S-010 ai-presence stream baseline
+b42b337 2026-03-01 02:18:52 +0800 [WIP] seed S-010 ai-presence subscription baseline
+f996971 2026-03-01 02:15:25 +0800 [WIP] wire verify gate into CI and close S-009
+c031c50 2026-03-01 02:08:39 +0800 [WIP] implement S-008 quality gate command and close signal
+cf2df17 2026-03-01 02:04:04 +0800 [WIP] Close S-007 and seed S-008 quality gate
+27cf3bb 2026-03-01 01:51:01 +0800 [WIP] reconcile field counts and S-003 guardrail continuity
+7f05bf2 2026-03-01 01:09:50 +0800 [WIP] scaffold phase-0 substrate workspace and validate S-005 ws flow
+a7c311b 2026-02-28 23:58:12 +0800 [WIP] close S-001 and spawn S-004 implementation signal
+a8c771d 2026-02-28 23:42:41 +0800 [WIP] sync termite v10 protocol docs and establish architecture baseline
+15db1d0 2026-02-28 22:46:58 +0800 Add worldview design: from game engine to world substrate
+54c945c 2026-02-28 21:27:33 +0800 Add signals.yaml-backup/ to .gitignore
+aa1ef8f 2026-02-28 21:23:02 +0800 Add charter soul to entry files + layered transmission design
+a0c673d 2026-02-28 20:34:42 +0800 Add CHARTER.md: project identity and 23 design principles
+708c365 2026-02-28 19:24:46 +0800 Genesis: initialize OpenAgentEngine with Termite Protocol
+bc4ee89 2026-02-28 18:23:25 +0800 Initial commit

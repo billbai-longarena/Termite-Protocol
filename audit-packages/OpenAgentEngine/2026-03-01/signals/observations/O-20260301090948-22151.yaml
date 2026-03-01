@@ -1,0 +1,9 @@
+id: O-20260301090948-22151
+pattern: "S-022 CI dispatch runtime path wired"
+context: "verify-gate workflow_dispatch + README/runbook/docs sync"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Added workflow_dispatch input require_s022_postgres_runtime and optional verify:s022:runtime step using secret S022_POSTGRES_URL; updated README verification matrix through phase-16 and runtime command; updated S-022 signal/blackboard notes. Remaining closure dependency is real shared Postgres DSN execution evidence.

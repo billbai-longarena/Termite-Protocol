@@ -1,0 +1,9 @@
+id: O-20260301070507-93637
+pattern: "S-020 contract and isolated-root boundary verification completed"
+context: "docs/plans + quality gate phase-14"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Added S-020 external invite store contract doc and verify-s020 isolated-storage boundary script; wired verify:s020 and phase-14-isolated-storage-boundary into quality gate; verify:gate passed.

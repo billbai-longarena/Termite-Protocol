@@ -1,0 +1,9 @@
+id: O-20260301043013-31840
+pattern: "S-017 secret setup completed; first protected-main verification pending"
+context: "github repository settings"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Applied main branch protection from .github/branch-protection.api.json and created repository secret BRANCH_PROTECTION_AUDIT_TOKEN. Remaining validation is first push-to-main verify-gate run in required-live mode.

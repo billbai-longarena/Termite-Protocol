@@ -271,7 +271,7 @@ if [ "$MODE" = "compress" ]; then
 
   # Find groups with >= 3 observations
   merged_total=0
-  cut -d'|' -f1 "$tmpfile" | sort | uniq -c | sort -rn | while read -r gcount group_key; do
+  while read -r gcount group_key; do
     gcount=$(echo "$gcount" | tr -d ' ')
     if [ "$gcount" -ge 3 ]; then
       log_info "Compressing group (${gcount} observations): ${group_key}"
@@ -321,7 +321,7 @@ MEOF
 
       merged_total=$((merged_total + 1))
     fi
-  done
+  done < <(cut -d'|' -f1 "$tmpfile" | sort | uniq -c | sort -rn)
 
   rm -f "$tmpfile"
   log_info "Compression complete"

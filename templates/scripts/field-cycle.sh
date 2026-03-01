@@ -143,7 +143,7 @@ elif [ -d "$OBS_DIR" ]; then
   # Find patterns with >= PROMOTION_THRESHOLD observations
   if [ -s "$tmpfile" ]; then
     promoted=0
-    cut -d'|' -f1 "$tmpfile" | sort | uniq -c | sort -rn | while read -r count pattern; do
+    while read -r count pattern; do
       count=$(echo "$count" | tr -d ' ')
       if [ "$count" -ge "$PROMOTION_THRESHOLD" ]; then
         log_info "Promoting pattern (${count} observations): ${pattern}"
@@ -191,7 +191,7 @@ RULEEOF
 
         promoted=$((promoted + 1))
       fi
-    done
+    done < <(cut -d'|' -f1 "$tmpfile" | sort | uniq -c | sort -rn)
   fi
   rm -f "$tmpfile"
 fi

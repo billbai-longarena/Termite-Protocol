@@ -1,0 +1,9 @@
+id: O-20260301081351-14568
+pattern: "S-022 slice-1 landed: invite store driver abstraction with file adapter encapsulation"
+context: "apps/gateway invite storage"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Added WORLD_INVITE_STORE_DRIVER with InviteStore abstraction. File/filesystem backend is active default; postgres driver is reserved and intentionally throws not-implemented to prevent silent partial behavior. Verified with pnpm --filter @openagentengine/gateway build and pnpm run verify:s021 (statuses [201,409]).

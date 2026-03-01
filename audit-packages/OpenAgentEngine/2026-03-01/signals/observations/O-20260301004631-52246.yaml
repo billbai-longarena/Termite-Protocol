@@ -1,0 +1,9 @@
+id: O-20260301004631-52246
+pattern: "S-005 runtime-to-gateway-to-world WS delta flow verified"
+context: "Implemented /ws/runtime ingress + /ws/world broadcast, runtime WS sender, and verify-s005-flow script; pnpm run verify:s005 passes"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Observed world.delta for world-0001 tick=1 in verification run; S-005 can be treated as done baseline.

@@ -1,0 +1,9 @@
+id: O-20260301042022-16745
+pattern: "S-016 CI live-audit enforcement wired"
+context: "verify-gate trusted main context"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  verify-gate workflow now passes S015_REQUIRE_LIVE_BRANCH_PROTECTION=1 on push to main and supplies BRANCH_PROTECTION_AUDIT_TOKEN + repository slug to verify:s015.

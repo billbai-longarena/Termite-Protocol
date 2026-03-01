@@ -1,0 +1,9 @@
+id: O-20260301060722-90982
+pattern: "S-018 concurrent redeem race closed with per-invite serialization lock and deterministic [201,409] redeem outcome"
+context: "apps/gateway invite redeem path + scripts/verify-s018-invite-flow.mjs"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Race reproduction showed double success before fix; after lock hardening, verify:s018 and verify:gate both pass and concurrent loser returns invite_exhausted.

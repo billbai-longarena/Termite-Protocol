@@ -1,0 +1,9 @@
+id: O-20260301050052-78205
+pattern: "S-017 closed with first protected main run evidence"
+context: "GitHub Actions verify-gate push/main"
+reporter: "termite:2026-03-01:worker"
+confidence: high
+created: 2026-03-01
+source: autonomous
+detail: |
+  Observed run https://github.com/billbai-longarena/OpenAgentEngine/actions/runs/22528876571 (created 2026-02-28T20:57:26Z, conclusion=success) where phase-10 printed: S-015 branch-protection drift verified: repo=billbai-longarena/OpenAgentEngine branch=main contexts=verify-gate live_check=aligned mode=required.

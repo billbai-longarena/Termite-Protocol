@@ -122,8 +122,8 @@ Options:
 TARGET_DIR defaults to the current working directory ($PWD).
 
 Modes:
-  Local:  When run from a clone of the 白蚁协议 repo (templates/ detected)
-  Remote: Downloads templates from GitHub when templates/ is not found
+  Local:  When run from a clone of the protocol source repo (templates/ detected)
+  Remote: Downloads protocol templates from GitHub when templates/ is not found
 HELP
   exit 0
 }

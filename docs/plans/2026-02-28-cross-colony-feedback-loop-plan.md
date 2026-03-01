@@ -2,7 +2,7 @@
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** Enable projects using the Termite Protocol to submit audit packages to the protocol repo via PR, detect protocol updates, and support opt-in/opt-out with disclaimer.
+**Goal:** Enable host projects using the Termite Protocol to submit audit packages to the protocol source repo via PR, detect protocol updates, and support opt-in/opt-out with disclaimer.
 
 **Architecture:** Three new scripts (`field-submit-audit.sh`, telemetry helpers in `field-lib.sh`, version check in `field-arrive.sh`), one config template (`.termite-telemetry.yaml`), and modifications to `install.sh`. All gated behind `.termite-telemetry.yaml` `enabled: true + accepted: true`.
 
