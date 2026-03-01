@@ -55,6 +55,7 @@
 | 并发冲突 | `TERMITE_PROTOCOL.md` Part II §4.5 |
 | 三丘哲学 | `TERMITE_PROTOCOL.md` Part III |
 | 降级运行 | `TERMITE_PROTOCOL.md` Part II |
+| 协议升级变更 | `UPGRADE_NOTES.md` |
 
 ---
 

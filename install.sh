@@ -15,7 +15,7 @@ set -euo pipefail
 
 # ---------- Constants ----------
 
-VERSION="1.0.0"
+VERSION="1.1.0"
 
 # GitHub raw base URL — replace with your fork's URL, or set TERMITE_REPO_URL env var
 GITHUB_RAW_BASE="${TERMITE_REPO_URL:-https://raw.githubusercontent.com/__GITHUB_RAW_BASE__/main/templates}"
@@ -24,6 +24,7 @@ GITHUB_RAW_BASE="${TERMITE_REPO_URL:-https://raw.githubusercontent.com/__GITHUB_
 PROTOCOL_FILES=(
   TERMITE_PROTOCOL.md
   TERMITE_SEED.md
+  UPGRADE_NOTES.md
   signals/README.md
 )
 
@@ -96,6 +97,7 @@ GITIGNORE_RULES=".birth
 .termite.db-wal
 .termite.db-shm
 .termite-upstream-check
+.termite-upgrade-report
 audit-package-*"
 
 # ---------- Helper Functions ----------
@@ -393,6 +395,64 @@ if [ -n "${TEMP_DIR:-}" ] && [ -d "${TEMP_DIR:-}" ]; then
   rm -rf "$TEMP_DIR"
 fi
 
+# ---------- Upgrade Summary ----------
+
+# Extract version from TERMITE_PROTOCOL.md first line: <!-- termite-protocol:vX.Y -->
+extract_version() {
+  local file="$1"
+  [ -f "$file" ] || { echo "unknown"; return; }
+  head -1 "$file" 2>/dev/null \
+    | sed -n 's/.*termite-protocol:\(v[0-9.]*\).*/\1/p' || echo "unknown"
+}
+
+if [ "$UPGRADE" = true ]; then
+  NEW_VER=$(extract_version "${TARGET_DIR}/TERMITE_PROTOCOL.md")
+  OLD_VER="unknown"
+
+  # Try to read old version from backup
+  if [ -f "${TARGET_DIR}/TERMITE_PROTOCOL.md.backup" ]; then
+    OLD_VER=$(extract_version "${TARGET_DIR}/TERMITE_PROTOCOL.md.backup")
+  fi
+
+  UPGRADE_NOTES="${TARGET_DIR}/UPGRADE_NOTES.md"
+  UPGRADE_REPORT="${TARGET_DIR}/.termite-upgrade-report"
+
+  if [ -f "$UPGRADE_NOTES" ] && [ "$OLD_VER" != "unknown" ] && [ "$NEW_VER" != "unknown" ] && [ "$OLD_VER" != "$NEW_VER" ]; then
+    echo ""
+    echo "========================================"
+    log "What changed: ${OLD_VER} → ${NEW_VER}"
+    echo "========================================"
+
+    # Extract sections between old and new version from UPGRADE_NOTES.md
+    # Print all ## vX.Y sections where version > OLD_VER and version <= NEW_VER
+    in_range=false
+    while IFS= read -r line; do
+      if echo "$line" | grep -qE '^## v[0-9]+\.[0-9]'; then
+        section_ver=$(echo "$line" | sed 's/^## \(v[0-9.]*\).*/\1/')
+        if [ "$section_ver" = "$OLD_VER" ]; then
+          in_range=false
+        else
+          in_range=true
+        fi
+      fi
+      if $in_range; then
+        echo "  $line"
+      fi
+    done < "$UPGRADE_NOTES"
+
+    echo ""
+
+    # Write upgrade report for next agent's field-arrive.sh
+    cat > "$UPGRADE_REPORT" <<REOF
+upgraded_at: $(date -u +%Y-%m-%dT%H:%M:%SZ)
+from_version: ${OLD_VER}
+to_version: ${NEW_VER}
+summary: "See UPGRADE_NOTES.md for full details. Check Action Required sections."
+REOF
+    log "Upgrade report written to .termite-upgrade-report"
+  fi
+fi
+
 # ---------- Summary ----------
 
 echo ""
@@ -415,4 +475,11 @@ if [ "$UPGRADE" = false ]; then
   log "  2. Run: cd ${TARGET_DIR} && ./scripts/field-arrive.sh"
   log "  3. Start working with your AI agent!"
   log "  4. Claude Code plugin installed at .claude/plugins/termite-protocol/"
+fi
+
+if [ "$UPGRADE" = true ]; then
+  log "Next steps:"
+  log "  1. Read UPGRADE_NOTES.md for detailed changes and action items"
+  log "  2. Check .termite-upgrade-report for upgrade context"
+  log "  3. Run: cd ${TARGET_DIR} && ./scripts/field-arrive.sh"
 fi

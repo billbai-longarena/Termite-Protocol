@@ -882,7 +882,7 @@ submit_frequency: "session-end"  # session-end | weekly | manual
 
 1. **审计提交**：`./scripts/field-submit-audit.sh` 导出审计包 → fork 协议源仓库 → 创建 PR
 2. **版本检测**：`field-arrive.sh` 到达时检查协议源仓库版本（24h 缓存），有更新则生成 HOLE 信号
-3. **半自主升级**：Scout 审查 changelog 后决定是否执行 `install.sh --upgrade`
+3. **半自主升级**：Scout 审查 `UPGRADE_NOTES.md` 后决定是否执行 `install.sh --upgrade`（升级后 install.sh 打印变更摘要并写入 `.termite-upgrade-report`）
 
 **免责声明**：首次启用时强制展示。审计包只含蚁丘协议产物（参见"协议审计导出"），不含宿主项目源码。
 

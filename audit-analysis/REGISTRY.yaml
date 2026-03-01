@@ -235,3 +235,88 @@
     F-005: Replaced exact BLACKBOARD header matching with keyword-based awk patterns.
     F-006: Added same-owner detection to field-submit-audit.sh; skips fork when
     GH_USER matches upstream owner.
+
+# ── Nurse self-check session 3 (2026-03-01) ─────────────────────────
+
+- date: 2026-03-01
+  type: audit-received
+  id: A-002
+  status: closed
+  host_project: OpenAgentEngine
+  package: audit-packages/OpenAgentEngine/2026-03-01/
+  key_metrics:
+    total_commits: 54
+    signed_commits: 3
+    signature_ratio: 0.00
+    handoff_quality: 1.00
+    pheromone_snapshots: 44
+    pending_observations: 74
+    active_rules: 0
+  findings: 0
+  duplicate_of: A-001
+  notes: >
+    Duplicate re-export from same colony state, 5 minutes after A-001
+    (02:46:08Z → 02:51:20Z). Identical metrics. New nested directory
+    structure (project/date/ instead of project-date/) validates that
+    TF-003's integrated field-submit-audit.sh produces correct output.
+    No new findings. signature_ratio_last_50 is 0.00 (consistent with
+    F-002: hooks not installed under older install.sh version).
+
+- date: 2026-03-01
+  type: finding-open
+  id: F-008
+  status: fixed
+  title: "Upgrade information flow has three broken links — no changelog, no semantic summary, no action guidance"
+  source: "Nurse self-check session 3 — tracing upgrade chain from protocol source repo to host project agent"
+  severity: high
+  description: >
+    Three gaps in the upgrade information flow prevent host project agents
+    from making informed upgrade decisions and taking post-upgrade actions:
+    (1) HOLE signal and protocol spec reference "review changelog" but no
+    CHANGELOG or UPGRADE_NOTES exists anywhere in the repo;
+    (2) install.sh --upgrade prints only file counts, no semantic diff or
+    "what changed" summary;
+    (3) After upgrade, no mechanism tells the colony whether action is needed
+    (e.g. configure .termite-telemetry.yaml for new auto-submit feature)
+    or whether the upgrade is purely transparent.
+  affected_files:
+    - templates/scripts/field-arrive.sh (HOLE signal next field)
+    - install.sh (upgrade summary output)
+    - templates/TERMITE_PROTOCOL.md (references "review changelog")
+    - templates/CLAUDE.md (lookup index)
+    - templates/AGENTS.md (lookup index, Codex agents)
+  plan: docs/plans/2026-03-01-upgrade-info-flow-design.md
+  fixed_by: TF-004
+  fixed_date: 2026-03-01
+
+- date: 2026-03-01
+  type: template-fix
+  id: TF-004
+  status: fixed
+  title: "Upgrade information flow: UPGRADE_NOTES.md + install.sh summary + field-arrive.sh report injection"
+  trigger: "Nurse self-check session 3, F-008"
+  closes: ["F-008"]
+  files_changed:
+    - templates/UPGRADE_NOTES.md (new)
+    - install.sh
+    - templates/scripts/field-arrive.sh
+    - templates/TERMITE_PROTOCOL.md
+    - templates/CLAUDE.md
+    - templates/AGENTS.md
+    - docs/plans/2026-02-28-cross-colony-feedback-loop-design.md
+    - docs/plans/2026-02-28-cross-colony-feedback-loop-plan.md
+  notes: >
+    (1) Created templates/UPGRADE_NOTES.md — structured changelog with per-version
+    Changes/Action Required/Action Optional sections. Added to PROTOCOL_FILES in
+    install.sh so it updates during --upgrade.
+    (2) install.sh v1.1.0: detects old/new protocol version during --upgrade,
+    extracts relevant sections from UPGRADE_NOTES.md, prints to stdout, writes
+    .termite-upgrade-report for next agent.
+    (3) field-arrive.sh Step 3.8: reads .termite-upgrade-report if present,
+    injects upgrade context into .birth situation summary.
+    (4) HOLE signal next field changed from "review changelog at GitHub" to
+    "read UPGRADE_NOTES.md for changes and action items".
+    (5) TERMITE_PROTOCOL.md: updated "review changelog" to "review UPGRADE_NOTES.md".
+    (6) Both templates/CLAUDE.md and templates/AGENTS.md: added "协议升级变更 |
+    UPGRADE_NOTES.md" to lookup index.
+    (7) Design docs updated to replace all "changelog" references with UPGRADE_NOTES.md.

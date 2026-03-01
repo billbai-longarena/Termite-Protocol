@@ -76,6 +76,7 @@ IF 不可执行:
 | 三丘哲学 | `TERMITE_PROTOCOL.md` Part III |
 | 降级运行 | `TERMITE_PROTOCOL.md` Part II |
 | 免疫系统 | `TERMITE_PROTOCOL.md` Part III |
+| 协议升级变更 | `UPGRADE_NOTES.md` |
 
 ---
 

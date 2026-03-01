@@ -140,7 +140,7 @@ Added after breath freshness check, before caste determination.
      type: HOLE
      title: "Protocol update available: v3.4 -> v3.5"
      weight: 35  (visible but not urgent)
-     next: "Scout review changelog -> decide whether to install.sh --upgrade"
+     next: "Scout: read UPGRADE_NOTES.md for changes and action items, then decide whether to run install.sh --upgrade"
      source: autonomous
      module: "termite-protocol"
 ```
@@ -149,7 +149,7 @@ Added after breath freshness check, before caste determination.
 
 When a Scout caste termite encounters the "protocol update available" signal:
 
-1. Read upstream changelog (CHANGELOG.md or git diff between versions)
+1. Read `UPGRADE_NOTES.md` for changes and action items
 2. Assess impact on current project
 3. Decision:
    - **Upgrade**: Run `install.sh --upgrade`, mark signal done
@@ -213,7 +213,7 @@ Nurse is a termite in the protocol source repo with nurse caste. Input: audit pa
 | Audit package accidentally includes source code | field-export-audit.sh isolation principle: only reads signals/, git signatures, pheromone |
 | gh token exposure | Uses gh CLI's existing auth. No token storage. Silent skip without gh. |
 | Malicious audit package poisoning | PR review is natural defense. Nurse only reads known-schema YAML. |
-| Breaking protocol upgrade | Semi-autonomous: Scout must review changelog before deciding to upgrade |
+| Breaking protocol upgrade | Semi-autonomous: Scout must review UPGRADE_NOTES.md before deciding to upgrade |
 | Fork permission issues | gh fork is standard GitHub operation, no write access to target needed |
 
 ## Protocol Spirit Alignment

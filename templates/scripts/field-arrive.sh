@@ -126,7 +126,7 @@ if telemetry_enabled; then
           "Protocol update available: ${local_ver} → ${upstream_ver}" \
           "open" "35" "14" "$(today_iso)" "$(today_iso)" "unassigned" \
           "termite-protocol" "[]" \
-          "Scout: review changelog at https://github.com/$(telemetry_upstream_repo), decide whether to install.sh --upgrade" \
+          "Scout: read UPGRADE_NOTES.md for changes and action items, then decide whether to run install.sh --upgrade" \
           "0" "autonomous"
         log_info "Created signal ${update_id} for protocol update"
       else
@@ -144,7 +144,7 @@ last_touched: $(today_iso)
 owner: unassigned
 module: "termite-protocol"
 tags: []
-next: "Scout: review changelog, decide whether to install.sh --upgrade"
+next: "Scout: read UPGRADE_NOTES.md for changes and action items, then decide whether to run install.sh --upgrade"
 touch_count: 0
 source: autonomous
 SIGEOF
@@ -152,6 +152,17 @@ SIGEOF
       fi
     fi
   fi
+fi
+
+# ── Step 3.8: Read upgrade report if present ──────────────────────────
+
+upgrade_context=""
+UPGRADE_REPORT="${PROJECT_ROOT}/.termite-upgrade-report"
+if [ -f "$UPGRADE_REPORT" ]; then
+  from_ver=$(yaml_read "$UPGRADE_REPORT" "from_version" 2>/dev/null || echo "unknown")
+  to_ver=$(yaml_read "$UPGRADE_REPORT" "to_version" 2>/dev/null || echo "unknown")
+  upgrade_context="Protocol recently upgraded: ${from_ver} → ${to_ver}. Read UPGRADE_NOTES.md for changes and action items."
+  log_info "Upgrade report detected: ${from_ver} → ${to_ver}"
 fi
 
 # ── Step 4: Caste determination (waterfall, first hit wins) ──────────
@@ -316,6 +327,10 @@ fi
 # Genesis context
 if [ "$genesis" = "true" ]; then
   situation="${situation}GENESIS: First session. BLACKBOARD + S-001 auto-generated. Verify build/test, map project, refine BLACKBOARD.\n"
+fi
+# Upgrade context
+if [ -n "${upgrade_context:-}" ]; then
+  situation="${situation}UPGRADE: ${upgrade_context}\n"
 fi
 
 # ── Step 6.5: Update agent caste in DB ──────────────────────────────

@@ -23,6 +23,7 @@ templates/
   TERMITE_PROTOCOL.md   ← Canonical protocol spec (v3.4). Changes here propagate to all host projects on next upgrade.
   CLAUDE.md / AGENTS.md ← Entry file templates installed into host projects.
   TERMITE_SEED.md       ← Minimal protocol payload injected into generated agent systems.
+  UPGRADE_NOTES.md      ← Structured changelog with per-version changes and action items for host projects.
   scripts/
     field-lib.sh        ← Shared function library (path resolution, YAML parsing, signal I/O, DB bridge)
     field-arrive.sh     ← Agent arrival: reads environment + protocol, computes .birth file
@@ -37,7 +38,7 @@ templates/
     field-submit-audit.sh  ← Submit audit packages as PRs to this repo
     termite-db.sh       ← SQLite WAL-mode database + migrations
     hooks/              ← Git hooks (pre-commit, pre-push, prepare-commit-msg, post-commit)
-install.sh              ← One-click installer for host projects (copies protocol templates, creates dirs, installs hooks)
+install.sh              ← One-click installer for host projects (copies protocol templates, creates dirs, installs hooks, prints upgrade summary)
 
 0227/                   ← Production reference colony (SalesTouch). Contains live signals, observations, and rules from real usage.
 audit-packages/         ← Cross-colony audit data submitted from host projects.
@@ -62,9 +63,11 @@ docs/plans/             ← Design documents for major features.
 6. ~~`field-submit-audit.sh` fails on same-owner repos~~ **FIXED** — added same-owner detection; skips fork and pushes branch directly
 7. ~~`field-export-audit.sh` `cp -R` creates nested `signals/signals/` directory~~ **FIXED** — added `rm -rf` before `cp -R` to prevent nesting when target exists (cross-colony signal: ReactArmor O-003)
 8. Observation → template fix feedback loop is entirely manual (no automated path from host project O-xxx to protocol template patches)
+9. ~~Upgrade information flow has three broken links — no changelog, no semantic summary, no action guidance~~ **FIXED** — created `templates/UPGRADE_NOTES.md`, install.sh --upgrade now prints change summary and writes `.termite-upgrade-report`, HOLE signal next field references UPGRADE_NOTES.md, field-arrive.sh Step 3.8 injects upgrade context into .birth
 
 ### Recent Work
 
+- **Upgrade information flow fix (F-008)** (`docs/plans/2026-03-01-upgrade-info-flow-design.md`) — created UPGRADE_NOTES.md, install.sh upgrade summary, field-arrive.sh upgrade report injection; synced CLAUDE.md + AGENTS.md templates
 - **Nurse batch fix TF-002 + TF-003** — closed all 7 OAE audit findings: F-001 grep-c, F-002 hooks, F-003 submit flow, F-004 .gitignore, F-005 header matching, F-006 same-owner, F-007 cp-R nesting
 - **Terminology unification** (`docs/plans/2026-03-01-terminology-unification-design.md`) — unified referential terms across all files
 - **grep-c feedback loop MVP** (`docs/plans/2026-03-01-grep-c-feedback-loop-mvp-design.md`) — first complete feedback loop closure: 0227 O-001 + OAE audit → Nurse → template fix
@@ -122,6 +125,7 @@ docs/plans/             ← Design documents for major features.
 |---|---|
 | `templates/TERMITE_PROTOCOL.md` | All host projects on next `install.sh --upgrade` |
 | `templates/scripts/*.sh` | Runtime behavior of all host project colonies |
+| `templates/UPGRADE_NOTES.md` | Upgrade guidance for all host projects (updated during --upgrade) |
 | `templates/CLAUDE.md` or `AGENTS.md` | New installations only (existing entry files are preserved on upgrade) |
 | `install.sh` | Installation and upgrade flow for all future adopters |
 | `0227/` | Reference colony only — do not modify without understanding it is a live production snapshot |
