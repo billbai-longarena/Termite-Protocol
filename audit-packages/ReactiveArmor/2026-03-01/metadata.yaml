@@ -3,22 +3,22 @@
 # Protocol Nurse: read this first to understand the project context.
 
 project_name: "ReactiveArmor"
-export_date: "2026-03-01T11:58:38Z"
+export_date: "2026-03-01T14:56:28Z"
 protocol_version: "v3.4"
 kernel_version: "v10.0"
 
 # Duration & Volume
 run_duration_days: 0
-total_commits: 121
-signed_commits: 121
+total_commits: 128
+signed_commits: 128
 signature_ratio_last_50: 0.00
 
 # Signal Inventory
 active_signals: 0
-pending_observations: 14
+pending_observations: 16
 active_rules: 0
 archived_items: 6
-pheromone_snapshots: 6
+pheromone_snapshots: 7
 
 # Current State
 current_branch: "master"

@@ -1,3 +1,10 @@
+bafd734 2026-03-01 21:54:54 +0800 feat(render): Load and render actual glTF mech models
+5ca8348 2026-03-01 21:41:41 +0800 feat(render): Add 3D mech markers and glTF loading capability
+a9a5656 2026-03-01 21:32:52 +0800 feat(S-025): Phase 5 Asset Migration - GUID Resolution
+130b2b2 2026-03-01 21:24:21 +0800 feat(S-025): Phase 4 Asset Migration - Texture Conversion Tooling
+14341a2 2026-03-01 21:17:14 +0800 feat(S-025): Phase 3 Asset Migration - Complete Model Conversion
+24895b1 2026-03-01 21:04:08 +0800 feat(S-025): Phase 2 Asset Migration - Humanoid FBX to glTF
+b87d8f3 2026-03-01 20:59:10 +0800 feat(S-025): Phase 1 Asset Migration - Unity to JSON
 04484d8 2026-03-01 19:56:57 +0800 chore(WIP): Record Agent AC scout session — S-024 Settings System proposed
 c1cd316 2026-03-01 19:56:09 +0800 chore(signals): Agent AC scout report — S-024 Settings System proposed
 966accf 2026-03-01 19:50:33 +0800 chore(WIP): Record Agent AC session — S-023 Phase 3 completion
@@ -121,6 +128,13 @@ f9043d3 2026-03-01 15:33:45 +0800 docs: record local bare remote workflow for of
 cec4855 2026-03-01 15:31:45 +0800 init: bootstrap ReactiveArmor locally with termite protocol and Rust workspace
 
 # --- Unsigned commits (for IC-3 foreign body analysis) ---
+bafd734 2026-03-01 21:54:54 +0800 feat(render): Load and render actual glTF mech models
+5ca8348 2026-03-01 21:41:41 +0800 feat(render): Add 3D mech markers and glTF loading capability
+a9a5656 2026-03-01 21:32:52 +0800 feat(S-025): Phase 5 Asset Migration - GUID Resolution
+130b2b2 2026-03-01 21:24:21 +0800 feat(S-025): Phase 4 Asset Migration - Texture Conversion Tooling
+14341a2 2026-03-01 21:17:14 +0800 feat(S-025): Phase 3 Asset Migration - Complete Model Conversion
+24895b1 2026-03-01 21:04:08 +0800 feat(S-025): Phase 2 Asset Migration - Humanoid FBX to glTF
+b87d8f3 2026-03-01 20:59:10 +0800 feat(S-025): Phase 1 Asset Migration - Unity to JSON
 04484d8 2026-03-01 19:56:57 +0800 chore(WIP): Record Agent AC scout session — S-024 Settings System proposed
 c1cd316 2026-03-01 19:56:09 +0800 chore(signals): Agent AC scout report — S-024 Settings System proposed
 966accf 2026-03-01 19:50:33 +0800 chore(WIP): Record Agent AC session — S-023 Phase 3 completion
