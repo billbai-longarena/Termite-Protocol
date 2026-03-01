@@ -69,6 +69,40 @@ docs/plans/             ← Design documents for major features.
 - Claude Code plugin integration with 7 hooks (`docs/plans/2026-02-28-claude-code-hook-integration-*`)
 - OpenAgentEngine agent experience audit (`audit-analysis/optimization-proposals/2026-03-01-agent-experience-report-oae.md`)
 
+## Operations (协议源仓库的工作模式)
+
+> **协议源仓库不是宿主项目。** 这里没有 field-arrive.sh / .birth / 心跳循环。
+> 这里的驱动力是：**审计包到达** 和 **人类指令**。
+
+### "白蚁协议"在这里的含义
+
+在宿主项目中，"白蚁协议"= 心跳触发 → 自主代谢。
+在协议源仓库中，"白蚁协议"= **Nurse 自检** → 读审计登记簿 → 识别待处理项 → 执行。
+
+### 你能做的三件事
+
+| 操作 | 触发方式 | 输入 | 输出 |
+|------|---------|------|------|
+| **Nurse 审计分析** | 人类说"白蚁协议"或"Nurse 分析" | `audit-analysis/REGISTRY.yaml` + `audit-packages/*/metadata.yaml` | 优化提案写入 `audit-analysis/optimization-proposals/` |
+| **协议演化** | 人类描述需求 | `templates/` 中的规范和脚本 | 修改模板 + 版本号更新 |
+| **反馈闭环处理** | Nurse 发现跨蚁丘重复模式 | 宿主项目观察 (O-xxx) + 审计 findings | 模板修复 + REGISTRY.yaml 记录 |
+
+### Nurse 自检流程
+
+```
+1. 读 audit-analysis/REGISTRY.yaml           ← 你的工作台面，从这里开始
+2. 检查 status: open 的条目                    ← 有未处理的审计或未修复的问题吗？
+3. 读对应的 audit-packages/*/metadata.yaml    ← 了解宿主项目蚁丘的健康指标
+4. 跨蚁丘比对                                  ← 不同宿主项目是否报告了相同的模式？
+5. 如果发现问题 → 定位到 templates/ 中的源码    ← 问题出在哪个模板脚本？
+6. 修复 → 更新 REGISTRY.yaml → 更新 Known Issues
+```
+
+### 审计登记簿
+
+`audit-analysis/REGISTRY.yaml` 是协议源仓库的**唯一结构化状态文件**。
+每次审计到达、模板修复、协议演化都追加一条记录。Nurse 从这里开始工作。
+
 ## Development Conventions
 
 - Field scripts must work under `set -euo pipefail`
