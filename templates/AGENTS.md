@@ -89,6 +89,23 @@ IF 不可执行:
 
 ---
 
+## 场基础设施 / Field Infrastructure
+
+<!-- 如果宿主项目配置了场基础设施，取消注释并填写实际路径 -->
+<!-- | 工具 | 作用 |
+|------|------|
+| `scripts/field-arrive.sh` | 到达仪式 — 注入 .birth、感受场脉搏 |
+| `scripts/field-cycle.sh` | 完整呼吸 — 衰减→排水→脉搏（post-commit hook） |
+| `scripts/field-deposit.sh` | 信息素沉淀 — 会话结束时生成 .pheromone |
+| `scripts/field-export-audit.sh` | 审计包导出 — 导出蚁丘协议产物供协议源仓库审计（不含宿主项目代码） |
+| `scripts/field-claim.sh` | 认领锁 — claim/release/check |
+| `signals/rules/*.yaml` | 触发-动作规则（由 field-arrive 注入 .birth） |
+| `signals/active/*.yaml` | 活跃信号数据 |
+| `.pheromone` | 大模型间的化学痕迹（JSON） |
+| `.birth` | 本次会话的出生证明（由 arrive 生成） | -->
+
+---
+
 ## 路由表：任务 → 局部黑板
 
 | 任务关键词 | 局部黑板 |
@@ -120,6 +137,23 @@ IF 不可执行:
 ## Configuration & Secrets
 
 <!-- 在此说明环境变量和配置文件结构，不要包含实际密钥值 -->
+
+<!-- ### 分支治理 — 三分支流水线
+
+```
+<dev-branch> ──(人类挑拣稳定功能)──▶ <staging-branch> ──(测试通过后合并)──▶ <production-branch>
+ ▲ AI 白蚁工作区                      ▲ 开发服务器                          ▲ 生产环境
+```
+
+| 分支 | 谁写入 | 部署 |
+|------|--------|------|
+| `<dev-branch>` | AI 白蚁（所有 commit 只到这里） | 不部署 |
+| `<staging-branch>` | 人类工程师主导 | 自动发布到开发服务器 |
+| `<production-branch>` | 仅人类工程师 | 手动发布到生产环境 |
+
+自主模式：只允许操作 `<dev-branch>` 和 `feature/*`。
+人类指挥模式：人类明确指令时可操作 `<staging-branch>`，操作前复述指令并请求确认。
+`<production-branch>` 即使人类指挥也不允许白蚁操作。 -->
 
 ---
 
