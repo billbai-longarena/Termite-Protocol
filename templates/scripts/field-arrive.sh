@@ -60,7 +60,7 @@ if has_db; then
   wip=$(db_colony_get "wip" 2>/dev/null || echo "absent")
   build=$(db_colony_get "build" 2>/dev/null || echo "unknown")
   sig_ratio=$(db_colony_get "signature_ratio" 2>/dev/null || echo "0.00")
-  active_signals=$(db_signal_count "status NOT IN ('archived','parked')" 2>/dev/null || echo "0")
+  active_signals=$(db_signal_count "status NOT IN ('archived','parked','done','completed')" 2>/dev/null || echo "0")
   high_holes=$(db_signal_count "type='HOLE' AND weight>=${ESCALATE_THRESHOLD} AND status!='parked'" 2>/dev/null || echo "0")
   parked_signals=$(db_signal_count "status='parked'" 2>/dev/null || echo "0")
   branch=$(db_colony_get "branch" 2>/dev/null || current_branch)
@@ -91,7 +91,7 @@ fi
 genesis=false
 active_count_check=0
 if has_db; then
-  active_count_check=$(db_signal_count "status NOT IN ('archived')" 2>/dev/null || echo "0")
+  active_count_check=$(db_signal_count "status NOT IN ('archived','done','completed')" 2>/dev/null || echo "0")
 else
   active_count_check=$(count_active_signals 2>/dev/null || echo "0")
 fi
@@ -286,7 +286,7 @@ fi
 
 # Top signals
 if has_db; then
-  top_signals=$(db_signal_by_weight 3 "status NOT IN ('archived','parked')" | while IFS=$'\t' read -r sid stype stitle sstatus sw sowner; do
+  top_signals=$(db_signal_by_weight 3 "status NOT IN ('archived','parked','done','completed')" | while IFS=$'\t' read -r sid stype stitle sstatus sw sowner; do
     echo -n "${sid}(w:${sw} ${stype}) "
   done)
   if [ -n "$top_signals" ]; then
@@ -331,6 +331,10 @@ fi
 # Upgrade context
 if [ -n "${upgrade_context:-}" ]; then
   situation="${situation}UPGRADE: ${upgrade_context}\n"
+fi
+# Idle colony detection (W-007): no actionable signals, not genesis, not alarm, not fresh WIP
+if [ "${active_signals:-0}" -eq 0 ] && [ "$wip" != "fresh" ] && [ "$alarm" != "true" ] && [ "$genesis" != "true" ]; then
+  situation="${situation}IDLE: Colony has no actionable signals. Either deposit a HOLE signal for new work, or exit session.\n"
 fi
 
 # ── Step 6.5: Update agent caste in DB ──────────────────────────────
@@ -414,6 +418,7 @@ permission_denied: ALARM immediately
 context_pressure: MOLT now
 build_fail: soldier, fix first
 stuck_3_turns: deposit, end session
+idle_colony: deposit HOLE or exit session
 BIRTHEOF
 
 # Also write default .birth for backward compatibility

@@ -35,7 +35,7 @@ parked_count=0
 
 if has_db; then
   source "${SCRIPT_DIR}/termite-db.sh"
-  active_count=$(db_signal_count "status NOT IN ('archived')" 2>/dev/null || echo "0")
+  active_count=$(db_signal_count "status NOT IN ('archived','done','completed')" 2>/dev/null || echo "0")
   high_holes=$(db_signal_count "type='HOLE' AND weight>=${ESCALATE_THRESHOLD} AND status!='parked'" 2>/dev/null || echo "0")
   parked_count=$(db_signal_count "status='parked'" 2>/dev/null || echo "0")
 elif has_signal_dir; then
