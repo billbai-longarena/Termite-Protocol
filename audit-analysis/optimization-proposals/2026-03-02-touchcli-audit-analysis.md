@@ -113,13 +113,126 @@ O-20260302033955-6666 记录了 agent 修改了 `field-arrive.sh`, `field-pulse.
 | 空转问题 | 未观察到 | 未观察到 | **65% 空转** | **新发现** |
 | 签名合规 | 不合规 (hooks) | 不合规 (格式) | 部分合规 | **渐进改善** |
 
+## 信号生态深度分析
+
+### 信号类型与颗粒度
+
+touchcli 产生了 6 个信号（S-001 → S-006）+ 1 个自发涌现规则 R-001：
+
+| ID | 类型 | 颗粒度 | 产生方式 | 最终状态 |
+|-----|------|--------|---------|---------|
+| S-001 | EXPLORE | 项目级 | 创世自动生成 | archived (w=17) |
+| S-002 | IMPLEMENT | 阶段级 (Phase 1, 4 子任务) | R-001 规则触发 | completed |
+| S-003 | HOLE | 阶段级 (Phase 2 规划+脚手架) | Scout 战略评审 | completed |
+| S-004 | EXPLORE | 研究级 (i18n 范围界定) | Scout 决策跟进 | 关闭 → spawn S-006 |
+| S-005 | PROBE | 任务级 (性能基线) | Scout 决策跟进 | completed |
+| S-006 | HOLE | 任务级 (i18n 实现) | S-004 闭环时 spawn | completed |
+
+颗粒度呈三层分布：
+
+- **项目级**（S-001）：探索整个仓库。创世自动生成，作为 Scout 初始认知任务。颗粒度最粗。
+- **阶段级**（S-002, S-003）：对应 Phase 1 / Phase 2。S-002 的 `next` 字段覆盖了 4 个独立设计文档（schema, API, WebSocket, Redis），交付量 1540 行。**颗粒度偏粗**——一个 IMPLEMENT 信号承载了 4 个可独立验证的交付物。
+- **任务级**（S-005, S-006）：对应单个可验证的实现任务。S-005 = benchmark 脚本+gate，S-006 = locale resolver 实现。这是**最合适的颗粒度**。
+
+**颗粒度不均匀问题**：S-002 一个信号做了 4 个设计文档（1540 行），S-005 一个信号只做了 1 个 benchmark 脚本。协议没有信号拆分指导，agent 自主判断粒度，结果取决于 agent 能力和当时的上下文压力。
+
+### 信号产生的三种路径
+
+**路径 1：创世基础设施自动生成**
+
+S-001 EXPLORE 由 field-genesis.sh 在检测到"无 BLACKBOARD + 无信号 + 无 WIP"时自动创建。这是**唯一由基础设施产生的信号**，其余全部由 agent 自主产生。
+
+**路径 2：规则涌现触发（Grammar Rule 7）**
+
+S-002 IMPLEMENT 由 R-001 规则触发。链路：
+
+```
+5 Scout observations → Rule 7 (count ≥ 3 → EMERGE) → R-001 涌现
+→ R-001 action: "Generate S-002 (IMPLEMENT)" → S-002 创建
+```
+
+这是协议设计中**最优雅的信号产生方式**——不是某个 agent 拍脑袋创建的，而是多轮观察共振后自发涌现。但在 4 个审计蚁丘中**只出现过一次**，且几乎确定由 Codex 完成。
+
+**路径 3：Agent 主动创建（最常见）**
+
+S-003, S-004, S-005, S-006 都是 agent 在评审过程中直接创建：
+
+```
+Scout 评审 Phase 1 完成 → 发现 Phase 2 需要做 → 创建 S-003 HOLE
+Scout 发现 i18n 尚无定义 → 创建 S-004 EXPLORE (研究范围)
+S-004 关闭后实现工作未落地 → Scout spawn S-006 HOLE (实现)
+Scout 决策跟进 → 创建 S-005 PROBE (性能基线研究)
+```
+
+O-20260302025539-18927 记录了 S-006 的产生理由："No open signals remained; spawned S-006 from S-004 handoff gap"——agent 发现所有信号都完成了，但 i18n 实现未落地，主动 spawn 新信号承接。这种"发现空缺 → 主动填补"是判断力行为。
+
+### 不同白蚁对信号的处理
+
+**Codex 牧羊人（强模型）— 创造者角色：**
+
+- 5 个连续 Scout session 产出了 R-001 规则涌现——唯一的规则创造事件
+- 认领 S-002 交付 Phase 1 全部 4 个设计文档（1540 行）
+- 在信息素链中留下了完整的 completed/unresolved/predecessor_useful 模板
+- 创建了 S-003, S-004, S-005 等后续信号——**定义了工作方向**
+- 做了关键判断：Phase 1→2 转折点评估（O-20260302014024-69731："Phase 1 质量 95%，前置条件全部满足"）
+
+**Haiku 执行者（弱模型 × 2）— 模仿者角色：**
+
+- 认领并完成 S-003（Phase 2 脚手架）、S-005（性能 probe+gate）、S-006（locale resolver）
+- **模仿了 Codex 信息素模板**：观察质量 96.4%，交接评估 99%
+- 能正确执行 R-001 action（按阈值归档 S-001）——**规则执行是 T0 行为**
+- 能正确管理信号状态（completed, parked → completed）
+- 但 commit message 用 "Worker:" 前缀而非 `[termite:...]` 签名——**格式模仿不完全**
+- 发现了 W-008 bug 并自行修补——说明 Haiku 有一定的问题发现能力，但这可能也是模仿了 Codex 的"发现问题 → 沉积观察"模式
+
+**空转 agent（后期监控模式）：**
+
+信号全部 completed 后，3 个 agent 继续循环 ~3 小时，产出 50+ 条 "zero actionable queue" 空信息素。这是 W-007 的直接表现——**agent 不知道"没事做可以走了"**。TF-005 已修复此问题（.birth 注入 IDLE 指导）。
+
+### 信号完成状态与实际工作的差距
+
+touchcli 揭示了三个层面的"信号 completed ≠ 工作完成"问题：
+
+**层面 1：Completed ≠ 全部实现（S-003 问题）**
+
+S-003 标记为 `completed`，但其 `next` 字段是 "Develop Gateway + LangGraph + tool execution engine"。观察记录的交付物是"Phase 2 Planning: 7-task breakdown (610 lines) + code scaffolding (1346 lines)"——只做了**规划和脚手架**，不是完整实现。
+
+协议的信号状态只有 open → completed → archived，**没有 "partially done" 或 "planning done, implementation pending" 的中间态**。agent 面对"我能做的部分做完了，但整体任务未完成"时，只能选择标 completed（因为 open 会让下一个 agent 重新认领）。这是信号生命周期模型的结构性局限。
+
+**层面 2：Completed 信号泄漏导致虚假忙碌（W-008 → W-007 链条）**
+
+```
+S-002 completed (w=19) → DB query 不排除 completed
+→ field-pulse.sh 报 active_signals=4
+→ field-arrive.sh 展示 "Top signals: S-002(w:19 IMPLEMENT)"
+→ agent 认为有工作 → 检查发现已 completed → 无事可做
+→ 沉积 "zero actionable queue" → 下一个 agent 重复 → 65% 空转
+```
+
+touchcli agent 自行发现并本地修补（O-20260302033955-6666），已通过 TF-005 回移到协议模板。
+
+**层面 3：信号闭环缺少验证门禁**
+
+S-006 的关闭过程：
+- O-20260302030954-46721："locale resolver implemented... **Runtime smoke import blocked locally by missing dependency pydantic_settings**"
+- O-20260302032657-80168："validated complete... **static compile success. Runtime DB import still depends on local psycopg2 availability**"
+- → S-006 标记 completed
+
+Runtime 验证实际未通过（缺 pydantic_settings 和 psycopg2），只有 static compile 通过。但 agent 仍标记了 completed。**信号的 "completed" 是 agent 自判的，没有外部验证门禁**。
+
+这与 F-010（审计包缺乏结果验证）是同一类问题的不同视角：
+- F-010：审计包看不到实际测试结果（协议立场：WONTFIX，验证是宿主 CI/CD 的责任）
+- 信号层面：agent 在工作未完全验证时就标 completed（**协议未定义 "completed" 的验证标准**）
+
+**协议设计启示**：信号 completed ≠ production ready。协议应明确这一语义：completed 表示"agent 认为自己的工作完成了"，而非"工作已通过验证"。实际验证应由宿主项目的 CI/CD 或下一个 Scout 的评审来提供。
+
 ## 对协议演化的建议
 
-### 立即行动 (本次分析驱动)
+### 已完成 (TF-005)
 
-1. **W-007: 空转心跳防护** — field-cycle.sh 需要检测"连续 N 次无可执行信号"后 exit 或 sleep-extend。建议阈值：连续 3 次空转后 sleep 翻倍，连续 10 次后 agent 退出并沉积 HOLE signal "new work needed"。
+1. ~~**W-007: 空转心跳防护**~~ **FIXED** — field-arrive.sh 现在检测 idle colony（active_signals=0, 无 WIP, 无 ALARM, 非 genesis）并在 .birth 注入 IDLE 指导 + recovery_hints。Agent 收到明确的"deposit HOLE or exit session"指示。
 
-2. **W-008: completed 信号泄漏到活跃集** — touchcli agent 自行修补了这个 bug。需要检查 field-arrive.sh 和 field-pulse.sh 的 SQL/YAML 过滤逻辑，将 completed/done 排除。
+2. ~~**W-008: completed 信号泄漏到活跃集**~~ **FIXED** — 4 个 DB 查询 + 3 个 YAML 回退函数已排除 done/completed 状态。touchcli agent 的本地补丁已回移到协议模板。
 
 ### 更新现有 Findings
 
@@ -129,8 +242,16 @@ O-20260302033955-6666 记录了 agent 修改了 `field-arrive.sh`, `field-pulse.
 
 5. **W-004 (规则涌现) 精化** — 规则**创造**是 T2 (需强模型)，规则**执行**是 T0 (弱模型可做)。
 
+### 信号生态结构性发现 (新增)
+
+6. **W-009: 信号颗粒度缺乏指导** — agent 自主决定粒度，导致 S-002 一个信号做了 4 个文档（1540 行）而 S-005 只做了 1 个脚本。协议可考虑在 .birth 或规则中建议"一个信号 ≈ 一个可独立验证的交付物"。**可行动性：中等**——需要设计颗粒度指导而非硬性限制。
+
+7. **W-010: 信号状态缺少中间态** — S-003 的"规划完成但实现未开始"只能标 completed 或保持 open。协议可考虑（a）增加 `done` vs `completed` 的语义区分，或（b）强化 `next` 字段作为"剩余工作"载体。**可行动性：低**——引入新状态增加协议概念面积（与 F-009 矛盾），强化 `next` 字段更符合极简哲学。
+
+8. **W-011: 信号 completed 语义未定义** — agent 在 runtime 验证未通过时即标 completed（S-006 缺 pydantic_settings/psycopg2）。协议应明确：completed = "agent 认为自己的工作完成"，不等于"通过验证"。验证由宿主 CI/CD 或下一个 Scout 评审负责。**可行动性：低**——文档化语义即可，不需要模板改动。
+
 ### 协议设计方向
 
-6. **PE-003: 部署模式推荐** — 协议应明确推荐"1 强模型 + N 弱模型"的 shepherd 配置，而非纯弱模型或纯强模型。这是成本效益最优的配置。
+9. **PE-003: 部署模式推荐** — 协议应明确推荐"1 强模型 + N 弱模型"的 shepherd 配置，而非纯弱模型或纯强模型。这是成本效益最优的配置。
 
-7. **PE-004: 信息素链作为 in-context learning 载体** — 当前信息素链的设计无意中成为了弱模型的行为模板。这个属性应被正式文档化并强化——信息素链不仅是交接信息，更是行为规范的传导通道。
+10. **PE-004: 信息素链作为 in-context learning 载体** — 当前信息素链的设计无意中成为了弱模型的行为模板。这个属性应被正式文档化并强化——信息素链不仅是交接信息，更是行为规范的传导通道。

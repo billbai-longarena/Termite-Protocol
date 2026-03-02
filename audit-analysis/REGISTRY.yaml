@@ -672,3 +672,58 @@
     assembly — when active_signals=0, wip≠fresh, alarm=false, genesis=false,
     injects "IDLE: Colony has no actionable signals" guidance. Added idle_colony
     recovery hint in .birth. Cross-colony signal: touchcli A-005 → protocol fix.
+
+- date: 2026-03-02
+  type: finding-open
+  id: W-009
+  status: open
+  title: "Signal granularity lacks guidance — agent-determined granularity varies 10x"
+  source: "A-005 touchcli signal lifecycle analysis"
+  severity: low
+  description: >
+    touchcli S-002 covered 4 independent deliverables (1540 lines) while S-005
+    covered 1 script. Agent self-determines signal granularity with no protocol
+    guidance, resulting in inconsistent work unit sizing. Ideal: one signal ≈
+    one independently verifiable deliverable.
+  recommendation: >
+    Consider adding granularity hint to .birth or genesis: "one signal ≈ one
+    independently verifiable deliverable". Soft guidance, not hard constraint.
+    Low priority — does not break protocol, only affects planning efficiency.
+
+- date: 2026-03-02
+  type: finding-open
+  id: W-010
+  status: deferred
+  title: "Signal lifecycle lacks intermediate states between open and completed"
+  source: "A-005 touchcli signal lifecycle analysis"
+  severity: low
+  description: >
+    S-003 completed only planning+scaffolding (610+1346 lines) but was marked
+    completed because the agent finished what it could. No "partially done" or
+    "planning done, implementation pending" state exists. Agents must choose
+    between completed (losing visibility) or open (causing re-claim). The
+    `next` field partially addresses this but is not consistently used.
+  deferred_rationale: >
+    Adding new signal states increases protocol concept surface area (conflicts
+    with F-009). Better approach: strengthen `next` field convention — if next
+    is non-empty on a completed signal, it means "remaining work exists".
+    This requires no protocol change, only documentation.
+
+- date: 2026-03-02
+  type: finding-open
+  id: W-011
+  status: deferred
+  title: "Signal 'completed' semantics undefined — agents close signals without runtime verification"
+  source: "A-005 touchcli signal lifecycle analysis (S-006 closed despite missing pydantic_settings/psycopg2)"
+  severity: low
+  description: >
+    S-006 was marked completed when only static compile passed; runtime
+    dependencies (pydantic_settings, psycopg2) were missing. Protocol does
+    not define what "completed" means — agent self-judges. This is consistent
+    with F-010 (WONTFIX): verification is host project CI/CD responsibility.
+  deferred_rationale: >
+    Aligns with F-010 WONTFIX rationale: protocol is coordination framework,
+    not CI/CD. Document the semantic: "completed = agent believes work is done;
+    verification is host project responsibility (CI/CD or Scout review)".
+    No template change needed — add to TERMITE_PROTOCOL.md terminology if
+    protocol spec is next updated.
