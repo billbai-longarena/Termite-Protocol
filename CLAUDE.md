@@ -68,6 +68,9 @@ docs/plans/             ← Design documents for major features.
 11. ~~Audit package lacks result verification (F-010)~~ **WONTFIX** — result verification is out of protocol scope; protocol is agent coordination framework, not CI/CD. Host projects should use existing CI/CD or manual verification. Complexity of language-agnostic result parsing (cargo, npm, pytest, go test...) exceeds protocol's minimal design philosophy.
 12. ~~Completed signals leak into active set (W-008)~~ **FIXED** — DB queries and YAML fallback functions now exclude `done`/`completed` from active signal counts. 4 SQL queries (field-pulse.sh, field-arrive.sh) + 3 YAML functions (field-lib.sh) patched. Cross-colony signal: touchcli A-005.
 13. ~~Idle heartbeat spinning when all signals completed (W-007)~~ **FIXED** — field-arrive.sh now detects idle colony (active_signals=0, no WIP, no alarm, no genesis) and injects IDLE guidance into .birth situation + recovery_hints. Agents know to deposit HOLE or exit session. Cross-colony signal: touchcli A-005.
+14. ~~Signal granularity lacks guidance (W-009)~~ **FIXED** — added `signal_scope: one signal ≈ one verifiable deliverable` to .birth recovery_hints. Soft guidance, ~7 tokens.
+15. Signal lifecycle lacks intermediate states between open and completed (W-010) — **DEFERRED**, adding states conflicts with F-009 concept area reduction. Better path: strengthen `next` field convention.
+16. Signal "completed" semantics undefined (W-011) — **DEFERRED**, aligns with F-010 WONTFIX rationale. Document semantic: completed = agent believes done, verification = host CI/CD.
 
 ### Recent Work
 

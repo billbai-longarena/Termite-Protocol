@@ -419,6 +419,7 @@ context_pressure: MOLT now
 build_fail: soldier, fix first
 stuck_3_turns: deposit, end session
 idle_colony: deposit HOLE or exit session
+signal_scope: one signal ≈ one verifiable deliverable
 BIRTHEOF
 
 # Also write default .birth for backward compatibility

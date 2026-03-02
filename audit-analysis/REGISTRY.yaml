@@ -535,7 +535,7 @@
 - date: 2026-03-02
   type: audit-received
   id: A-004
-  status: open
+  status: closed
   host_project: ReactiveArmor
   package: audit-packages/ReactiveArmor/2026-03-01/
   significance: "Second export — continued development after A-003 analysis"
@@ -565,11 +565,13 @@
     explicit negative evaluation, vs previous nulls). All W-001~W-005 findings
     remain open — no structural change to weak model behavior patterns.
     No new findings beyond existing W-series.
+  closed_date: 2026-03-02
+  closed_notes: "No new findings. W-001~W-005 tracked independently. Delta from A-003 marginal."
 
 - date: 2026-03-02
   type: audit-received
   id: A-005
-  status: open
+  status: closed
   host_project: touchcli
   package: audit-packages/touchcli/2026-03-02/
   significance: "First Codex shepherd + Haiku swarm experiment — most significant protocol discovery"
@@ -599,6 +601,12 @@
     Also discovers idle heartbeat spinning (65% of pheromone entries are empty loops)
     and completed-signal leakage into active set.
     Most complete project delivery of all audited colonies (empty repo → deployable MVP).
+  closed_date: 2026-03-02
+  closed_notes: >
+    All findings processed: W-007 (idle spinning) FIXED via TF-005,
+    W-008 (completed leakage) FIXED via TF-005, W-009/W-010/W-011
+    (signal lifecycle structural findings) registered. Signal lifecycle
+    deep analysis added to audit report. Shepherd Effect documented.
 
 - date: 2026-03-02
   type: finding-open
@@ -676,7 +684,7 @@
 - date: 2026-03-02
   type: finding-open
   id: W-009
-  status: open
+  status: fixed
   title: "Signal granularity lacks guidance — agent-determined granularity varies 10x"
   source: "A-005 touchcli signal lifecycle analysis"
   severity: low
@@ -689,6 +697,23 @@
     Consider adding granularity hint to .birth or genesis: "one signal ≈ one
     independently verifiable deliverable". Soft guidance, not hard constraint.
     Low priority — does not break protocol, only affects planning efficiency.
+  fixed_by: TF-006
+  fixed_date: 2026-03-02
+
+- date: 2026-03-02
+  type: template-fix
+  id: TF-006
+  status: fixed
+  title: "W-009: Add signal granularity guidance to .birth recovery_hints"
+  trigger: "A-005 touchcli signal lifecycle analysis"
+  closes: ["W-009"]
+  files_changed:
+    - templates/scripts/field-arrive.sh
+  notes: >
+    Added one line to .birth recovery_hints: "signal_scope: one signal ≈ one
+    verifiable deliverable". Minimal budget impact (~7 tokens). Soft guidance
+    for all agents — does not introduce new states or hard constraints. Placed
+    in recovery_hints (universal, always-read) rather than genesis-only context.
 
 - date: 2026-03-02
   type: finding-open
