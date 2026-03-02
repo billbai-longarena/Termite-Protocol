@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-02T00:22:43Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302021849-44189
+pattern: "S-005 gate check implemented: added latency threshold gate script for CI/local pass-fail"
+context: "scripts/s005-latency-gate.sh,docs/performance-sla-benchmark-plan.md"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Added gate script enforcing p95/p99/failure-rate thresholds based on probe output. Sample run passed with SAMPLES=5 and both health endpoints under thresholds.

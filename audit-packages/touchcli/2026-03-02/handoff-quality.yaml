@@ -1,0 +1,9 @@
+# Cross-session handoff quality from pheromone chain
+# predecessor_useful: true/false/null evaluation chain
+# Extracted from: touchcli
+# Date: 2026-03-02
+total_handoffs: 77
+predecessor_useful_true: 69
+predecessor_useful_false: 1
+predecessor_useful_not_evaluated: 7
+useful_ratio: 0.99

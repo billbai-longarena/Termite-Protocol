@@ -1,0 +1,27 @@
+# Audit Package Metadata
+# This file describes the context of the export.
+# Protocol Nurse: read this first to understand the project context.
+
+project_name: "touchcli"
+export_date: "2026-03-02T00:22:43Z"
+protocol_version: "v3.4"
+kernel_version: "v10.0"
+
+# Duration & Volume
+run_duration_days: 0
+total_commits: 130
+signed_commits: 15
+signature_ratio_last_50: 0.00
+
+# Signal Inventory
+active_signals: 4
+pending_observations: 28
+active_rules: 1
+archived_items: 1
+pheromone_snapshots: 77
+
+# Current State
+current_branch: "swarm"
+current_alarm: false
+current_wip: "fresh"
+current_build: "unknown"
