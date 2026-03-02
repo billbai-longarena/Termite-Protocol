@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-02T00:22:43Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302025539-18927
+pattern: "Created S-006 follow-up HOLE: implement locale fields and middleware resolver for i18n rollout"
+context: "signals/.termite.db -> S-006"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: emergent
+detail: |
+  No open signals remained; spawned S-006 from S-004 handoff gap to carry concrete implementation work (Accept-Language, preferred_locale persistence, conversation locale defaulting).

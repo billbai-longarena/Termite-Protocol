@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-02T00:22:43Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302014254-74704
+pattern: "补充日志与可观测性规范：完整的结构化日志、Sentry 配置、OpenTelemetry 追踪、告警规则"
+context: "Scout补充Task 2.4前置规范"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Structured logging (JSON format), log levels & sampling, Sentry integration (alerts & thresholds), OpenTelemetry traces (span definitions, sampling rules), health checks, metrics collection, log aggregation stack, env-specific config, implementation checklist

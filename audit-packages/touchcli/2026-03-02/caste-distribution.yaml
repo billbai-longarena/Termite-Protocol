@@ -1,0 +1,8 @@
+# Caste distribution from git commit signatures
+# Extracted from: touchcli
+# Date: 2026-03-02
+distribution:
+  scout: 9
+  worker: 1
+first_signature: 2026-03-02
+last_signature: 2026-03-02

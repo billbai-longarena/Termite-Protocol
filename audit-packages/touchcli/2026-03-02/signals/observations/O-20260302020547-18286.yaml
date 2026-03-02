@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-02T00:22:43Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302020547-18286
+pattern: "S-003 CORS hardening: replaced wildcard CORS with env-driven allowlist in FastAPI service"
+context: "backend/python/agent_service/main.py,backend/.env.example"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Implemented CORS_ALLOWED_ORIGINS parsing with safe localhost defaults (3000/5173). Updated env template. py_compile on main.py passes.

@@ -1,0 +1,10 @@
+# Rule health: hit_count vs disputed_count
+# disputed_ratio > 0.3 flags a rule for review
+# Extracted from: touchcli
+# Date: 2026-03-02
+rules:
+  - id: R-001
+    trigger: "≥3 Scout observations confirm: protocol framework stable, project type identified (Termite + TouchCLI), documentation complete, routing resolved."
+    hit_count: 1
+    disputed_count: 0
+    disputed_ratio: 0.00

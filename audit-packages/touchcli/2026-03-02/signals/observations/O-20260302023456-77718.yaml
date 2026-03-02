@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-02T00:22:43Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302023456-77718
+pattern: "S-005 gate enhanced: optional WebSocket p99 enforcement added to latency gate"
+context: "scripts/s005-latency-gate.sh,docs/performance-sla-benchmark-plan.md"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Added ENABLE_WS_GATE/WS_MAX_P99_MS/WS_SAMPLES/WS_URL controls. Validated gate pass with local Go gateway: HTTP p99<5ms, WebSocket p99~12ms.

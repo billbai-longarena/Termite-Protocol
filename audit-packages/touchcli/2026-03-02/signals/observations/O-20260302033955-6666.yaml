@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-02T00:22:43Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302033955-6666
+pattern: "Exclude completed signals from heartbeat active set"
+context: "scripts/field-arrive.sh,scripts/field-pulse.sh,scripts/field-lib.sh"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Adjusted DB and YAML fallback filters so ARRIVE/PULSE only count actionable states and no longer surface completed/done signals as top work items.
