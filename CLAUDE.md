@@ -20,7 +20,7 @@ This is the **协议源仓库 (protocol source repo)** for the Termite Protocol 
 
 ```
 templates/
-  TERMITE_PROTOCOL.md   ← Canonical protocol spec (v3.4). Changes here propagate to all host projects on next upgrade.
+  TERMITE_PROTOCOL.md   ← Canonical protocol spec (v3.5). Changes here propagate to all host projects on next upgrade.
   CLAUDE.md / AGENTS.md ← Entry file templates installed into host projects.
   TERMITE_SEED.md       ← Minimal protocol payload injected into generated agent systems.
   UPGRADE_NOTES.md      ← Structured changelog with per-version changes and action items for host projects.
@@ -48,8 +48,8 @@ docs/plans/             ← Design documents for major features.
 
 ## Current State
 
-- **Protocol version**: v3.4 (SQLite WAL-mode, drift robustness)
-- **Field lib version**: v20.0
+- **Protocol version**: v3.5 (emergence strengthening: quality gate, fuzzy clustering, colony phase, behavioral template)
+- **Field lib version**: v21.0
 - **Entry kernel versions**: Claude v10.0, Agents v8.0
 - **Host project colonies validated**: 0227/SalesTouch (production stable), OpenAgentEngine (audited, 7 findings closed), ReactiveArmor (weak model experiment, 6 findings), touchcli (Codex shepherd experiment, 2 findings closed)
 
@@ -74,6 +74,7 @@ docs/plans/             ← Design documents for major features.
 
 ### Recent Work
 
+- **TF-007 Emergence strengthening** — lowered activation energy for protocol emergence mechanisms: (1) observation quality gate detects degenerate deposits (W-001 partial), (2) fuzzy keyword clustering replaces exact-match promotion (W-004 partial), (3) colony life phase computation (genesis/active/maintaining/idle), (4) pheromone behavioral template (observation_example field formalizes Shepherd Effect), (5) deployment topology docs (1-strong+N-weak recommended), (6) DB schema v1→v2 migration. Protocol v3.4→v3.5, field lib v20→v21.
 - **W-008 + W-007 template fix (TF-005)** — ported touchcli A-005 findings to protocol templates: excluded done/completed from active signal counts (4 DB queries + 3 YAML functions), added idle colony detection + exit guidance in .birth. Second complete feedback loop closure: touchcli observation → Nurse → template fix.
 - **touchcli audit (A-005)** — first Codex shepherd + Haiku swarm experiment. Discovered "Shepherd Effect" (strong model pheromone templates enable weak model imitation). Also discovered idle heartbeat spinning (W-007) and completed signal leakage (W-008). Most complete project delivery of all audited colonies.
 - **ReactiveArmor weak model experiment (A-003)** — first weak model field test: 2 Haiku parallel with Codex genesis. Core protocol loop succeeded (121 commits, S-001→S-024, 93→174 tests). Judgmental behaviors failed: 9/14 degenerate observations (W-001), signature format divergence (W-002), 0% handoff evaluation (W-003), 0 rule emergence (W-004). **Validates F-009c**. See `audit-analysis/optimization-proposals/2026-03-01-weak-model-experiment-reactivearmor.md`.

@@ -69,13 +69,39 @@ if [ "$MODE" = "observation" ]; then
     exit 1
   fi
 
+  # ── Quality gate: detect degenerate observations ──
+  OBS_QUALITY="normal"
+
+  # Degenerate pattern: signal/observation ID used as pattern (e.g., "S-007", "O-001")
+  if echo "$PATTERN" | grep -qE '^[SO]-[0-9]+$'; then
+    log_warn "Quality gate: pattern '${PATTERN}' looks like a signal/observation ID, not a pattern description"
+    OBS_QUALITY="low"
+  fi
+
+  # Hollow detail: too short or purely numeric
+  if [ -n "$DETAIL" ]; then
+    detail_len=${#DETAIL}
+    if [ "$detail_len" -lt 10 ]; then
+      log_warn "Quality gate: detail is very short (${detail_len} chars)"
+      OBS_QUALITY="low"
+    elif echo "$DETAIL" | grep -qE '^[0-9]+$'; then
+      log_warn "Quality gate: detail is purely numeric"
+      OBS_QUALITY="low"
+    fi
+  elif [ -z "$DETAIL" ]; then
+    # Empty detail with degenerate pattern is clearly low quality
+    if [ "$OBS_QUALITY" = "low" ]; then
+      log_warn "Quality gate: degenerate pattern with empty detail"
+    fi
+  fi
+
   # DB-first path
   if has_db; then
     source "${SCRIPT_DIR}/termite-db.sh"
     obs_id="O-$(date +%Y%m%d%H%M%S)-$$"
     reporter="termite:$(today_iso):${CASTE}"
-    db_obs_create "$obs_id" "$PATTERN" "${CONTEXT:-unknown}" "$reporter" "$CONFIDENCE" "$SOURCE" "$DETAIL"
-    log_info "Deposited observation ${obs_id}: ${PATTERN} (DB)"
+    db_obs_create "$obs_id" "$PATTERN" "${CONTEXT:-unknown}" "$reporter" "$CONFIDENCE" "$SOURCE" "$DETAIL" "$OBS_QUALITY"
+    log_info "Deposited observation ${obs_id}: ${PATTERN} (DB, quality=${OBS_QUALITY})"
     echo "$obs_id"
     exit 0
   fi
@@ -102,6 +128,7 @@ reporter: "${reporter}"
 confidence: ${CONFIDENCE}
 created: $(today_iso)
 source: ${SOURCE}
+quality: ${OBS_QUALITY}
 EOF
 
   # Add detail as multiline if provided
@@ -110,7 +137,7 @@ EOF
     echo "$DETAIL" | sed 's/^/  /' >> "$obs_file"
   fi
 
-  log_info "Deposited observation ${obs_id}: ${PATTERN}"
+  log_info "Deposited observation ${obs_id}: ${PATTERN} (quality=${OBS_QUALITY})"
   echo "$obs_file"
   exit 0
 fi
@@ -118,13 +145,43 @@ fi
 # ── Pheromone Mode ───────────────────────────────────────────────────
 
 if [ "$MODE" = "pheromone" ]; then
-  # DB-first path
+  # Build observation_example for behavioral template
+  obs_example_json=""
   if has_db; then
     source "${SCRIPT_DIR}/termite-db.sh"
+
+    # Find best recent observation for behavioral template
+    best_obs=$(db_obs_best_example 2>/dev/null || true)
+    if [ -n "$best_obs" ]; then
+      IFS=$'\t' read -r ex_pattern ex_context ex_detail <<< "$best_obs"
+      # Escape for JSON embedding
+      ex_pattern=$(echo "$ex_pattern" | sed 's/"/\\"/g')
+      ex_context=$(echo "$ex_context" | sed 's/"/\\"/g')
+      ex_detail=$(echo "$ex_detail" | sed 's/"/\\"/g')
+      obs_example_json="{\"pattern\":\"${ex_pattern}\",\"context\":\"${ex_context}\",\"detail\":\"${ex_detail}\"}"
+    fi
+
     local_agent_id="${AGENT_ID:-$(generate_agent_id)}"
     db_pheromone_deposit "$local_agent_id" "$CASTE" "$(current_branch)" "$(current_commit_short)" \
-      "$COMPLETED" "$UNRESOLVED" "$PREDECESSOR_USEFUL"
+      "$COMPLETED" "$UNRESOLVED" "$PREDECESSOR_USEFUL" "$obs_example_json"
     log_info "Deposited pheromone (DB, caste=${CASTE}, predecessor_useful=${PREDECESSOR_USEFUL:-not_evaluated})"
+  else
+    # YAML fallback: find best observation example
+    if [ -d "$OBS_DIR" ]; then
+      while IFS= read -r obs_file; do
+        [ -f "$obs_file" ] || continue
+        quality=$(yaml_read "$obs_file" "quality")
+        [ "$quality" = "low" ] && continue
+        detail=$(yaml_read "$obs_file" "detail")
+        if [ -n "$detail" ] && [ "${#detail}" -gt 20 ]; then
+          ex_pattern=$(yaml_read "$obs_file" "pattern" | sed 's/"/\\"/g')
+          ex_context=$(yaml_read "$obs_file" "context" | sed 's/"/\\"/g')
+          ex_detail=$(echo "$detail" | head -c 100 | sed 's/"/\\"/g')
+          obs_example_json="{\"pattern\":\"${ex_pattern}\",\"context\":\"${ex_context}\",\"detail\":\"${ex_detail}\"}"
+          break
+        fi
+      done < <(list_observations)
+    fi
   fi
 
   # Always write .pheromone file too for backward compat
@@ -136,6 +193,14 @@ if [ "$MODE" = "pheromone" ]; then
     pred_useful_json="false"
   fi
 
+  # observation_example for behavioral template (Shepherd Effect)
+  obs_example_field=""
+  if [ -n "$obs_example_json" ]; then
+    obs_example_field="  \"observation_example\": ${obs_example_json},"
+  else
+    obs_example_field="  \"observation_example\": null,"
+  fi
+
   cat > "$PHEROMONE_FILE" <<EOF
 {
   "timestamp": "$(now_iso)",
@@ -145,6 +210,7 @@ if [ "$MODE" = "pheromone" ]; then
   "completed": $(echo "$COMPLETED" | python3 -c "import sys,json; print(json.dumps(sys.stdin.read().strip()))" 2>/dev/null || echo "\"${COMPLETED}\""),
   "unresolved": $(echo "$UNRESOLVED" | python3 -c "import sys,json; print(json.dumps(sys.stdin.read().strip()))" 2>/dev/null || echo "\"${UNRESOLVED}\""),
   "predecessor_useful": ${pred_useful_json},
+${obs_example_field}
   "wip": "$(check_wip)",
   "active_signals": $(count_active_signals)
 }

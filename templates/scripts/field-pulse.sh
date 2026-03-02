@@ -90,12 +90,41 @@ if [ -f "$BLACKBOARD" ]; then
   fi
 fi
 
+# ── Sense: Colony life phase ────────────────────────────────────────
+
+colony_phase="active"
+total_signals_ever=0
+active_rules=0
+
+if has_db; then
+  # Count total signals ever (current + archived)
+  total_signals_ever=$(db_exec "SELECT (SELECT COUNT(*) FROM signals) + (SELECT COUNT(*) FROM archive WHERE original_table='signals');" 2>/dev/null || echo "0")
+  active_rules=$(db_exec "SELECT COUNT(*) FROM rules;" 2>/dev/null || echo "0")
+elif has_signal_dir; then
+  total_signals_ever=0
+  for f in "$ACTIVE_DIR"/*.yaml; do [ -f "$f" ] && total_signals_ever=$((total_signals_ever + 1)); done
+  for f in "$ARCHIVE_DIR"/done-*/*.yaml "$ARCHIVE_DIR"/promoted/*.yaml; do [ -f "$f" ] && total_signals_ever=$((total_signals_ever + 1)); done
+  active_rules=0
+  for f in "$RULES_DIR"/*.yaml; do [ -f "$f" ] && active_rules=$((active_rules + 1)); done
+fi
+
+if [ "$total_signals_ever" -le 1 ] && [ "$active_rules" -eq 0 ]; then
+  colony_phase="genesis"
+elif [ "$active_count" -gt 0 ]; then
+  colony_phase="active"
+elif [ "$active_rules" -gt 0 ] && [ "$active_count" -eq 0 ] && [ "$total_signals_ever" -gt 3 ]; then
+  colony_phase="maintaining"
+elif [ "$active_count" -eq 0 ] && [ "$total_signals_ever" -gt 3 ] && [ "$active_rules" -eq 0 ]; then
+  colony_phase="idle"
+fi
+
 # ── Write colony state to DB ─────────────────────────────────────────
 
 if has_db; then
   db_colony_pulse "$alarm" "$wip" "$build" "$sig_ratio" "$active_count" "$high_holes" "$parked_count" "$expired_claims"
   db_colony_set "concentration" "$concentration"
   db_colony_set "effective_decay" "$effective_decay"
+  db_colony_set "colony_phase" "$colony_phase"
 fi
 
 # ── Write .field-breath (always, for backward compat) ─────────────────
@@ -113,8 +142,9 @@ expired_claims: ${expired_claims}
 blackboard: ${bb_status}
 concentration: ${concentration}
 effective_decay: ${effective_decay}
+colony_phase: ${colony_phase}
 branch: $(current_branch)
 commit: $(current_commit_short)
 EOF
 
-log_info "Pulse written: alarm=${alarm} wip=${wip} build=${build} signals=${active_count} holes=${high_holes} parked=${parked_count}"
+log_info "Pulse written: alarm=${alarm} wip=${wip} build=${build} signals=${active_count} holes=${high_holes} parked=${parked_count} phase=${colony_phase}"

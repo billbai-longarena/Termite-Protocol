@@ -55,6 +55,8 @@ active_signals=0
 high_holes=0
 branch="unknown"
 
+colony_phase="active"
+
 if has_db; then
   alarm=$(db_colony_get "alarm" 2>/dev/null || echo "false")
   wip=$(db_colony_get "wip" 2>/dev/null || echo "absent")
@@ -64,11 +66,13 @@ if has_db; then
   high_holes=$(db_signal_count "type='HOLE' AND weight>=${ESCALATE_THRESHOLD} AND status!='parked'" 2>/dev/null || echo "0")
   parked_signals=$(db_signal_count "status='parked'" 2>/dev/null || echo "0")
   branch=$(db_colony_get "branch" 2>/dev/null || current_branch)
+  colony_phase=$(db_colony_get "colony_phase" 2>/dev/null || echo "active")
   # Fill missing colony state via direct sensing
   [ "$alarm" = "false" ] && check_alarm && alarm="true"
   [ "$wip" = "absent" ] || [ -z "$wip" ] && wip=$(check_wip)
   [ "$build" = "unknown" ] || [ -z "$build" ] && build=$(check_build)
   [ "$branch" = "unknown" ] || [ -z "$branch" ] && branch=$(current_branch)
+  [ -z "$colony_phase" ] && colony_phase="active"
 elif [ -f "$BREATH_FILE" ]; then
   alarm=$(yaml_read "$BREATH_FILE" "alarm")
   wip=$(yaml_read "$BREATH_FILE" "wip")
@@ -78,6 +82,8 @@ elif [ -f "$BREATH_FILE" ]; then
   high_holes=$(yaml_read "$BREATH_FILE" "high_weight_holes")
   parked_signals=$(yaml_read "$BREATH_FILE" "parked_signals")
   branch=$(yaml_read "$BREATH_FILE" "branch")
+  colony_phase=$(yaml_read "$BREATH_FILE" "colony_phase")
+  [ -z "$colony_phase" ] && colony_phase="active"
 else
   # Direct sensing fallback
   alarm="false"; check_alarm && alarm="true"
@@ -332,6 +338,10 @@ fi
 if [ -n "${upgrade_context:-}" ]; then
   situation="${situation}UPGRADE: ${upgrade_context}\n"
 fi
+# Maintaining phase: rules exist but no active signals — nurse tasks
+if [ "$colony_phase" = "maintaining" ]; then
+  situation="${situation}MAINTENANCE: Colony stable, rules active. Consider nurse tasks: tests, docs, code quality.\n"
+fi
 # Idle colony detection (W-007): no actionable signals, not genesis, not alarm, not fresh WIP
 if [ "${active_signals:-0}" -eq 0 ] && [ "$wip" != "fresh" ] && [ "$alarm" != "true" ] && [ "$genesis" != "true" ]; then
   situation="${situation}IDLE: Colony has no actionable signals. Either deposit a HOLE signal for new work, or exit session.\n"
@@ -379,7 +389,7 @@ caste: ${caste}
 branch: ${branch}
 alarm: ${alarm_display}
 channel: heartbeat
-health: build=${build} wip=${wip} signals=${active_signals}
+health: build=${build} wip=${wip} signals=${active_signals} phase=${colony_phase}
 
 ## situation
 $(echo -e "$situation" | sed '/^$/d')

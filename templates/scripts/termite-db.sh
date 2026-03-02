@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# termite-db.sh — SQLite abstraction layer for Termite Protocol v3.4
+# termite-db.sh — SQLite abstraction layer for Termite Protocol v3.5
 # Source this file after field-lib.sh. Provides atomic DB operations.
 # All shared state goes through these functions — no direct YAML writes needed.
 
@@ -10,9 +10,20 @@
 TERMITE_DB="${PROJECT_ROOT}/.termite.db"
 
 db_ensure() {
-  # Create DB if not exists, apply schema
+  # Create DB if not exists, apply schema; migrate v1→v2 if needed
   if [ ! -f "$TERMITE_DB" ]; then
     sqlite3 "$TERMITE_DB" < "${SCRIPT_DIR}/termite-db-schema.sql"
+    return 0
+  fi
+  # Schema version migration
+  local current_ver
+  current_ver=$(db_exec "SELECT COALESCE(MAX(version),1) FROM schema_version;" 2>/dev/null || echo "1")
+  if [ "${current_ver:-1}" -lt 2 ]; then
+    log_info "Migrating DB schema v${current_ver} → v2"
+    db_exec "ALTER TABLE observations ADD COLUMN quality TEXT DEFAULT 'normal';" 2>/dev/null || true
+    db_exec "ALTER TABLE pheromone_history ADD COLUMN observation_example TEXT;" 2>/dev/null || true
+    db_exec "INSERT OR REPLACE INTO schema_version(version) VALUES (2);"
+    log_info "DB schema migration to v2 complete"
   fi
 }
 
@@ -87,12 +98,12 @@ db_signal_by_weight() {
 # ── Observation CRUD ─────────────────────────────────────────────────
 
 db_obs_create() {
-  # Args: id pattern context reporter confidence source detail
+  # Args: id pattern context reporter confidence source detail [quality]
   local id="$1" pattern="$2" context="${3:-unknown}" reporter="$4"
-  local confidence="${5:-medium}" source="${6:-autonomous}" detail="${7:-}"
-  db_exec "INSERT INTO observations(id,pattern,context,reporter,confidence,created,source,detail)
+  local confidence="${5:-medium}" source="${6:-autonomous}" detail="${7:-}" quality="${8:-normal}"
+  db_exec "INSERT INTO observations(id,pattern,context,reporter,confidence,created,source,detail,quality)
     VALUES('$(db_escape "$id")','$(db_escape "$pattern")','$(db_escape "$context")','$(db_escape "$reporter")',
-    '$(db_escape "$confidence")','$(today_iso)','$(db_escape "$source")','$(db_escape "$detail")');"
+    '$(db_escape "$confidence")','$(today_iso)','$(db_escape "$source")','$(db_escape "$detail")','$(db_escape "$quality")');"
 }
 
 db_obs_list() {
@@ -147,6 +158,16 @@ db_obs_compress() {
     "
     log_info "Compressed ${cnt} observations into ${mid}"
   done
+}
+
+db_obs_best_example() {
+  # Return most recent high-quality observation with substantive detail
+  # Output: pattern\tcontext\tdetail(first 100 chars)
+  db_query "SELECT pattern, context, SUBSTR(detail, 1, 100)
+    FROM observations
+    WHERE (quality IS NULL OR quality != 'low')
+      AND LENGTH(COALESCE(detail,'')) > 20
+    ORDER BY created DESC LIMIT 1;"
 }
 
 # ── Rule CRUD ────────────────────────────────────────────────────────
@@ -274,7 +295,7 @@ db_claim_expire() {
 
 db_pheromone_deposit() {
   # Append-only — no last-writer-wins problem
-  # Args: agent_id caste branch commit_hash completed unresolved predecessor_useful
+  # Args: agent_id caste branch commit_hash completed unresolved predecessor_useful [observation_example]
   local agent_id="$1" caste="$2" branch="${3:-}" commit_hash="${4:-}"
   local completed="${5:-}" unresolved="${6:-}"
   local pred_useful="NULL"
@@ -282,18 +303,20 @@ db_pheromone_deposit() {
     true|1)  pred_useful="1" ;;
     false|0) pred_useful="0" ;;
   esac
+  local obs_example="${8:-}"
   local wip_status
   wip_status=$(check_wip)
   local sig_count
   sig_count=$(db_signal_count "status NOT IN ('archived')" 2>/dev/null || echo "0")
 
-  db_exec "INSERT INTO pheromone_history(agent_id,timestamp,caste,branch,commit_hash,completed,unresolved,predecessor_useful,wip_status,active_signal_count)
+  db_exec "INSERT INTO pheromone_history(agent_id,timestamp,caste,branch,commit_hash,completed,unresolved,predecessor_useful,wip_status,active_signal_count,observation_example)
     VALUES('$(db_escape "$agent_id")','$(now_iso)','$(db_escape "$caste")','$(db_escape "$branch")','$(db_escape "$commit_hash")',
-    '$(db_escape "$completed")','$(db_escape "$unresolved")',${pred_useful},'$(db_escape "$wip_status")',${sig_count});"
+    '$(db_escape "$completed")','$(db_escape "$unresolved")',${pred_useful},'$(db_escape "$wip_status")',${sig_count},
+    '$(db_escape "$obs_example")');"
 }
 
 db_pheromone_latest() {
-  db_query "SELECT agent_id,timestamp,caste,branch,commit_hash,completed,unresolved,predecessor_useful,wip_status,active_signal_count FROM pheromone_history ORDER BY id DESC LIMIT 1;"
+  db_query "SELECT agent_id,timestamp,caste,branch,commit_hash,completed,unresolved,predecessor_useful,wip_status,active_signal_count,observation_example FROM pheromone_history ORDER BY id DESC LIMIT 1;"
 }
 
 db_pheromone_chain() {

@@ -94,66 +94,90 @@ log_info "Step 4/7: Pulse"
 log_info "Step 5/7: Observation promotion scan"
 
 if has_db; then
-  # DB path: find patterns with >= PROMOTION_THRESHOLD observations
-  groups=$(db_query "SELECT LOWER(TRIM(pattern)) as p, COUNT(*) as cnt, GROUP_CONCAT(id) as ids
-    FROM observations WHERE merged_count = 0
-    GROUP BY LOWER(TRIM(pattern))
-    HAVING cnt >= ${PROMOTION_THRESHOLD};" 2>/dev/null || true)
+  # DB path: fuzzy keyword clustering for observation → rule promotion
+  # 1. Query all unmerged, non-low-quality observations
+  obs_rows=$(db_query "SELECT id, pattern FROM observations
+    WHERE merged_count = 0 AND (quality IS NULL OR quality != 'low');" 2>/dev/null || true)
 
-  if [ -n "$groups" ]; then
-    promoted=0
-    while IFS=$'\t' read -r pattern cnt ids; do
-      [ -z "$pattern" ] && continue
-      log_info "Promoting pattern (${cnt} observations): ${pattern}"
+  if [ -n "$obs_rows" ]; then
+    # 2. Normalize each pattern to keywords and group
+    keyword_map=$(mktemp)
+    while IFS=$'\t' read -r obs_id obs_pattern; do
+      [ -z "$obs_id" ] && continue
+      keywords=$(normalize_pattern_keywords "$obs_pattern")
+      [ -z "$keywords" ] && continue
+      echo "${keywords}|${obs_id}" >> "$keyword_map"
+    done <<< "$obs_rows"
 
-      # Get detail from first observation
-      first_id=$(echo "$ids" | cut -d',' -f1)
-      detail=$(db_exec "SELECT detail FROM observations WHERE id='$(db_escape "$first_id")';")
+    # 3. Find keyword groups with >= PROMOTION_THRESHOLD observations
+    if [ -s "$keyword_map" ]; then
+      promoted=0
+      while read -r count keywords; do
+        count=$(echo "$count" | tr -d ' ')
+        if [ "$count" -ge "$PROMOTION_THRESHOLD" ]; then
+          # Collect observation IDs for this keyword group
+          group_ids=""
+          while IFS='|' read -r kw oid; do
+            if [ "$kw" = "$keywords" ]; then
+              group_ids="${group_ids:+${group_ids},}${oid}"
+            fi
+          done < "$keyword_map"
+          [ -z "$group_ids" ] && continue
 
-      # Create rule
-      rule_id=$(db_next_rule_id)
-      db_rule_create "$rule_id" "When I observe: ${pattern}" "${detail:-Follow the pattern described in trigger}" "[${ids}]"
-      log_info "Created rule ${rule_id} from observations: [${ids}]"
+          log_info "Promoting fuzzy pattern (${count} observations, keywords: ${keywords})"
 
-      # Archive source observations
-      db_transaction "
-        INSERT INTO archive(original_id,original_table,data,archived_at,archive_reason)
-          SELECT id,'observations',
-            json_object('id',id,'pattern',pattern,'context',context,'reporter',reporter),
-            datetime('now'),'promoted'
-          FROM observations WHERE id IN ($(echo "$ids" | sed "s/[^,]*/'&'/g"));
-        DELETE FROM observations WHERE id IN ($(echo "$ids" | sed "s/[^,]*/'&'/g"));
-      "
-      promoted=$((promoted + 1))
-    done < <(echo "$groups")
+          # Get detail from first observation
+          first_id=$(echo "$group_ids" | cut -d',' -f1)
+          detail=$(db_exec "SELECT detail FROM observations WHERE id='$(db_escape "$first_id")';")
+          first_pattern=$(db_exec "SELECT pattern FROM observations WHERE id='$(db_escape "$first_id")';")
+
+          # Create rule
+          rule_id=$(db_next_rule_id)
+          db_rule_create "$rule_id" "When I observe: ${first_pattern:-${keywords}}" "${detail:-Follow the pattern described in trigger}" "[${group_ids}]"
+          log_info "Created rule ${rule_id} from observations: [${group_ids}]"
+
+          # Archive source observations
+          db_transaction "
+            INSERT INTO archive(original_id,original_table,data,archived_at,archive_reason)
+              SELECT id,'observations',
+                json_object('id',id,'pattern',pattern,'context',context,'reporter',reporter),
+                datetime('now'),'promoted'
+              FROM observations WHERE id IN ($(echo "$group_ids" | sed "s/[^,]*/'&'/g"));
+            DELETE FROM observations WHERE id IN ($(echo "$group_ids" | sed "s/[^,]*/'&'/g"));
+          "
+          promoted=$((promoted + 1))
+        fi
+      done < <(cut -d'|' -f1 "$keyword_map" | sort | uniq -c | sort -rn)
+    fi
+    rm -f "$keyword_map"
   fi
 elif [ -d "$OBS_DIR" ]; then
-  # Group observations by pattern (normalized: lowercase, stripped)
-  declare -A pattern_groups 2>/dev/null || true
-
-  # Collect patterns and their files
+  # YAML path: fuzzy keyword clustering
   tmpfile=$(mktemp)
   while IFS= read -r obs_file; do
     [ -f "$obs_file" ] || continue
-    pattern=$(yaml_read "$obs_file" "pattern" | tr '[:upper:]' '[:lower:]' | sed 's/[[:space:]]*$//')
+    quality=$(yaml_read "$obs_file" "quality")
+    [ "$quality" = "low" ] && continue
+    pattern=$(yaml_read "$obs_file" "pattern")
     [ -z "$pattern" ] && continue
-    echo "${pattern}|${obs_file}" >> "$tmpfile"
+    keywords=$(normalize_pattern_keywords "$pattern")
+    [ -z "$keywords" ] && continue
+    echo "${keywords}|${obs_file}" >> "$tmpfile"
   done < <(list_observations)
 
-  # Find patterns with >= PROMOTION_THRESHOLD observations
+  # Find keyword groups with >= PROMOTION_THRESHOLD observations
   if [ -s "$tmpfile" ]; then
     promoted=0
-    while read -r count pattern; do
+    while read -r count keywords; do
       count=$(echo "$count" | tr -d ' ')
       if [ "$count" -ge "$PROMOTION_THRESHOLD" ]; then
-        log_info "Promoting pattern (${count} observations): ${pattern}"
+        log_info "Promoting fuzzy pattern (${count} observations, keywords: ${keywords})"
 
         # Collect source observation IDs and files
         obs_ids=""
         obs_files=""
-        while IFS='|' read -r p f; do
-          normalized=$(echo "$p" | tr '[:upper:]' '[:lower:]' | sed 's/[[:space:]]*$//')
-          if [ "$normalized" = "$pattern" ]; then
+        while IFS='|' read -r kw f; do
+          if [ "$kw" = "$keywords" ]; then
             oid=$(yaml_read "$f" "id")
             obs_ids="${obs_ids:+${obs_ids}, }${oid}"
             obs_files="${obs_files:+${obs_files} }${f}"
@@ -163,6 +187,7 @@ elif [ -d "$OBS_DIR" ]; then
         # Get details from first observation for trigger/action
         first_file=$(echo "$obs_files" | awk '{print $1}')
         detail=$(yaml_read "$first_file" "detail")
+        first_pattern=$(yaml_read "$first_file" "pattern")
 
         # Generate rule
         ensure_signal_dirs
@@ -171,7 +196,7 @@ elif [ -d "$OBS_DIR" ]; then
 
         cat > "$rule_file" <<RULEEOF
 id: ${rule_id}
-trigger: "When I observe: ${pattern}"
+trigger: "When I observe: ${first_pattern:-${keywords}}"
 action: "${detail:-Follow the pattern described in trigger}"
 source_observations: [${obs_ids}]
 hit_count: 0

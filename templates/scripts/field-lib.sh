@@ -160,6 +160,27 @@ yaml_read_list() {
     | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//'
 }
 
+# ── Pattern Normalization ────────────────────────────────────────────
+
+normalize_pattern_keywords() {
+  # Lowercase → split words → remove stop words → keep >=3 chars → sort unique → take top 5
+  # Usage: normalize_pattern_keywords "Some Pattern Description" → "description pattern some"
+  local input="$1"
+  local words
+  # F-001 pattern: grep -vE returns exit 1 when all lines are stop words; || true prevents pipefail
+  words=$(echo "$input" \
+    | tr '[:upper:]' '[:lower:]' \
+    | tr -cs '[:alnum:]' '\n' \
+    | { grep -vE '^(the|and|for|with|from|that|this|was|are|has|not|but|its|our|can|may|all|any|did|had|her|him|his|how|let|new|now|old|one|out|own|per|put|say|she|too|two|use|way|who|why|yet|get|got|set|try|ran|run|see|saw|i|a|an|in|on|at|to|of|is|it|or|be|do|no|so|up|we|my|me|by|if|as)$' || true; })
+  [ -z "$words" ] && return 0
+  echo "$words" \
+    | awk 'length >= 3' \
+    | sort -u \
+    | head -5 \
+    | tr '\n' ' ' \
+    | sed 's/[[:space:]]*$//'
+}
+
 # ── Telemetry Configuration ──────────────────────────────────────────
 
 TELEMETRY_FILE="${PROJECT_ROOT}/.termite-telemetry.yaml"

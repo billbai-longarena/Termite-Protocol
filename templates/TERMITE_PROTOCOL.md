@@ -1,5 +1,5 @@
-<!-- termite-protocol:v3.4 -->
-# 白蚁协议 v3.4 (Termite Protocol)
+<!-- termite-protocol:v3.5 -->
+# 白蚁协议 v3.5 (Termite Protocol)
 
 白蚁协议的目的，是让多个不同水平的 Agent 同时工作，工作的目的是让三丘模型中提到的开发、产品和客户能共同成功、共同成长。成为各自最好的自己，也能共同达成非凡的成就。
 
@@ -630,6 +630,47 @@ tracking:
 
 **核心区分原则**：不要把一套的设计模式错误地套用到另一套上。开发丘黑板 = 文件系统 markdown；产品丘黑板 = 数据库/API；客户丘黑板 = 用户界面。
 
+## 部署拓扑 (Deployment Topology)
+
+> **"牧羊人效应" (Shepherd Effect)** — 强模型信息素链是弱模型的行为模板。
+> 跨蚁丘审计发现：1 Codex + 2 Haiku 配置产出远优于 Codex genesis + 2 Haiku 独立运行。
+
+**推荐配置：1 强 + N 弱**
+
+| 配置 | 产出质量 | 关键指标 |
+|------|---------|----------|
+| 1 强模型 shepherd + N 弱模型 swarm | 最优 | 交接 99%, 观察质量 96%, 规则涌现 ✓ |
+| 1 强模型 genesis + N 弱模型独立 | 较差 | 交接 0%, 观察质量 36%, 规则涌现 ✗ |
+| 纯强模型 | 优 | 无数据量优势 |
+
+**机制**：强模型在信息素链中留下高质量 `observation_example`（pattern/context/detail），
+弱模型通过上下文学习模仿这些模板，产出质量显著提高。
+Shepherd 不需要持续在线——只需在信息素链中有足够的高质量沉淀。
+
+**能力分层**：
+- **T0（任何模型）**：ARRIVE→SENSE→ACT→DEPOSIT 机械循环、规则执行、信号生命周期
+- **T1（中等模型）**：有意义的观察沉淀、predecessor_useful 评估、信号粒度判断
+- **T2（强模型）**：规则创建、种姓自觉转换、三丘价值评估、rule dispute
+
+## 信息素行为模板 (Pheromone Behavioral Template)
+
+> 利用"牧羊人效应"：每次信息素沉淀时，`field-deposit.sh` 自动附带一条高质量观察示例。
+> 后继 Agent 读取 `.pheromone` 时看到 `observation_example`，模仿其 pattern/context/detail 格式。
+
+**`.pheromone` 新字段**：
+```json
+{
+  "observation_example": {
+    "pattern": "API response latency spike during batch operations",
+    "context": "src/api/batch.ts:42",
+    "detail": "Batch endpoint P95 jumped from 200ms to 1.2s after..."
+  }
+}
+```
+
+**观察质量门禁**：`field-deposit.sh` 自动检测退化观察（pattern=信号ID、detail 为空或纯数字），
+标记 `quality: low`，不拒绝但排除在行为模板和模糊聚类之外。对 Agent 不可见。
+
 ## 生命周期与交接
 
 生命周期是心跳在会话维度的完整展开：
@@ -1153,7 +1194,7 @@ git worktree remove ../<project>-<feature>
 > 入口文件的心跳内核也从此处派生。
 
 ```
-# termite-kernel:v3.4
+# termite-kernel:v3.5
 # 白蚁协议 — 最小内核（9 语法规则 + 4 安全网）
 
 [语法]

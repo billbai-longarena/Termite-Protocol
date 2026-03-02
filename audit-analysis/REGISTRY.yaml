@@ -428,6 +428,12 @@
     drops from 64% to 3.6% (1/28). Root cause is not weak model inability per se,
     but absence of quality examples in pheromone chain. Shepherd effect provides
     behavioral templates that weak models imitate via in-context learning.
+  partially_addressed_by: TF-007
+  partially_addressed_notes: >
+    TF-007 adds observation quality gate in field-deposit.sh: detects degenerate
+    patterns (^[SO]-[0-9]+$) and hollow details (<10 chars or pure numeric), marks
+    quality=low. Soft gate — does not reject, but excludes from fuzzy clustering
+    and behavioral template selection. Full rejection would break weak model deposits.
   recommendation: "R-002: Add observation validation in field-deposit.sh (still needed as safety net)"
 
 - date: 2026-03-01
@@ -474,6 +480,13 @@
     A-005 (touchcli) REFINES: R-001 emerged during Codex shepherd phase.
     Weak models successfully EXECUTED rule action (archived S-001 per R-001).
     Conclusion: rule creation=T2 (strong model), rule execution=T0 (any model).
+  partially_addressed_by: TF-007
+  partially_addressed_notes: >
+    TF-007 replaces exact-match pattern promotion in field-cycle.sh Step 5 with
+    fuzzy keyword clustering (normalize_pattern_keywords()). Observations with
+    similar but differently-worded patterns now group together, lowering the
+    activation energy for Rule 7 emergence. Quality gate excludes degenerate
+    observations from clustering.
   recommendation: "Accept rule creation as T2; rule execution works at T0"
 
 - date: 2026-03-01
@@ -752,3 +765,58 @@
     verification is host project responsibility (CI/CD or Scout review)".
     No template change needed — add to TERMITE_PROTOCOL.md terminology if
     protocol spec is next updated.
+
+# ── 2026-03-02 session 2: TF-007 Emergence strengthening ──────────
+
+- date: 2026-03-02
+  type: protocol-evolution
+  id: PE-003
+  status: fixed
+  title: "Deployment topology documentation — Shepherd Effect formalized"
+  description: >
+    Added Part III sections in TERMITE_PROTOCOL.md documenting the recommended
+    1-strong+N-weak deployment topology, Shepherd Effect mechanism, and T0/T1/T2
+    capability tiers derived from cross-colony audit data (A-003, A-005).
+  fixed_by: TF-007
+  fixed_date: 2026-03-02
+
+- date: 2026-03-02
+  type: protocol-evolution
+  id: PE-004
+  status: fixed
+  title: "Pheromone behavioral template (observation_example)"
+  description: >
+    .pheromone now carries observation_example field — a high-quality observation
+    (pattern/context/detail) automatically selected by field-deposit.sh. Enables
+    Shepherd Effect: weak models imitate observation format from pheromone chain.
+    DB schema v1→v2 adds observation_example to pheromone_history table.
+  fixed_by: TF-007
+  fixed_date: 2026-03-02
+
+- date: 2026-03-02
+  type: template-fix
+  id: TF-007
+  status: fixed
+  title: "Emergence strengthening batch — lower activation energy for Rule 7 and colony self-awareness"
+  trigger: "Cross-colony audit pattern: 4 colonies, Rule 7 triggered only once"
+  closes: ["PE-003", "PE-004"]
+  partially_addresses: ["W-001", "W-004"]
+  files_changed:
+    - templates/scripts/termite-db-schema.sql
+    - templates/scripts/termite-db.sh
+    - templates/scripts/field-deposit.sh
+    - templates/scripts/field-lib.sh
+    - templates/scripts/field-cycle.sh
+    - templates/scripts/field-pulse.sh
+    - templates/scripts/field-arrive.sh
+    - templates/scripts/termite-db-export.sh
+    - templates/TERMITE_PROTOCOL.md
+    - templates/UPGRADE_NOTES.md
+  notes: >
+    Six linked changes:
+    (1) DB schema v1→v2: observations.quality, pheromone_history.observation_example
+    (2) Observation quality gate: detects degenerate pattern/detail, marks quality=low
+    (3) Fuzzy keyword clustering: normalize_pattern_keywords() replaces exact match
+    (4) Colony life phase: genesis/active/maintaining/idle computed in field-pulse.sh
+    (5) Pheromone behavioral template: observation_example in .pheromone
+    (6) Protocol v3.4→v3.5 with deployment topology + behavioral template docs

@@ -68,13 +68,18 @@ log_info "Exported ${rule_count} rules to ${rules_dir}"
 
 ph_row=$(db_pheromone_latest)
 if [ -n "$ph_row" ]; then
-  IFS=$'\t' read -r agent_id timestamp caste branch commit_hash completed unresolved pred_useful wip_status active_sig_count <<< "$ph_row"
+  IFS=$'\t' read -r agent_id timestamp caste branch commit_hash completed unresolved pred_useful wip_status active_sig_count obs_example <<< "$ph_row"
 
   pred_json="null"
   case "$pred_useful" in
     1) pred_json="true" ;;
     0) pred_json="false" ;;
   esac
+
+  obs_example_field="null"
+  if [ -n "$obs_example" ] && [ "$obs_example" != "null" ] && [ "$obs_example" != "" ]; then
+    obs_example_field="$obs_example"
+  fi
 
   cat > "${OUT_DIR}/.pheromone" <<EOF
 {
@@ -85,6 +90,7 @@ if [ -n "$ph_row" ]; then
   "completed": "${completed}",
   "unresolved": "${unresolved}",
   "predecessor_useful": ${pred_json},
+  "observation_example": ${obs_example_field},
   "wip": "${wip_status}",
   "active_signals": ${active_sig_count:-0}
 }
@@ -103,6 +109,7 @@ high_holes=$(db_colony_get "high_weight_holes" 2>/dev/null || echo "0")
 parked_signals=$(db_colony_get "parked_signals" 2>/dev/null || echo "0")
 expired_claims=$(db_colony_get "expired_claims" 2>/dev/null || echo "0")
 bb_status=$(db_colony_get "blackboard" 2>/dev/null || echo "absent")
+colony_phase=$(db_colony_get "colony_phase" 2>/dev/null || echo "active")
 branch=$(db_colony_get "branch" 2>/dev/null || echo "unknown")
 commit=$(db_colony_get "commit" 2>/dev/null || echo "0000000")
 
@@ -117,6 +124,7 @@ high_weight_holes: ${high_holes}
 parked_signals: ${parked_signals}
 expired_claims: ${expired_claims}
 blackboard: ${bb_status}
+colony_phase: ${colony_phase}
 branch: ${branch}
 commit: ${commit}
 EOF
