@@ -423,7 +423,12 @@
     9 of 14 observations have pattern=signal_id (e.g., "S-007"),
     context="unknown", detail="0". Haiku mechanically executes deposit
     behavior but doesn't understand WHAT to deposit. Validates F-009c.
-  recommendation: "R-002: Add observation validation in field-deposit.sh"
+  cross_colony_update: >
+    A-005 (touchcli) REFINES this finding: with Codex shepherd, degenerate rate
+    drops from 64% to 3.6% (1/28). Root cause is not weak model inability per se,
+    but absence of quality examples in pheromone chain. Shepherd effect provides
+    behavioral templates that weak models imitate via in-context learning.
+  recommendation: "R-002: Add observation validation in field-deposit.sh (still needed as safety net)"
 
 - date: 2026-03-01
   type: finding-open
@@ -448,7 +453,11 @@
   description: >
     5 of 6 handoffs have predecessor_useful=null. Weak models
     skip the evaluation step (a judgmental behavior).
-  recommendation: "R-004: Make predecessor_useful evaluation explicit in .birth"
+  cross_colony_update: >
+    A-005 (touchcli) REFINES: with Codex shepherd, handoff quality jumps to 99%
+    (69/70 true). Shepherd pheromone chain contains predecessor_useful=true examples
+    that Haiku imitates. Without shepherd (ReactiveArmor), 0% evaluation.
+  recommendation: "R-004: Make predecessor_useful evaluation explicit in .birth (still useful as fallback)"
 
 - date: 2026-03-01
   type: finding-open
@@ -461,7 +470,11 @@
     0 rules despite 24 signals and 14 observations across 29 sessions.
     Rule 7 (count >= 3 -> EMERGE) requires pattern abstraction beyond
     weak model capability.
-  recommendation: "Accept as T2 behavior (strong model only)"
+  cross_colony_update: >
+    A-005 (touchcli) REFINES: R-001 emerged during Codex shepherd phase.
+    Weak models successfully EXECUTED rule action (archived S-001 per R-001).
+    Conclusion: rule creation=T2 (strong model), rule execution=T0 (any model).
+  recommendation: "Accept rule creation as T2; rule execution works at T0"
 
 - date: 2026-03-01
   type: finding-open
@@ -552,3 +565,73 @@
     explicit negative evaluation, vs previous nulls). All W-001~W-005 findings
     remain open — no structural change to weak model behavior patterns.
     No new findings beyond existing W-series.
+
+- date: 2026-03-02
+  type: audit-received
+  id: A-005
+  status: open
+  host_project: touchcli
+  package: audit-packages/touchcli/2026-03-02/
+  significance: "First Codex shepherd + Haiku swarm experiment — most significant protocol discovery"
+  experiment_config:
+    genesis_model: Codex
+    runtime_models: "1 Codex shepherd + 2 Claude Haiku (parallel)"
+    trigger: "白蚁协议 heartbeat input"
+    duration: "~6 hours"
+    project_type: "SaaS (Python FastAPI + Go Gateway + React)"
+  key_metrics:
+    total_commits: 130
+    signed_commits: 15
+    signature_ratio_last_50: 0.00
+    handoff_quality: 0.99
+    pheromone_snapshots: 77
+    pending_observations: 28
+    active_rules: 1
+    observation_degenerate_rate: 0.036
+  findings: 2
+  report: audit-analysis/optimization-proposals/2026-03-02-touchcli-audit-analysis.md
+  notes: >
+    LANDMARK AUDIT: "1 Codex + 2 Haiku" configuration produces dramatically better
+    results than ReactiveArmor's "Codex genesis + 2 Haiku independent":
+    handoff 99% (vs 0%), observation quality 96.4% (vs 35.7%), rule emergence (vs 0).
+    Discovers "Shepherd Effect" — strong model leaves behavioral templates in pheromone
+    chain that weak models imitate via in-context learning.
+    Also discovers idle heartbeat spinning (65% of pheromone entries are empty loops)
+    and completed-signal leakage into active set.
+    Most complete project delivery of all audited colonies (empty repo → deployable MVP).
+
+- date: 2026-03-02
+  type: finding-open
+  id: W-007
+  status: open
+  title: "Idle heartbeat spinning wastes compute when all signals completed"
+  source: "A-005 touchcli audit"
+  severity: high
+  description: >
+    50 of 77 pheromone entries (65%) are pure idle "zero actionable queue" heartbeats.
+    From ~20:20 to 23:11 UTC, 3 agents cycled continuously with nothing to do,
+    depositing empty pheromone every 1-3 minutes. Causes: compute waste (~9 agent-hours),
+    pheromone chain pollution, inflated predecessor_useful ratio.
+  root_cause: >
+    field-cycle.sh has no exit condition for "no actionable signals remaining".
+    The sense→act→deposit loop runs unconditionally regardless of signal state.
+  recommendation: >
+    R-005: Add idle detection to field-cycle.sh. After N consecutive cycles with
+    zero actionable signals, either (a) exponential backoff on sleep, or (b) exit
+    with HOLE signal "colony idle — new work needed". Suggested: 3 idle → 2x sleep,
+    10 idle → exit. Also suppress empty pheromone deposits during idle.
+
+- date: 2026-03-02
+  type: finding-open
+  id: W-008
+  status: open
+  title: "Completed signals leak into active set in field-arrive.sh/field-pulse.sh"
+  source: "A-005 touchcli observation O-20260302033955-6666"
+  severity: medium
+  description: >
+    Agent self-patched field-arrive.sh, field-pulse.sh, and field-lib.sh to exclude
+    completed/done signals from active signal queries. Without this fix, completed
+    signals appear as top work items, confusing agents into re-claiming finished work.
+  recommendation: >
+    R-006: Review and port the touchcli agent's local fix to protocol templates.
+    Ensure DB queries (SQL) and YAML fallback filters both exclude completed/done states.
