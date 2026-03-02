@@ -603,7 +603,7 @@
 - date: 2026-03-02
   type: finding-open
   id: W-007
-  status: open
+  status: fixed
   title: "Idle heartbeat spinning wastes compute when all signals completed"
   source: "A-005 touchcli audit"
   severity: high
@@ -620,11 +620,19 @@
     zero actionable signals, either (a) exponential backoff on sleep, or (b) exit
     with HOLE signal "colony idle — new work needed". Suggested: 3 idle → 2x sleep,
     10 idle → exit. Also suppress empty pheromone deposits during idle.
+  fixed_by: TF-005
+  fixed_date: 2026-03-02
+  fix_notes: >
+    Partial fix: added idle colony detection in field-arrive.sh .birth situation
+    ("IDLE: Colony has no actionable signals. Either deposit a HOLE signal for new
+    work, or exit session.") and recovery_hints (idle_colony). Agents now receive
+    explicit guidance to exit or deposit HOLE when idle. Full cycle-level backoff
+    (R-005) deferred — .birth guidance addresses the root information gap.
 
 - date: 2026-03-02
   type: finding-open
   id: W-008
-  status: open
+  status: fixed
   title: "Completed signals leak into active set in field-arrive.sh/field-pulse.sh"
   source: "A-005 touchcli observation O-20260302033955-6666"
   severity: medium
@@ -635,3 +643,32 @@
   recommendation: >
     R-006: Review and port the touchcli agent's local fix to protocol templates.
     Ensure DB queries (SQL) and YAML fallback filters both exclude completed/done states.
+  fixed_by: TF-005
+  fixed_date: 2026-03-02
+  fix_notes: >
+    Ported touchcli agent's local fix to protocol templates. 4 DB queries fixed
+    (field-pulse.sh:38, field-arrive.sh:63/94/289) and 3 YAML fallback functions
+    fixed (field-lib.sh: list_signals_by_weight, count_active_signals,
+    count_high_weight_holes). W-008 was root cause enabler of W-007.
+
+- date: 2026-03-02
+  type: template-fix
+  id: TF-005
+  status: fixed
+  title: "W-008 completed signal leakage + W-007 idle heartbeat spinning"
+  trigger: "A-005 touchcli audit findings W-007, W-008"
+  closes: ["W-007", "W-008"]
+  files_changed:
+    - templates/scripts/field-pulse.sh
+    - templates/scripts/field-arrive.sh
+    - templates/scripts/field-lib.sh
+  commit: "b21d9c4"
+  notes: >
+    W-008 (root cause): Added 'done','completed' to NOT IN exclusion lists in
+    4 DB queries (field-pulse.sh active_count, field-arrive.sh active_signals /
+    genesis check / top signals) and 3 YAML fallback functions (list_signals_by_weight,
+    count_active_signals, count_high_weight_holes) in field-lib.sh.
+    W-007 (symptom): Added idle colony detection in field-arrive.sh situation
+    assembly — when active_signals=0, wip≠fresh, alarm=false, genesis=false,
+    injects "IDLE: Colony has no actionable signals" guidance. Added idle_colony
+    recovery hint in .birth. Cross-colony signal: touchcli A-005 → protocol fix.
