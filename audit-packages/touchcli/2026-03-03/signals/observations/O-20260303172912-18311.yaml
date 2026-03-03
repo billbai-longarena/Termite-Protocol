@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T11:08:06Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303172912-18311
+pattern: "S-115 deprecation baseline refactor completed"
+context: "backend/python FastAPI lifecycle + UTC timestamp hygiene"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Migrated FastAPI app lifecycle in main.py from @app.on_event startup/shutdown to lifespan context manager. Replaced utcnow usage in knowledge_service and roleplay_service paths with timezone-aware datetime.now(timezone.utc). Updated knowledge service tests to avoid optional dependency environment coupling; targeted test suite passes (10/10).

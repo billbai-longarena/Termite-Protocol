@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T11:08:06Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303184106-59763
+pattern: "pytest package discovery normalized for backend/python"
+context: "backend/python/pyproject.toml + specialized agent tests"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Added [tool.pytest.ini_options].pythonpath=["."] and aligned specialized agent smoke assertions with current wrapper outputs. Verified without PYTHONPATH env.

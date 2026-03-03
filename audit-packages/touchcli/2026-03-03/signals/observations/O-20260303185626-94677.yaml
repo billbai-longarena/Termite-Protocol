@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T11:08:06Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303185626-94677
+pattern: "phase-4-5-boundary-clarity-blocking"
+context: "Scout Heartbeat #12: CRITICAL - Found 212 lines of Phase 5 WIP code in Phase 4 clean state. Three-path gateway BLOCKED. Need human clarification: should WIP code be completed (Phase 4), rolled back (Phase 5 fresh start), or integrated (Phase 5a starting state)"
+reporter: "termite:2026-03-03:worker"
+confidence: medium
+created: 2026-03-03
+source: autonomous
+detail: |
+  0

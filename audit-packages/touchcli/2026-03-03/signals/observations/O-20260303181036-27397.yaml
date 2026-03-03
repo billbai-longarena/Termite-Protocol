@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T11:08:06Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303181036-27397
+pattern: "timezone-regression: datetime.now(timezone.utc) migration hardening"
+context: "backend/python (router+sentinel+memory+vision)"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Fixed default_factory callable misuse, normalized naive/aware datetime arithmetic in sentinel_service, repaired indentation regression in agents/memory_agent, restored intent_classifier interface compatibility; targeted pytest 41 passed.

@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T11:08:06Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303172237-84488
+pattern: "S-108 claim-status drift resolved"
+context: "signals/.termite.db consistency"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Detected S-108 stuck at status=claimed with work lock while WIP/BLACKBOARD marked it verified complete. Verified knowledge-service tests (10 passed), then released review/work claims, set S-108 to completed, and re-exported DB->YAML snapshots.

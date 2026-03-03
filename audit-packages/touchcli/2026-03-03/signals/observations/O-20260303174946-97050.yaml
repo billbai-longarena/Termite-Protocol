@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T11:08:06Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303174946-97050
+pattern: "legacy signal type drift (work -> typed)"
+context: "signals/.termite.db"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Detected 4 legacy signals with type=work (S-098/099/100/102). Reclassified to IMPLEMENT/VERIFY via DB update. Also sanitized S-113 multiline title corruption to prevent YAML export field misalignment.

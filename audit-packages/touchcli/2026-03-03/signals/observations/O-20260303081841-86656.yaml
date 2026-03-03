@@ -1,4 +1,4 @@
-# READ-ONLY — auto-exported from .termite.db (2026-03-03T07:50:45Z)
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T11:08:06Z)
 # To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
 id: O-20260303081841-86656
 pattern: "Heartbeat review: S-108 knowledge pipeline remains green under lock wait"

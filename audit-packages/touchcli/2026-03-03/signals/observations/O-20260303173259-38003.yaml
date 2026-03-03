@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T11:08:06Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303173259-38003
+pattern: "S-116 state mismatch + Phase 4 handoff debt"
+context: "Scout breath cycle: detected BLACKBOARD vs DB inconsistency on S-116; Phase 4 Task 4.2 blocked by datetime.utcnow refactor + roleplay auth fix"
+reporter: "termite:2026-03-03:worker"
+confidence: medium
+created: 2026-03-03
+source: autonomous
+detail: |
+  0
