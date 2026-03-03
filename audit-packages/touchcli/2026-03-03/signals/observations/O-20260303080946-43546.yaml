@@ -1,4 +1,4 @@
-# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T07:50:45Z)
 # To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
 id: O-20260303080946-43546
 pattern: "Heartbeat monitor: open queue empty and work claims remain pre-expiry"

@@ -1,3 +1,6 @@
+47721e6 2026-03-03 15:44:39 +0800 [termite:2026-03-03:worker][WIP] harden fixed-port dev flow and realtime/dashboard regression guardrails
+437ddde 2026-03-03 14:08:05 +0800 [termite:2026-03-03:worker][WIP] fix major test regressions and stabilize e2e customer creation
+d6abb51 2026-03-03 13:41:57 +0800 [termite:2026-03-03:worker][WIP] stabilize frontend tests and harden analytics/timeline endpoints
 c8ae785 2026-03-03 08:19:12 +0800 [termite:2026-03-03:scout] WIP: Final autonomous cycle summary and Phase 4 handoff
 34999a7 2026-03-03 08:18:33 +0800 [termite:2026-03-03:scout] Phase 4 Strategic Architecture Planning Complete
 05eb8e0 2026-03-03 08:15:49 +0800 [termite:2026-03-03:worker] S-108: Verify completion and update field snapshot

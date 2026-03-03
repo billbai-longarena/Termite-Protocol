@@ -1,4 +1,4 @@
-# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T07:50:45Z)
 # To modify rules, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
 id: R-012
 trigger: "When I observe: heartbeat"

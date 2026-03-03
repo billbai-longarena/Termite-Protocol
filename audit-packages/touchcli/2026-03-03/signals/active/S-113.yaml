@@ -1,0 +1,16 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T07:50:44Z)
+# To modify signals, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: S-113
+type: HOLE
+title: "Protocol update available: v3.4 → v4.0"
+status: 
+weight: 
+ttl_days: 
+created: 
+last_touched: 
+owner: 
+module: ""
+tags: []
+next: ""
+touch_count: 0
+source: autonomous

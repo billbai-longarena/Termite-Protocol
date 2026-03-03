@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T07:50:45Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303154602-81238
+pattern: "QUALITY_AUDIT_REPORT_V1"
+context: "Phase quality report + regression guardrails committed/pushed in 47721e6. Evidence: full quality gate PASS on 2026-03-03 15:41 CST (backend 418 passed, frontend unit 286 passed, e2e chromium 54 passed); post-adjustment gate --skip-e2e PASS at 15:43 CST. Regression fixes: fixed dev ports (18001/5173), unified runtime endpoint config, frontend WS host-only normalization to /ws, backend generic /ws heartbeat endpoint, dashboard manager endpoint path/auth fix. Knowledge deposition docs: docs/QUALITY_AUDIT_2026-03-03.md + docs/REGRESSION_GUARDRAILS.md."
+reporter: "termite:2026-03-03:worker"
+confidence: medium
+created: 2026-03-03
+source: autonomous
+detail: |
+  0

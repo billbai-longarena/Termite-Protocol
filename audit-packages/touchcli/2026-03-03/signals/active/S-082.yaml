@@ -1,10 +1,10 @@
-# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T07:50:43Z)
 # To modify signals, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
 id: S-082
 type: VERIFY
 title: "Zero-Input CRM live E2E verification (post-migration)"
 status: completed
-weight: 25
+weight: 24
 ttl_days: 7
 created: 2026-03-03
 last_touched: 2026-03-03

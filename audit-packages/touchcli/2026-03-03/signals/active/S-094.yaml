@@ -1,10 +1,10 @@
-# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T07:50:43Z)
 # To modify signals, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
 id: S-094
 type: IMPLEMENT
 title: "Phase 13: Real-time WebSocket optimization (batching + streaming + connection resilience)"
 status: completed
-weight: 30
+weight: 29
 ttl_days: 14
 created: 2026-03-03
 last_touched: 2026-03-03

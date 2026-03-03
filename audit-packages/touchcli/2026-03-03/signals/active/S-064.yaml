@@ -1,10 +1,10 @@
-# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T07:50:43Z)
 # To modify signals, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
 id: S-064
 type: PHEROMONE
 title: "Phase 9: AI-Era Experience Prototype - Zero-Input CRM"
 status: completed
-weight: 16
+weight: 15
 ttl_days: 14
 created: 2026-03-02 15:16:24
 last_touched: 2026-03-02 15:21:57

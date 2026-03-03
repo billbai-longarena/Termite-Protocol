@@ -1,10 +1,10 @@
-# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T07:50:43Z)
 # To modify signals, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
 id: S-059
 type: HOLE
 title: "Fix notifications create endpoint to persist low-priority records"
 status: completed
-weight: 8
+weight: 7
 ttl_days: 14
 created: 2026-03-02
 last_touched: 2026-03-02

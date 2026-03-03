@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T07:50:45Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303154502-78539
+pattern: "QUALITY_AUDIT_SUBMITTED"
+context: "2026-03-03: quality gate full PASS (backend 418, frontend unit 286, e2e chromium 54); follow-up gate --skip-e2e PASS; fixed-port scripts + ws/dashboard regressions guarded; docs/QUALITY_AUDIT_2026-03-03.md and docs/REGRESSION_GUARDRAILS.md committed in 47721e6 and pushed to swarm."
+reporter: "termite:2026-03-03:worker"
+confidence: medium
+created: 2026-03-03
+source: autonomous
+detail: |
+  0

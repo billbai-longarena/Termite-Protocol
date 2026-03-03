@@ -1,4 +1,4 @@
-# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T07:50:44Z)
 # To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
 id: O-20260302151615-16516
 pattern: "S-008 integration gap: Go Gateway forwarding + JWT auth complete (84 LOC), but NO E2E round-trip test. Risk: Message loss, auth bypass, connection resilience unknown. Recommended: Add integration test (Frontend WS → Go POST → Python /messages → Response back)"
