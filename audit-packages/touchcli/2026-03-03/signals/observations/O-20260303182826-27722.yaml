@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T11:08:06Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303182826-27722
+pattern: "phase4.2 agent wrappers hardened for runtime stability"
+context: "backend/python/agent_service/services/agents"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Fixed AgentState field mapping, UUID coercion, CoachAgent fallback/report path, and added wrapper smoke tests; targeted 47 tests passed.

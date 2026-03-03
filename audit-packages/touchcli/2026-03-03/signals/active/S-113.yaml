@@ -1,16 +1,16 @@
-# READ-ONLY — auto-exported from .termite.db (2026-03-03T07:50:44Z)
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T11:08:05Z)
 # To modify signals, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
 id: S-113
 type: HOLE
 title: "Protocol update available: v3.4 → v4.0"
-status: 
-weight: 
-ttl_days: 
-created: 
-last_touched: 
-owner: 
-module: ""
+status: completed
+weight: 24
+ttl_days: 14
+created: 2026-03-03
+last_touched: 2026-03-03
+owner: unassigned
+module: "termite-protocol"
 tags: []
-next: ""
+next: "Scout: read UPGRADE_NOTES.md for changes and action items, then decide whether to run install.sh --upgrade"
 touch_count: 0
 source: autonomous

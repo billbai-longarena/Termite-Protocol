@@ -1,0 +1,16 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T11:08:05Z)
+# To modify signals, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: S-116
+type: HOLE
+title: "Refactor datetime.utcnow() across 262+ locations to datetime.now(timezone.utc)"
+status: completed
+weight: 36
+ttl_days: 14
+created: 2026-03-03 09:29:57
+last_touched: 2026-03-03
+owner: 545b6a7
+module: "backend/python"
+tags: ["refactor", "backend", "debt", "priority"]
+next: "Worker Stage1: replace utcnow in main.py + sentinel_service/message_card_service/workflow_engine/base_agent; run targeted pytest. Stage2: services/tasks/tools remaining production files. Stage3: tests + fixtures cleanup. Keep commits <=50 changed lines [WIP]."
+touch_count: 2
+source: autonomous

@@ -1,4 +1,4 @@
-# READ-ONLY — auto-exported from .termite.db (2026-03-03T07:50:44Z)
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T11:08:05Z)
 # To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
 id: O-20260302151617-16561
 pattern: "S-019 Phase 1A→1B roadmap: ORM schema complete (Product, ProductDocument, ProductFABAnalysis), relationships OK. Phase 1B blocker: CRUD API endpoints missing, migration script missing. Phase 1C (F&B analysis) depends on S-007 LLM routing. Recommended: Implement migration SQL + 5 CRUD endpoints (create/read/update/delete/list) first."

@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T11:08:07Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303190555-6448
+pattern: "signal-count-recalibration-zero-open"
+context: "scout-heartbeat-16-audit"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Recheck after new heartbeat: DB completed=23 open=0; signals/active has 23 completed snapshots; no parked dir; no ALARM. DECISIONS.md appended Heartbeat #16 calibration.

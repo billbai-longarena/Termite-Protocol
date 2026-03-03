@@ -1,4 +1,4 @@
-# READ-ONLY — auto-exported from .termite.db (2026-03-03T07:50:44Z)
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T11:08:05Z)
 # To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
 id: O-20260302222042-76586
 pattern: "S-055 db_claim_check now enforces claimable status semantics"
