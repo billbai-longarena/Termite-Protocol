@@ -97,22 +97,22 @@ fi
 echo ""
 
 for obs_file in "${obs_files[@]}"; do
-  obs_id=$(yaml_read "$obs_file" "id")
+  obs_id=$(yaml_read "$obs_file" "id" || true)
   [ -z "$obs_id" ] && { log_warn "Skipping ${obs_file}: no id field"; continue; }
 
   total=$((total + 1))
 
-  # Check if already migrated
-  existing_score=$(yaml_read "$obs_file" "quality_score")
+  # Check if already migrated (quality_score may not exist in old signals)
+  existing_score=$(yaml_read "$obs_file" "quality_score" || true)
   if [ -n "$existing_score" ] && [ "$existing_score" != "0.5" ] && [ "$FORCE" = false ]; then
     skipped=$((skipped + 1))
     continue
   fi
 
-  # Read fields
-  pattern=$(yaml_read "$obs_file" "pattern")
-  context=$(yaml_read "$obs_file" "context")
-  detail=$(yaml_read_block "$obs_file" "detail")
+  # Read fields (|| true guards for pipefail when fields are missing)
+  pattern=$(yaml_read "$obs_file" "pattern" || true)
+  context=$(yaml_read "$obs_file" "context" || true)
+  detail=$(yaml_read_block "$obs_file" "detail" || true)
 
   # Compute v5.0 fields
   score=$(compute_quality_score "$pattern" "${context:-unknown}" "${detail:-}")
@@ -171,7 +171,7 @@ if [ "$APPLY" = true ] && has_db && has_sqlite; then
   fi
 
   for obs_file in "${obs_files[@]}"; do
-    obs_id=$(yaml_read "$obs_file" "id")
+    obs_id=$(yaml_read "$obs_file" "id" || true)
     [ -z "$obs_id" ] && continue
 
     # Read computed fields from YAML (or archived copy)
@@ -179,8 +179,8 @@ if [ "$APPLY" = true ] && has_db && has_sqlite; then
     archived_file="${ARCHIVE_OBS_DIR}/$(basename "$obs_file")"
     [ -f "$archived_file" ] && local_file="$archived_file"
 
-    score=$(yaml_read "$local_file" "quality_score")
-    stype=$(yaml_read "$local_file" "source_type")
+    score=$(yaml_read "$local_file" "quality_score" || true)
+    stype=$(yaml_read "$local_file" "source_type" || true)
     [ -z "$score" ] && continue
 
     # Update quality_score and source_type
