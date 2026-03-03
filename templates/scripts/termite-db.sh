@@ -33,6 +33,9 @@ db_ensure() {
   if [ "${current_ver:-1}" -lt 4 ]; then
     db_migrate_v3_to_v4
   fi
+  if [ "${current_ver:-1}" -lt 5 ]; then
+    db_migrate_v4_to_v5
+  fi
 }
 
 db_migrate_v2_to_v3() {
@@ -56,6 +59,16 @@ db_migrate_v3_to_v4() {
   db_exec "ALTER TABLE observations ADD COLUMN source_type TEXT DEFAULT 'deposit';" 2>/dev/null || true
   db_exec "INSERT OR REPLACE INTO schema_version(version) VALUES (4);"
   log_info "DB schema migration to v4 complete"
+}
+
+db_migrate_v4_to_v5() {
+  log_info "Migrating DB schema v4 → v5"
+  db_exec "ALTER TABLE signals ADD COLUMN parent_id TEXT DEFAULT NULL;" 2>/dev/null || true
+  db_exec "ALTER TABLE signals ADD COLUMN child_hint TEXT DEFAULT NULL;" 2>/dev/null || true
+  db_exec "ALTER TABLE signals ADD COLUMN depth INTEGER DEFAULT 0;" 2>/dev/null || true
+  db_exec "CREATE INDEX IF NOT EXISTS idx_signals_parent ON signals(parent_id);" 2>/dev/null || true
+  db_exec "INSERT OR REPLACE INTO schema_version(version) VALUES (5);"
+  log_info "DB schema migration to v5 complete"
 }
 
 db_exec() {
