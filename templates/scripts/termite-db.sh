@@ -704,6 +704,79 @@ EOF
   return 0
 }
 
+# ── Signal Decomposition (v5.1) ──────────────────────────────────────
+
+db_signal_aggregate() {
+  # Auto-close parent signals when all children are done
+  # Returns number of parents auto-closed
+  local closed
+  closed=$(db_exec "
+    SELECT COUNT(*) FROM signals
+    WHERE id IN (
+      SELECT DISTINCT parent_id FROM signals
+      WHERE parent_id IS NOT NULL
+      GROUP BY parent_id
+      HAVING COUNT(*) = SUM(CASE WHEN status IN ('done','completed') THEN 1 ELSE 0 END)
+    )
+    AND status NOT IN ('done','completed','archived');
+  ")
+
+  if [ "${closed:-0}" -gt 0 ]; then
+    db_exec "
+      UPDATE signals SET status='done', last_touched='$(today_iso)'
+      WHERE id IN (
+        SELECT DISTINCT parent_id FROM signals
+        WHERE parent_id IS NOT NULL
+        GROUP BY parent_id
+        HAVING COUNT(*) = SUM(CASE WHEN status IN ('done','completed') THEN 1 ELSE 0 END)
+      )
+      AND status NOT IN ('done','completed','archived');
+    "
+    log_info "Auto-aggregated ${closed} parent signals to done"
+  fi
+
+  # Child blocked → parent weight escalation
+  db_exec "
+    UPDATE signals SET weight = MIN(weight + 10, 100)
+    WHERE id IN (
+      SELECT DISTINCT parent_id FROM signals
+      WHERE parent_id IS NOT NULL AND status = 'blocked'
+    )
+    AND status NOT IN ('done','completed','archived');
+  " 2>/dev/null || true
+
+  echo "${closed:-0}"
+}
+
+db_unclaimed_leaf_count() {
+  # Count open leaf signals (unclaimed, no active children)
+  db_exec "
+    SELECT COUNT(*) FROM signals s
+    WHERE s.status = 'open'
+      AND NOT EXISTS (
+        SELECT 1 FROM signals c
+        WHERE c.parent_id = s.id
+        AND c.status NOT IN ('done','completed','archived')
+      );
+  "
+}
+
+db_leaf_top_signal() {
+  # Return best unclaimed leaf signal (for .birth ## task)
+  db_query "
+    SELECT s.id, s.type, s.title, s.next_hint, s.child_hint, s.parent_id, s.module
+    FROM signals s
+    WHERE s.status = 'open'
+      AND NOT EXISTS (
+        SELECT 1 FROM signals c
+        WHERE c.parent_id = s.id
+        AND c.status NOT IN ('done','completed','archived')
+      )
+    ORDER BY s.weight DESC
+    LIMIT 1;
+  "
+}
+
 # ── Utility ───────────────────────────────────────────────────────────
 
 db_escape() {
