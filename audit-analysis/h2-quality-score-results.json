@@ -1,0 +1,3169 @@
+[
+  {
+    "id": "O-20260302183401-9360",
+    "score": 0.0,
+    "pattern": "S-014",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260302183616-13317",
+    "score": 0.0,
+    "pattern": "S-014",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260302184043-23960",
+    "score": 0.0,
+    "pattern": "S-013 S-014",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260302190318-39779",
+    "score": 0.0,
+    "pattern": "S-013 S-014",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260302190501-42622",
+    "score": 0.0,
+    "pattern": "S-022",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260302191056-56783",
+    "score": 0.0,
+    "pattern": "S-022",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260302193227-23908",
+    "score": 0.0,
+    "pattern": "O-PHASE5-COMPLETE",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260302193500-28680",
+    "score": 0.0,
+    "pattern": "HEARTBEAT-PHASE6-START",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260302193646-31578",
+    "score": 0.0,
+    "pattern": "HEARTBEAT-SCOUT-MOLT",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260302193832-35594",
+    "score": 0.0,
+    "pattern": "FINAL-HEARTBEAT-PHASE5",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260302194017-40070",
+    "score": 0.0,
+    "pattern": "FINAL-HEARTBEAT-PHASE5-MOLT",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260302194206-48841",
+    "score": 0.0,
+    "pattern": "FINAL-HEARTBEAT-PHASE5-SCED",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260302194351-54792",
+    "score": 0.0,
+    "pattern": "FINAL-HEARTBEAT-PHASE5-ARCHIVE",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260302194526-59867",
+    "score": 0.0,
+    "pattern": "FINAL-HEARTBEAT-PHASE5-CONCLUDE",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260302194706-65433",
+    "score": 0.0,
+    "pattern": "FINAL-HEARTBEAT-PHASE5-FINAL",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260302194842-73545",
+    "score": 0.0,
+    "pattern": "PHASE6-START",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260302195031-81597",
+    "score": 0.0,
+    "pattern": "PHASE6-HARDENING-INIT",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260302195220-90480",
+    "score": 0.0,
+    "pattern": "PHASE6-WORKER-INIT",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260302195410-97652",
+    "score": 0.0,
+    "pattern": "PHASE6-BENCHMARK-READY",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260302195608-7325",
+    "score": 0.0,
+    "pattern": "PHASE6-BENCHMARK-LOAD",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260302195757-16285",
+    "score": 0.0,
+    "pattern": "PHASE6-STRESS-TEST",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260302195946-22897",
+    "score": 0.0,
+    "pattern": "PHASE6-STRESS-FINALIZE",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260302200134-27760",
+    "score": 0.0,
+    "pattern": "PHASE6-BENCHMARK-SUMMARY",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260302200322-38503",
+    "score": 0.0,
+    "pattern": "PHASE6-HARDENING-DONE",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260302200503-49947",
+    "score": 0.0,
+    "pattern": "PHASE7-INIT-DEPLOY",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260302200651-63468",
+    "score": 0.0,
+    "pattern": "PHASE7-DEPLOY-AUDIT",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260302200832-72044",
+    "score": 0.0,
+    "pattern": "PHASE7-SMOKE-TEST",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260302201022-82261",
+    "score": 0.0,
+    "pattern": "PHASE7-FINAL-VERIFY",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260302201209-90407",
+    "score": 0.0,
+    "pattern": "PHASE7-HANDOVER-INIT",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260302201359-98933",
+    "score": 0.0,
+    "pattern": "FINAL-MOLT-PHASE7",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260302220424-18873",
+    "score": 0.0,
+    "pattern": "O-20260302-heartbeat",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260302230058-58222",
+    "score": 0.0,
+    "pattern": "S-015_STABILITY_FIXED",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260303000611-78722",
+    "score": 0.0,
+    "pattern": "S-071",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260303044627-29876",
+    "score": 0.0,
+    "pattern": "S-013 Heartbeat Sync",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303045038-85487",
+    "score": 0.0,
+    "pattern": "O-20260303080000-W3",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260303045230-98678",
+    "score": 0.0,
+    "pattern": "S-098-SEED",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260303045520-29277",
+    "score": 0.0,
+    "pattern": "S-098-COMPLETE",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260303045744-37534",
+    "score": 0.0,
+    "pattern": "S-099-SEED",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260303045936-48894",
+    "score": 0.0,
+    "pattern": "S-099-AUDIT",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260303050103-56827",
+    "score": 0.0,
+    "pattern": "O-20260303-MOLT-PREP",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260303050257-67408",
+    "score": 0.0,
+    "pattern": "S-100-SEED",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260303050500-82936",
+    "score": 0.0,
+    "pattern": "S-100-COMPLETE",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260303050648-91490",
+    "score": 0.0,
+    "pattern": "S-101-SEED",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260303050844-2073",
+    "score": 0.0,
+    "pattern": "S-101-EXPLORE-COMPLETE",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260303051216-15529",
+    "score": 0.0,
+    "pattern": "S-102-SEED",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260303052012-67688",
+    "score": 0.0,
+    "pattern": "S-097",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260303053151-42842",
+    "score": 0.0,
+    "pattern": "O-20260303-S094-COMPLETE",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail",
+      "-0.20 screaming label, no file context"
+    ]
+  },
+  {
+    "id": "O-20260302181618-99270",
+    "score": 0.3,
+    "pattern": "strategic-review",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260302184202-25890",
+    "score": 0.3,
+    "pattern": "S-015 completed, 40 tests passed",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260302184235-27308",
+    "score": 0.3,
+    "pattern": "Session complete: S-015 verified and closed",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260302191613-76283",
+    "score": 0.3,
+    "pattern": "S-022+S-023 parallel implementation complete",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260302192324-98772",
+    "score": 0.3,
+    "pattern": "S-017+S-018 parallel complete, all signals exhausted",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260302195213-89945",
+    "score": 0.3,
+    "pattern": "heartbeat monitor: no open signals, waiting on S-032 owner",
+    "detail_len": 80,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260302195353-95859",
+    "score": 0.3,
+    "pattern": "heartbeat monitor: S-032 still claimed by owner",
+    "detail_len": 72,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260302195552-5448",
+    "score": 0.3,
+    "pattern": "heartbeat monitor: waiting for S-032 owner release",
+    "detail_len": 70,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260302195742-15025",
+    "score": 0.3,
+    "pattern": "heartbeat monitor: all signals completed, no active claims",
+    "detail_len": 62,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260302201544-5882",
+    "score": 0.3,
+    "pattern": "Phase 7 complete: S-037 through S-045 all done",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260302214322-57592",
+    "score": 0.3,
+    "pattern": "O-20260302-verified-p8",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260302214450-62296",
+    "score": 0.3,
+    "pattern": "O-20260302-stable-v1",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260302214818-72232",
+    "score": 0.3,
+    "pattern": "O-20260302-cycle",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260302231216-76862",
+    "score": 0.3,
+    "pattern": "CI/CD pipeline implementation",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260302231347-83548",
+    "score": 0.3,
+    "pattern": "S-049 Scout Research",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260302231626-88599",
+    "score": 0.3,
+    "pattern": "Phase 9 Genesis",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260302231824-93559",
+    "score": 0.3,
+    "pattern": "S-062 Semantic Stream Implementation",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260302232005-279",
+    "score": 0.3,
+    "pattern": "S-063 Vision Engine Implementation",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260302232157-5800",
+    "score": 0.3,
+    "pattern": "Phase 9 Prototype Framework",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260302232413-12897",
+    "score": 0.3,
+    "pattern": "Phase 9 Completion & Handoff",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260302232541-18154",
+    "score": 0.3,
+    "pattern": "S-067 VisionService Implementation",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260302232850-25055",
+    "score": 0.3,
+    "pattern": "S-069 Strategic Assessment",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260302233425-34312",
+    "score": 0.3,
+    "pattern": "o-20260302-scout-wave2-audit",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260302234539-58881",
+    "score": 0.3,
+    "pattern": "o-20260303-worker-s070-emergence",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260302234755-71480",
+    "score": 0.3,
+    "pattern": "o-20260303-worker-s070-backend-scaffold",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260302234926-79287",
+    "score": 0.3,
+    "pattern": "o-20260303-worker-s070-frontend-component",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260302235228-98738",
+    "score": 0.3,
+    "pattern": "Relationship Intelligence (S-070)",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260302235544-19497",
+    "score": 0.3,
+    "pattern": "Relationship Intelligence S-070",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260302235855-34961",
+    "score": 0.3,
+    "pattern": "Relationship Intelligence S-070",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303000152-60772",
+    "score": 0.3,
+    "pattern": "S-071: Predictive Insights",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303000343-66739",
+    "score": 0.3,
+    "pattern": "S-071: Predictive Insights",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303001238-98437",
+    "score": 0.3,
+    "pattern": "o-20260303-heartbeat-no-open-signal",
+    "detail_len": 89,
+    "confidence": "high",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260303011400-44159",
+    "score": 0.3,
+    "pattern": "o-20260303-heartbeat",
+    "detail_len": 157,
+    "confidence": "high",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260303043909-84634",
+    "score": 0.3,
+    "pattern": "S-013 Phase 14 COMPLETE",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303044104-95337",
+    "score": 0.3,
+    "pattern": "S-013 Phase 14 Sync",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303044259-9914",
+    "score": 0.3,
+    "pattern": "S-013 Scout Audit",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303044434-18700",
+    "score": 0.3,
+    "pattern": "S-013 Scout Pulse",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303052509-80986",
+    "score": 0.3,
+    "pattern": "heartbeat-empty-active-queue",
+    "detail_len": 114,
+    "confidence": "high",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260303071211-84532",
+    "score": 0.3,
+    "pattern": "S-108: Dependency Injection & Real Parsing",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303071400-92094",
+    "score": 0.3,
+    "pattern": "S-108: Knowledge Ingestion Robustness Check",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303071547-99847",
+    "score": 0.3,
+    "pattern": "S-108: Readiness for Phase 3",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303071736-6663",
+    "score": 0.3,
+    "pattern": "S-108: Post-Phase 2 Stability Check",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303071926-14864",
+    "score": 0.3,
+    "pattern": "S-108: Post-Parsing Infrastructure Stability",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303072112-20540",
+    "score": 0.3,
+    "pattern": "S-108: Phase 2 Completion & Transition Readiness",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303072300-29736",
+    "score": 0.3,
+    "pattern": "S-108: Post-Phase 2 Strategic Review",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303072447-36964",
+    "score": 0.3,
+    "pattern": "S-108: Post-Phase 2 Stability & Next Steps",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303072631-44678",
+    "score": 0.3,
+    "pattern": "S-108: Final Verification & Strategic Closure",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303072811-52307",
+    "score": 0.3,
+    "pattern": "S-108: Post-Phase 2 Stability & Next Steps",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303072957-60536",
+    "score": 0.3,
+    "pattern": "S-108: Final Strategic Closure",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303073141-67294",
+    "score": 0.3,
+    "pattern": "S-108: Maintenance & Strategic Vigilance",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303073319-75832",
+    "score": 0.3,
+    "pattern": "S-108: Final Phase 2 Validation",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303073452-82746",
+    "score": 0.3,
+    "pattern": "S-108: Readiness Check for UI Integration",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303073817-99386",
+    "score": 0.3,
+    "pattern": "S-108: Strategic Handover Complete",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303074009-8538",
+    "score": 0.3,
+    "pattern": "S-108: Strategic Phase 2 Closure",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303074141-15727",
+    "score": 0.3,
+    "pattern": "S-108: Post-Metabolism Readiness Check",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303074321-24068",
+    "score": 0.3,
+    "pattern": "S-108: Final Phase 2 Strategic Handover",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303074455-30918",
+    "score": 0.3,
+    "pattern": "S-108: Final Strategic Checkpoint",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303074634-38170",
+    "score": 0.3,
+    "pattern": "S-108: Final Phase 2 Validation",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303074820-44864",
+    "score": 0.3,
+    "pattern": "S-108: Final Strategic Handover Verification",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303075006-54217",
+    "score": 0.3,
+    "pattern": "S-108: Final Strategic Closure",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303075152-61122",
+    "score": 0.3,
+    "pattern": "S-108: Post-Phase 2 Stability & Final Roadmap",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303075341-69701",
+    "score": 0.3,
+    "pattern": "S-108: Final Phase 2 Handover",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303075520-77139",
+    "score": 0.3,
+    "pattern": "S-108: Post-Metabolism Readiness Check",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303075714-85209",
+    "score": 0.3,
+    "pattern": "S-108: Strategic Phase 2 Closure & Scout Handover",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303075900-93452",
+    "score": 0.3,
+    "pattern": "S-108: Post-Metabolism Strategic Handover",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303080427-20425",
+    "score": 0.3,
+    "pattern": "S-108: Final Strategic Handover Verification",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303080613-28119",
+    "score": 0.3,
+    "pattern": "S-108: Post-Scout Strategic Handover",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303080803-37002",
+    "score": 0.3,
+    "pattern": "S-108: Final Phase 2 Structural Closure",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303081455-72898",
+    "score": 0.3,
+    "pattern": "S-108: Strategic Phase 2 Closure & Final Verification",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303081642-81034",
+    "score": 0.3,
+    "pattern": "S-108: Post-Metabolism Readiness Verification",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260302195654-12539",
+    "score": 0.4,
+    "pattern": "Phase 6 gap closure complete: S-031/032/033/034/035/036",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303043807-78043",
+    "score": 0.4,
+    "pattern": "S-013 Churn Risk Integration",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260302191606-75222",
+    "score": 0.45,
+    "pattern": "S-016 Coach weekly report API + Router implemented and service verified",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260302192125-89937",
+    "score": 0.45,
+    "pattern": "Heartbeat monitor mode: no open signals, queue saturated by parallel claims",
+    "detail_len": 116,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260303023859-47783",
+    "score": 0.45,
+    "pattern": "WIP heartbeat header reconciled to current phase",
+    "detail_len": 148,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260303025339-87302",
+    "score": 0.45,
+    "pattern": "Heartbeat snapshot drift reconciled",
+    "detail_len": 192,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260303065932-37958",
+    "score": 0.45,
+    "pattern": "TouchCLI Phase 2 strategic landscape: MVP complete, S-108 E2E framework ready, S",
+    "detail_len": 1,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303072406-34684",
+    "score": 0.45,
+    "pattern": "Heartbeat monitor: queue unchanged and claims still valid",
+    "detail_len": 184,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260303072603-39994",
+    "score": 0.45,
+    "pattern": "Heartbeat monitor: no open signals and claims remain valid",
+    "detail_len": 196,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260303072732-48946",
+    "score": 0.45,
+    "pattern": "Heartbeat monitor: claims active, queue still closed",
+    "detail_len": 204,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260303073250-70906",
+    "score": 0.45,
+    "pattern": "Heartbeat monitor: queue locked, no open signals, no expiry",
+    "detail_len": 212,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260303074131-13381",
+    "score": 0.45,
+    "pattern": "Heartbeat monitor: open=0, claims active, ttl not reached",
+    "detail_len": 166,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260303080150-7388",
+    "score": 0.45,
+    "pattern": "Heartbeat monitor: queue still locked and open=0 before TTL",
+    "detail_len": 185,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260303080540-25995",
+    "score": 0.45,
+    "pattern": "Heartbeat monitor: queue unchanged pre-expiry with open=0",
+    "detail_len": 184,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260303080000",
+    "score": 0.5,
+    "pattern": "Phase 14 Wave 3: Real-time Distribution Assessment",
+    "detail_len": 243,
+    "confidence": "high",
+    "reasons": []
+  },
+  {
+    "id": "O-20260303035622-71023",
+    "score": 0.55,
+    "pattern": "heartbeat:open0-phase11b-complete",
+    "detail_len": 229,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260303070719-60848",
+    "score": 0.55,
+    "pattern": "S-108 E2E integration complete: 3 integration tests added (PDF parsing, DOCX par",
+    "detail_len": 1,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303071400-91920",
+    "score": 0.55,
+    "pattern": "Phase 2 verification complete: S-108/109/110/111 all passing, MVP ready for stag",
+    "detail_len": 1,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260302151625-17406",
+    "score": 0.6,
+    "pattern": "scout-audit-open-signals-revalidated",
+    "detail_len": 55,
+    "confidence": "high",
+    "reasons": [
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260302163757-50405",
+    "score": 0.6,
+    "pattern": "S-021 proposal generator delivered",
+    "detail_len": 141,
+    "confidence": "high",
+    "reasons": [
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260302170125-60203",
+    "score": 0.6,
+    "pattern": "S-009 phase-1 delivered: contacts+interactions APIs",
+    "detail_len": 215,
+    "confidence": "high",
+    "reasons": [
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260302171020-63476",
+    "score": 0.6,
+    "pattern": "S-009 completed: data model expansion APIs delivered",
+    "detail_len": 203,
+    "confidence": "high",
+    "reasons": [
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260302183515-11490",
+    "score": 0.6,
+    "pattern": "Scout audit: enforce claim-signal closure triad for Wave 4",
+    "detail_len": 143,
+    "confidence": "high",
+    "reasons": [
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260302220905-45672",
+    "score": 0.6,
+    "pattern": "S-046 review smoke pass (15/15) with reduced warning noise",
+    "detail_len": 151,
+    "confidence": "high",
+    "reasons": [
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303004316-68999",
+    "score": 0.6,
+    "pattern": "S-073 completion: architecture deliverables verified",
+    "detail_len": 287,
+    "confidence": "high",
+    "reasons": [
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303012315-66203",
+    "score": 0.6,
+    "pattern": "o-20260303-s079-complete",
+    "detail_len": 251,
+    "confidence": "high",
+    "reasons": [
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303031825-56858",
+    "score": 0.6,
+    "pattern": "S-088 complete: multi-modal zero-input router coordination",
+    "detail_len": 449,
+    "confidence": "high",
+    "reasons": [
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303032301-68462",
+    "score": 0.6,
+    "pattern": "S-089 complete: BLACKBOARD runtime snapshot synchronized",
+    "detail_len": 204,
+    "confidence": "high",
+    "reasons": [
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303034214-26320",
+    "score": 0.6,
+    "pattern": "S-092 complete: API multimodal router wiring covered",
+    "detail_len": 176,
+    "confidence": "high",
+    "reasons": [
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303041454-31100",
+    "score": 0.6,
+    "pattern": "phase13-handoff:S-095-open",
+    "detail_len": 128,
+    "confidence": "high",
+    "reasons": [
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303052156-73596",
+    "score": 0.6,
+    "pattern": "s-102-retention-strategy-complete",
+    "detail_len": 126,
+    "confidence": "high",
+    "reasons": [
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303052952-37720",
+    "score": 0.6,
+    "pattern": "s-094-review-green-tests",
+    "detail_len": 146,
+    "confidence": "high",
+    "reasons": [
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303053729-93417",
+    "score": 0.6,
+    "pattern": "s-110-voice-full-integration",
+    "detail_len": 237,
+    "confidence": "high",
+    "reasons": [
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303070220-44790",
+    "score": 0.6,
+    "pattern": "scout-audit s-106/s-107 validated and closed",
+    "detail_len": 273,
+    "confidence": "high",
+    "reasons": [
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303071315-87900",
+    "score": 0.6,
+    "pattern": "Heartbeat review: S-094/S-108 regression green; work claims still active",
+    "detail_len": 344,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260303071521-97887",
+    "score": 0.6,
+    "pattern": "Heartbeat review: S-094/S-108 regression still green (cycle continue)",
+    "detail_len": 219,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260303072213-24949",
+    "score": 0.6,
+    "pattern": "Heartbeat monitor: locked queue stable, no takeover before TTL",
+    "detail_len": 294,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260303072908-55662",
+    "score": 0.6,
+    "pattern": "Heartbeat monitor: non-preemptive wait continues (claims not expired)",
+    "detail_len": 186,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260303073816-97497",
+    "score": 0.6,
+    "pattern": "Heartbeat monitor: lock queue unchanged, open=0, no expiry cleanup",
+    "detail_len": 187,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260303074008-7427",
+    "score": 0.6,
+    "pattern": "Heartbeat monitor: no-open queue persists; claims still within TTL",
+    "detail_len": 213,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260303074313-19572",
+    "score": 0.6,
+    "pattern": "Heartbeat monitor: locked queue unchanged, open=0, ttl pending",
+    "detail_len": 183,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260303074641-39736",
+    "score": 0.6,
+    "pattern": "Heartbeat monitor: queue unchanged, no open signals, no expired claims",
+    "detail_len": 188,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260303074838-46965",
+    "score": 0.6,
+    "pattern": "Heartbeat monitor: lock queue stable, open=0, ttl window active",
+    "detail_len": 182,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260303075034-57430",
+    "score": 0.6,
+    "pattern": "Heartbeat monitor: non-preemptive lock watch, open queue still zero",
+    "detail_len": 198,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260303075230-63826",
+    "score": 0.6,
+    "pattern": "Heartbeat monitor: claimed queue stable, open signals remain zero",
+    "detail_len": 184,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260303075420-73474",
+    "score": 0.6,
+    "pattern": "Heartbeat monitor: open queue empty, claims stable, no expiry",
+    "detail_len": 184,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260303075813-89882",
+    "score": 0.6,
+    "pattern": "Heartbeat monitor: open=0 and claims remain active pre-expiry",
+    "detail_len": 189,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260303080014-97910",
+    "score": 0.6,
+    "pattern": "Heartbeat monitor: pre-expiry lock queue unchanged and open=0",
+    "detail_len": 207,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260303080337-14511",
+    "score": 0.6,
+    "pattern": "Heartbeat monitor: lock queue active, open=0, no expiry cleanup",
+    "detail_len": 181,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260303080946-43546",
+    "score": 0.6,
+    "pattern": "Heartbeat monitor: open queue empty and work claims remain pre-expiry",
+    "detail_len": 175,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260303081409-67717",
+    "score": 0.6,
+    "pattern": "Heartbeat monitor: queue converged; S-094 claim cleaned as non-active",
+    "detail_len": 262,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260303081841-86656",
+    "score": 0.6,
+    "pattern": "Heartbeat review: S-108 knowledge pipeline remains green under lock wait",
+    "detail_len": 261,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260302150649-12645",
+    "score": 0.7,
+    "pattern": "S-007-first-slice-llm-router-fallback",
+    "detail_len": 72,
+    "confidence": "high",
+    "reasons": [
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260302160523-37971",
+    "score": 0.7,
+    "pattern": "S-008 local stack unblock complete",
+    "detail_len": 190,
+    "confidence": "high",
+    "reasons": [
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260302173204-71543",
+    "score": 0.7,
+    "pattern": "S-011 multi-worker consistency hardened",
+    "detail_len": 102,
+    "confidence": "high",
+    "reasons": [
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260302194539-61767",
+    "score": 0.7,
+    "pattern": "claim cleanup now handles orphan claims without signal rows",
+    "detail_len": 119,
+    "confidence": "high",
+    "reasons": [
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260302194822-71512",
+    "score": 0.7,
+    "pattern": "S-035 review: integration tests still failing",
+    "detail_len": 174,
+    "confidence": "high",
+    "reasons": [
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260302215648-95333",
+    "score": 0.7,
+    "pattern": "S-051 parked pending S-046 and local benchmark environment",
+    "detail_len": 319,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260302221319-65477",
+    "score": 0.7,
+    "pattern": "S-054 db_claim_check now blocks duplicate same-op claims",
+    "detail_len": 176,
+    "confidence": "high",
+    "reasons": [
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260302222042-76586",
+    "score": 0.7,
+    "pattern": "S-055 db_claim_check now enforces claimable status semantics",
+    "detail_len": 206,
+    "confidence": "high",
+    "reasons": [
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260302231954-96807",
+    "score": 0.7,
+    "pattern": "S-065 notification ownership guard validated",
+    "detail_len": 205,
+    "confidence": "high",
+    "reasons": [
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260302234434-52751",
+    "score": 0.7,
+    "pattern": "db-yaml-export-consistency",
+    "detail_len": 213,
+    "confidence": "high",
+    "reasons": [
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260303031221-41977",
+    "score": 0.7,
+    "pattern": "S-087 complete: async SalesAgent pipeline on confirmation",
+    "detail_len": 302,
+    "confidence": "high",
+    "reasons": [
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260303044752-62813",
+    "score": 0.7,
+    "pattern": "S-097 review heartbeat: regression remains green under work-lock contention",
+    "detail_len": 277,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260303045018-77655",
+    "score": 0.7,
+    "pattern": "S-097 review heartbeat: lock persists, regression green, molt pressure high",
+    "detail_len": 171,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260303054929-33654",
+    "score": 0.7,
+    "pattern": "s-111-semantic-search-complete",
+    "detail_len": 165,
+    "confidence": "high",
+    "reasons": [
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260303071726-4765",
+    "score": 0.7,
+    "pattern": "Heartbeat monitor: no open signals, claims valid until tonight",
+    "detail_len": 310,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language",
+      "-0.30 degenerate pattern"
+    ]
+  },
+  {
+    "id": "O-20260302164803-54713",
+    "score": 0.75,
+    "pattern": "S-008 verified complete",
+    "detail_len": 115,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260302164803-54714",
+    "score": 0.75,
+    "pattern": "S-007 verified complete",
+    "detail_len": 98,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260302164803-54715",
+    "score": 0.75,
+    "pattern": "S-019 verified complete",
+    "detail_len": 100,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260302165051-55953",
+    "score": 0.75,
+    "pattern": "S-021 verified complete",
+    "detail_len": 110,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260302171625-65856",
+    "score": 0.75,
+    "pattern": "S-010 verified complete",
+    "detail_len": 165,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260302173204-71544",
+    "score": 0.75,
+    "pattern": "S-011 completed: HITL L0-L4 gating and decision flow",
+    "detail_len": 307,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260302180936-97292",
+    "score": 0.75,
+    "pattern": "S-012 voice websocket loop now sends 0x01 frames + 0x03 transcription request",
+    "detail_len": 153,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260302191345-64598",
+    "score": 0.75,
+    "pattern": "S-017 minimal PWA上线：runtime SW 注册 + theme metadata + PWA client types",
+    "detail_len": 173,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260302192531-4046",
+    "score": 0.75,
+    "pattern": "Monitor: all tracked wave signals completed but claim table still holds historic",
+    "detail_len": 133,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260302193714-34333",
+    "score": 0.75,
+    "pattern": "S-033 completed: strategy agent now supports LLM tool-calling with deterministic",
+    "detail_len": 126,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260302194004-39074",
+    "score": 0.75,
+    "pattern": "S-034 completed: backend TTS synth endpoint implemented",
+    "detail_len": 152,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260302194822-71477",
+    "score": 0.75,
+    "pattern": "S-032 review: LangGraph workflow appears complete",
+    "detail_len": 104,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260302200537-56144",
+    "score": 0.75,
+    "pattern": "S-037 completed: hardened auth secret handling and password login validation",
+    "detail_len": 213,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260302200716-67414",
+    "score": 0.75,
+    "pattern": "S-037 commit scope: auth+schema+tests only",
+    "detail_len": 127,
+    "confidence": "medium",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260302222522-84225",
+    "score": 0.75,
+    "pattern": "S-054 YAML fallback claim/check semantics aligned with DB path",
+    "detail_len": 193,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260302223724-99837",
+    "score": 0.75,
+    "pattern": "S-057 monotonic signal IDs from live+archive max",
+    "detail_len": 195,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260302224515-11211",
+    "score": 0.75,
+    "pattern": "S-058 regression test added for archive-aware db_next_signal_id",
+    "detail_len": 142,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260302231205-76702",
+    "score": 0.75,
+    "pattern": "S-061 CI covers agent_service notification+voice regression suite",
+    "detail_len": 113,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303000025-44169",
+    "score": 0.75,
+    "pattern": "s070-concurrent-completion-verified",
+    "detail_len": 363,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303002228-25285",
+    "score": 0.75,
+    "pattern": "frontend-relationshipgraph-test-coverage",
+    "detail_len": 268,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303004524-76279",
+    "score": 0.75,
+    "pattern": "S-072 completion: RelationshipGraph tests verified",
+    "detail_len": 164,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303012110-62052",
+    "score": 0.75,
+    "pattern": "o-20260303-alembic-default-url",
+    "detail_len": 246,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303013038-83900",
+    "score": 0.75,
+    "pattern": "o-20260303-s081-tools-exports",
+    "detail_len": 576,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303021648-94370",
+    "score": 0.75,
+    "pattern": "Signal board stale state reconciled",
+    "detail_len": 137,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303022004-698",
+    "score": 0.75,
+    "pattern": "Gateway websocket parity for zero-input queue",
+    "detail_len": 163,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303023556-38716",
+    "score": 0.75,
+    "pattern": "Gateway go validation completed",
+    "detail_len": 178,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303024220-57240",
+    "score": 0.75,
+    "pattern": "Gateway websocket URL builder tests added",
+    "detail_len": 208,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303024434-62338",
+    "score": 0.75,
+    "pattern": "Gateway zero-input websocket proxy integration verified",
+    "detail_len": 199,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303024921-76413",
+    "score": 0.75,
+    "pattern": "Scout audit completed: parked metadata hygiene",
+    "detail_len": 127,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303030659-27411",
+    "score": 0.75,
+    "pattern": "S-086 complete: zero-input websocket hook extracted",
+    "detail_len": 252,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303033757-13756",
+    "score": 0.75,
+    "pattern": "S-091 complete: ConfigDict migration finalized",
+    "detail_len": 185,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303040506-97911",
+    "score": 0.75,
+    "pattern": "scout-audit:runtime-aligned-phase13-kickoff",
+    "detail_len": 326,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303062729-45818",
+    "score": 0.75,
+    "pattern": "MVP完成，context75%接近MOLT",
+    "detail_len": 248,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303070905-68366",
+    "score": 0.75,
+    "pattern": "review audit: s-094 and s-108 test evidence healthy while work-claims active",
+    "detail_len": 151,
+    "confidence": "medium",
+    "reasons": [
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303073059-64856",
+    "score": 0.75,
+    "pattern": "Scout monitor: strategic breath confirms stable locked queue",
+    "detail_len": 208,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303074448-28840",
+    "score": 0.75,
+    "pattern": "Scout monitor: strategic breath confirms no executable queue",
+    "detail_len": 258,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303075626-80109",
+    "score": 0.75,
+    "pattern": "Scout monitor: breath-cycle confirms empty executable queue",
+    "detail_len": 213,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260302151605-16432",
+    "score": 0.85,
+    "pattern": "S-007 deployment readiness: RouterAgent + LLMRouter implemented (255+183 LOC), k",
+    "detail_len": 83,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260302151615-16516",
+    "score": 0.85,
+    "pattern": "S-008 integration gap: Go Gateway forwarding + JWT auth complete (84 LOC), but N",
+    "detail_len": 99,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260302151617-16561",
+    "score": 0.85,
+    "pattern": "S-019 Phase 1A→1B roadmap: ORM schema complete (Product, ProductDocument, Produc",
+    "detail_len": 95,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260302165051-55945",
+    "score": 0.85,
+    "pattern": "S-020 regression fixed and verified",
+    "detail_len": 180,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260302171625-65857",
+    "score": 0.85,
+    "pattern": "Opportunity create compatibility fix applied",
+    "detail_len": 152,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260302174834-78254",
+    "score": 0.85,
+    "pattern": "S-012 MVP voice engine integrated",
+    "detail_len": 216,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260302213323-98213",
+    "score": 0.85,
+    "pattern": "S-047 fixed k8s prod env mismatch and gateway target resolution",
+    "detail_len": 444,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260302215543-93192",
+    "score": 0.85,
+    "pattern": "S-053 runtime mismatch identified: localhost ports are SSH-forwarded, not local ",
+    "detail_len": 424,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260302230710-68374",
+    "score": 0.85,
+    "pattern": "S-060 CI now runs signal-id monotonic regression guard",
+    "detail_len": 132,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260302233052-28216",
+    "score": 0.85,
+    "pattern": "S-068 websocket semantic intent extraction implemented",
+    "detail_len": 229,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260303002503-31558",
+    "score": 0.85,
+    "pattern": "frontend-relationshipgraph-layout-test-hardening",
+    "detail_len": 252,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260303005454-95885",
+    "score": 0.85,
+    "pattern": "S-075 completion: zero-input backend service implemented",
+    "detail_len": 531,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260303010101-9822",
+    "score": 0.85,
+    "pattern": "S-074 completion: VoiceCard integrated and validated",
+    "detail_len": 382,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260303011535-48807",
+    "score": 0.85,
+    "pattern": "o-20260303-migration-runtime",
+    "detail_len": 257,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260303021057-81206",
+    "score": 0.85,
+    "pattern": "S-084 realtime confirmation queue sync implemented",
+    "detail_len": 265,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260303025805-1382",
+    "score": 0.85,
+    "pattern": "YAML drift warning false-positive fixed",
+    "detail_len": 189,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260303040113-83512",
+    "score": 0.85,
+    "pattern": "S-093 complete: dependency floor + whisper compatibility",
+    "detail_len": 357,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260303041342-24046",
+    "score": 0.85,
+    "pattern": "S-094 complete: websocket optimization baseline",
+    "detail_len": 786,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260303042353-60802",
+    "score": 0.85,
+    "pattern": "S-095 complete: calibrated confidence scoring baseline",
+    "detail_len": 662,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260303044203-911",
+    "score": 0.85,
+    "pattern": "S-097 lock contention persists; review lane keeps green",
+    "detail_len": 150,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260303055404-48304",
+    "score": 0.85,
+    "pattern": "scout-queue-governance-audit",
+    "detail_len": 143,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260303061642-22164",
+    "score": 0.85,
+    "pattern": "S-109 reminder scheduling metadata persistence fixed",
+    "detail_len": 320,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260303062256-34495",
+    "score": 0.85,
+    "pattern": "S-112 relationship graph auth-aware fetch delivered",
+    "detail_len": 382,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260303064630-96422",
+    "score": 0.85,
+    "pattern": "s-104 test stabilization complete after auto-writeback",
+    "detail_len": 111,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260303065627-25989",
+    "score": 0.85,
+    "pattern": "s-105 proposal e2e wiring recovered and validated",
+    "detail_len": 289,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260302195947-24160",
+    "score": 0.9,
+    "pattern": "scout audit: DB is in all-completed state with zero active claims",
+    "detail_len": 136,
+    "confidence": "medium",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260302202059-13857",
+    "score": 0.9,
+    "pattern": "S-039 opportunity legacy aliases restored with schema-aligned status normalizati",
+    "detail_len": 280,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260302214644-66969",
+    "score": 0.9,
+    "pattern": "S-050 workflows hardened for branch governance, deployment ordering, and runnabl",
+    "detail_len": 491,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260302221726-71678",
+    "score": 0.9,
+    "pattern": "S-054 db_claim_check aligned with claimable statuses and duplicate review semant",
+    "detail_len": 170,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260302223251-93773",
+    "score": 0.9,
+    "pattern": "S-056 db_next_signal_id now uses live+archive max to avoid ID reuse",
+    "detail_len": 215,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260302232722-20427",
+    "score": 0.9,
+    "pattern": "S-066 completed: notifications create endpoint ownership enforced",
+    "detail_len": 198,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303032804-82090",
+    "score": 0.9,
+    "pattern": "S-090 complete: deprecation warnings removed in zero-input test path",
+    "detail_len": 257,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303044542-25041",
+    "score": 0.9,
+    "pattern": "Phase 14 transition readiness: S-097 in progress, no blockers; Wave 3 optional e",
+    "detail_len": 222,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303045703-34438",
+    "score": 0.9,
+    "pattern": "Worker #75: Priority A+B COMPLETE, S-097 locked (termite-1772483634-22058), MOLT",
+    "detail_len": 194,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303050332-70489",
+    "score": 0.9,
+    "pattern": "S-099 regression validation complete (sentinel churn broadcast + frontend notifi",
+    "detail_len": 246,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303064225-85908",
+    "score": 0.9,
+    "pattern": "s-104 api wiring complete: agent endpoint + persistent spin plans",
+    "detail_len": 284,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303072003-17697",
+    "score": 0.9,
+    "pattern": "Scout audit: claim TTL governance documented for locked queue",
+    "detail_len": 233,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260303080739-32690",
+    "score": 0.9,
+    "pattern": "Scout monitor: strategic breath confirms queue still non-actionable",
+    "detail_len": 199,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info"
+    ]
+  },
+  {
+    "id": "O-20260302184358-27952",
+    "score": 1.0,
+    "pattern": "S-016 Coach weekly report implemented with aggregation + LLM fallback narrative",
+    "detail_len": 200,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260302214239-55083",
+    "score": 1.0,
+    "pattern": "S-048 benchmark executed at 50 concurrency; SLA not met and remediation signal c",
+    "detail_len": 420,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260302215107-79471",
+    "score": 1.0,
+    "pattern": "S-049 voice feasibility scout complete: architecture exists but transport path b",
+    "detail_len": 558,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260302215328-85129",
+    "score": 1.0,
+    "pattern": "S-052 partial remediation complete: gateway /ws/voice proxy implemented",
+    "detail_len": 440,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260302220302-14992",
+    "score": 1.0,
+    "pattern": "S-054 benchmark guard added for ssh-forwarded localhost endpoints",
+    "detail_len": 369,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260302225133-35598",
+    "score": 1.0,
+    "pattern": "S-053 resolved: voice websocket auth path validated after S-052 fix",
+    "detail_len": 327,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260302225912-53823",
+    "score": 1.0,
+    "pattern": "S-059 fixed: POST /notifications now persists low-priority records",
+    "detail_len": 262,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260302234501-53946",
+    "score": 1.0,
+    "pattern": "Phase 9 audit complete: DB-YAML consistency verified, export sync fixed",
+    "detail_len": 83,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260303043915-86292",
+    "score": 1.0,
+    "pattern": "S-097 review: sentinel churn + batch_id changes pass targeted regression",
+    "detail_len": 246,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260303050711-95379",
+    "score": 1.0,
+    "pattern": "S-097 review heartbeat: frontend churn-risk UX diff validated with full targeted",
+    "detail_len": 174,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  },
+  {
+    "id": "O-20260303060551-89038",
+    "score": 1.0,
+    "pattern": "S-103 fixture hardening complete: sqlite isolation + auth/client compatibility",
+    "detail_len": 261,
+    "confidence": "high",
+    "reasons": [
+      "+0.15 detail rich with paths/metrics",
+      "+0.15 pattern is descriptive",
+      "+0.10 context adds info",
+      "+0.10 causal/recommendation language"
+    ]
+  }
+]
