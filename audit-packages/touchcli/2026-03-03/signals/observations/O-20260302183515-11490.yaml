@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302183515-11490
+pattern: "Scout audit: enforce claim-signal closure triad for Wave 4"
+context: "DECISIONS.md"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Added execution gate: release claim + update signal status + deposit required before marking signal complete. Released stale S-013 audit claim.

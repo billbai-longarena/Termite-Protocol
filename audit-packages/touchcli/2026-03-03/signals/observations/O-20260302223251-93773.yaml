@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302223251-93773
+pattern: "S-056 db_next_signal_id now uses live+archive max to avoid ID reuse"
+context: "scripts/termite-db.sh"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Observed repeated S-054/S-055 IDs after done-signal drain. Updated generator to include archive.original_id by table mapping, making next signal monotonic (S->S-056). Verified via function call and combined-max SQL.

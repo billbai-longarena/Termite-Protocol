@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302222042-76586
+pattern: "S-055 db_claim_check now enforces claimable status semantics"
+context: "scripts/termite-db.sh"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Added operation validation and status gate (open|claimed only). Non-active or missing signals now return blocked; duplicate review claims also blocked; compatible review on claimed signal remains available.

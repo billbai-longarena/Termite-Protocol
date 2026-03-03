@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302215107-79471
+pattern: "S-049 voice feasibility scout complete: architecture exists but transport path blocked"
+context: "frontend hook + backend voice service + gateway websocket routes"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Evidence: useVoiceEngine targets ws://<host>/ws/voice/{sessionId}; backend exposes /ws/voice/{session_id} and /api/v1/voice/* endpoints; gateway only handles /ws and no /ws/voice route. Runtime probe: ws://localhost:8080/ws connects, ws://localhost:8080/ws/voice/... returns HTTP 404, ws://localhost:8000/ws/voice/... returns HTTP 403. Conclusion: WebRTC+Whisper path is feasible with existing components (client VAD + backend Whisper/TTS), but end-to-end voice streaming is blocked until websocket routing/handshake is fixed. Created follow-up signal S-052.

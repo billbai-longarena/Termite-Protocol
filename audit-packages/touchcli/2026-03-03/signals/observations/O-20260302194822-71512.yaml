@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302194822-71512
+pattern: "S-035 review: integration tests still failing"
+context: "backend/python/agent_service/tests/test_memory_integration.py + test_sentinel_integration.py + test_notifications_integration.py"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Memory integration: 11 failed (no such table: memories). Sentinel/Notifications integration: 14 failed (no such table: users, unread_count mismatch). Signal not complete yet.

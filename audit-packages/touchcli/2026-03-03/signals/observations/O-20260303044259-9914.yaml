@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303044259-9914
+pattern: "S-013 Scout Audit"
+context: "Strategic review complete. Worktree synchronized. Signals audited. Phase 14 Wave 2 unblocked for next Worker."
+reporter: "termite:2026-03-03:worker"
+confidence: medium
+created: 2026-03-03
+source: autonomous
+detail: |
+  0

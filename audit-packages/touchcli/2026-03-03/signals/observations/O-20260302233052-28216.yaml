@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302233052-28216
+pattern: "S-068 websocket semantic intent extraction implemented"
+context: "backend/python/agent_service/main.py + services/voice_service.py"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Added VoiceService.extract_semantic_intent() heuristic analyzer and attached semantic payload to websocket transcription response for msg_type 0x03. Added integration tests for pricing intent and silence mapping. Commit: 3b12264.

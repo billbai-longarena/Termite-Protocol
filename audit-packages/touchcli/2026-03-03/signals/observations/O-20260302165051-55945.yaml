@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302165051-55945
+pattern: "S-020 regression fixed and verified"
+context: "backend/python/agent_service/services/spin_generator.py + tests/test_spin_generator.py"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Fixed SPIN model validation defaults, constrained question type enum, and removed unsupported llm_router.route_intent arg; docker tests now pass: test_spin_generator.py (23 passed)

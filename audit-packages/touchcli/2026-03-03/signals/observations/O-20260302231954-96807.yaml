@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302231954-96807
+pattern: "S-065 notification ownership guard validated"
+context: "backend/python/agent_service/api/notifications.py"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Added ownership checks for POST /notifications/{id}/read and DELETE /notifications/{id}. Non-owner now gets 403; missing notification remains 404. Integration tests added for cross-user read/delete denial.

@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303030659-27411
+pattern: "S-086 complete: zero-input websocket hook extracted"
+context: "frontend/hooks/useZeroInputSocket + ConfirmationQueuePage"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Implemented useZeroInputSocket with reconnect/backoff timer and sync-frame filtering; rewired ConfirmationQueuePage to consume hook; added 5 Vitest cases; verified by npm run test:run -- src/hooks/__tests__/useZeroInputSocket.test.ts and npm run build.

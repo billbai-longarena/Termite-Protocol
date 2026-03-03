@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303002228-25285
+pattern: "frontend-relationshipgraph-test-coverage"
+context: "heartbeat-worker-maintenance"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Added RelationshipGraph.test.tsx with 4 vitest cases covering loading state, success path (graph+insights fetch), empty graph fallback, and fetch failure fallback. Verified via npm run test:run -- src/components/RelationshipGraph/RelationshipGraph.test.tsx (4/4 pass).

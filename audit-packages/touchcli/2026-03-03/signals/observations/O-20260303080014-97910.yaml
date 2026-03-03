@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303080014-97910
+pattern: "Heartbeat monitor: pre-expiry lock queue unchanged and open=0"
+context: "worker heartbeat cycle on swarm (2026-03-03 07:59 CST)"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  No open signals were available for claim. Runtime remains claimed=2, completed=45, open=0. Active work claims S-094/S-108 still valid with about 21.43h/21.65h remaining; expired cleanup produced no removals.

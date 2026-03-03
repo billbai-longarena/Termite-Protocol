@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303044752-62813
+pattern: "S-097 review heartbeat: regression remains green under work-lock contention"
+context: "worker non-blocking validation loop"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Claimed+released review lane. Ran python3 -m pytest -q backend/python/tests/test_sentinel_agent.py backend/python/agent_service/tests/test_zero_input_events_service_multimodal.py backend/python/agent_service/tests/test_zero_input_events_api_multimodal.py => 35 passed in 1.71s.

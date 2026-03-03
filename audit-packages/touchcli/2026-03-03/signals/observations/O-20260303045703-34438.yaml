@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303045703-34438
+pattern: "Worker #75: Priority A+B COMPLETE, S-097 locked (termite-1772483634-22058), MOLT at 76%"
+context: "worker non-blocking validation"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  All Priority A (S-092/093/095) and B Wave 1-2 (S-094) completed. S-097 remains locked with 41 pending lines (tests pass 32/32). No new signals generated. Context 76%, approaching MOLT threshold.

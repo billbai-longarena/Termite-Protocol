@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302202059-13857
+pattern: "S-039 opportunity legacy aliases restored with schema-aligned status normalization"
+context: "backend/python/agent_service/models.py + tests"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Added Opportunity compatibility layer for stage/value/title/close_date with canonical status/amount/name fields; added user schema-required fields (is_active,last_login,created_by); added regression tests test_opportunity_model_compat.py; verified with targeted pytest (6 passed).

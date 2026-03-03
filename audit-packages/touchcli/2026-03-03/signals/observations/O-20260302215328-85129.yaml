@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302215328-85129
+pattern: "S-052 partial remediation complete: gateway /ws/voice proxy implemented"
+context: "backend/go/main.go"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Added gateway route GET /ws/voice/:session_id with bidirectional websocket proxy to agent-service /ws/voice/{session_id}, preserving Authorization header and relaying binary/text frames. This removes ingress/gateway path gap for frontend useVoiceEngine websocket mode. Remaining blocker observed separately: direct backend websocket handshake on ws://localhost:8000/ws/voice/... still returns HTTP 403; split to S-053 for backend-level fix.

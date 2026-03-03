@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify rules, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: R-017
+trigger: "When I observe: s-108"
+action: "Follow the pattern described in trigger"
+source_observations: [O-20260303053903-98896,O-20260303054050-7395,O-20260303054235-14235,O-20260303054412-20013,O-20260303054556-23402,O-20260303054743-28531,O-20260303054933-34187,O-20260303055136-40041,O-20260303055322-45063,O-20260303055510-50566,O-20260303055647-56731,O-20260303055834-62929,O-20260303060020-68033]
+hit_count: 0
+disputed_count: 0
+last_triggered: 2026-03-03
+created: 2026-03-03
+tags: []

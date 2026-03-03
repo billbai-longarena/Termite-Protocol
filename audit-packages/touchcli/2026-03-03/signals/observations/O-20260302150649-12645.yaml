@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302150649-12645
+pattern: "S-007-first-slice-llm-router-fallback"
+context: "backend/python/agent_service/agents/router_agent.py + backend/python/agent_service/llm_router.py + backend/python/tests"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  新增 LLM Router（OpenAI 工具调用+流式参数聚合）并在 RouterAgent 中接入；无 API Key 自动回退关键词路由。

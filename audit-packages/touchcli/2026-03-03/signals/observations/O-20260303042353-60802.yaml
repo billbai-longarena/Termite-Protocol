@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303042353-60802
+pattern: "S-095 complete: calibrated confidence scoring baseline"
+context: "phase13 worker heartbeat #73"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Added ConfidenceScoringService (intent scoring + entity calibration + blended event confidence) and integrated into ZeroInputEventsService.process_event. Multimodal intent hints remain source-of-truth. Added tests: test_confidence_scoring_service.py and strengthened multimodal API/service assertions for ml_calibrated rows. Validation: python3 -m pytest agent_service/tests/test_zero_input_realtime_service.py agent_service/tests/test_zero_input_agent_pipeline.py agent_service/tests/test_zero_input_events_service_multimodal.py agent_service/tests/test_zero_input_events_api_multimodal.py agent_service/tests/test_confidence_scoring_service.py -q => 12 passed.

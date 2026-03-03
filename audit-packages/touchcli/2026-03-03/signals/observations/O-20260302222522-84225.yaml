@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302222522-84225
+pattern: "S-054 YAML fallback claim/check semantics aligned with DB path"
+context: "scripts/field-claim.sh"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Added fallback status gating (open|claimed), invalid-op blocking, duplicate-op blocking, and non-active signal claim guard. Verified in temp fallback-only sandbox with blocked/available matrix.

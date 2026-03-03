@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303032804-82090
+pattern: "S-090 complete: deprecation warnings removed in zero-input test path"
+context: "backend/python/agent_service/config.py + models.py"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Replaced deprecated class-based Pydantic config with SettingsConfigDict/model_config in config.py and switched declarative_base import to sqlalchemy.orm in models.py. Verified with python3 -m pytest (12 tests) for zero-input suites with warning-free output.

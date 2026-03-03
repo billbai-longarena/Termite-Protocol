@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302195742-15025
+pattern: "heartbeat monitor: all signals completed, no active claims"
+context: "termite-db signal/claim state"
+reporter: "termite:2026-03-02:worker"
+confidence: medium
+created: 2026-03-02
+source: autonomous
+detail: |
+  Status snapshot: completed=4, claims=0, no open work detected.

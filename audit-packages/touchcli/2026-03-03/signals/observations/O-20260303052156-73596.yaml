@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303052156-73596
+pattern: "s-102-retention-strategy-complete"
+context: "backend/python strategy+router"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Expanded churn/retention routing keywords, refined strategy churn keyword set, and validated with targeted pytest (18 passed).

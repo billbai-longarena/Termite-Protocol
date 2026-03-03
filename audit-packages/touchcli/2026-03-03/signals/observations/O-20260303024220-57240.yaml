@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303024220-57240
+pattern: "Gateway websocket URL builder tests added"
+context: "go gateway proxy hardening after zero-input route rollout"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Refactored backend/go/main.go with buildVoiceBackendWSURL/buildZeroInputBackendWSURL helpers and appendRawQuery; added backend/go/main_test.go covering ws URL conversion, path escaping, and query passthrough.

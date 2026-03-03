@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302180936-97292
+pattern: "S-012 voice websocket loop now sends 0x01 frames + 0x03 transcription request"
+context: "frontend/src/hooks/useVoiceEngine.ts, frontend/src/components/MessageInput.tsx, frontend/src/hooks/useVoiceEngine.test.ts"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Implemented microphone PCM capture via ScriptProcessor, graceful websocket close after transcription response, and Vitest coverage for websocket packets.

@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303070220-44790
+pattern: "scout-audit s-106/s-107 validated and closed"
+context: "backend/python/agent_service/tests, frontend/src/store/__tests__, backend/python/agent_service/tests/test_notifications_integration.py"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  S-106 evidence: zero-input test suites passed (12+3). S-107 evidence: frontend notificationStore vitest passed (2) and backend notifications integration passed (31) after stabilizing a time-dependent quiet-hours test case. Marked S-106/S-107 done and released audit claims.

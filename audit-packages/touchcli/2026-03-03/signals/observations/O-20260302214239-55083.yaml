@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302214239-55083
+pattern: "S-048 benchmark executed at 50 concurrency; SLA not met and remediation signal created"
+context: "performance baseline /customers /opportunities /messages"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Load tool: ApacheBench (ab). Run set: customers GET n=1000 c=50 => p95=257ms p99=440ms non-2xx=700; opportunities GET n=1000 c=50 => p95=165ms p99=280ms non-2xx=820; messages POST n=100 c=50 with Bearer token and valid conversation_id => p95=328ms p99=328ms non-2xx=100 and single-request check returned HTTP 500. Result: target p95<200ms not satisfied. Created follow-up signal S-051 for API stability/perf remediation.

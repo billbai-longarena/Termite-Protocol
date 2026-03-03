@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302174834-78254
+pattern: "S-012 MVP voice engine integrated"
+context: "frontend MessageInput + useVoiceEngine (Web Speech STT, browser TTS, RMS-VAD fallback)"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Added start/stop mic controls, read-reply TTS, VAD state chips, and hook tests (useVoiceEngine + conversationStore regression). Build still blocked by pre-existing ProposalViewer.tsx syntax errors unrelated to S-012.

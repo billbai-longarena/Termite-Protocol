@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303071211-84532
+pattern: "S-108: Dependency Injection & Real Parsing"
+context: "Implemented real S3 download and PDF/DOCX/TXT parsing. Verified with 10 passing tests."
+reporter: "termite:2026-03-03:worker"
+confidence: medium
+created: 2026-03-03
+source: autonomous
+detail: |
+  0

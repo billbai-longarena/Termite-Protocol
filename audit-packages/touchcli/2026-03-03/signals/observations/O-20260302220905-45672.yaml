@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302220905-45672
+pattern: "S-046 review smoke pass (15/15) with reduced warning noise"
+context: "backend/python/agent_service/tests/test_e2e_smoke.py"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Raised JWT_SECRET_KEY test value to >=32 bytes; removed InsecureKeyLengthWarning and reduced total warnings from 50 to 23 while preserving pass status.

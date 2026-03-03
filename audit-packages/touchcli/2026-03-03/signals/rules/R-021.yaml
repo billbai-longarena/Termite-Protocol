@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify rules, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: R-021
+trigger: "When I observe: s-108: post-metabolism readiness verification"
+action: "Follow the pattern described in trigger"
+source_observations: [O-20260303080236-10910,O-20260303080949-45246,O-20260303081317-63695]
+hit_count: 0
+disputed_count: 0
+last_triggered: 2026-03-03
+created: 2026-03-03
+tags: []

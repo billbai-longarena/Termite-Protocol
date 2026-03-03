@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303041454-31100
+pattern: "phase13-handoff:S-095-open"
+context: "post S-094 completion"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  After completing S-094, seeded S-095 as next open signal (ML confidence scoring uplift, w=64) to keep execution queue non-empty.

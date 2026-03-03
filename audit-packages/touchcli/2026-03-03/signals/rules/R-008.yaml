@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify rules, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: R-008
+trigger: "When I observe: heartbeat"
+action: "Follow the pattern described in trigger"
+source_observations: [O-20260303022014-1331,O-20260303022236-8449,O-20260303022502-12531,O-20260303022719-16712,O-20260303022911-20663,O-20260303023057-24778,O-20260303023244-29545,O-20260303023428-33858,O-20260303023611-40015,O-20260303023759-44051,O-20260303023946-49189,O-20260303024121-53990,O-20260303024304-58510,O-20260303024442-62925,O-20260303024634-67832]
+hit_count: 0
+disputed_count: 0
+last_triggered: 2026-03-03
+created: 2026-03-03
+tags: []

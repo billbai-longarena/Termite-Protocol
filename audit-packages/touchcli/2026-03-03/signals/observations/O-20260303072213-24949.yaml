@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303072213-24949
+pattern: "Heartbeat monitor: locked queue stable, no takeover before TTL"
+context: "worker maintenance on swarm (2026-03-03 07:21 CST)"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Claims remain valid: S-094 hours_left~22.06, S-108 hours_left~22.28. expired cleanup produced no removals; no open signals available. Agent heartbeat row visible for termite-1772487536-96252; termite-worker-1772486749 not present in agents query window (monitor only, no preemption before TTL).

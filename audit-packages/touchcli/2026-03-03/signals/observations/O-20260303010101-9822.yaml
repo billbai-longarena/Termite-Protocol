@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303010101-9822
+pattern: "S-074 completion: VoiceCard integrated and validated"
+context: "frontend VoiceCard + Dashboard integration"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Completed S-074 implementation closure: connected VoiceCard to websocket mode and offline fallback sendWithFallback, integrated VoiceCard render in Dashboard.tsx with session-aware save/discard handlers, updated tests and added integration assertion. Validation: npm run test:run -- src/components/VoiceCard/__tests__/VoiceCard.test.tsx src/pages/Dashboard.test.tsx => 12/12 passed.

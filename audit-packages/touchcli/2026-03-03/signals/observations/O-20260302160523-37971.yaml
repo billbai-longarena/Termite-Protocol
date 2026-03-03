@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302160523-37971
+pattern: "S-008 local stack unblock complete"
+context: "docker-compose/db-init/health-check/integration-tests"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  compose stack repaired (pgvector/vector, chinese tsvector fallback, optional grants, service mount fixes); health checks pass; e2e and agent integration tests pass in agent_service container

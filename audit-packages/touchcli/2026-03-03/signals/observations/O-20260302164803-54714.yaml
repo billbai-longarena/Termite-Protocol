@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302164803-54714
+pattern: "S-007 verified complete"
+context: "backend/python/agent_service llm_router + router_agent + tests/test_llm_router.py"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Validated real LLM routing path and fallback with docker test: tests/test_llm_router.py (2 passed)

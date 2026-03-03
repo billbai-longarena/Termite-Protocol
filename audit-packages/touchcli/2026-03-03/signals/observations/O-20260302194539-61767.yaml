@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302194539-61767
+pattern: "claim cleanup now handles orphan claims without signal rows"
+context: "scripts/termite-db.sh db_claim_cleanup_nonactive"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Changed cleanup predicate to delete claims not in (signals where status=claimed); validated by removing 1 orphan claim.

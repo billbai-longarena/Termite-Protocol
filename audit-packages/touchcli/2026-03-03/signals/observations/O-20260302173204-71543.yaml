@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302173204-71543
+pattern: "S-011 multi-worker consistency hardened"
+context: "main.py HITL Redis storage helpers"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Fixed in-memory-only inconsistency by persisting HITL actions to Redis with TTL and fallback to memory

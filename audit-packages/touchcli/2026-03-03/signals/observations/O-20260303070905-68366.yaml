@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303070905-68366
+pattern: "review audit: s-094 and s-108 test evidence healthy while work-claims active"
+context: "backend/python/agent_service/tests/test_s094_websocket_performance.py + test_knowledge_service.py"
+reporter: "termite:2026-03-03:worker"
+confidence: medium
+created: 2026-03-03
+source: autonomous
+detail: |
+  S-094 websocket performance suite: 5 passed. S-108 knowledge service suite: 10 passed. No takeover; work claims remain with existing owners within TTL.

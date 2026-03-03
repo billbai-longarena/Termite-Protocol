@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303025339-87302
+pattern: "Heartbeat snapshot drift reconciled"
+context: "removed non-db manual observation files and committed db-exported artifacts"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Committed c09b7ce with DB-backed observations (O-20260303023556/23859/24220/24434) and rule snapshot R-008; removed non-DB scout-sync observation files to restore runtime-snapshot consistency.

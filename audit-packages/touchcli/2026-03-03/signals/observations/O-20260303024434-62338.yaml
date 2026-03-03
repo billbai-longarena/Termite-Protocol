@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303024434-62338
+pattern: "Gateway zero-input websocket proxy integration verified"
+context: "backend/go ws proxy route e2e loopback test"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Added TestProxyZeroInputWebSocketForwardsQueryAndMessages in backend/go/main_test.go using httptest backend + gin gateway route; verified query token passthrough and bidirectional message forwarding.

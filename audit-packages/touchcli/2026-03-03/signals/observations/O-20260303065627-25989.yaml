@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303065627-25989
+pattern: "s-105 proposal e2e wiring recovered and validated"
+context: "backend/python/agent_service/main.py, backend/python/tests/test_proposal_llm_e2e.py"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Fixed proposal endpoint auth user handling (current_user UUID). Repaired stale test suite imports/fixtures/assertions for current proposal payload shape. Verified with python3 -m pytest -q backend/python/tests/test_proposal_llm_e2e.py (18 passed) and test_proposal_generator.py (8 passed).

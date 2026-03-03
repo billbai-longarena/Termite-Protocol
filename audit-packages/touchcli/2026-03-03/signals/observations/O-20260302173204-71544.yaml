@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302173204-71544
+pattern: "S-011 completed: HITL L0-L4 gating and decision flow"
+context: "backend/python/agent_service/services/hitl_service.py + main.py /api/v1/hitl/* endpoints + schemas + tests"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Implemented operation-level mapping (L0-L4), preview endpoint, approve/cancel/modify decisions, confirmation-card payloads, and Redis-backed pending action persistence across multi-worker API processes; validated via test_hitl_service.py (6 passed) and authenticated API smoke including modify->approve flow

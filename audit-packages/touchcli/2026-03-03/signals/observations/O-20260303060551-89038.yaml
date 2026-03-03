@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303060551-89038
+pattern: "S-103 fixture hardening complete: sqlite isolation + auth/client compatibility"
+context: "backend/python/tests fixtures"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Committed 3b735d5. Added StaticPool and per-test DB reset in tests/conftest.py and tests/test_integration.py, seeded jwt users, and added client/benchmark compatibility fixtures. Verified test_valid_auth_token now passes and fixture-missing errors are resolved.

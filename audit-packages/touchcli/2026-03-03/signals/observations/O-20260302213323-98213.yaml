@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302213323-98213
+pattern: "S-047 fixed k8s prod env mismatch and gateway target resolution"
+context: "k8s manifests + backend/go gateway"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Aligned JWT secret env to JWT_SECRET_KEY across backend deployment and secret templates; added CELERY_BROKER_URL/CELERY_RESULT_BACKEND in backend + celery worker/beat manifests and secret templates to prevent localhost fallback; changed gateway to read AGENT_SERVICE_URL env with default fallback so k8s service target works. YAML parse validation passed. go compiler unavailable in this shell (go not installed), so gateway build not executed.

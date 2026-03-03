@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302215543-93192
+pattern: "S-053 runtime mismatch identified: localhost ports are SSH-forwarded, not local app listeners"
+context: "voice websocket debugging"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  lsof/ps shows port 8000 and 8080 are both served by an ssh mux process (not uvicorn/gateway binaries). Local in-process verification with FastAPI TestClient successfully connected to /ws/voice/{session_id} and processed a transcription-request frame, so 403 observed on ws://localhost:8000/ws/voice/... is not reproducible in local code path. Signal parked pending reproduction against local runtime without port-forwarding.
