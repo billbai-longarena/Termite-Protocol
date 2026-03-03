@@ -607,10 +607,10 @@ db_export_signal_yaml() {
   # Format single signal row as YAML, output to stdout
   # Args: signal_id
   local row
-  row=$(db_query "SELECT id,type,title,status,weight,ttl_days,created,last_touched,owner,module,tags,next_hint,touch_count,source,parked_reason,parked_conditions,parked_at FROM signals WHERE id='$(db_escape "$1")';")
+  row=$(db_query "SELECT id,type,title,status,weight,ttl_days,created,last_touched,owner,module,tags,next_hint,touch_count,source,parked_reason,parked_conditions,parked_at,parent_id,child_hint,depth FROM signals WHERE id='$(db_escape "$1")';")
   [ -z "$row" ] && return 1
 
-  IFS=$'\t' read -r id type title status weight ttl_days created last_touched owner module tags next_hint touch_count source parked_reason parked_conditions parked_at <<< "$row"
+  IFS=$'\t' read -r id type title status weight ttl_days created last_touched owner module tags next_hint touch_count source parked_reason parked_conditions parked_at parent_id child_hint depth <<< "$row"
   cat <<EOF
 # READ-ONLY — auto-exported from .termite.db ($(now_iso))
 # To modify signals, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
@@ -632,6 +632,9 @@ EOF
   [ -n "$parked_reason" ] && echo "parked_reason: ${parked_reason}"
   [ -n "$parked_conditions" ] && echo "parked_conditions: \"${parked_conditions}\""
   [ -n "$parked_at" ] && echo "parked_at: ${parked_at}"
+  [ -n "$parent_id" ] && echo "parent_id: ${parent_id}"
+  [ -n "$child_hint" ] && echo "child_hint: '${child_hint}'"
+  [ "${depth:-0}" -gt 0 ] && echo "depth: ${depth}"
   return 0
 }
 
