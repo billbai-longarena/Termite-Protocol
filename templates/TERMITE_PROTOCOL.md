@@ -920,6 +920,7 @@ output: "execution" | "judgment" | "direction"
 ## 信息素系统
 
 **签名格式**：`[termite:YYYY-MM-DD:caste]`，修复签名变体：`[termite:YYYY-MM-DD:caste:repair]`。所有痕迹必须可被 `grep -r "\[termite:" .` 全局检索。
+对于不支持 Git Hooks 的执行平台（如 OpenCode），白蚁必须在提交时手动将该签名追加到 commit message 末尾。
 
 **保鲜规则**：
 

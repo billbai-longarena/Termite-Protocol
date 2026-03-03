@@ -916,7 +916,7 @@
 - date: 2026-03-03
   type: finding-open
   id: W-014
-  status: open
+  status: fixed
   title: "OpenCode agents lack commit signature support — 184/567 unsigned"
   source: "A-006 touchcli multi-model audit"
   severity: low
@@ -928,11 +928,16 @@
     Document signature format as tool-dependent in TERMITE_PROTOCOL.md. For tools
     without git hook support, recommend adding signature template to entry file
     instructions so agents include it in commit messages directly.
+  fixed_by: TF-008
+  fixed_date: 2026-03-03
+  fix_notes: >
+    Updated TERMITE_PROTOCOL.md, CLAUDE.md, and AGENTS.md to explicitly instruct
+    agents to manually append the signature if their tool doesn't support Git Hooks.
 
 - date: 2026-03-03
   type: finding-open
   id: W-015
-  status: open
+  status: fixed
   title: "Claim lock starvation — 63-minute idle tail from orphaned claims"
   source: "A-006 touchcli multi-model audit"
   severity: medium
@@ -948,11 +953,17 @@
     W-015a: Add claim timeout enforcement in field-cycle.sh or field-claim.sh:
     if a claimed signal's last_touched timestamp is >N heartbeats old (suggest 10),
     auto-release the claim. More aggressive than TTL but prevents multi-agent starvation.
+  fixed_by: TF-008
+  fixed_date: 2026-03-03
+  fix_notes: >
+    Added heartbeat timeout check in termite-db.sh db_claim_expire().
+    If >10 new colony pulses (pheromone_history entries) have occurred
+    since a claim was created, the claim is auto-released to prevent starvation.
 
 - date: 2026-03-03
   type: finding-open
   id: W-016
-  status: open
+  status: fixed
   title: "Export includes completed signals in active/ directory"
   source: "A-006 touchcli multi-model audit"
   severity: low
@@ -965,6 +976,11 @@
     W-016a: In field-export-audit.sh, either filter completed signals from the
     active/ copy, or derive active_signals count from the DB query (which already
     excludes completed per TF-005) rather than file count.
+  fixed_by: TF-008
+  fixed_date: 2026-03-03
+  fix_notes: >
+    Updated field-export-audit.sh to explicitly filter out 'done' and 'completed'
+    signals from active_count (both in the DB count query and the file fallback).
 
 # ── 2026-03-03 session 2: PE-005 Strength-Based Participation ────────
 
@@ -1005,3 +1021,26 @@
     (4) Rule quality gate (W-012a): validate_rule_quality() rejects degenerate triggers,
     tautological actions, short actions; source observations still archived
     (5) Protocol docs: v3.5→v4.0, kernel v10→v11, field lib v21→v22
+
+- date: 2026-03-03
+  type: template-fix
+  id: TF-008
+  status: fixed
+  title: "W-014/W-015/W-016 A-006 Practicality Fixes"
+  trigger: "Nurse self-check session 2, W-series findings"
+  closes: ["W-014", "W-015", "W-016"]
+  files_changed:
+    - templates/scripts/termite-db.sh
+    - templates/scripts/field-export-audit.sh
+    - templates/TERMITE_PROTOCOL.md
+    - templates/CLAUDE.md
+    - templates/AGENTS.md
+  notes: >
+    Fixed practicality bottlenecks from A-006:
+    (1) W-015: Active claim timeout — db_claim_expire now auto-releases locks
+    if 10+ new pheromone deposits (heartbeats) occurred since claim creation,
+    preventing starvation in multi-agent swarms.
+    (2) W-014: Added commit signature fallback instructions to protocol spec
+    and entry files for agents using OpenCode or other non-hook environments.
+    (3) W-016: field-export-audit.sh now strictly filters out 'done' and 
+    'completed' signals from the active_count metric.

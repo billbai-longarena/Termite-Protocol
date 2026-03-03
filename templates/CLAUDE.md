@@ -36,11 +36,11 @@
 **信号通道**: "白蚁协议"单独 = 心跳通道（完全自主）；附带任务描述 = 指令通道（高权重信号注入）。心跳自足，指令加速。
 
 ### 安全底线
-
-1. **commit message 说清楚改了什么、为什么改**
+1. **commit message 说清楚改了什么、为什么改**。如果不确定工具是否支持 Git Hooks，请在 commit message 末尾手动添加签名 `[termite:YYYY-MM-DD:caste]` (例如 `[termite:2026-03-03:scout]`)
 2. **不要删除任何 .md 文件**（CLAUDE.md / BLACKBOARD.md / TERMITE_PROTOCOL.md 等）
 3. **改动超过 50 行就 commit 一次**
 4. **看到 ALARM.md → 立即停下来读它**
+5. **无交互执行完毕后，必须生成 `.pheromone` 留下信息素**
 
 做到这四点，你就是一只有用的白蚁。其余的，下一只白蚁会帮你补上。
 

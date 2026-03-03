@@ -88,7 +88,7 @@ if has_db; then
   mkdir -p "${OUT_DIR}/signals/archive"
   rule_count=$(db_exec "SELECT COUNT(*) FROM rules;" 2>/dev/null || echo "0")
   obs_count=$(db_obs_count 2>/dev/null || echo "0")
-  active_count=$(db_signal_count "status NOT IN ('archived')" 2>/dev/null || echo "0")
+  active_count=$(db_signal_count "status NOT IN ('archived', 'done', 'completed')" 2>/dev/null || echo "0")
   archive_count=$(db_exec "SELECT COUNT(*) FROM archive;" 2>/dev/null || echo "0")
   log_info "  rules: ${rule_count}, observations: ${obs_count}, active: ${active_count}, archived: ${archive_count} (from DB)"
 elif [ -d "$SIGNALS_DIR" ]; then
@@ -103,7 +103,19 @@ elif [ -d "$SIGNALS_DIR" ]; then
   # Count what we got
   rule_count=$(find "${OUT_DIR}/signals/rules" -name '*.yaml' 2>/dev/null | wc -l | tr -d ' ')
   obs_count=$(find "${OUT_DIR}/signals/observations" -name '*.yaml' 2>/dev/null | wc -l | tr -d ' ')
-  active_count=$(find "${OUT_DIR}/signals/active" -name '*.yaml' 2>/dev/null | wc -l | tr -d ' ')
+  
+  # Filter out completed/done signals for accurate active count
+  active_count=0
+  if [ -d "${OUT_DIR}/signals/active" ]; then
+    for f in "${OUT_DIR}/signals/active"/*.yaml; do
+      [ -f "$f" ] || continue
+      status=$(grep -E "^status:" "$f" 2>/dev/null | awk '{print $2}' || echo "")
+      if [ "$status" != "done" ] && [ "$status" != "completed" ]; then
+        active_count=$((active_count + 1))
+      fi
+    done
+  fi
+  
   archive_count=$(find "${OUT_DIR}/signals/archive" -name '*.yaml' 2>/dev/null | wc -l | tr -d ' ')
 
   log_info "  rules: ${rule_count}, observations: ${obs_count}, active: ${active_count}, archived: ${archive_count}"

@@ -295,18 +295,46 @@ db_claim_list() {
 }
 
 db_claim_expire() {
-  # Delete expired claims, reset signals
+  # Delete expired claims (by TTL or heartbeat timeout), reset signals
   local expired_ids
+  
+  # 1. Standard TTL expiration
   expired_ids=$(db_query "SELECT signal_id,operation FROM claims WHERE datetime(claimed_at, '+' || ttl_hours || ' hours') < datetime('now');")
-  [ -z "$expired_ids" ] && return 0
+  
+  # 2. Heartbeat timeout (W-015): auto-release if >10 heartbeats have passed since claim
+  local starved_ids
+  starved_ids=$(db_query "
+    SELECT signal_id, operation FROM claims 
+    WHERE (SELECT COUNT(*) FROM pheromone_history WHERE timestamp > claims.claimed_at) >= 10;
+  ")
+  
+  if [ -z "$expired_ids" ] && [ -z "$starved_ids" ]; then
+    return 0
+  fi
 
   db_transaction "
+    -- Reset signals for TTL expired
     UPDATE signals SET status='stale', owner='unassigned'
       WHERE id IN (SELECT signal_id FROM claims WHERE datetime(claimed_at, '+' || ttl_hours || ' hours') < datetime('now'))
       AND id NOT IN (SELECT signal_id FROM claims WHERE datetime(claimed_at, '+' || ttl_hours || ' hours') >= datetime('now'));
+      
+    -- Reset signals for starved claims
+    UPDATE signals SET status='open', owner='unassigned'
+      WHERE id IN (
+        SELECT signal_id FROM claims 
+        WHERE (SELECT COUNT(*) FROM pheromone_history WHERE timestamp > claims.claimed_at) >= 10
+      );
+      
+    -- Delete claims
     DELETE FROM claims WHERE datetime(claimed_at, '+' || ttl_hours || ' hours') < datetime('now');
+    DELETE FROM claims WHERE (SELECT COUNT(*) FROM pheromone_history WHERE timestamp > claims.claimed_at) >= 10;
   "
-  log_info "Expired claims cleaned"
+  
+  local total_cleaned=0
+  [ -n "$expired_ids" ] && total_cleaned=$((total_cleaned + $(echo "$expired_ids" | wc -l)))
+  [ -n "$starved_ids" ] && total_cleaned=$((total_cleaned + $(echo "$starved_ids" | wc -l)))
+  
+  log_info "Expired/starved claims cleaned: ${total_cleaned}"
 }
 
 # ── Pheromone Operations ──────────────────────────────────────────────
