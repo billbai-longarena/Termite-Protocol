@@ -35,6 +35,7 @@ templates/
     field-claim.sh      ← Atomic task lock/release/query
     field-genesis.sh    ← Self-initialization for new colonies
     field-export-audit.sh  ← Export audit packages (protocol artifacts only, no source code)
+    field-migrate.sh    ← Signal migration: upgrade pre-v5.0 observations (quality_score + source_type)
     field-submit-audit.sh  ← Submit audit packages as PRs to this repo
     termite-db.sh       ← SQLite WAL-mode database + migrations
     hooks/              ← Git hooks (pre-commit, pre-push, prepare-commit-msg, post-commit)
@@ -90,6 +91,8 @@ A foundational re-examination of the protocol's core metaphor ("termites are bli
 **Nurse review identified 6 counter-arguments** (800-token budget tension, cargo culting risk, classification-at-exit instead of entrance, etc.) — see "批判与盲区" section in the design doc. Conclusion: insights 1+2 are solid; insight 3's principle is correct but mechanism needs refinement under token budget constraints.
 
 ### Recent Work
+
+- **Signal Migration Script (TF-008)** — `field-migrate.sh` actively migrates pre-v5.0 observations: computes `quality_score` + `source_type` using existing heuristics, dry-run preview by default, `--apply` writes fields + archives low-quality (< 0.3) to `signals/.archive/observations/`. DB dual-write support. `install.sh --upgrade` now prints migration hint when old signals detected. Also added `yaml_read_block()` to field-lib.sh for multi-line YAML block scalar reading.
 
 - **v5.1 Signal Dependency Graph** — parent-child signal relationships solve work starvation in multi-agent swarms. Strong models decompose complex signals via `field-decompose.sh`, leaf-priority `.birth` display ensures each agent sees different unclaimed tasks, auto-aggregation closes parents when all children done. DB schema v4→v5, field lib v22→v23, kernel v12→v13.
 
