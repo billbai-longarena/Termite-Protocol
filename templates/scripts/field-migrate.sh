@@ -163,6 +163,11 @@ echo ""
 if [ "$APPLY" = true ]; then
   echo "--- 完成 ---"
   printf "  迁移: %d  归档: %d  跳过: %d\n" "$migrated" "$archived" "$skipped"
+  printf "  trace: %d  deposit: %d\n" "$trace_count" "$deposit_count"
+  if [ "$computed" -gt 0 ]; then
+    avg=$(awk "BEGIN { printf \"%.2f\", ${score_sum} / ${computed} }")
+    printf "  平均 quality_score: %s\n" "$avg"
+  fi
 else
   echo "--- 汇总 ---"
   printf "  总计: %d 个 observation\n" "$total"
