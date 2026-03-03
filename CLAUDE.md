@@ -9,7 +9,7 @@ This is the **协议源仓库 (protocol source repo)** for the Termite Protocol 
 | 中文 | English | Meaning |
 |------|---------|---------|
 | **白蚁协议** | **Termite Protocol** | The framework as a whole (generic reference only) |
-| **协议规范** | **protocol spec** | The `TERMITE_PROTOCOL.md` document and its 9+4 rules |
+| **协议规范** | **protocol spec** | The `TERMITE_PROTOCOL.md` document and its 10+4 rules |
 | **协议源仓库** | **protocol source repo** | This Git repo (`billbai-longarena/Termite-Protocol`) |
 | **宿主项目** | **host project** | Any project that installed the protocol via `install.sh` |
 | **蚁丘** | **colony** | The runtime signal ecosystem (signals/ + rules/ + .pheromone + .birth) inside a host project |
@@ -20,7 +20,7 @@ This is the **协议源仓库 (protocol source repo)** for the Termite Protocol 
 
 ```
 templates/
-  TERMITE_PROTOCOL.md   ← Canonical protocol spec (v4.0). Changes here propagate to all host projects on next upgrade.
+  TERMITE_PROTOCOL.md   ← Canonical protocol spec (v5.0). Changes here propagate to all host projects on next upgrade.
   CLAUDE.md / AGENTS.md ← Entry file templates installed into host projects.
   TERMITE_SEED.md       ← Minimal protocol payload injected into generated agent systems.
   UPGRADE_NOTES.md      ← Structured changelog with per-version changes and action items for host projects.
@@ -48,9 +48,9 @@ docs/plans/             ← Design documents for major features.
 
 ## Current State
 
-- **Protocol version**: v4.0 (strength-based participation: three strength tiers, differentiated .birth, rule quality gate)
+- **Protocol version**: v5.0 (stateless + intelligent environment: artifact quality scoring, unified .birth, trace/deposit separation, Rule 10 Shepherd Effect, quality-weighted emergence)
 - **Field lib version**: v22.0
-- **Entry kernel versions**: Claude v11.0, Agents v11.0
+- **Entry kernel versions**: Claude v12.0, Agents v12.0
 - **Host project colonies validated**: 0227/SalesTouch (production stable), OpenAgentEngine (audited, 7 findings closed), ReactiveArmor (weak model experiment, 6 findings), touchcli (A-005 Codex shepherd 2 findings closed; A-006 5-model heterogeneous swarm 5 findings open)
 
 ### Known Issues
@@ -91,7 +91,9 @@ A foundational re-examination of the protocol's core metaphor ("termites are bli
 
 ### Recent Work
 
-- **PE-005 Strength-Based Participation** — protocol evolves from "uniform .birth → uniform behavior" to "identify strengths → differentiated .birth → each plays to their strengths". Three strength tiers (execution/judgment/direction), differentiated .birth templates, rule quality gate (W-012a), DB schema v3, enhanced platform detection (OpenCode), pheromone metadata extension. Protocol v3.5→v4.0, field lib v21→v22, kernel v10→v11. Addresses W-012, partially addresses W-013 and F-009b/F-009c.
+- **v5.0 Stateless + Intelligent Environment** — protocol philosophy revision: "all termites are stateless, the environment carries intelligence". Replaces PE-005's agent-classification approach with artifact quality scoring (0.0-1.0 per observation). Unified .birth template (state-driven budget, no agent pre-classification). Trace/deposit separation (traces=tool-facts don't decay, deposits=model-knowledge quality-weighted). Rule 10 (Shepherd Effect) promoted to core grammar. Quality-weighted emergence (sum≥3.0 replaces count≥3). DB schema v3→v4, kernel v11→v12. Addresses philosophy revision insights 1+2+3.
+
+- **PE-005 Strength-Based Participation** — protocol evolves from "uniform .birth → uniform behavior" to "identify strengths → differentiated .birth → each plays to their strengths". Three strength tiers (execution/judgment/direction), differentiated .birth templates, rule quality gate (W-012a), DB schema v3, enhanced platform detection (OpenCode), pheromone metadata extension. Protocol v3.5→v4.0, field lib v21→v22, kernel v10→v11. Addresses W-012, partially addresses W-013 and F-009b/F-009c. **Superseded by v5.0** — quality scoring replaces agent classification, unified .birth replaces differentiated templates.
 
 - **A-006 touchcli 5-model audit** — first heterogeneous swarm (Codex 5.3, Haiku, GPT-5.1 Codex-mini, Gemini 3 Flash, Sonnet 4.6). Highest throughput ever (559 commits, 112+ signals). Handoff 100% but observation quality regressed to 57%. Rule emergence exploded (21 rules) but all degenerate. New failure mode: claim lock starvation. 5 findings (W-012 through W-016).
 

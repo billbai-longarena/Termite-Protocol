@@ -519,75 +519,106 @@ breath_age_minutes() {
 }
 
 compute_strength_tier() {
-  # Infer strength tier from platform + behavioral history
-  # Args: platform agent_id
-  # Output: "execution" | "judgment" | "direction"
-  local platform="${1:-unknown}" agent_id="${2:-}"
+  # DEPRECATED in v5.0 — artifact quality scoring replaces agent classification.
+  # Kept for backward compatibility. Always returns "judgment".
+  # Args: platform agent_id (ignored)
+  echo "judgment"
+}
 
-  # 1. Directive trigger → direction tier
-  if [ "${TERMITE_TRIGGER_TYPE:-}" = "directive" ]; then
-    echo "direction"
+compute_quality_score() {
+  # Compute artifact quality score for an observation (v5.0)
+  # Implements H2-validated heuristic from design doc
+  # Args: pattern context detail
+  # Output: float 0.0-1.0 (via awk)
+  local pattern="${1:-}" context="${2:-}" detail="${3:-}"
+
+  # Use awk for all float arithmetic
+  local score
+  score=$(awk -v pat="$pattern" -v ctx="$context" -v det="$detail" '
+  BEGIN {
+    score = 0.5
+
+    det_len = length(det)
+    pat_len = length(pat)
+
+    # Positive indicators (content richness)
+
+    # +0.15: detail > 80 chars AND contains path/number/metric
+    if (det_len > 80) {
+      if (match(det, /[\/\\][a-zA-Z]/) || match(det, /[0-9]+\.[0-9]+/) || match(det, /[0-9]+ (test|pass|fail|file|line|commit)/))
+        score += 0.15
+    }
+
+    # +0.15: pattern contains lowercase descriptive text (file/module/error)
+    has_lowercase = 0
+    n = split(pat, words, /[^a-zA-Z]+/)
+    for (i = 1; i <= n; i++) {
+      w = words[i]
+      if (length(w) >= 2 && w != toupper(w)) {
+        has_lowercase = 1
+        break
+      }
+    }
+    if (has_lowercase) score += 0.15
+
+    # +0.10: context non-empty AND != pattern
+    if (length(ctx) > 0 && ctx != "unknown" && ctx != pat)
+      score += 0.10
+
+    # +0.10: detail contains causal/comparison signal words
+    if (match(det, /because|risk:|→|missing|should|recommend|compared|instead|regression|caused/))
+      score += 0.10
+
+    # Negative indicators (degeneration flags)
+
+    # -0.30: pattern is screaming label (all-caps, no lowercase words >= 2)
+    if (pat_len > 0) {
+      all_screaming = 1
+      n2 = split(pat, pwords, /[^a-zA-Z]+/)
+      for (i = 1; i <= n2; i++) {
+        w = pwords[i]
+        if (length(w) >= 2 && w != toupper(w)) {
+          all_screaming = 0
+          break
+        }
+      }
+      if (all_screaming && pat_len > 0) score -= 0.30
+    }
+
+    # -0.40: detail is "0", empty, or purely numeric (strongest degeneration signal)
+    if (det == "0" || det_len == 0 || (det_len > 0 && match(det, /^[0-9]+$/)))
+      score -= 0.40
+
+    # -0.20: detail non-empty but < 10 chars (degenerate but not worst)
+    else if (det_len > 0 && det_len < 10)
+      score -= 0.20
+
+    # Clamp to [0.0, 1.0]
+    if (score < 0.0) score = 0.0
+    if (score > 1.0) score = 1.0
+
+    printf "%.2f", score
+  }')
+  echo "$score"
+}
+
+classify_source_type() {
+  # Classify observation as trace or deposit (v5.0)
+  # Trace: tool-guaranteed facts (git commit, build result, signal status)
+  # Deposit: model-dependent knowledge (observation, judgment, recommendation)
+  # Args: pattern context
+  # Output: "trace" or "deposit"
+  local pattern="${1:-}" context="${2:-}"
+  local combined
+  combined=$(printf "%s %s" "$pattern" "$context" | tr '[:upper:]' '[:lower:]')
+
+  # Trace signal words
+  if echo "$combined" | grep -qiE '(passed|failed|test|build|gate|PASS|FAIL|CI|coverage|audit|quality_gate|quality gate)'; then
+    echo "trace"
     return
   fi
 
-  # 2. Unknown platform with no history → conservative default
-  if [ "$platform" = "unknown" ]; then
-    if has_db && has_sqlite; then
-      local hist_count
-      hist_count=$(db_exec "SELECT COUNT(*) FROM pheromone_history
-        WHERE platform='unknown'
-          AND timestamp >= datetime('now','-1 day');" 2>/dev/null || echo "0")
-      if [ "${hist_count:-0}" -eq 0 ]; then
-        echo "execution"
-        return
-      fi
-    else
-      echo "execution"
-      return
-    fi
-  fi
-
-  # 3. Query 24h behavioral data for this platform
-  if has_db && has_sqlite; then
-    local deposit_count
-    deposit_count=$(db_platform_deposit_count "$platform" 2>/dev/null || echo "0")
-
-    # Cold start: fewer than 3 deposits → execution
-    if [ "${deposit_count:-0}" -lt 3 ]; then
-      echo "execution"
-      return
-    fi
-
-    local obs_quality_rate pred_useful_rate
-    obs_quality_rate=$(db_platform_obs_quality_rate "$platform" 2>/dev/null || echo "1.0")
-    pred_useful_rate=$(db_platform_pred_useful_rate "$platform" 2>/dev/null || echo "0.0")
-
-    # obs_quality >= 0.7 AND pred_useful >= 0.5 → judgment
-    local is_judgment
-    is_judgment=$(awk "BEGIN { print (${obs_quality_rate} >= 0.7 && ${pred_useful_rate} >= 0.5) ? 1 : 0 }")
-    if [ "$is_judgment" -eq 1 ]; then
-      echo "judgment"
-      return
-    fi
-
-    # obs_quality < 0.4 → execution
-    local is_weak
-    is_weak=$(awk "BEGIN { print (${obs_quality_rate} < 0.4) ? 1 : 0 }")
-    if [ "$is_weak" -eq 1 ]; then
-      echo "execution"
-      return
-    fi
-
-    # Middle ground → give trust → judgment
-    echo "judgment"
-    return
-  fi
-
-  # No DB: default based on platform heuristic
-  case "$platform" in
-    claude-code|codex-cli) echo "judgment" ;;
-    *) echo "execution" ;;
-  esac
+  echo "deposit"
 }
 
 detect_platform() {

@@ -6,11 +6,11 @@
 "白蚁协议"是心跳指令——收到后 Agent 自动执行节律，自主判断并行动。
 完整协议规范在 `TERMITE_PROTOCOL.md`。
 
-<!-- termite-kernel:v11.0 -->
+<!-- termite-kernel:v12.0 -->
 <!-- birth-static-included -->
-## 白蚁协议 — 最小内核 v11.0
+## 白蚁协议 — 最小内核 v12.0
 
-> **9 条文法 + 4 条安全底线 = 完整行为规范。规则由 `signals/rules/*.yaml` 注入，本文件不膨胀。**
+> **10 条文法 + 4 条安全底线 = 完整行为规范。规则由 `signals/rules/*.yaml` 注入，本文件不膨胀。**
 
 ### 文法
 
@@ -20,9 +20,10 @@
 4. **DO→DEPOSIT(signal, weight, TTL, location)** — 每次行动产出信息素落盘
 5. **weight < threshold→EVAPORATE** — 弱信号自动衰减（由 field-decay 或手动清理）
 6. **weight > threshold→ESCALATE** — 强信号升级（写 ALARM 或请求人类介入）
-7. **count(agents, same_signal) ≥ 3→EMERGE** — 多只白蚁重复观察同一模式→提炼为规则
+7. **sum(quality) ≥ 3.0→EMERGE** — 质量加权涌现：deposit 质量总和达阈值→提炼为规则
 8. **context > 80%→MOLT** — 上下文即将耗尽→写 WIP + .pheromone，结束会话
 9. **DO(generate_agent)→SEED** — 生成 Agent 系统时注入协议种子（参见 TERMITE_SEED.md）
+10. **DEPOSIT(quality ≥ threshold)→TEMPLATE** — 高质量 deposit 自动成为后继者行为模板（Shepherd Effect）
 
 ### 执行逻辑
 
@@ -57,6 +58,7 @@
 | 三丘哲学 | `TERMITE_PROTOCOL.md` Part III |
 | 降级运行 | `TERMITE_PROTOCOL.md` Part II |
 | 协议升级变更 | `UPGRADE_NOTES.md` |
+| trace/deposit 区分 | `TERMITE_PROTOCOL.md` Part I 信息素系统 |
 
 ---
 

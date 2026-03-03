@@ -1,4 +1,4 @@
--- Termite Protocol v4.0 SQLite Schema
+-- Termite Protocol v5.0 SQLite Schema
 -- All shared state in a single WAL-mode database.
 -- YAML files become export-only (audit, human reading).
 
@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS schema_version (
   version INTEGER PRIMARY KEY,
   applied_at TEXT DEFAULT (datetime('now'))
 );
-INSERT OR IGNORE INTO schema_version(version) VALUES (3);
+INSERT OR IGNORE INTO schema_version(version) VALUES (4);
 
 -- Signals (replaces signals/active/*.yaml)
 CREATE TABLE IF NOT EXISTS signals (
@@ -47,7 +47,9 @@ CREATE TABLE IF NOT EXISTS observations (
   detail TEXT,
   merged_count INTEGER DEFAULT 0,
   merged_from TEXT,              -- JSON array of original IDs
-  quality TEXT DEFAULT 'normal'  -- normal | low
+  quality TEXT DEFAULT 'normal',  -- normal | low
+  quality_score REAL DEFAULT 0.5, -- 0.0-1.0 artifact quality (v5.0)
+  source_type TEXT DEFAULT 'deposit' -- trace | deposit (v5.0)
 );
 CREATE INDEX IF NOT EXISTS idx_obs_pattern ON observations(pattern);
 CREATE INDEX IF NOT EXISTS idx_obs_created ON observations(created);

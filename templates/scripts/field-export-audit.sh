@@ -419,6 +419,16 @@ fi
 # Signature ratio
 sig_ratio=$(termite_signature_ratio 50)
 
+# v5.0: Compute quality statistics
+obs_quality_mean="0.00"
+trace_count=0
+deposit_count=0
+if has_db; then
+  obs_quality_mean=$(db_exec "SELECT COALESCE(printf('%.2f', AVG(quality_score)), '0.00') FROM observations WHERE source_type='deposit';" 2>/dev/null || echo "0.00")
+  trace_count=$(db_exec "SELECT COUNT(*) FROM observations WHERE source_type='trace';" 2>/dev/null || echo "0")
+  deposit_count=$(db_exec "SELECT COUNT(*) FROM observations WHERE source_type='deposit';" 2>/dev/null || echo "0")
+fi
+
 cat > "${OUT_DIR}/metadata.yaml" <<EOF
 # Audit Package Metadata
 # This file describes the context of the export.
@@ -441,6 +451,11 @@ pending_observations: ${obs_count}
 active_rules: ${rule_count}
 archived_items: ${archive_count}
 pheromone_snapshots: ${chain_count}
+
+# Observation Quality (v5.0)
+observation_quality_mean: ${obs_quality_mean}
+trace_count: ${trace_count}
+deposit_count: ${deposit_count}
 
 # Current State
 current_branch: "$(current_branch)"

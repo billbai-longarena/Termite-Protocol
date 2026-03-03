@@ -171,9 +171,9 @@ if [ -f "$UPGRADE_REPORT" ]; then
   log_info "Upgrade report detected: ${from_ver} → ${to_ver}"
 fi
 
-# ── Step 3.9: Strength-based participation ─────────────────────────────
+# ── Step 3.9: Platform & trigger detection ─────────────────────────────
 
-# Capability detection (moved early for strength inference)
+# Capability detection
 cap_platform=$(detect_platform)
 cap_git="no"; command -v git >/dev/null 2>&1 && [ -d "${PROJECT_ROOT}/.git" ] && cap_git="yes"
 cap_push="unknown"
@@ -201,9 +201,9 @@ if [ -z "$trigger_type" ]; then
   fi
 fi
 
-# Compute strength tier
+# v5.0: strength_tier still computed for backward compat (DB records) but no longer drives .birth
 strength_tier=$(compute_strength_tier "$cap_platform" "${AGENT_ID:-}")
-log_info "Strength: tier=${strength_tier} trigger=${trigger_type} platform=${cap_platform}"
+log_info "Platform: ${cap_platform} trigger=${trigger_type} strength=${strength_tier}(deprecated)"
 
 # Update agent record with strength metadata
 if has_db && [ -n "$AGENT_ID" ]; then
@@ -441,77 +441,72 @@ if has_db; then
   fi
 fi
 
-# Get near-threshold observation clusters for judgment tier
+# Get near-threshold observation clusters (v5.0: available to all agents via unified .birth)
 obs_prompts=""
-if [ "$strength_tier" = "judgment" ] && has_db; then
-  # Find keyword groups with exactly (PROMOTION_THRESHOLD - 1) observations
-  near_promo=$(db_query "SELECT pattern, COUNT(*) as cnt FROM observations
-    WHERE merged_count=0 AND (quality IS NULL OR quality != 'low')
+if has_db; then
+  # v5.0: find keyword groups where sum(quality_score) is close to 3.0 threshold
+  near_promo=$(db_query "SELECT pattern, COUNT(*) as cnt, SUM(quality_score) as qs FROM observations
+    WHERE merged_count=0 AND source_type='deposit'
+      AND (quality IS NULL OR quality != 'low')
     GROUP BY LOWER(TRIM(pattern))
-    HAVING cnt = (${PROMOTION_THRESHOLD} - 1)
+    HAVING qs >= 2.0 AND qs < 3.0
+    ORDER BY qs DESC
     LIMIT 3;" 2>/dev/null || true)
   if [ -n "$near_promo" ]; then
-    obs_prompts="Near emergence (need 1 more observation):"
-    while IFS=$'\t' read -r np_pattern np_count; do
+    obs_prompts="Near emergence:"
+    while IFS=$'\t' read -r np_pattern np_count np_qs; do
       [ -z "$np_pattern" ] && continue
-      obs_prompts="${obs_prompts}\n  - \"${np_pattern}\" (${np_count}/${PROMOTION_THRESHOLD})"
+      obs_prompts="${obs_prompts}\n  - \"${np_pattern}\" (${np_count} obs, quality_sum=${np_qs}/3.0)"
     done <<< "$near_promo"
   fi
 fi
 
-# Get colony status summary for direction tier
+# Get colony status summary (v5.0: available to all agents, used by direction .birth and unified context section)
 colony_summary=""
-if [ "$strength_tier" = "direction" ]; then
-  idle_agents=0
-  if has_db; then
-    idle_agents=$(db_exec "SELECT COUNT(*) FROM agents WHERE session_status='active';" 2>/dev/null || echo "0")
-  fi
-  recent_rules=0
-  if has_db; then
-    recent_rules=$(db_exec "SELECT COUNT(*) FROM rules WHERE julianday('now') - julianday(created) < 7;" 2>/dev/null || echo "0")
-  fi
-  colony_summary="phase=${colony_phase} signals=${active_signals} agents=${idle_agents} recent_rules=${recent_rules}"
+idle_agents=0
+if has_db; then
+  idle_agents=$(db_exec "SELECT COUNT(*) FROM agents WHERE session_status='active';" 2>/dev/null || echo "0")
 fi
+recent_rules=0
+if has_db; then
+  recent_rules=$(db_exec "SELECT COUNT(*) FROM rules WHERE julianday('now') - julianday(created) < 7;" 2>/dev/null || echo "0")
+fi
+colony_summary="phase=${colony_phase} signals=${active_signals} agents=${idle_agents} recent_rules=${recent_rules}"
 
-# Get decisions needed for direction tier
+# Get decisions needed (direction .birth uses these prominently; unified .birth includes in context)
 decisions_needed=""
-if [ "$strength_tier" = "direction" ]; then
-  if has_db; then
-    blocked=$(db_query "SELECT id,title FROM signals WHERE type='BLOCKED' AND status NOT IN ('done','completed','archived','parked') LIMIT 3;" 2>/dev/null || true)
-    if [ -n "$blocked" ]; then
-      decisions_needed="BLOCKED signals:"
-      while IFS=$'\t' read -r bl_id bl_title; do
-        [ -z "$bl_id" ] && continue
-        decisions_needed="${decisions_needed}\n  - ${bl_id}: ${bl_title}"
-      done <<< "$blocked"
-    fi
+if has_db; then
+  blocked=$(db_query "SELECT id,title FROM signals WHERE type='BLOCKED' AND status NOT IN ('done','completed','archived','parked') LIMIT 3;" 2>/dev/null || true)
+  if [ -n "$blocked" ]; then
+    decisions_needed="BLOCKED signals:"
+    while IFS=$'\t' read -r bl_id bl_title; do
+      [ -z "$bl_id" ] && continue
+      decisions_needed="${decisions_needed}\n  - ${bl_id}: ${bl_title}"
+    done <<< "$blocked"
   fi
 fi
 
-# Get recent pheromone activity for direction tier
+# Get recent pheromone activity (for direction .birth)
 recent_activity=""
-if [ "$strength_tier" = "direction" ]; then
-  if has_db; then
-    recent_ph=$(db_query "SELECT agent_id,caste,completed FROM pheromone_history ORDER BY id DESC LIMIT 3;" 2>/dev/null || true)
-    if [ -n "$recent_ph" ]; then
-      recent_activity="Recent activity:"
-      while IFS=$'\t' read -r ra_agent ra_caste ra_completed; do
-        [ -z "$ra_agent" ] && continue
-        ra_summary="${ra_caste}"
-        [ -n "$ra_completed" ] && [ "$ra_completed" != "null" ] && ra_summary="${ra_summary}: $(echo "$ra_completed" | head -c 60)"
-        recent_activity="${recent_activity}\n  - ${ra_summary}"
-      done <<< "$recent_ph"
-    fi
+if has_db; then
+  recent_ph=$(db_query "SELECT agent_id,caste,completed FROM pheromone_history ORDER BY id DESC LIMIT 3;" 2>/dev/null || true)
+  if [ -n "$recent_ph" ]; then
+    recent_activity="Recent activity:"
+    while IFS=$'\t' read -r ra_agent ra_caste ra_completed; do
+      [ -z "$ra_agent" ] && continue
+      ra_summary="${ra_caste}"
+      [ -n "$ra_completed" ] && [ "$ra_completed" != "null" ] && ra_summary="${ra_summary}: $(echo "$ra_completed" | head -c 60)"
+      recent_activity="${recent_activity}\n  - ${ra_summary}"
+    done <<< "$recent_ph"
   fi
 fi
 
-# ── Write .birth based on strength tier ──────────────────────────────
+# ── Write .birth (v5.0: unified template, state-driven budget) ────────
 
 write_birth_header() {
   cat <<HEOF
 # .birth
 caste: ${caste}
-strength: ${strength_tier}
 branch: ${branch}
 alarm: ${alarm_display}
 channel: ${trigger_type}
@@ -533,11 +528,13 @@ breath_age: ${breath_age}min
 CEOF
 }
 
-write_birth_execution() {
-  # Execution tier: ~500 tokens — task-focused, minimal context
+write_birth_unified() {
+  # v5.0 Unified .birth template — same structure for all agents.
+  # Colony phase determines token budget allocation (design doc lines 82-88).
+  # "仁者见仁智者见智" — same text, different extraction depth.
   write_birth_header
 
-  # Task: pre-selected top signal
+  # ── ## task (200-350 tokens, state-driven) ──
   echo ""
   echo "## task"
   if [ -n "$top_signal_hint" ]; then
@@ -546,54 +543,42 @@ write_birth_execution() {
     echo "$(echo -e "$situation" | sed '/^$/d' | head -3)"
   fi
 
-  # Behavioral template (Shepherd Effect amplifier)
+  # Behavioral template: Rule 10 (Shepherd Effect) — highest quality deposit
   if [ -n "$behavioral_template" ]; then
     echo ""
-    echo "## behavioral_template"
-    echo "$behavioral_template"
+    echo "behavioral_template:"
+    echo "  $behavioral_template"
   fi
 
-  # Situation: WIP only, no strategic overview
-  if [ "$wip" = "fresh" ] && [ -f "$WIP_FILE" ]; then
-    echo ""
-    echo "## situation"
-    wip_line=$(grep -m1 -E '^[^#]' "$WIP_FILE" 2>/dev/null | head -c 120 || echo "WIP exists")
-    echo "WIP: \"${wip_line}\""
-  fi
-
-  write_birth_capabilities
-
-  echo ""
-  echo "## recovery_hints"
-  echo "tool_fail: retry once, then ALARM"
-  echo "permission_denied: ALARM immediately"
-  echo "context_pressure: MOLT now"
-  echo "build_fail: soldier, fix first"
-  echo "stuck_3_turns: deposit, end session"
-  echo "observation: optional — skip if nothing meaningful to report"
-  echo "signal_scope: one signal ≈ one verifiable deliverable"
-}
-
-write_birth_judgment() {
-  # Judgment tier: ~650 tokens — full strategic context
-  write_birth_header
-
-  # Full situation
+  # ── ## situation (150-250 tokens, state-driven) ──
   echo ""
   echo "## situation"
   echo -e "$situation" | sed '/^$/d'
 
-  # Near-threshold observation prompts
-  if [ -n "$obs_prompts" ]; then
+  # ── ## context (0-200 tokens, only when colony has content) ──
+  local has_context=false
+
+  if [ "${rule_count:-0}" -gt 0 ] || [ -n "$obs_prompts" ] || [ -n "$decisions_needed" ]; then
     echo ""
-    echo "## observation_prompts"
+    echo "## context"
+    has_context=true
+  fi
+
+  # Active rules (top 5)
+  if [ "${rule_count:-0}" -gt 0 ]; then
+    echo "rules:"
+    echo "${rules_section}" | head -5
+  fi
+
+  # Near-threshold observation clusters
+  if [ -n "$obs_prompts" ]; then
     echo -e "$obs_prompts"
   fi
 
-  # Rules (top 5)
-  echo ""
-  echo "## rules"
-  echo "${rules_section:-No rules yet — observe patterns and deposit observations.}"
+  # Blocked signals needing decisions
+  if [ -n "$decisions_needed" ]; then
+    echo -e "$decisions_needed"
+  fi
 
   # Grammar + safety only if entry file lacks them
   if [ "$birth_static_included" = "false" ]; then
@@ -605,8 +590,10 @@ write_birth_judgment() {
     echo "4. DO→DEPOSIT(signal,weight,TTL,location)"
     echo "5. weight<threshold→EVAPORATE (automatic)"
     echo "6. weight>threshold→ESCALATE"
-    echo "7. count(agents,same_signal)≥3→EMERGE (observation→rule)"
+    echo "7. sum(quality)≥3.0→EMERGE (observation→rule, quality-weighted)"
     echo "8. context>80%→MOLT (write WIP + .pheromone, die)"
+    echo "9. DO(gen_agent)→SEED"
+    echo "10. DEPOSIT(quality≥threshold)→TEMPLATE (Shepherd Effect)"
 
     echo ""
     echo "## safety"
@@ -618,6 +605,7 @@ write_birth_judgment() {
 
   write_birth_capabilities
 
+  # ── ## recovery (50-80 tokens, fixed) ──
   echo ""
   echo "## recovery_hints"
   echo "tool_fail: retry once, then ALARM"
@@ -626,13 +614,16 @@ write_birth_judgment() {
   echo "build_fail: soldier, fix first"
   echo "stuck_3_turns: deposit, end session"
   echo "idle_colony: deposit HOLE or exit session"
-  echo "observation: required — deposit meaningful pattern+context+detail"
-  echo "predecessor_eval: required — evaluate predecessor .pheromone usefulness"
+  echo "deposit: submit trace (git commit message suffices)."
+  echo "  observation: optional — write if you find a pattern worth recording."
+  echo "  quality standard: cite file path + describe phenomenon + explain impact."
+  echo "predecessor_eval: evaluate predecessor .pheromone usefulness"
   echo "signal_scope: one signal ≈ one verifiable deliverable"
 }
 
 write_birth_direction() {
-  # Direction tier: ~500 tokens — strategic decisions, colony overview
+  # Direction tier: for directive trigger type only (human-initiated sessions)
+  # Decision-centric structure — not agent classification, but trigger type
   write_birth_header
 
   # Decisions needed
@@ -681,13 +672,12 @@ write_birth_direction() {
   echo "signal_scope: one signal ≈ one verifiable deliverable"
 }
 
-# Write .birth based on strength tier
-case "$strength_tier" in
-  execution) write_birth_execution > "$BIRTH_FILE" ;;
-  judgment)  write_birth_judgment > "$BIRTH_FILE" ;;
-  direction) write_birth_direction > "$BIRTH_FILE" ;;
-  *)         write_birth_judgment > "$BIRTH_FILE" ;;  # fallback
-esac
+# v5.0: Write .birth based on trigger type (not strength tier)
+if [ "$trigger_type" = "directive" ]; then
+  write_birth_direction > "$BIRTH_FILE"
+else
+  write_birth_unified > "$BIRTH_FILE"
+fi
 
 # Also write default .birth for backward compatibility
 if [ -n "$AGENT_ID" ] && [ "$BIRTH_FILE" != "${PROJECT_ROOT}/.birth" ]; then

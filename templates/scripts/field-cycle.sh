@@ -128,26 +128,40 @@ validate_rule_quality() {
 
 if has_db; then
   # DB path: fuzzy keyword clustering for observation → rule promotion
-  # 1. Query all unmerged, non-low-quality observations
-  obs_rows=$(db_query "SELECT id, pattern FROM observations
-    WHERE merged_count = 0 AND (quality IS NULL OR quality != 'low');" 2>/dev/null || true)
+  # v5.0: quality-weighted emergence — sum(quality_score) >= 3.0 replaces count >= 3
+  # 1. Query all unmerged, deposit-type, non-low-quality observations with quality_score
+  obs_rows=$(db_query "SELECT id, pattern, COALESCE(quality_score, 0.5) FROM observations
+    WHERE merged_count = 0
+      AND COALESCE(source_type, 'deposit') = 'deposit'
+      AND (quality IS NULL OR quality != 'low');" 2>/dev/null || true)
 
   if [ -n "$obs_rows" ]; then
-    # 2. Normalize each pattern to keywords and group
+    # 2. Normalize each pattern to keywords and group with quality scores
     keyword_map=$(mktemp)
-    while IFS=$'\t' read -r obs_id obs_pattern; do
+    keyword_scores=$(mktemp)
+    while IFS=$'\t' read -r obs_id obs_pattern obs_qs; do
       [ -z "$obs_id" ] && continue
       keywords=$(normalize_pattern_keywords "$obs_pattern")
       [ -z "$keywords" ] && continue
       echo "${keywords}|${obs_id}" >> "$keyword_map"
+      echo "${keywords}|${obs_qs:-0.5}" >> "$keyword_scores"
     done <<< "$obs_rows"
 
-    # 3. Find keyword groups with >= PROMOTION_THRESHOLD observations
+    # 3. Find keyword groups where sum(quality_score) >= 3.0
     if [ -s "$keyword_map" ]; then
       promoted=0
-      while read -r count keywords; do
-        count=$(echo "$count" | tr -d ' ')
-        if [ "$count" -ge "$PROMOTION_THRESHOLD" ]; then
+      # Get unique keywords
+      cut -d'|' -f1 "$keyword_map" | sort -u | while read -r keywords; do
+        [ -z "$keywords" ] && continue
+
+        # Sum quality scores for this keyword group
+        quality_sum=$(grep "^${keywords}|" "$keyword_scores" | cut -d'|' -f2 \
+          | awk '{ s += $1 } END { printf "%.2f", s }')
+        obs_count_group=$(grep -c "^${keywords}|" "$keyword_map" || true)
+
+        # v5.0: quality-weighted threshold
+        meets_threshold=$(awk "BEGIN { print (${quality_sum} >= 3.0) ? 1 : 0 }")
+        if [ "$meets_threshold" -eq 1 ]; then
           # Collect observation IDs for this keyword group
           group_ids=""
           while IFS='|' read -r kw oid; do
@@ -157,7 +171,7 @@ if has_db; then
           done < "$keyword_map"
           [ -z "$group_ids" ] && continue
 
-          log_info "Promoting fuzzy pattern (${count} observations, keywords: ${keywords})"
+          log_info "Promoting fuzzy pattern (${obs_count_group} observations, quality_sum=${quality_sum}, keywords: ${keywords})"
 
           # Get detail from first observation
           first_id=$(echo "$group_ids" | cut -d',' -f1)
@@ -165,8 +179,8 @@ if has_db; then
           first_pattern=$(db_exec "SELECT pattern FROM observations WHERE id='$(db_escape "$first_id")';")
 
           # Rule quality gate (W-012a): validate before creation
-          local candidate_trigger="When I observe: ${first_pattern:-${keywords}}"
-          local candidate_action="${detail:-Follow the pattern described in trigger}"
+          candidate_trigger="When I observe: ${first_pattern:-${keywords}}"
+          candidate_action="${detail:-Follow the pattern described in trigger}"
           if ! validate_rule_quality "$candidate_trigger" "$candidate_action"; then
             log_info "Rule rejected by quality gate — archiving source observations anyway"
             # Still archive to prevent re-promotion of degenerate clusters
@@ -197,31 +211,44 @@ if has_db; then
           "
           promoted=$((promoted + 1))
         fi
-      done < <(cut -d'|' -f1 "$keyword_map" | sort | uniq -c | sort -rn)
+      done
     fi
-    rm -f "$keyword_map"
+    rm -f "$keyword_map" "$keyword_scores"
   fi
 elif [ -d "$OBS_DIR" ]; then
-  # YAML path: fuzzy keyword clustering
+  # YAML path: fuzzy keyword clustering with quality-weighted emergence (v5.0)
   tmpfile=$(mktemp)
+  score_file=$(mktemp)
   while IFS= read -r obs_file; do
     [ -f "$obs_file" ] || continue
     quality=$(yaml_read "$obs_file" "quality")
     [ "$quality" = "low" ] && continue
+    src_type=$(yaml_read "$obs_file" "source_type")
+    [ "${src_type:-deposit}" != "deposit" ] && continue
     pattern=$(yaml_read "$obs_file" "pattern")
     [ -z "$pattern" ] && continue
     keywords=$(normalize_pattern_keywords "$pattern")
     [ -z "$keywords" ] && continue
+    qs=$(yaml_read "$obs_file" "quality_score")
+    qs="${qs:-0.5}"
     echo "${keywords}|${obs_file}" >> "$tmpfile"
+    echo "${keywords}|${qs}" >> "$score_file"
   done < <(list_observations)
 
-  # Find keyword groups with >= PROMOTION_THRESHOLD observations
+  # Find keyword groups where sum(quality_score) >= 3.0
   if [ -s "$tmpfile" ]; then
     promoted=0
-    while read -r count keywords; do
-      count=$(echo "$count" | tr -d ' ')
-      if [ "$count" -ge "$PROMOTION_THRESHOLD" ]; then
-        log_info "Promoting fuzzy pattern (${count} observations, keywords: ${keywords})"
+    cut -d'|' -f1 "$tmpfile" | sort -u | while read -r keywords; do
+      [ -z "$keywords" ] && continue
+
+      # Sum quality scores for this keyword group
+      quality_sum=$(grep "^${keywords}|" "$score_file" | cut -d'|' -f2 \
+        | awk '{ s += $1 } END { printf "%.2f", s }')
+      obs_count_group=$(grep -c "^${keywords}|" "$tmpfile" || true)
+
+      meets_threshold=$(awk "BEGIN { print (${quality_sum} >= 3.0) ? 1 : 0 }")
+      if [ "$meets_threshold" -eq 1 ]; then
+        log_info "Promoting fuzzy pattern (${obs_count_group} observations, quality_sum=${quality_sum}, keywords: ${keywords})"
 
         # Collect source observation IDs and files
         obs_ids=""
@@ -240,8 +267,8 @@ elif [ -d "$OBS_DIR" ]; then
         first_pattern=$(yaml_read "$first_file" "pattern")
 
         # Rule quality gate (W-012a)
-        local yaml_trigger="When I observe: ${first_pattern:-${keywords}}"
-        local yaml_action="${detail:-Follow the pattern described in trigger}"
+        yaml_trigger="When I observe: ${first_pattern:-${keywords}}"
+        yaml_action="${detail:-Follow the pattern described in trigger}"
         if ! validate_rule_quality "$yaml_trigger" "$yaml_action"; then
           log_info "Rule rejected by quality gate — archiving source observations anyway"
           mkdir -p "${ARCHIVE_DIR}/promoted"
@@ -278,9 +305,9 @@ RULEEOF
 
         promoted=$((promoted + 1))
       fi
-    done < <(cut -d'|' -f1 "$tmpfile" | sort | uniq -c | sort -rn)
+    done
   fi
-  rm -f "$tmpfile"
+  rm -f "$tmpfile" "$score_file"
 fi
 
 # ── Step 6/7: Observation compression ──────────────────────────────────

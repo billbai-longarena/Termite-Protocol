@@ -6,6 +6,28 @@
 
 ---
 
+## v5.0 (2026-03-03)
+
+### Changes
+- **Protocol philosophy**: "Stateless, not blind" — all termites are stateless, the environment carries intelligence. Replaces the "blind termite" metaphor with a more accurate model: strong models produce environment intelligence, weak models consume it.
+- **Rule 10 (Shepherd Effect)**: `DEPOSIT(quality ≥ threshold) → TEMPLATE` — high-quality deposits automatically become behavioral templates for successors. Promoted from deployment recommendation to core grammar rule.
+- **Trace/Deposit separation**: Pheromone system now distinguishes tool-guaranteed facts (traces, no decay) from model-dependent knowledge (deposits, quality-weighted decay). `field-deposit.sh` auto-classifies each observation.
+- **Artifact quality scoring**: Observations receive `quality_score` (0.0-1.0) at deposit time via H2-validated heuristic. Replaces PE-005's agent-level classification — protocol no longer judges "who you are", only "what you produced".
+- **Unified .birth template**: Single state-driven template replaces PE-005's 3 differentiated templates (execution/judgment/direction). Colony phase determines token budget allocation. All agents see the same `.birth` — capability difference expresses through extraction depth, not pre-filtered input.
+- **Quality-weighted emergence**: Rule 7 threshold changes from `count ≥ 3` to `sum(quality_score) ≥ 3.0`. Degenerate deposits are mathematically excluded from emergence without being prohibited.
+- **DB schema v4**: New `observations.quality_score` (REAL), `observations.source_type` (TEXT) columns. Auto-migrated from v3.
+- **Entry file kernel version**: v11.0 → v12.0 (both CLAUDE.md and AGENTS.md templates).
+- **Protocol version**: v4.0 → v5.0.
+
+### Action Required
+- **None** — DB schema auto-migrates v3→v4 on next `field-arrive.sh` run. All changes are backward-compatible.
+
+### Action Optional
+- Update entry files (CLAUDE.md/AGENTS.md) to kernel v12.0 for Rule 10 and updated Rule 7.
+- Review observation quality scoring: observations with `detail="0"` now score 0.00 and are excluded from emergence.
+
+---
+
 ## v4.0 (2026-03-03)
 
 ### Changes

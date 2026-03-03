@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# termite-db.sh — SQLite abstraction layer for Termite Protocol v4.0
+# termite-db.sh — SQLite abstraction layer for Termite Protocol v5.0
 # Source this file after field-lib.sh. Provides atomic DB operations.
 # All shared state goes through these functions — no direct YAML writes needed.
 
@@ -28,6 +28,10 @@ db_ensure() {
   fi
   if [ "${current_ver:-1}" -lt 3 ]; then
     db_migrate_v2_to_v3
+    current_ver=3
+  fi
+  if [ "${current_ver:-1}" -lt 4 ]; then
+    db_migrate_v3_to_v4
   fi
 }
 
@@ -43,6 +47,15 @@ db_migrate_v2_to_v3() {
   db_exec "ALTER TABLE pheromone_history ADD COLUMN strength_tier TEXT DEFAULT 'execution';" 2>/dev/null || true
   db_exec "INSERT OR REPLACE INTO schema_version(version) VALUES (3);"
   log_info "DB schema migration to v3 complete"
+}
+
+db_migrate_v3_to_v4() {
+  # Idempotent migration: add artifact quality scoring columns (v5.0)
+  log_info "Migrating DB schema v3 → v4"
+  db_exec "ALTER TABLE observations ADD COLUMN quality_score REAL DEFAULT 0.5;" 2>/dev/null || true
+  db_exec "ALTER TABLE observations ADD COLUMN source_type TEXT DEFAULT 'deposit';" 2>/dev/null || true
+  db_exec "INSERT OR REPLACE INTO schema_version(version) VALUES (4);"
+  log_info "DB schema migration to v4 complete"
 }
 
 db_exec() {
@@ -116,12 +129,14 @@ db_signal_by_weight() {
 # ── Observation CRUD ─────────────────────────────────────────────────
 
 db_obs_create() {
-  # Args: id pattern context reporter confidence source detail [quality]
+  # Args: id pattern context reporter confidence source detail [quality] [quality_score] [source_type]
   local id="$1" pattern="$2" context="${3:-unknown}" reporter="$4"
   local confidence="${5:-medium}" source="${6:-autonomous}" detail="${7:-}" quality="${8:-normal}"
-  db_exec "INSERT INTO observations(id,pattern,context,reporter,confidence,created,source,detail,quality)
+  local quality_score="${9:-0.5}" source_type="${10:-deposit}"
+  db_exec "INSERT INTO observations(id,pattern,context,reporter,confidence,created,source,detail,quality,quality_score,source_type)
     VALUES('$(db_escape "$id")','$(db_escape "$pattern")','$(db_escape "$context")','$(db_escape "$reporter")',
-    '$(db_escape "$confidence")','$(today_iso)','$(db_escape "$source")','$(db_escape "$detail")','$(db_escape "$quality")');"
+    '$(db_escape "$confidence")','$(today_iso)','$(db_escape "$source")','$(db_escape "$detail")','$(db_escape "$quality")',
+    ${quality_score},'$(db_escape "$source_type")');"
 }
 
 db_obs_list() {
@@ -138,15 +153,16 @@ db_obs_count() {
 
 db_obs_compress() {
   # Group by pattern+date, merge groups with >=3 observations, archive originals
-  # Pure SQL approach using a temp table
+  # v5.0: Skip trace observations — traces are permanent facts and never compressed
   local threshold="${PROMOTION_THRESHOLD:-3}"
   local merged_id="O-$(date +%Y%m%d%H%M%S)-$$-merged"
 
-  # Find patterns with enough observations to compress (same date)
+  # Find patterns with enough observations to compress (same date, deposits only)
   local groups
   groups=$(db_query "SELECT pattern, created, COUNT(*) as cnt, GROUP_CONCAT(id) as ids
     FROM observations
     WHERE merged_count = 0
+      AND COALESCE(source_type, 'deposit') = 'deposit'
     GROUP BY LOWER(TRIM(pattern)), created
     HAVING cnt >= ${threshold};")
 
@@ -179,13 +195,25 @@ db_obs_compress() {
 }
 
 db_obs_best_example() {
-  # Return most recent high-quality observation with substantive detail
+  # Return highest quality_score observation with substantive detail (v5.0)
   # Output: pattern\tcontext\tdetail(first 100 chars)
   db_query "SELECT pattern, context, SUBSTR(detail, 1, 100)
     FROM observations
-    WHERE (quality IS NULL OR quality != 'low')
+    WHERE quality_score >= 0.6
+      AND source_type = 'deposit'
       AND LENGTH(COALESCE(detail,'')) > 20
-    ORDER BY created DESC LIMIT 1;"
+    ORDER BY quality_score DESC, created DESC LIMIT 1;"
+}
+
+db_obs_quality_sum() {
+  # Return sum of quality_score for observations matching normalized keywords
+  # Args: normalized_keywords
+  # Used for quality-weighted emergence (Rule 7 v5.0)
+  local keywords="$1"
+  db_exec "SELECT COALESCE(SUM(quality_score), 0.0) FROM observations
+    WHERE source_type = 'deposit'
+      AND merged_count = 0
+      AND (quality IS NULL OR quality != 'low');"
 }
 
 # ── Rule CRUD ────────────────────────────────────────────────────────
@@ -609,13 +637,13 @@ db_export_signals_dir() {
 }
 
 db_export_obs_dir() {
-  # Write all observations to directory as YAML files
+  # Write all observations to directory as YAML files (v5.0: includes quality_score, source_type)
   local out_dir="$1"
   mkdir -p "$out_dir"
   local rows
-  rows=$(db_query "SELECT id,pattern,context,reporter,confidence,created,source,detail,merged_count,merged_from FROM observations;")
+  rows=$(db_query "SELECT id,pattern,context,reporter,confidence,created,source,detail,merged_count,merged_from,COALESCE(quality_score,0.5),COALESCE(source_type,'deposit') FROM observations;")
   [ -z "$rows" ] && return 0
-  while IFS=$'\t' read -r id pattern context reporter confidence created source detail merged_count merged_from; do
+  while IFS=$'\t' read -r id pattern context reporter confidence created source detail merged_count merged_from qs st; do
     [ -z "$id" ] && continue
     cat > "${out_dir}/${id}.yaml" <<EOF
 # READ-ONLY — auto-exported from .termite.db ($(now_iso))
@@ -627,6 +655,8 @@ reporter: "${reporter}"
 confidence: ${confidence}
 created: ${created}
 source: ${source}
+quality_score: ${qs:-0.5}
+source_type: ${st:-deposit}
 EOF
     [ -n "$detail" ] && { echo "detail: |"; echo "$detail" | sed 's/^/  /'; } >> "${out_dir}/${id}.yaml"
     [ "${merged_count:-0}" -gt 0 ] && echo "merged_count: ${merged_count}" >> "${out_dir}/${id}.yaml"

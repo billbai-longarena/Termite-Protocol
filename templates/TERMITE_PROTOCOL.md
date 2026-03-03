@@ -1,5 +1,5 @@
-<!-- termite-protocol:v4.0 -->
-# 白蚁协议 v4.0 (Termite Protocol)
+<!-- termite-protocol:v5.0 -->
+# 白蚁协议 v5.0 (Termite Protocol)
 
 白蚁协议的目的，是让多个不同水平的 Agent 同时工作，工作的目的是让三丘模型中提到的开发、产品和客户能共同成功、共同成长。成为各自最好的自己，也能共同达成非凡的成就。
 
@@ -13,7 +13,7 @@
 | 中文术语 | 英文术语 | 定义 |
 |----------|---------|------|
 | **白蚁协议** | **Termite Protocol** | 本框架的总称，仅在泛指时使用 |
-| **协议规范** | **protocol spec** | 本文件 (`TERMITE_PROTOCOL.md`) 及其定义的 9 条文法 + 4 条安全网 |
+| **协议规范** | **protocol spec** | 本文件 (`TERMITE_PROTOCOL.md`) 及其定义的 10 条文法 + 4 条安全网 |
 | **协议源仓库** | **protocol source repo** | 包含协议模板和工具的 Git 仓库 (`billbai-longarena/Termite-Protocol`) |
 | **宿主项目** | **host project** | 通过 `install.sh` 安装了协议模板和脚本的外部项目 |
 | **蚁丘** | **colony** | 宿主项目中协议运行时产生的信号生态 (signals/ + rules/ + .pheromone + .birth) |
@@ -48,11 +48,15 @@ v3.0 信息流：
 
 # Part I: 协议语法 (Protocol Grammar)
 
-> **9 条不可约简的语法规则 + 4 条安全网底线。**
-> 这是协议的最小内核。当一切基础设施降级时，这 13 条规则足以驱动一只有用的白蚁。
+> **核心原则：All termites are stateless. The environment carries intelligence.**
+> 所有白蚁都是无状态的。智慧在信号系统中，不在个体白蚁脑中。
+> 强模型的核心职责是向环境注入结构化知识；弱模型的核心职责是从环境中读取指令并执行。
+
+> **10 条不可约简的语法规则 + 4 条安全网底线。**
+> 这是协议的最小内核。当一切基础设施降级时，这 14 条规则足以驱动一只有用的白蚁。
 > `field-arrive.sh` 会将这些规则嵌入 `.birth` 文件。
 
-## 9 条语法规则
+## 10 条语法规则
 
 ```
 规则 1: ARRIVE → SENSE → STATE
@@ -82,6 +86,10 @@ v3.0 信息流：
 规则 9: DO(generate_agent) → SEED(kernel, signals_schema)
         当行动的产出物是另一个 Agent 系统（prompt/配置/框架）时，必须注入协议种子。
         被生成的 Agent 携带相同的行为基因。参见 TERMITE_SEED.md。
+
+规则 10: DEPOSIT(quality ≥ threshold) → TEMPLATE
+         高质量 deposit 自动成为后继者的行为模板（Shepherd Effect）。
+         环境智慧通过 deposit → template → imitation 链条传递。
 ```
 
 ## 4 条安全网底线
@@ -919,6 +927,15 @@ output: "execution" | "judgment" | "direction"
 
 ## 信息素系统
 
+协议使用 stigmergy（环境中介的显式通信）实现跨会话协作。信息素分为两类：
+
+| 类型 | 定义 | 可靠性来源 | 衰减规则 | 进入涌现池 |
+|------|------|-----------|---------|-----------|
+| **Trace** | 工具保证的事实：git commit, signal status, build result | 工具（git 不撒谎） | **不衰减**（事实不过期） | 否 |
+| **Deposit** | 模型产出的知识：observation, judgment, recommendation | 模型能力（可退化） | 按年龄 + 质量评分衰减 | 是（质量加权） |
+
+每条 observation 在 deposit 时由 `field-deposit.sh` 计算 `quality_score`（0.0-1.0），用于涌现加权、behavioral template 选择和衰减速率。协议不判断"你是谁"，只评估"你产出了什么"。
+
 **签名格式**：`[termite:YYYY-MM-DD:caste]`，修复签名变体：`[termite:YYYY-MM-DD:caste:repair]`。所有痕迹必须可被 `grep -r "\[termite:" .` 全局检索。
 对于不支持 Git Hooks 的执行平台（如 OpenCode），白蚁必须在提交时手动将该签名追加到 commit message 末尾。
 
@@ -1275,19 +1292,20 @@ git worktree remove ../<project>-<feature>
 > 入口文件的心跳内核也从此处派生。
 
 ```
-# termite-kernel:v4.0
-# 白蚁协议 — 最小内核（9 语法规则 + 4 安全网）
+# termite-kernel:v5.0
+# 白蚁协议 — 最小内核（10 语法规则 + 4 安全网）
 
 [语法]
-1. ARRIVE→SENSE→STATE          到达→感知环境→建立态势
-2. STATE→CASTE→PERMISSIONS     态势→种姓→权限边界
-3. ACTION∈PERMISSIONS→DO       权限内行动
+1. ARRIVE→SENSE→STATE           到达→感知环境→建立态势
+2. STATE→CASTE→PERMISSIONS      态势→种姓→权限边界
+3. ACTION∈PERMISSIONS→DO        权限内行动
 4. DO→DEPOSIT(signal,w,TTL,loc) 行动→留下信息素
 5. w<threshold→EVAPORATE        低权重信号自动蒸发
 6. w>threshold→ESCALATE         高权重信号升级告警
-7. count(agents,signal)≥3→EMERGE 3+观察→涌现规则
+7. sum(quality)≥3.0→EMERGE      质量加权涌现规则
 8. context>80%→MOLT             上下文满→蜕皮交接
 9. DO(gen_agent)→SEED           生成Agent→注入协议种子
+10. DEPOSIT(quality≥t)→TEMPLATE  高质量deposit→行为模板
 
 [安全网]
 S1. commit message 说清楚改了什么、为什么改
