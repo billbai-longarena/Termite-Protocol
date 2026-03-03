@@ -20,7 +20,7 @@ This is the **协议源仓库 (protocol source repo)** for the Termite Protocol 
 
 ```
 templates/
-  TERMITE_PROTOCOL.md   ← Canonical protocol spec (v3.5). Changes here propagate to all host projects on next upgrade.
+  TERMITE_PROTOCOL.md   ← Canonical protocol spec (v4.0). Changes here propagate to all host projects on next upgrade.
   CLAUDE.md / AGENTS.md ← Entry file templates installed into host projects.
   TERMITE_SEED.md       ← Minimal protocol payload injected into generated agent systems.
   UPGRADE_NOTES.md      ← Structured changelog with per-version changes and action items for host projects.
@@ -48,10 +48,10 @@ docs/plans/             ← Design documents for major features.
 
 ## Current State
 
-- **Protocol version**: v3.5 (emergence strengthening: quality gate, fuzzy clustering, colony phase, behavioral template)
-- **Field lib version**: v21.0
-- **Entry kernel versions**: Claude v10.0, Agents v8.0
-- **Host project colonies validated**: 0227/SalesTouch (production stable), OpenAgentEngine (audited, 7 findings closed), ReactiveArmor (weak model experiment, 6 findings), touchcli (Codex shepherd experiment, 2 findings closed)
+- **Protocol version**: v4.0 (strength-based participation: three strength tiers, differentiated .birth, rule quality gate)
+- **Field lib version**: v22.0
+- **Entry kernel versions**: Claude v11.0, Agents v11.0
+- **Host project colonies validated**: 0227/SalesTouch (production stable), OpenAgentEngine (audited, 7 findings closed), ReactiveArmor (weak model experiment, 6 findings), touchcli (A-005 Codex shepherd 2 findings closed; A-006 5-model heterogeneous swarm 5 findings open)
 
 ### Known Issues
 
@@ -71,8 +71,15 @@ docs/plans/             ← Design documents for major features.
 14. ~~Signal granularity lacks guidance (W-009)~~ **FIXED** — added `signal_scope: one signal ≈ one verifiable deliverable` to .birth recovery_hints. Soft guidance, ~7 tokens.
 15. Signal lifecycle lacks intermediate states between open and completed (W-010) — **DEFERRED**, adding states conflicts with F-009 concept area reduction. Better path: strengthen `next` field convention.
 16. Signal "completed" semantics undefined (W-011) — **DEFERRED**, aligns with F-010 WONTFIX rationale. Document semantic: completed = agent believes done, verification = host CI/CD.
+17. ~~Rule emergence degeneracy at scale (W-012)~~ **FIXED** — PE-005 Phase 4 adds rule quality gate in field-cycle.sh: rejects degenerate triggers (heartbeat/signal-ID only), tautological actions, and short actions (<20 chars). Source observations still archived to prevent re-promotion.
+18. Observation quality regression with heterogeneous swarm (W-013) — 57% quality rate in 5-model experiment vs 96.4% in A-005. **Partially addressed**: PE-005 differentiated .birth gives execution tier behavioral templates (Shepherd Effect amplifier) and makes observation deposit optional; judgment tier requires observation deposit with quality prompt.
+19. Claim lock starvation (W-015) — 63-minute idle tail from orphaned claims in 5-agent swarm. Different from W-007: work exists but is locked behind expired sessions. Need active claim timeout enforcement.
 
 ### Recent Work
+
+- **PE-005 Strength-Based Participation** — protocol evolves from "uniform .birth → uniform behavior" to "identify strengths → differentiated .birth → each plays to their strengths". Three strength tiers (execution/judgment/direction), differentiated .birth templates, rule quality gate (W-012a), DB schema v3, enhanced platform detection (OpenCode), pheromone metadata extension. Protocol v3.5→v4.0, field lib v21→v22, kernel v10→v11. Addresses W-012, partially addresses W-013 and F-009b/F-009c.
+
+- **A-006 touchcli 5-model audit** — first heterogeneous swarm (Codex 5.3, Haiku, GPT-5.1 Codex-mini, Gemini 3 Flash, Sonnet 4.6). Highest throughput ever (559 commits, 112+ signals). Handoff 100% but observation quality regressed to 57%. Rule emergence exploded (21 rules) but all degenerate. New failure mode: claim lock starvation. 5 findings (W-012 through W-016).
 
 - **TF-007 Emergence strengthening** — lowered activation energy for protocol emergence mechanisms: (1) observation quality gate detects degenerate deposits (W-001 partial), (2) fuzzy keyword clustering replaces exact-match promotion (W-004 partial), (3) colony life phase computation (genesis/active/maintaining/idle), (4) pheromone behavioral template (observation_example field formalizes Shepherd Effect), (5) deployment topology docs (1-strong+N-weak recommended), (6) DB schema v1→v2 migration. Protocol v3.4→v3.5, field lib v20→v21.
 - **W-008 + W-007 template fix (TF-005)** — ported touchcli A-005 findings to protocol templates: excluded done/completed from active signal counts (4 DB queries + 3 YAML functions), added idle colony detection + exit guidance in .birth. Second complete feedback loop closure: touchcli observation → Nurse → template fix.

@@ -93,6 +93,39 @@ log_info "Step 4/7: Pulse"
 
 log_info "Step 5/7: Observation promotion scan"
 
+# Rule quality gate (W-012a): reject degenerate rules before creation
+validate_rule_quality() {
+  # Args: trigger_text action_text
+  # Returns: 0 if valid, 1 if degenerate
+  local trigger="$1" action="$2"
+
+  # Reject trigger that is only "heartbeat", signal IDs, or pure stop words
+  if echo "$trigger" | grep -qiE '^(when i observe:?\s*)?(heartbeat|[SO]-[0-9]+|signal|the|a|an)$'; then
+    log_warn "Rule quality gate: trigger is degenerate ('${trigger}')"
+    return 1
+  fi
+
+  # Reject trigger that is only a signal ID pattern
+  if echo "$trigger" | grep -qE '^When I observe:\s*[SO]-[0-9]+$'; then
+    log_warn "Rule quality gate: trigger references only a signal ID"
+    return 1
+  fi
+
+  # Reject tautological action
+  if echo "$action" | grep -qiE '^follow the pattern'; then
+    log_warn "Rule quality gate: action is tautological ('${action}')"
+    return 1
+  fi
+
+  # Reject action shorter than 20 chars
+  if [ "${#action}" -lt 20 ]; then
+    log_warn "Rule quality gate: action too short (${#action} chars < 20)"
+    return 1
+  fi
+
+  return 0
+}
+
 if has_db; then
   # DB path: fuzzy keyword clustering for observation → rule promotion
   # 1. Query all unmerged, non-low-quality observations
@@ -131,9 +164,26 @@ if has_db; then
           detail=$(db_exec "SELECT detail FROM observations WHERE id='$(db_escape "$first_id")';")
           first_pattern=$(db_exec "SELECT pattern FROM observations WHERE id='$(db_escape "$first_id")';")
 
+          # Rule quality gate (W-012a): validate before creation
+          local candidate_trigger="When I observe: ${first_pattern:-${keywords}}"
+          local candidate_action="${detail:-Follow the pattern described in trigger}"
+          if ! validate_rule_quality "$candidate_trigger" "$candidate_action"; then
+            log_info "Rule rejected by quality gate — archiving source observations anyway"
+            # Still archive to prevent re-promotion of degenerate clusters
+            db_transaction "
+              INSERT INTO archive(original_id,original_table,data,archived_at,archive_reason)
+                SELECT id,'observations',
+                  json_object('id',id,'pattern',pattern,'context',context,'reporter',reporter),
+                  datetime('now'),'promoted'
+                FROM observations WHERE id IN ($(echo "$group_ids" | sed "s/[^,]*/'&'/g"));
+              DELETE FROM observations WHERE id IN ($(echo "$group_ids" | sed "s/[^,]*/'&'/g"));
+            "
+            continue
+          fi
+
           # Create rule
           rule_id=$(db_next_rule_id)
-          db_rule_create "$rule_id" "When I observe: ${first_pattern:-${keywords}}" "${detail:-Follow the pattern described in trigger}" "[${group_ids}]"
+          db_rule_create "$rule_id" "$candidate_trigger" "$candidate_action" "[${group_ids}]"
           log_info "Created rule ${rule_id} from observations: [${group_ids}]"
 
           # Archive source observations
@@ -188,6 +238,18 @@ elif [ -d "$OBS_DIR" ]; then
         first_file=$(echo "$obs_files" | awk '{print $1}')
         detail=$(yaml_read "$first_file" "detail")
         first_pattern=$(yaml_read "$first_file" "pattern")
+
+        # Rule quality gate (W-012a)
+        local yaml_trigger="When I observe: ${first_pattern:-${keywords}}"
+        local yaml_action="${detail:-Follow the pattern described in trigger}"
+        if ! validate_rule_quality "$yaml_trigger" "$yaml_action"; then
+          log_info "Rule rejected by quality gate — archiving source observations anyway"
+          mkdir -p "${ARCHIVE_DIR}/promoted"
+          for f in $obs_files; do
+            [ -f "$f" ] && mv "$f" "${ARCHIVE_DIR}/promoted/"
+          done
+          continue
+        fi
 
         # Generate rule
         ensure_signal_dirs

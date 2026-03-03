@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# termite-db.sh — SQLite abstraction layer for Termite Protocol v3.5
+# termite-db.sh — SQLite abstraction layer for Termite Protocol v4.0
 # Source this file after field-lib.sh. Provides atomic DB operations.
 # All shared state goes through these functions — no direct YAML writes needed.
 
@@ -10,7 +10,7 @@
 TERMITE_DB="${PROJECT_ROOT}/.termite.db"
 
 db_ensure() {
-  # Create DB if not exists, apply schema; migrate v1→v2 if needed
+  # Create DB if not exists, apply schema; migrate v1→v2→v3 if needed
   if [ ! -f "$TERMITE_DB" ]; then
     sqlite3 "$TERMITE_DB" < "${SCRIPT_DIR}/termite-db-schema.sql"
     return 0
@@ -24,7 +24,25 @@ db_ensure() {
     db_exec "ALTER TABLE pheromone_history ADD COLUMN observation_example TEXT;" 2>/dev/null || true
     db_exec "INSERT OR REPLACE INTO schema_version(version) VALUES (2);"
     log_info "DB schema migration to v2 complete"
+    current_ver=2
   fi
+  if [ "${current_ver:-1}" -lt 3 ]; then
+    db_migrate_v2_to_v3
+  fi
+}
+
+db_migrate_v2_to_v3() {
+  # Idempotent migration: add strength-based participation columns
+  log_info "Migrating DB schema v2 → v3"
+  # agents table: platform, strength_tier, trigger_type
+  db_exec "ALTER TABLE agents ADD COLUMN platform TEXT DEFAULT 'unknown';" 2>/dev/null || true
+  db_exec "ALTER TABLE agents ADD COLUMN strength_tier TEXT DEFAULT 'execution';" 2>/dev/null || true
+  db_exec "ALTER TABLE agents ADD COLUMN trigger_type TEXT DEFAULT 'heartbeat';" 2>/dev/null || true
+  # pheromone_history table: platform, strength_tier
+  db_exec "ALTER TABLE pheromone_history ADD COLUMN platform TEXT DEFAULT 'unknown';" 2>/dev/null || true
+  db_exec "ALTER TABLE pheromone_history ADD COLUMN strength_tier TEXT DEFAULT 'execution';" 2>/dev/null || true
+  db_exec "INSERT OR REPLACE INTO schema_version(version) VALUES (3);"
+  log_info "DB schema migration to v3 complete"
 }
 
 db_exec() {
@@ -295,7 +313,7 @@ db_claim_expire() {
 
 db_pheromone_deposit() {
   # Append-only — no last-writer-wins problem
-  # Args: agent_id caste branch commit_hash completed unresolved predecessor_useful [observation_example]
+  # Args: agent_id caste branch commit_hash completed unresolved predecessor_useful [observation_example] [platform] [strength_tier]
   local agent_id="$1" caste="$2" branch="${3:-}" commit_hash="${4:-}"
   local completed="${5:-}" unresolved="${6:-}"
   local pred_useful="NULL"
@@ -304,15 +322,17 @@ db_pheromone_deposit() {
     false|0) pred_useful="0" ;;
   esac
   local obs_example="${8:-}"
+  local ph_platform="${9:-unknown}"
+  local ph_strength="${10:-execution}"
   local wip_status
   wip_status=$(check_wip)
   local sig_count
   sig_count=$(db_signal_count "status NOT IN ('archived')" 2>/dev/null || echo "0")
 
-  db_exec "INSERT INTO pheromone_history(agent_id,timestamp,caste,branch,commit_hash,completed,unresolved,predecessor_useful,wip_status,active_signal_count,observation_example)
+  db_exec "INSERT INTO pheromone_history(agent_id,timestamp,caste,branch,commit_hash,completed,unresolved,predecessor_useful,wip_status,active_signal_count,observation_example,platform,strength_tier)
     VALUES('$(db_escape "$agent_id")','$(now_iso)','$(db_escape "$caste")','$(db_escape "$branch")','$(db_escape "$commit_hash")',
     '$(db_escape "$completed")','$(db_escape "$unresolved")',${pred_useful},'$(db_escape "$wip_status")',${sig_count},
-    '$(db_escape "$obs_example")');"
+    '$(db_escape "$obs_example")','$(db_escape "$ph_platform")','$(db_escape "$ph_strength")');"
 }
 
 db_pheromone_latest() {
@@ -345,6 +365,60 @@ db_pheromone_consecutive_caste() {
   echo "${count} ${last_caste:-unknown}"
 }
 
+# ── Platform-Level Queries ─────────────────────────────────────────────
+
+db_platform_obs_quality_rate() {
+  # Returns observation quality rate for a platform in the last 24h
+  # Args: platform
+  local platform="$1"
+  local total low
+  total=$(db_exec "SELECT COUNT(*) FROM observations o
+    INNER JOIN pheromone_history p ON o.reporter LIKE '%' || p.caste || '%'
+    WHERE p.platform='$(db_escape "$platform")'
+      AND o.created >= date('now','-1 day');" 2>/dev/null || echo "0")
+  if [ "${total:-0}" -eq 0 ]; then
+    # Fallback: count all observations from this platform via agent_id patterns
+    total=$(db_exec "SELECT COUNT(*) FROM observations
+      WHERE created >= date('now','-1 day');" 2>/dev/null || echo "0")
+    [ "${total:-0}" -eq 0 ] && { echo "1.0"; return; }
+    low=$(db_exec "SELECT COUNT(*) FROM observations
+      WHERE created >= date('now','-1 day') AND quality='low';" 2>/dev/null || echo "0")
+  else
+    low=$(db_exec "SELECT COUNT(*) FROM observations o
+      INNER JOIN pheromone_history p ON o.reporter LIKE '%' || p.caste || '%'
+      WHERE p.platform='$(db_escape "$platform")'
+        AND o.created >= date('now','-1 day')
+        AND o.quality='low';" 2>/dev/null || echo "0")
+  fi
+  awk "BEGIN { if(${total}==0) print \"1.0\"; else printf \"%.2f\", 1.0 - ${low}/${total} }"
+}
+
+db_platform_pred_useful_rate() {
+  # Returns predecessor_useful rate for a platform in the last 24h
+  # Args: platform
+  local platform="$1"
+  local total useful
+  total=$(db_exec "SELECT COUNT(*) FROM pheromone_history
+    WHERE platform='$(db_escape "$platform")'
+      AND timestamp >= datetime('now','-1 day')
+      AND predecessor_useful IS NOT NULL;" 2>/dev/null || echo "0")
+  [ "${total:-0}" -eq 0 ] && { echo "0.0"; return; }
+  useful=$(db_exec "SELECT COUNT(*) FROM pheromone_history
+    WHERE platform='$(db_escape "$platform")'
+      AND timestamp >= datetime('now','-1 day')
+      AND predecessor_useful=1;" 2>/dev/null || echo "0")
+  awk "BEGIN { printf \"%.2f\", ${useful}/${total} }"
+}
+
+db_platform_deposit_count() {
+  # Returns pheromone deposit count for a platform in the last 24h
+  # Args: platform
+  local platform="$1"
+  db_exec "SELECT COUNT(*) FROM pheromone_history
+    WHERE platform='$(db_escape "$platform")'
+      AND timestamp >= datetime('now','-1 day');" 2>/dev/null || echo "0"
+}
+
 # ── Agent Registry ─────────────────────────────────────────────────────
 
 db_agent_register() {
@@ -364,6 +438,11 @@ db_agent_complete() {
 
 db_agent_set_caste() {
   db_exec "UPDATE agents SET caste='$(db_escape "$2")' WHERE agent_id='$(db_escape "$1")';"
+}
+
+db_agent_set_strength() {
+  # Args: agent_id platform strength_tier trigger_type
+  db_exec "UPDATE agents SET platform='$(db_escape "$2")', strength_tier='$(db_escape "$3")', trigger_type='$(db_escape "$4")' WHERE agent_id='$(db_escape "$1")';"
 }
 
 # ── Colony State ───────────────────────────────────────────────────────

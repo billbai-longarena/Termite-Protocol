@@ -518,9 +518,82 @@ breath_age_minutes() {
   echo $(( (now_epoch - mod_epoch) / 60 ))
 }
 
+compute_strength_tier() {
+  # Infer strength tier from platform + behavioral history
+  # Args: platform agent_id
+  # Output: "execution" | "judgment" | "direction"
+  local platform="${1:-unknown}" agent_id="${2:-}"
+
+  # 1. Directive trigger → direction tier
+  if [ "${TERMITE_TRIGGER_TYPE:-}" = "directive" ]; then
+    echo "direction"
+    return
+  fi
+
+  # 2. Unknown platform with no history → conservative default
+  if [ "$platform" = "unknown" ]; then
+    if has_db && has_sqlite; then
+      local hist_count
+      hist_count=$(db_exec "SELECT COUNT(*) FROM pheromone_history
+        WHERE platform='unknown'
+          AND timestamp >= datetime('now','-1 day');" 2>/dev/null || echo "0")
+      if [ "${hist_count:-0}" -eq 0 ]; then
+        echo "execution"
+        return
+      fi
+    else
+      echo "execution"
+      return
+    fi
+  fi
+
+  # 3. Query 24h behavioral data for this platform
+  if has_db && has_sqlite; then
+    local deposit_count
+    deposit_count=$(db_platform_deposit_count "$platform" 2>/dev/null || echo "0")
+
+    # Cold start: fewer than 3 deposits → execution
+    if [ "${deposit_count:-0}" -lt 3 ]; then
+      echo "execution"
+      return
+    fi
+
+    local obs_quality_rate pred_useful_rate
+    obs_quality_rate=$(db_platform_obs_quality_rate "$platform" 2>/dev/null || echo "1.0")
+    pred_useful_rate=$(db_platform_pred_useful_rate "$platform" 2>/dev/null || echo "0.0")
+
+    # obs_quality >= 0.7 AND pred_useful >= 0.5 → judgment
+    local is_judgment
+    is_judgment=$(awk "BEGIN { print (${obs_quality_rate} >= 0.7 && ${pred_useful_rate} >= 0.5) ? 1 : 0 }")
+    if [ "$is_judgment" -eq 1 ]; then
+      echo "judgment"
+      return
+    fi
+
+    # obs_quality < 0.4 → execution
+    local is_weak
+    is_weak=$(awk "BEGIN { print (${obs_quality_rate} < 0.4) ? 1 : 0 }")
+    if [ "$is_weak" -eq 1 ]; then
+      echo "execution"
+      return
+    fi
+
+    # Middle ground → give trust → judgment
+    echo "judgment"
+    return
+  fi
+
+  # No DB: default based on platform heuristic
+  case "$platform" in
+    claude-code|codex-cli) echo "judgment" ;;
+    *) echo "execution" ;;
+  esac
+}
+
 detect_platform() {
   if [ -n "${CLAUDE_PROJECT_DIR:-}" ] || [ -n "${CLAUDE_ENV_FILE:-}" ]; then echo "claude-code"; return; fi
   if [ -n "${CODEX_CLI:-}" ]; then echo "codex-cli"; return; fi
+  if [ -n "${OPENCODE:-}" ] || [ -n "${OPENCODE_PROJECT:-}" ]; then echo "opencode"; return; fi
   if [ -f "${PROJECT_ROOT}/AGENTS.md" ] && [ ! -f "${PROJECT_ROOT}/CLAUDE.md" ]; then echo "codex-cli"; return; fi
   echo "unknown"
 }

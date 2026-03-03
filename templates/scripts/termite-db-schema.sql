@@ -1,4 +1,4 @@
--- Termite Protocol v3.5 SQLite Schema
+-- Termite Protocol v4.0 SQLite Schema
 -- All shared state in a single WAL-mode database.
 -- YAML files become export-only (audit, human reading).
 
@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS schema_version (
   version INTEGER PRIMARY KEY,
   applied_at TEXT DEFAULT (datetime('now'))
 );
-INSERT OR IGNORE INTO schema_version(version) VALUES (2);
+INSERT OR IGNORE INTO schema_version(version) VALUES (3);
 
 -- Signals (replaces signals/active/*.yaml)
 CREATE TABLE IF NOT EXISTS signals (
@@ -89,7 +89,9 @@ CREATE TABLE IF NOT EXISTS pheromone_history (
   predecessor_useful INTEGER,   -- 0=false, 1=true, NULL=not evaluated
   wip_status TEXT,
   active_signal_count INTEGER,
-  observation_example TEXT       -- JSON: best observation example for behavioral template
+  observation_example TEXT,      -- JSON: best observation example for behavioral template
+  platform TEXT DEFAULT 'unknown',
+  strength_tier TEXT DEFAULT 'execution'
 );
 CREATE INDEX IF NOT EXISTS idx_ph_timestamp ON pheromone_history(timestamp DESC);
 
@@ -99,7 +101,10 @@ CREATE TABLE IF NOT EXISTS agents (
   caste TEXT,
   registered_at TEXT NOT NULL,
   last_heartbeat TEXT,
-  session_status TEXT DEFAULT 'active'  -- active|completed|abandoned
+  session_status TEXT DEFAULT 'active',  -- active|completed|abandoned
+  platform TEXT DEFAULT 'unknown',
+  strength_tier TEXT DEFAULT 'execution',
+  trigger_type TEXT DEFAULT 'heartbeat'
 );
 
 -- Colony state (replaces .field-breath single-writer)

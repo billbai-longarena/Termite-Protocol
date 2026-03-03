@@ -33,6 +33,9 @@ DISPUTE_RULE=""
 DISPUTE_REASON=""
 SOURCE="autonomous"
 COMPRESS_SIGNAL=""
+DEPOSIT_PLATFORM=""
+DEPOSIT_STRENGTH=""
+DEPOSIT_TRIGGER_TYPE=""
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -50,6 +53,9 @@ while [ $# -gt 0 ]; do
     --completed)  COMPLETED="$2"; shift 2 ;;
     --unresolved) UNRESOLVED="$2"; shift 2 ;;
     --predecessor-useful) PREDECESSOR_USEFUL="$2"; shift 2 ;;
+    --platform)   DEPOSIT_PLATFORM="$2"; shift 2 ;;
+    --strength)   DEPOSIT_STRENGTH="$2"; shift 2 ;;
+    --trigger-type) DEPOSIT_TRIGGER_TYPE="$2"; shift 2 ;;
     *)
       log_error "Unknown argument: $1"
       echo "Usage:"
@@ -64,9 +70,23 @@ done
 # ── Observation Mode ─────────────────────────────────────────────────
 
 if [ "$MODE" = "observation" ]; then
+  # Execution tier: silently skip if no pattern or empty detail
+  if [ "${DEPOSIT_STRENGTH:-}" = "execution" ]; then
+    if [ -z "$PATTERN" ] || { [ -z "$DETAIL" ] && echo "$PATTERN" | grep -qE '^[SO]-[0-9]+$'; }; then
+      log_info "Execution tier: skipping optional observation deposit"
+      exit 0
+    fi
+  fi
+
   if [ -z "$PATTERN" ]; then
     log_error "--pattern is required for observations"
     exit 1
+  fi
+
+  # Direction tier: auto-mark high confidence + directive source
+  if [ "${DEPOSIT_STRENGTH:-}" = "direction" ]; then
+    CONFIDENCE="high"
+    SOURCE="directive"
   fi
 
   # ── Quality gate: detect degenerate observations ──
@@ -162,9 +182,11 @@ if [ "$MODE" = "pheromone" ]; then
     fi
 
     local_agent_id="${AGENT_ID:-$(generate_agent_id)}"
+    local eff_platform="${DEPOSIT_PLATFORM:-$(detect_platform)}"
+    local eff_strength="${DEPOSIT_STRENGTH:-execution}"
     db_pheromone_deposit "$local_agent_id" "$CASTE" "$(current_branch)" "$(current_commit_short)" \
-      "$COMPLETED" "$UNRESOLVED" "$PREDECESSOR_USEFUL" "$obs_example_json"
-    log_info "Deposited pheromone (DB, caste=${CASTE}, predecessor_useful=${PREDECESSOR_USEFUL:-not_evaluated})"
+      "$COMPLETED" "$UNRESOLVED" "$PREDECESSOR_USEFUL" "$obs_example_json" "$eff_platform" "$eff_strength"
+    log_info "Deposited pheromone (DB, caste=${CASTE}, platform=${eff_platform}, strength=${eff_strength}, predecessor_useful=${PREDECESSOR_USEFUL:-not_evaluated})"
   else
     # YAML fallback: find best observation example
     if [ -d "$OBS_DIR" ]; then
@@ -201,6 +223,9 @@ if [ "$MODE" = "pheromone" ]; then
     obs_example_field="  \"observation_example\": null,"
   fi
 
+  local json_platform="${DEPOSIT_PLATFORM:-$(detect_platform)}"
+  local json_strength="${DEPOSIT_STRENGTH:-execution}"
+
   cat > "$PHEROMONE_FILE" <<EOF
 {
   "timestamp": "$(now_iso)",
@@ -211,6 +236,8 @@ if [ "$MODE" = "pheromone" ]; then
   "unresolved": $(echo "$UNRESOLVED" | python3 -c "import sys,json; print(json.dumps(sys.stdin.read().strip()))" 2>/dev/null || echo "\"${UNRESOLVED}\""),
   "predecessor_useful": ${pred_useful_json},
 ${obs_example_field}
+  "platform": "${json_platform}",
+  "strength_tier": "${json_strength}",
   "wip": "$(check_wip)",
   "active_signals": $(count_active_signals)
 }

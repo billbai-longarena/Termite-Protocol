@@ -6,6 +6,28 @@
 
 ---
 
+## v4.0 (2026-03-03)
+
+### Changes
+- **Strength-based participation (PE-005)**: Protocol now identifies three participant profiles — execution (weak models), judgment (strong models), direction (humans/directives) — and generates differentiated `.birth` files for each. Execution tier gets pre-selected tasks + behavioral templates; judgment tier gets full strategic context + near-threshold observation prompts; direction tier gets decisions needed + colony overview. (PE-005)
+- **DB schema v3**: `agents` table gains `platform`, `strength_tier`, `trigger_type` columns. `pheromone_history` table gains `platform`, `strength_tier` columns. Auto-migrated from v2 on first script run. (PE-005 Phase 1)
+- **Enhanced platform detection**: `detect_platform()` now recognizes OpenCode via `OPENCODE` or `OPENCODE_PROJECT` environment variables. Returns: `claude-code | codex-cli | opencode | unknown`. (PE-005 Phase 1)
+- **Pheromone metadata**: `.pheromone` JSON and `pheromone_history` table now carry `platform` and `strength_tier` fields for cross-session strength tracking. (PE-005 Phase 1)
+- **Observation deposit differentiation**: `field-deposit.sh` now accepts `--strength`, `--platform`, `--trigger-type` parameters. Execution tier silently skips degenerate observation deposits (no error). Direction tier auto-marks observations as `confidence: high, source: directive`. (PE-005 Phase 3)
+- **Static content migration**: Entry files with `<!-- birth-static-included -->` marker cause `.birth` to omit grammar+safety sections, freeing ~200 tokens for dynamic content. Unmarked entry files fall back to including static content (backward compatible). (PE-005 Phase 3)
+- **Rule quality gate (W-012a)**: `field-cycle.sh` Step 5 now validates rule quality before creation — rejects degenerate triggers (heartbeat/signal-ID only), tautological actions, and short actions (<20 chars). Source observations still archived to prevent re-promotion. (PE-005 Phase 4)
+- **Entry file kernel version**: v10.0 → v11.0 (both CLAUDE.md and AGENTS.md templates).
+- **Protocol version**: v3.5 → v4.0.
+
+### Action Required
+- **None** — DB schema auto-migrates from v2 to v3 on first run. All changes are additive and backward-compatible. Entry files are preserved on upgrade (only new installations get v11.0 kernel).
+
+### Action Optional
+- Add `<!-- birth-static-included -->` to your existing entry files (CLAUDE.md / AGENTS.md) to enable static content migration and free ~200 tokens in `.birth`. Only do this if your entry files already contain the 9 grammar rules + 4 safety nets.
+- Set `TERMITE_TRIGGER_TYPE=directive` in your Claude Code hook to enable direction-tier `.birth` for human-initiated sessions.
+
+---
+
 ## v3.5 (2026-03-02)
 
 ### Changes

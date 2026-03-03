@@ -820,3 +820,188 @@
     (4) Colony life phase: genesis/active/maintaining/idle computed in field-pulse.sh
     (5) Pheromone behavioral template: observation_example in .pheromone
     (6) Protocol v3.4→v3.5 with deployment topology + behavioral template docs
+
+# ── 2026-03-03 ────────────────────────────────────────────────────────
+
+- date: 2026-03-03
+  type: audit-received
+  id: A-006
+  status: open
+  host_project: touchcli
+  package: audit-packages/touchcli/2026-03-03/
+  significance: "First 5-agent, 5-model heterogeneous swarm experiment"
+  experiment_config:
+    agents: 5
+    models:
+      - "Codex 5.3 (Codex, shepherd)"
+      - "Claude Haiku (Claude Code, weak)"
+      - "GPT-5.1 Codex-mini (OpenCode, weak)"
+      - "Gemini 3 Flash (OpenCode, weak)"
+      - "Claude Sonnet 4.6 (OpenCode, mid)"
+    trigger: "白蚁协议 heartbeat input"
+    duration: "~17.2 hours"
+    project_type: "SaaS (Python FastAPI + Go Gateway + React)"
+  key_metrics:
+    total_commits: 559
+    signed_commits: 390
+    signature_ratio_last_50: 0.96
+    handoff_quality: 1.00
+    pheromone_snapshots: 141
+    pending_observations: 270
+    active_rules: 21
+    signals_processed: "112+ (S-001→S-112)"
+    archived_items: 293
+    idle_rate: 0.184
+    observation_quality_rate: 0.57
+  findings: 5
+  report: audit-analysis/optimization-proposals/2026-03-03-touchcli-multimodel-audit.md
+  notes: >
+    LANDMARK: First heterogeneous 5-model swarm. Highest throughput ever (559 commits,
+    33/hour). Handoff quality perfect (100%). But observation quality regressed to 57%
+    (vs A-005's 96.4%) — weak model dilution effect. Rule emergence exploded to 21 rules
+    but ALL degenerate (trigger="heartbeat", action="Follow the pattern"). New failure
+    mode: claim lock starvation (63min idle tail). Confirms F-009c is model-family-agnostic
+    (GPT-5.1-mini and Gemini Flash fail same as Haiku). TF-007 quality gate validated
+    by negative example — this v3.4 colony needed it.
+
+- date: 2026-03-03
+  type: finding-open
+  id: W-012
+  status: fixed
+  title: "Rule emergence degeneracy — 21 rules, 0 hits, all semantically empty"
+  source: "A-006 touchcli multi-model audit"
+  severity: high
+  description: >
+    All 21 emerged rules are degenerate: 20/21 trigger on "heartbeat" or signal IDs,
+    all have hit_count=0, 20/21 have tautological action ("Follow the pattern described
+    in trigger"). Qualitative regression from A-005's 1 meaningful rule. Caused by weak
+    models mass-producing degenerate observations that trigger Rule 7 emergence.
+  cross_colony_context: >
+    A-005 (3 agents): 1 rule, 1 useful. A-006 (5 agents): 21 rules, 0 useful.
+    More agents → more degenerate observations → more degenerate rules.
+    TF-007 quality gate (not deployed to v3.4 colony) would exclude degenerate
+    observations from clustering, preventing most of these.
+  recommendation: >
+    W-012a: Add quality gate to rule emergence in field-cycle.sh: reject rules where
+    trigger or action contains only signal IDs, heartbeat keywords, or tautological
+    patterns. Complement TF-007's observation quality gate with a rule quality gate.
+  fixed_by: PE-005
+  fixed_date: 2026-03-03
+  fix_notes: >
+    PE-005 Phase 4 adds validate_rule_quality() to field-cycle.sh Step 5.
+    Rejects degenerate triggers (heartbeat/signal-ID only), tautological actions
+    ("Follow the pattern"), and short actions (<20 chars). Source observations
+    still archived to prevent re-promotion of degenerate clusters.
+
+- date: 2026-03-03
+  type: finding-open
+  id: W-013
+  status: open
+  title: "Observation quality regression at scale — 57% quality rate with heterogeneous swarm"
+  source: "A-006 touchcli multi-model audit"
+  severity: medium
+  description: >
+    116/270 observations (43%) are degenerate with pattern=signal-ID and detail="0".
+    A-005 achieved 96.4% quality with 1 Codex + 2 Haiku. Adding 3 OpenCode agents
+    (GPT-5.1-mini, Gemini Flash, Sonnet) diluted observation quality. The Shepherd
+    Effect works for handoff format but does NOT prevent degenerate observations.
+  cross_colony_context: >
+    ReactiveArmor (2 Haiku): 35.7% quality. A-005 (1 Codex + 2 Haiku): 96.4%.
+    A-006 (5 models): 57.0%. Quality drops non-linearly with weak agent count.
+  recommendation: >
+    Deploy TF-007 (v3.5) to this colony. The observation quality gate would mark
+    degenerate deposits as quality=low, excluding them from clustering and
+    behavioral template selection.
+
+- date: 2026-03-03
+  type: finding-open
+  id: W-014
+  status: open
+  title: "OpenCode agents lack commit signature support — 184/567 unsigned"
+  source: "A-006 touchcli multi-model audit"
+  severity: low
+  description: >
+    32.5% of commits lack [termite:YYYY-MM-DD:caste] signature. OpenCode agents
+    don't support prepare-commit-msg hooks. Same root cause as W-002 (ReactiveArmor)
+    but now confirmed across 3 different models via OpenCode.
+  recommendation: >
+    Document signature format as tool-dependent in TERMITE_PROTOCOL.md. For tools
+    without git hook support, recommend adding signature template to entry file
+    instructions so agents include it in commit messages directly.
+
+- date: 2026-03-03
+  type: finding-open
+  id: W-015
+  status: open
+  title: "Claim lock starvation — 63-minute idle tail from orphaned claims"
+  source: "A-006 touchcli multi-model audit"
+  severity: medium
+  description: >
+    From 23:15 to 00:18 UTC, 28 consecutive pheromone entries are pure idle heartbeats.
+    Agents wait for S-094/S-108 claims to expire rather than preempting. The claiming
+    agents have ended their sessions but claims remain locked. Different from W-007
+    (colony-level idle): here work exists but is locked behind orphaned claims.
+  root_cause: >
+    Claim TTL governance is passive (wait for expiry). With 5 agents, orphaned claims
+    become a bottleneck because multiple agents compete for zero open signals.
+  recommendation: >
+    W-015a: Add claim timeout enforcement in field-cycle.sh or field-claim.sh:
+    if a claimed signal's last_touched timestamp is >N heartbeats old (suggest 10),
+    auto-release the claim. More aggressive than TTL but prevents multi-agent starvation.
+
+- date: 2026-03-03
+  type: finding-open
+  id: W-016
+  status: open
+  title: "Export includes completed signals in active/ directory"
+  source: "A-006 touchcli multi-model audit"
+  severity: low
+  description: >
+    39/40 signals in signals/active/ are status:completed. metadata.yaml reports
+    active_signals:40 (misleading) while breath-snapshot correctly reports 1.
+    The export script copies the filesystem active/ directory which contains
+    signals that were completed but not yet archived.
+  recommendation: >
+    W-016a: In field-export-audit.sh, either filter completed signals from the
+    active/ copy, or derive active_signals count from the DB query (which already
+    excludes completed per TF-005) rather than file count.
+
+# ── 2026-03-03 session 2: PE-005 Strength-Based Participation ────────
+
+- date: 2026-03-03
+  type: protocol-evolution
+  id: PE-005
+  status: fixed
+  title: "Strength-Based Participation — differentiated .birth by participant strength"
+  description: >
+    Protocol evolves from "uniform .birth → uniform behavior" to "identify strengths →
+    differentiated .birth → each plays to their strengths". Six cross-colony audits
+    (4 host projects) revealed the protocol's fundamental design flaw: treating all
+    participants as homogeneous "blind termites" when actual capabilities vary widely.
+    Core value: let every participant do what they're best at and form collective advantage.
+  design: docs/plans/2026-03-03-strength-based-participation-design.md
+  closes: ["W-012"]
+  partially_addresses: ["W-013", "F-009b", "F-009c"]
+  files_changed:
+    - templates/scripts/termite-db-schema.sql
+    - templates/scripts/termite-db.sh
+    - templates/scripts/field-lib.sh
+    - templates/scripts/field-deposit.sh
+    - templates/scripts/field-arrive.sh
+    - templates/scripts/field-cycle.sh
+    - templates/TERMITE_PROTOCOL.md
+    - templates/UPGRADE_NOTES.md
+    - templates/CLAUDE.md
+    - templates/AGENTS.md
+  notes: >
+    Five phases implemented:
+    (1) Infrastructure: DB schema v2→v3 (agents+pheromone_history gain platform/strength
+    columns), enhanced platform detection (OpenCode), pheromone metadata extension
+    (2) Strength profiles: compute_strength_tier() inference algorithm (platform + 24h
+    behavioral data), trigger type detection (heartbeat/directive), agent registration
+    (3) Differentiated .birth: three template functions (execution ~500tok, judgment ~650tok,
+    direction ~500tok), static content migration (birth-static-included marker frees ~200tok),
+    observation deposit differentiation (execution=optional, direction=auto-high)
+    (4) Rule quality gate (W-012a): validate_rule_quality() rejects degenerate triggers,
+    tautological actions, short actions; source observations still archived
+    (5) Protocol docs: v3.5→v4.0, kernel v10→v11, field lib v21→v22
