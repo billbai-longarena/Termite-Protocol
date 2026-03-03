@@ -75,6 +75,20 @@ docs/plans/             ← Design documents for major features.
 18. Observation quality regression with heterogeneous swarm (W-013) — 57% quality rate in 5-model experiment vs 96.4% in A-005. **Partially addressed**: PE-005 differentiated .birth gives execution tier behavioral templates (Shepherd Effect amplifier) and makes observation deposit optional; judgment tier requires observation deposit with quality prompt.
 19. Claim lock starvation (W-015) — 63-minute idle tail from orphaned claims in 5-agent swarm. Different from W-007: work exists but is locked behind expired sessions. Need active claim timeout enforcement.
 
+### Pending Philosophy Revision (v5.0 direction)
+
+A foundational re-examination of the protocol's core metaphor ("termites are blind") produced three insights that will inform the next major version. Full analysis: `docs/plans/2026-03-03-protocol-philosophy-revision.md`.
+
+**Guiding principle**: 沿袭长期智慧，而不是短期效率和聪明。
+
+1. **"Stateless, not blind"** — "Blind" correctly captures no cross-session memory, but incorrectly implies no within-session understanding. Strong models DO understand structure. Replacement principle: "All termites are stateless. The environment carries intelligence." Strong models = environment intelligence producers; weak models = consumers.
+
+2. **11 concept clarifications** — Stigmergy is actually explicit communication (not indirect). Pheromone conflates traces (tool-reliable facts) and deposits (model-reliable knowledge). Shepherd Effect is the core mechanism, not a deployment recommendation. Emergence (Rule 7) has noise flood risk when weak models outnumber strong. Caste for weak models is an assigned label, not a self-selected role.
+
+3. **Uniform text over classification ("仁者见仁智者见智")** — PE-005's test→classify→differentiate approach is fragile (classification error, cold start, self-fulfilling bias). Long-term wisdom: give ALL agents the same layered text; capability difference expresses through extraction depth, not pre-filtered input. Same forest: eagle sees panorama, ant sees soil. Forest doesn't test who you are. PE-005's insight preserved (different capabilities contribute differently); its mechanism replaced (no pre-classification).
+
+**Nurse review identified 6 counter-arguments** (800-token budget tension, cargo culting risk, classification-at-exit instead of entrance, etc.) — see "批判与盲区" section in the design doc. Conclusion: insights 1+2 are solid; insight 3's principle is correct but mechanism needs refinement under token budget constraints.
+
 ### Recent Work
 
 - **PE-005 Strength-Based Participation** — protocol evolves from "uniform .birth → uniform behavior" to "identify strengths → differentiated .birth → each plays to their strengths". Three strength tiers (execution/judgment/direction), differentiated .birth templates, rule quality gate (W-012a), DB schema v3, enhanced platform detection (OpenCode), pheromone metadata extension. Protocol v3.5→v4.0, field lib v21→v22, kernel v10→v11. Addresses W-012, partially addresses W-013 and F-009b/F-009c.
@@ -137,6 +151,7 @@ docs/plans/             ← Design documents for major features.
 - Entry file template changes require kernel version sync between `CLAUDE.md` and `AGENTS.md`
 - Do NOT run `field-arrive.sh`, `field-cycle.sh`, or other field scripts in the protocol source repo — they are designed for host projects
 - **Keep this file current**: When your work changes the protocol version, fixes a known issue, or shifts the project focus, update the Current State section of this file before ending your session
+- **Record human prompts**: When writing design documents (`docs/plans/`), always include a "思维过程" or "Prompt Chain" section that records the human user's original prompts in order, with brief notes on what each prompt led to. The thinking process is as valuable as the conclusion — future readers need to see how the ideas evolved, not just the final result.
 
 ## Impact Awareness
 
