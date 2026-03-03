@@ -40,6 +40,7 @@ PROTOCOL_SCRIPTS=(
   scripts/field-drain.sh
   scripts/field-export-audit.sh
   scripts/field-genesis.sh
+  scripts/field-migrate.sh
   scripts/field-pulse.sh
   scripts/termite-db-schema.sql
   scripts/termite-db.sh
