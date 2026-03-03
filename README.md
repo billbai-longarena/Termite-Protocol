@@ -394,6 +394,10 @@ Field infrastructure is the core implementation layer of v3.0 "Protocol Dissolut
 | | Protocol meta-feedback loop: disputed_count rule dispute mechanism, predecessor_useful handoff quality tracking, audit export |
 | **v3.2** | 协议传播：规则 9（PROPAGATE）— 生成 Agent 系统时注入协议种子（TERMITE_SEED.md）；传播层级（Full/Core/Micro/None）；跨蚁丘信号交换；种子版本追踪；免疫检查 IC-5 |
 | | Protocol Propagation: Rule 9 (PROPAGATE) — inject protocol seed when generating agent systems (TERMITE_SEED.md); propagation tiers (Full/Core/Micro/None); cross-colony signal exchange; seed version tracking; immune check IC-5 |
+| **v3.3-v3.5** | DB 架构与涌现增强：SQLite WAL-mode 替代文件锁；模糊聚类降低规则涌现门槛；自动感知蚁丘生命周期；Shepherd 效应（强模型信息素引导弱模型）。 |
+| | DB architecture & Emergence strengthening: SQLite WAL-mode replaces file locks; fuzzy clustering lowers rule emergence threshold; auto-sense colony lifecycle; Shepherd Effect (strong model pheromones guide weak models). |
+| **v4.0** | 优势参与机制 (Strength-Based Participation)：协议根据参与方能力自动生成差异化的 `.birth`（执行/判断/方向），让弱模型、强模型和人类各司其职，解决异构多模型并发瓶颈。 |
+| | Strength-Based Participation: auto-generates differentiated `.birth` (execution/judgment/direction) based on participant capability, letting weak models, strong models, and humans do what they do best, solving heterogeneous multi-model concurrency bottlenecks. |
 
 ---
 
