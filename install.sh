@@ -484,3 +484,21 @@ if [ "$UPGRADE" = true ]; then
   log "  2. Check .termite-upgrade-report for upgrade context"
   log "  3. Run: cd ${TARGET_DIR} && ./scripts/field-arrive.sh"
 fi
+
+# ── Migration Hint ───────────────────────────────────────────────────
+if [ "$UPGRADE" = true ] && [ -d "${TARGET_DIR}/signals/observations" ]; then
+  has_old_signals=false
+  for f in "${TARGET_DIR}/signals/observations"/*.yaml; do
+    [ -f "$f" ] || continue
+    if ! grep -q "^quality_score:" "$f" 2>/dev/null; then
+      has_old_signals=true
+      break
+    fi
+  done
+  if [ "$has_old_signals" = true ]; then
+    echo ""
+    log "[MIGRATE] Pre-v5.0 signals detected. Preview migration:"
+    log "  cd ${TARGET_DIR} && ./scripts/field-migrate.sh"
+    log "Then apply:  ./scripts/field-migrate.sh --apply"
+  fi
+fi
