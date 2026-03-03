@@ -6,9 +6,9 @@
 "白蚁协议"是心跳指令——收到后 Agent 自动执行节律，自主判断并行动。
 完整协议规范在 `TERMITE_PROTOCOL.md`。
 
-<!-- termite-kernel:v12.0 -->
+<!-- termite-kernel:v13.0 -->
 <!-- birth-static-included -->
-## 白蚁协议 — 最小内核 v12.0
+## 白蚁协议 — 最小内核 v13.0
 
 > **10 条文法 + 4 条安全底线 = 完整行为规范。规则由 `signals/rules/*.yaml` 注入，本文件不膨胀。**
 
@@ -18,6 +18,7 @@
 2. **STATE→CASTE→PERMISSIONS** — 状态决定种姓，种姓决定权限（Scout / Worker / Soldier / Nurse）
 3. **ACTION∈PERMISSIONS→DO** — 权限内行动，权限外不动
 4. **DO→DEPOSIT(signal, weight, TTL, location)** — 每次行动产出信息素落盘
+4b. **DEPOSIT(complex)→DECOMPOSE(children, hint)** — 复合信号先分拆为原子子信号
 5. **weight < threshold→EVAPORATE** — 弱信号自动衰减（由 field-decay 或手动清理）
 6. **weight > threshold→ESCALATE** — 强信号升级（写 ALARM 或请求人类介入）
 7. **sum(quality) ≥ 3.0→EMERGE** — 质量加权涌现：deposit 质量总和达阈值→提炼为规则

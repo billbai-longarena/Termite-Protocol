@@ -6,6 +6,27 @@
 
 ---
 
+## v5.1 — Signal Dependency Graph (2026-03-03)
+
+### Changes
+- **Signal decomposition**: signals table gains `parent_id`, `child_hint`, `depth` fields for parent-child relationships
+- **field-decompose.sh**: New script for strong models to decompose complex signals into atomic sub-tasks
+- **Leaf-priority .birth**: field-arrive.sh now shows unclaimed leaf signals (not decomposed parents) in .birth ## task
+- **Auto-aggregation**: field-cycle.sh Step 4/8 auto-closes parent signals when all children complete
+- **DECOMPOSE hint**: When unclaimed signals < active agents, .birth injects decomposition guidance
+- **DB schema v4 → v5**: signals table +3 columns, +1 index
+- **Rule 4b**: DEPOSIT(complex) → DECOMPOSE(children, hint_per_child)
+
+### Action Required
+- Run `install.sh --upgrade` to get new field-decompose.sh and updated scripts
+- Existing signals are unaffected (parent_id defaults to NULL)
+
+### Action Optional
+- Strong models can now call `./scripts/field-decompose.sh` to split complex signals
+- Set `TERMITE_DECOMPOSE_MAX_DEPTH` (default: 3) and `TERMITE_DECOMPOSE_MIN_AGENT_RATIO` (default: 0.5)
+
+---
+
 ## v5.0 (2026-03-03)
 
 ### Changes

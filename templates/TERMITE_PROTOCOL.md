@@ -1,5 +1,5 @@
-<!-- termite-protocol:v5.0 -->
-# 白蚁协议 v5.0 (Termite Protocol)
+<!-- termite-protocol:v5.1 -->
+# 白蚁协议 v5.1 (Termite Protocol)
 
 白蚁协议的目的，是让多个不同水平的 Agent 同时工作，工作的目的是让三丘模型中提到的开发、产品和客户能共同成功、共同成长。成为各自最好的自己，也能共同达成非凡的成就。
 
@@ -70,6 +70,9 @@ v3.0 信息流：
 
 规则 4: DO → DEPOSIT(signal, weight, TTL, location)
         每个行动必须留下信息素痕迹——代码、文档、信号、WIP。禁止无声死亡。
+
+规则 4b: DEPOSIT(complex) → DECOMPOSE(children, hint_per_child)
+         复合信号先分拆为原子子信号再执行。子信号自包含：title + module + hint。
 
 规则 5: weight < threshold → EVAPORATE（自动）
         信号权重低于衰减阈值时自动蒸发归档。过时的信息素自然消散。
@@ -286,6 +289,21 @@ factor_adjustment:
 observability:
   field_breath: "concentration + effective_decay fields"
   log: "[termite:info] Decay: concentration=X factor=Y (base=Z)"
+```
+
+## 信号分拆配置 (Signal Decomposition)
+
+> **强模型主动分拆复合信号为原子子信号，弱模型各自 claim 一个子信号独立执行。**
+> Shepherd Effect 从被动模仿升级为主动指导：每个子信号自带定向 behavioral hint。
+
+```yaml
+# decomposition-config — parsed by field-decompose.sh and field-cycle.sh
+decompose:
+  max_depth: 3                        # 最大分拆深度 (top=0)
+  min_agent_ratio: 0.5                # unclaimed_signals/active_agents < 此值时触发提示
+  child_weight_inherit: true          # 子信号继承父信号 weight
+  auto_aggregate: true                # 所有子信号 done → 父信号 auto-done
+  blocked_escalation: 10              # 子信号 blocked → 父信号 weight +10
 ```
 
 ## 能力握手 (Capability Handshake)
@@ -1219,7 +1237,11 @@ last_touched: 2026-02-27
 owner: unassigned
 module: "path/to/module"
 tags: [tag1, tag2]
+source: autonomous        # autonomous | directive | emergent | decomposed
 next: "next action hint"
+parent_id: null           # parent signal ID (null = top-level)
+child_hint: null          # JSON: strong model guidance for this child
+depth: 0                  # tree depth (0 = top-level)
 ```
 
 **Observation** (`signals/observations/O-xxx.yaml`):
@@ -1292,7 +1314,7 @@ git worktree remove ../<project>-<feature>
 > 入口文件的心跳内核也从此处派生。
 
 ```
-# termite-kernel:v5.0
+# termite-kernel:v5.1
 # 白蚁协议 — 最小内核（10 语法规则 + 4 安全网）
 
 [语法]

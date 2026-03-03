@@ -20,7 +20,7 @@ This is the **协议源仓库 (protocol source repo)** for the Termite Protocol 
 
 ```
 templates/
-  TERMITE_PROTOCOL.md   ← Canonical protocol spec (v5.0). Changes here propagate to all host projects on next upgrade.
+  TERMITE_PROTOCOL.md   ← Canonical protocol spec (v5.1). Changes here propagate to all host projects on next upgrade.
   CLAUDE.md / AGENTS.md ← Entry file templates installed into host projects.
   TERMITE_SEED.md       ← Minimal protocol payload injected into generated agent systems.
   UPGRADE_NOTES.md      ← Structured changelog with per-version changes and action items for host projects.
@@ -48,9 +48,9 @@ docs/plans/             ← Design documents for major features.
 
 ## Current State
 
-- **Protocol version**: v5.0 (stateless + intelligent environment: artifact quality scoring, unified .birth, trace/deposit separation, Rule 10 Shepherd Effect, quality-weighted emergence)
+- **Protocol version**: v5.1 (signal dependency graph: parent-child decomposition, leaf-priority .birth, auto-aggregation, Rule 4b DECOMPOSE)
 - **Field lib version**: v22.0
-- **Entry kernel versions**: Claude v12.0, Agents v12.0
+- **Entry kernel versions**: Claude v13.0, Agents v13.0
 - **Host project colonies validated**: 0227/SalesTouch (production stable), OpenAgentEngine (audited, 7 findings closed), ReactiveArmor (weak model experiment, 6 findings), touchcli (A-005 Codex shepherd 2 findings closed; A-006 5-model heterogeneous swarm 5 findings open)
 
 ### Known Issues
@@ -90,6 +90,8 @@ A foundational re-examination of the protocol's core metaphor ("termites are bli
 **Nurse review identified 6 counter-arguments** (800-token budget tension, cargo culting risk, classification-at-exit instead of entrance, etc.) — see "批判与盲区" section in the design doc. Conclusion: insights 1+2 are solid; insight 3's principle is correct but mechanism needs refinement under token budget constraints.
 
 ### Recent Work
+
+- **v5.1 Signal Dependency Graph** — parent-child signal relationships solve work starvation in multi-agent swarms. Strong models decompose complex signals via `field-decompose.sh`, leaf-priority `.birth` display ensures each agent sees different unclaimed tasks, auto-aggregation closes parents when all children done. DB schema v4→v5, field lib v22→v23, kernel v12→v13.
 
 - **v5.0 Stateless + Intelligent Environment** — protocol philosophy revision: "all termites are stateless, the environment carries intelligence". Replaces PE-005's agent-classification approach with artifact quality scoring (0.0-1.0 per observation). Unified .birth template (state-driven budget, no agent pre-classification). Trace/deposit separation (traces=tool-facts don't decay, deposits=model-knowledge quality-weighted). Rule 10 (Shepherd Effect) promoted to core grammar. Quality-weighted emergence (sum≥3.0 replaces count≥3). DB schema v3→v4, kernel v11→v12. Addresses philosophy revision insights 1+2+3.
 
