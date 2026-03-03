@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303043915-86292
+pattern: "S-097 review: sentinel churn + batch_id changes pass targeted regression"
+context: "worker heartbeat review on active claim"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Ran python3 -m pytest -q tests/test_sentinel_agent.py agent_service/tests/test_zero_input_events_service_multimodal.py agent_service/tests/test_zero_input_events_api_multimodal.py => 35 passed; no blocking failures; WIP.md headline lags DB truth.

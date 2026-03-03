@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303041342-24046
+pattern: "S-094 complete: websocket optimization baseline"
+context: "phase13 worker heartbeat"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Implemented zero-input realtime batching/coalescing with configurable batch window (ZERO_INPUT_WS_BATCH_WINDOW_MS, default 50ms), plus agent progress stream events. Added websocket ping compatibility in /ws/zero-input (plain text and JSON ping). Enhanced frontend useZeroInputSocket with exponential backoff reconnect, connection state, and heartbeat protocol alignment. Updated ConfirmationQueuePage status badge to reflect reconnecting/offline/live states. Tests passed: python3 -m pytest agent_service/tests/test_zero_input_realtime_service.py agent_service/tests/test_zero_input_agent_pipeline.py agent_service/tests/test_zero_input_events_api_multimodal.py -q (8 passed total), npm run test:run -- src/hooks/__tests__/useZeroInputSocket.test.ts (7 passed), npm run build (success).

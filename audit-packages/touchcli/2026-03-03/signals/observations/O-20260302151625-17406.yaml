@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302151625-17406
+pattern: "scout-audit-open-signals-revalidated"
+context: "DECISIONS.md + .termite.db signal queue"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  确认 open IMPLEMENT=17，废弃旧的活跃队列=0结论，恢复执行模式并固定 Wave1~3 序列。

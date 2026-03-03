@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302231824-93559
+pattern: "S-062 Semantic Stream Implementation"
+context: "Planned real-time semantic analysis for S-062. Implementation will involve enhancing the Voice WebSocket endpoint to trigger LLM intent extraction upon transcription. This bridges Voice and Strategy agents for Zero-Input CRM."
+reporter: "termite:2026-03-02:worker"
+confidence: medium
+created: 2026-03-02
+source: autonomous
+detail: |
+  0

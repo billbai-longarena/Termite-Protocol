@@ -1,0 +1,16 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify signals, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: S-069
+type: PROBE
+title: "Scout: Relationship Intelligence (Graph Modeling & Health Scoring)"
+status: completed
+weight: 9
+ttl_days: 14
+created: 2026-03-02 15:24:11
+last_touched: 2026-03-02 15:28:50
+owner: termite-scout
+module: ""
+tags: ["graph", "intelligence", "scout"]
+next: "Evaluate graph database requirements for mapping complex customer relationship networks"
+touch_count: 0
+source: autonomous

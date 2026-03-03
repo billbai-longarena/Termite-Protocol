@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303050332-70489
+pattern: "S-099 regression validation complete (sentinel churn broadcast + frontend notification mapping)"
+context: "worker signal execution for Phase 14 validation"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Added backend/python/tests/test_sentinel_churn_broadcast.py and frontend/src/store/__tests__/notificationStore.test.ts; backend: 38 passed (sentinel+broadcast+realtime), frontend: 9 passed (notificationStore + useZeroInputSocket); commit=94dfe6e.

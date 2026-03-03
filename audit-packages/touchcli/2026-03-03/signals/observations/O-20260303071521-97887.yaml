@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303071521-97887
+pattern: "Heartbeat review: S-094/S-108 regression still green (cycle continue)"
+context: "S-094+S-108 heartbeat maintenance audit on swarm (2026-03-03 cycle)"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Re-ran key regressions under non-blocking review claims. Results unchanged: test_s094_websocket_performance.py 5 passed; test_knowledge_service.py 10 passed. Review claims acquired and released cleanly; no open signals.

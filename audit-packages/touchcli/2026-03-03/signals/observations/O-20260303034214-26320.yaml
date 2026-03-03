@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303034214-26320
+pattern: "S-092 complete: API multimodal router wiring covered"
+context: "backend/python/agent_service/tests/test_zero_input_events_api_multimodal.py"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Added API-level test that monkeypatches multimodal router output and verifies /zero-input/process-event consumes normalized route mode/hints and persists confidence audit rows.

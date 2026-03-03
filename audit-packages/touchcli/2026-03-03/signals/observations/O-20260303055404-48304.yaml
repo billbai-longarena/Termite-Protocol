@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303055404-48304
+pattern: "scout-queue-governance-audit"
+context: "heartbeat/scout"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Recorded queue-governance audit in DECISIONS.md: DB truth lock, no YAML reimport under active claims, and S-103-first execution recommendation.

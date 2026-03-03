@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303052509-80986
+pattern: "heartbeat-empty-active-queue"
+context: "colony-state/db-signals"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Arrival heartbeat confirmed 0 open/claimed signals; all 47 signals are completed. No claimable work in this cycle.

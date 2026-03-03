@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify rules, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: R-020
+trigger: "When I observe: s-108: final strategic handover"
+action: "Follow the pattern described in trigger"
+source_observations: [O-20260303073637-91865,O-20260303080050-2565,O-20260303081135-56806]
+hit_count: 0
+disputed_count: 0
+last_triggered: 2026-03-03
+created: 2026-03-03
+tags: []

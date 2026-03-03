@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302200134-27760
+pattern: "PHASE6-BENCHMARK-SUMMARY"
+context: "Phase 6 (S-005) performance benchmarks completed. Worker session: Quantified sync throughput (>15 msgs/sec) and RTO (<10s for 100 msgs). Ready for final Phase 6 hardening."
+reporter: "termite:2026-03-02:worker"
+confidence: medium
+created: 2026-03-02
+source: autonomous
+detail: |
+  0

@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303025805-1382
+pattern: "YAML drift warning false-positive fixed"
+context: "field-arrive startup consistency checks"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Updated scripts/field-lib.sh yaml_newer_than_db to ignore DB-exported READ-ONLY snapshots when comparing mtimes against .termite.db, preventing repeated manual-edit warnings on clean state.

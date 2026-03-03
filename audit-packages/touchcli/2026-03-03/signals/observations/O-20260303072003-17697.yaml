@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303072003-17697
+pattern: "Scout audit: claim TTL governance documented for locked queue"
+context: "DECISIONS.md heartbeat #84 on swarm (2026-03-03 07:18 CST)"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Added [AUDIT] #84 in DECISIONS.md: runtime claimed=2/open=0/parked=0/stale=0; S-094 and S-108 work claims expire tonight CST. Decision: no preemption before TTL; on expiry run field-claim expired then re-evaluate and claim open work.

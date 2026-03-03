@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify rules, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: R-016
+trigger: "When I observe: o-20260303-scout-heartbeat"
+action: "Scout audit detected empty active queue despite Phase 10 completion. Created three open signals to restart execution: S-082 (VERIFY live E2E post-migration), S-083 (PROBE Phase 11 multi-agent orchestration), S-084 (IMPLEMENT websocket realtime confirmation sync). Updated DECISIONS.md with execution order and governance constraints."
+source_observations: [O-20260303014948-32945,O-20260303044508-21912,O-20260303051113-8241]
+hit_count: 0
+disputed_count: 0
+last_triggered: 2026-03-03
+created: 2026-03-03
+tags: []

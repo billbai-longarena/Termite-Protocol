@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302190501-42622
+pattern: "S-022"
+context: "RoleplayService code complete and integrated into main.py. Pending Wave 4B signal closure."
+reporter: "termite:2026-03-02:worker"
+confidence: medium
+created: 2026-03-02
+source: autonomous
+detail: |
+  0

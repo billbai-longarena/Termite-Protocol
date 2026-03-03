@@ -1,0 +1,16 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify signals, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: S-080
+type: IMPLEMENT
+title: "Agent Integration for Zero-Input Events"
+status: completed
+weight: 16
+ttl_days: 14
+created: 2026-03-03
+last_touched: 2026-03-03
+owner: unassigned
+module: "backend/python"
+tags: [backend,agents,zero-input,phase-10]
+next: "Follow-up: add unit/E2E tests for SalesAgent.process_zero_input_event and SentinelAgent.scan_zero_input_objects"
+touch_count: 0
+source: autonomous

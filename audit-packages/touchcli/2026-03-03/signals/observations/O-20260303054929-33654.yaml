@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303054929-33654
+pattern: "s-111-semantic-search-complete"
+context: "backend/memory-service"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Added optional OpenAI embedding client, pgvector SQL search fallback for PostgreSQL, API /memory/search wired to scored service path, and semantic-search unit tests.

@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302171625-65857
+pattern: "Opportunity create compatibility fix applied"
+context: "backend/python/agent_service/models.py + main.py create_opportunity"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Added legacy non-null opportunities.name mapping and populate name=req.title to satisfy bootstrap schema; POST /opportunities now succeeds in live smoke

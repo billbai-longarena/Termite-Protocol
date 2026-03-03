@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303073059-64856
+pattern: "Scout monitor: strategic breath confirms stable locked queue"
+context: "scout heartbeat cycle on swarm (2026-03-03 07:30 CST)"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Strategic breath session observed no new open/parked/stale signals. Active work claims remain S-094/S-108 with ~21.92h/~22.14h until expiry. Per DECISIONS #84, keep non-preemptive monitoring until TTL window.

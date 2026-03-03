@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303013038-83900
+pattern: "o-20260303-s081-tools-exports"
+context: "backend-python-tests"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Completed S-081 by adding compatibility bridge in backend/python/agent_service/tools/__init__.py to re-export legacy tools.py API (ToolRegistry/ToolDefinition/ToolCategory/ToolParameter/Proposal* and GENERATE_PROPOSAL_TOOL) while preserving fab_analysis_tool package imports. Verified: pytest tests/test_agent_integration.py -k tool_registry_registration or tool_execution (3 passed) and pytest tests/test_proposal_generator.py (8 passed). Remaining failure in broader subset: tests/test_sentinel_agent.py::test_sentinel_scan_stale_opportunity (pre-existing behavioral issue).

@@ -1,0 +1,16 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify signals, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: S-073
+type: PROBE
+title: "Phase 10: Zero-Input CRM PoC Architecture & Wireframes"
+status: completed
+weight: 20
+ttl_days: 14
+created: 2026-03-03
+last_touched: 2026-03-03
+owner: unassigned
+module: "phase-10"
+tags: ["phase-10","architecture","zero-input-crm","design"]
+next: ""
+touch_count: 1
+source: directive

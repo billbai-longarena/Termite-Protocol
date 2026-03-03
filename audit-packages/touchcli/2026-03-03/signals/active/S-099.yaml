@@ -1,0 +1,16 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify signals, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: S-099
+type: work
+title: "Phase 14: Automated Sentinel Regression & E2E Validation"
+status: completed
+weight: 29
+ttl_days: 14
+created: 2026-03-03
+last_touched: 2026-03-02 21:02:56
+owner: termite-1772485142-41888
+module: ""
+tags: []
+next: "S-099 validation passed; keep S-097 under lock-monitoring until work lane available"
+touch_count: 2
+source: autonomous

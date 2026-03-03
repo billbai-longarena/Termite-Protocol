@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303031221-41977
+pattern: "S-087 complete: async SalesAgent pipeline on confirmation"
+context: "backend/python/agent_service/api/zero_input_events.py + services/zero_input_agent_pipeline.py"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Refactored confirm_event to schedule a dedicated async pipeline service after commit; added run/schedule helpers with task lifecycle tracking and error capture; added tests for success, error handling, scheduling, and empty object skip; validated with python3 -m pytest on pipeline and realtime suites.

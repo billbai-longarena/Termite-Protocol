@@ -1,0 +1,16 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify signals, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: S-059
+type: HOLE
+title: "Fix notifications create endpoint to persist low-priority records"
+status: completed
+weight: 8
+ttl_days: 14
+created: 2026-03-02
+last_touched: 2026-03-02
+owner: termite-main
+module: "backend/python/agent_service/api/notifications.py"
+tags: ["notifications","api","regression"]
+next: "POST /notifications should persist regardless of delivery suppression"
+touch_count: 1
+source: autonomous

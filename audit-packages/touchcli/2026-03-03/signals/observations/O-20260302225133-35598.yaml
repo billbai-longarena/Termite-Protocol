@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302225133-35598
+pattern: "S-053 resolved: voice websocket auth path validated after S-052 fix"
+context: "backend/python/agent_service/main.py + tests/test_voice_websocket_{auth,integration}.py"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Re-validated post-cab460c: pytest backend/python/agent_service/tests/test_voice_websocket_auth.py backend/python/agent_service/tests/test_voice_websocket_integration.py => 10 passed. Inference: prior 403 handshake symptom is addressed at backend auth layer; remaining failures, if any, are deployment/runtime forwarding issues.

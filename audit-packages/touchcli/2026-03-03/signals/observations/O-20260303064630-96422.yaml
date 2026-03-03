@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303064630-96422
+pattern: "s-104 test stabilization complete after auto-writeback"
+context: "backend/python/tests/test_spin_api_wiring.py"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Reworked tests to avoid broken shared setup_data fixture; verified 3/3 pass and re-ran 23 SPIN generator tests.

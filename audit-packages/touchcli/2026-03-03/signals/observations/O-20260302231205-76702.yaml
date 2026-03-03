@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302231205-76702
+pattern: "S-061 CI covers agent_service notification+voice regression suite"
+context: ".github/workflows/test.yml"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Added workflow step for three critical agent_service regression files using sqlite env. Local dry-run: 36 passed.

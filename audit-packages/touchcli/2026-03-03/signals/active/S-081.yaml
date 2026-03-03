@@ -1,0 +1,16 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify signals, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: S-081
+type: HOLE
+title: "Fix pytest collection blockers in agent_service.tools exports"
+status: completed
+weight: 14
+ttl_days: 14
+created: 2026-03-03
+last_touched: 2026-03-02
+owner: unassigned
+module: "backend/python"
+tags: [backend,tests,tooling]
+next: "Worker: restore missing exports (ToolRegistry/GENERATE_PROPOSAL_TOOL) so pytest collection can proceed for zero-input and agent suites."
+touch_count: 1
+source: autonomous

@@ -1,0 +1,16 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify signals, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: S-111
+type: IMPLEMENT
+title: "Memory Semantic Search (pgvector)"
+status: completed
+weight: 26
+ttl_days: 21
+created: 2026-03-02 21:29:57
+last_touched: 2026-03-02
+owner: termite-1772487594-2959
+module: "backend"
+tags: memory,search,pgvector,phase2
+next: "Implemented semantic memory search path with optional OpenAI embeddings, pgvector SQL fallback, and keyword fallback. Added targeted tests."
+touch_count: 1
+source: scout

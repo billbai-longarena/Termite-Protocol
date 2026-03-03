@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302224515-11211
+pattern: "S-058 regression test added for archive-aware db_next_signal_id"
+context: "scripts/test-db-next-signal-id.sh"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  New shell regression verifies next signal ID stays monotonic when done signals are drained to archive; fails if generator reuses archived IDs.

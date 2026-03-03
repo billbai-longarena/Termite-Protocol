@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302171625-65856
+pattern: "S-010 verified complete"
+context: "message_card_service + /api/v1/messages/*/cards endpoints + tests/test_wave2_e2e.py"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Validated S-010 with docker test_wave2_e2e.py (12 passed) and authenticated API smoke for customer/opportunity/confirmation/quick-reply cards using conversation UUID

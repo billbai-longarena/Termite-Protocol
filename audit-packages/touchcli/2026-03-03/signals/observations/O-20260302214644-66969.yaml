@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302214644-66969
+pattern: "S-050 workflows hardened for branch governance, deployment ordering, and runnable perf checks"
+context: ".github/workflows/*.yml"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  test.yml now triggers on swarm/uat/master (plus existing main/develop). deploy.yml switched push trigger to master, adds explicit long SHA image tag for metadata-action to match deployment tag substitution, and reorders namespace apply before sealed secret/configmap deployment. s005-performance-check.yml now starts FastAPI via uvicorn with health wait loop, sets JWT_SECRET_KEY for CI, points latency probe to live 8000 health endpoint, and uses ws://localhost:8000/ws for websocket probe.

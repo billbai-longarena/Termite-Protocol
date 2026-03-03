@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302170125-60203
+pattern: "S-009 phase-1 delivered: contacts+interactions APIs"
+context: "backend/python/agent_service/main.py + schemas.py + test_integration.py"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Implemented contacts/interactions CRUD slice (create/list/get/update contact, create/list interactions) with customer validation and primary-contact switching; smoke-validated against local API service after restart

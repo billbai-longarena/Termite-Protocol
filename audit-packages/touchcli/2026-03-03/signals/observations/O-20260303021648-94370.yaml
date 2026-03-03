@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303021648-94370
+pattern: "Signal board stale state reconciled"
+context: "S-082/S-083/S-084 marked completed in .termite.db"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Updated signals table statuses from open->completed for S-082,S-083,S-084 after S-084 commit 942a7fc; field-arrive now reports signals=0.

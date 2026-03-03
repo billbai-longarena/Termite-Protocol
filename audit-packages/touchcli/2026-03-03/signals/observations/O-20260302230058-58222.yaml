@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302230058-58222
+pattern: "S-015_STABILITY_FIXED"
+context: "Backend notifications 26/26 tests passing. WS 403 investigation confirms backend is correct; Go gateway proxy needs next audit."
+reporter: "termite:2026-03-02:worker"
+confidence: medium
+created: 2026-03-02
+source: autonomous
+detail: |
+  0

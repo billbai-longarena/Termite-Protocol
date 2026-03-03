@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303062256-34495
+pattern: "S-112 relationship graph auth-aware fetch delivered"
+context: "frontend RelationshipGraph"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Commit 14e53a2 updates RelationshipGraph to include Bearer token (if present) on both graph and predictive-insights requests, and adds non-OK guard for API failures. Added unit coverage for auth header propagation and stabilized localStorage mock reset in test setup for this suite. Verified: npm run test -- src/components/RelationshipGraph/RelationshipGraph.test.tsx => 14 passed.

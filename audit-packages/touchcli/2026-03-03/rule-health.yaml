@@ -1,0 +1,110 @@
+# Rule health: hit_count vs disputed_count
+# disputed_ratio > 0.3 flags a rule for review
+# Extracted from: touchcli
+# Date: 2026-03-03
+rules:
+  - id: R-001
+    trigger: "When I observe: o-20260302-heartbeat"
+    hit_count: 0
+    disputed_count: 0
+    disputed_ratio: 0.00
+  - id: R-002
+    trigger: "When I observe: o-20260302-heartbeat"
+    hit_count: 0
+    disputed_count: 0
+    disputed_ratio: 0.00
+  - id: R-003
+    trigger: "When I observe: o-20260302-heartbeat"
+    hit_count: 0
+    disputed_count: 0
+    disputed_ratio: 0.00
+  - id: R-004
+    trigger: "When I observe: o-20260303-scout-heartbeat"
+    hit_count: 0
+    disputed_count: 0
+    disputed_ratio: 0.00
+  - id: R-005
+    trigger: "When I observe: heartbeat"
+    hit_count: 0
+    disputed_count: 0
+    disputed_ratio: 0.00
+  - id: R-006
+    trigger: "When I observe: heartbeat"
+    hit_count: 0
+    disputed_count: 0
+    disputed_ratio: 0.00
+  - id: R-007
+    trigger: "When I observe: heartbeat"
+    hit_count: 0
+    disputed_count: 0
+    disputed_ratio: 0.00
+  - id: R-008
+    trigger: "When I observe: heartbeat"
+    hit_count: 0
+    disputed_count: 0
+    disputed_ratio: 0.00
+  - id: R-009
+    trigger: "When I observe: heartbeat"
+    hit_count: 0
+    disputed_count: 0
+    disputed_ratio: 0.00
+  - id: R-010
+    trigger: "When I observe: heartbeat"
+    hit_count: 0
+    disputed_count: 0
+    disputed_ratio: 0.00
+  - id: R-011
+    trigger: "When I observe: heartbeat"
+    hit_count: 0
+    disputed_count: 0
+    disputed_ratio: 0.00
+  - id: R-012
+    trigger: "When I observe: heartbeat"
+    hit_count: 0
+    disputed_count: 0
+    disputed_ratio: 0.00
+  - id: R-013
+    trigger: "When I observe: heartbeat"
+    hit_count: 0
+    disputed_count: 0
+    disputed_ratio: 0.00
+  - id: R-014
+    trigger: "When I observe: heartbeat"
+    hit_count: 0
+    disputed_count: 0
+    disputed_ratio: 0.00
+  - id: R-015
+    trigger: "When I observe: s-096"
+    hit_count: 0
+    disputed_count: 0
+    disputed_ratio: 0.00
+  - id: R-016
+    trigger: "When I observe: o-20260303-scout-heartbeat"
+    hit_count: 0
+    disputed_count: 0
+    disputed_ratio: 0.00
+  - id: R-017
+    trigger: "When I observe: s-108"
+    hit_count: 0
+    disputed_count: 0
+    disputed_ratio: 0.00
+  - id: R-018
+    trigger: "When I observe: s-108"
+    hit_count: 0
+    disputed_count: 0
+    disputed_ratio: 0.00
+  - id: R-019
+    trigger: "When I observe: s-108"
+    hit_count: 0
+    disputed_count: 0
+    disputed_ratio: 0.00
+  - id: R-020
+    trigger: "When I observe: s-108: final strategic handover"
+    hit_count: 0
+    disputed_count: 0
+    disputed_ratio: 0.00
+  - id: R-021
+    trigger: "When I observe: s-108: post-metabolism readiness verification"
+    hit_count: 0
+    disputed_count: 0
+    disputed_ratio: 0.00

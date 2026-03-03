@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302184358-27952
+pattern: "S-016 Coach weekly report implemented with aggregation + LLM fallback narrative"
+context: "backend/python/agent_service/services/coach_service.py, backend/python/tests/test_coach_service.py, backend/python/agent_service/main.py"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Added CoachService weekly summary/insights/recommendations, deterministic fallback narrative and optional AsyncOpenAI narrative. Verified with python3 -m pytest tests/test_coach_service.py (3 passed).

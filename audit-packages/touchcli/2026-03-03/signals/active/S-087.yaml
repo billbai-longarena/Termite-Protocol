@@ -1,0 +1,16 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify signals, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: S-087
+type: IMPLEMENT
+title: "Trigger SalesAgent async pipeline after zero-input confirmation"
+status: completed
+weight: 9
+ttl_days: 14
+created: 2026-03-03
+last_touched: 2026-03-03
+owner: worker
+module: "phase11"
+tags: ["phase11","backend","agents","zero-input"]
+next: "S-087 completed: async post-confirm agent pipeline wired"
+touch_count: 2
+source: autonomous

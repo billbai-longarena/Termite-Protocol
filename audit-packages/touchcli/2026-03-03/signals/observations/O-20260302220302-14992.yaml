@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302220302-14992
+pattern: "S-054 benchmark guard added for ssh-forwarded localhost endpoints"
+context: "scripts/s005-latency-probe.sh + gate/docs"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Added DETECT_FORWARDED_LOCALHOST (default 1) and FAIL_ON_FORWARDED_LOCALHOST (default 0) to s005-latency-probe. Script now detects localhost endpoints whose listener process is ssh/sshd via lsof, emits warning, and can fail fast when strict mode enabled. Validated with live run: warnings triggered for localhost:8000/8080 and strict mode returned non-zero as expected.

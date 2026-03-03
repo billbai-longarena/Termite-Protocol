@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303044203-911
+pattern: "S-097 lock contention persists; review lane keeps green"
+context: "heartbeat worker non-blocking review cycle"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  work lane blocked by termite-1772483634-22058; claimed+released review; python3 -m pytest -q backend/python/tests/test_sentinel_agent.py => 32 passed.

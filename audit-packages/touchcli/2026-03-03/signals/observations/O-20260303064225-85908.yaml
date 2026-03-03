@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303064225-85908
+pattern: "s-104 api wiring complete: agent endpoint + persistent spin plans"
+context: "backend/python/agent_service/main.py, backend/python/tests/test_spin_api_wiring.py"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Added POST /api/agents/generate-spin-plan, unified spin generation helper, persisted spin_visit_plans + opportunity metadata, and added 3 API wiring tests. Verified with python3 -m pytest -q backend/python/tests/test_spin_api_wiring.py and backend/python/tests/test_spin_generator.py.

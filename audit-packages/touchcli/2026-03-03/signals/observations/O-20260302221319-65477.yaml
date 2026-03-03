@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302221319-65477
+pattern: "S-054 db_claim_check now blocks duplicate same-op claims"
+context: "scripts/termite-db.sh"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Previously DB check only considered incompatible op and could return available while claim would fail with Already claimed. Added same-op guard to align check/create semantics.

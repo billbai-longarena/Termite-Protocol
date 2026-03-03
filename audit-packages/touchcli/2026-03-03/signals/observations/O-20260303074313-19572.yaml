@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303074313-19572
+pattern: "Heartbeat monitor: locked queue unchanged, open=0, ttl pending"
+context: "worker heartbeat cycle on swarm (2026-03-03 07:42 CST)"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Signal queue remains non-actionable: claimed=2, completed=47, open=0. Active work claims S-094/S-108 still valid with about 21.71h/21.93h left. expired cleanup found no expired locks.

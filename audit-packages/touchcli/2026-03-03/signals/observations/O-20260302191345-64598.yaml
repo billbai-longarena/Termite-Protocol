@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302191345-64598
+pattern: "S-017 minimal PWA上线：runtime SW 注册 + theme metadata + PWA client types"
+context: "frontend/index.html, frontend/src/main.tsx, frontend/src/vite-env.d.ts"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Enabled virtual:pwa-register auto registration and offline-ready notification; added theme-color and app title. Signal kept open for IndexedDB queue + background sync phase.

@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302221726-71678
+pattern: "S-054 db_claim_check aligned with claimable statuses and duplicate review semantics"
+context: "scripts/termite-db.sh"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  check now returns blocked for non-active statuses (e.g. parked/missing), blocks same-op review duplicates, and remains available for compatible review on claimed signals.

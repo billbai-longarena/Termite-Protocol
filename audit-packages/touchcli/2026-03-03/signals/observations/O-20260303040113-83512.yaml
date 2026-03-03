@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303040113-83512
+pattern: "S-093 complete: dependency floor + whisper compatibility"
+context: "backend/python dependency probe"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Updated pyproject/requirements to langchain>=0.1.20,<0.2.0 and openai>=1.20.0,<2.0.0. Refactored VoiceService._call_whisper_api to prefer OpenAI 1.x client (audio.transcriptions.create) with legacy fallback. Added two unit tests for v1 and legacy branches. Verification: python3 -m pytest backend/python/agent_service/tests/test_voice_tts.py -q => 6 passed.

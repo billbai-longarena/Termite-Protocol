@@ -1,0 +1,16 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify signals, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: S-092
+type: IMPLEMENT
+title: "Add API integration test for zero-input multimodal router wiring"
+status: completed
+weight: 5
+ttl_days: 14
+created: 2026-03-03
+last_touched: 2026-03-03
+owner: worker
+module: "backend/python"
+tags: ["quality","api","zero-input","multimodal"]
+next: "S-092 completed: API-level multimodal router wiring regression added"
+touch_count: 2
+source: autonomous

@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303011535-48807
+pattern: "o-20260303-migration-runtime"
+context: "backend-python"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Verified migration command requires executable from ./venv/bin/alembic. Without DATABASE_URL, alembic.ini placeholder driver:// fails. With DATABASE_URL=sqlite:////tmp/touchcli_migration_verify.db, upgrade head succeeds through 003_create_zero_input_tables.

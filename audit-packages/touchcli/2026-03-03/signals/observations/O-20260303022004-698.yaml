@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303022004-698
+pattern: "Gateway websocket parity for zero-input queue"
+context: "Go gateway now forwards /ws/zero-input/:target_user_id to Python service with query passthrough"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Added proxyZeroInputWebSocket route and shared proxyBidirectionalWebSocket helper in backend/go/main.go; forwards raw query token for browser-auth websocket usage.

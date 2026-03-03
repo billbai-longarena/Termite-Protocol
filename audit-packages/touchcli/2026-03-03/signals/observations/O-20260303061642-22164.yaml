@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303061642-22164
+pattern: "S-109 reminder scheduling metadata persistence fixed"
+context: "backend/python notifications scheduling"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Fixed schedule_task_id persistence bug in /notifications/follow-up/schedule by reassigning a copied metadata payload before commit (commit 6daa02a). Updated S-109 integration test to align with API error envelope (error/code/path). Verified: pytest agent_service/tests/test_follow_up_reminder_schedule.py -q => 3 passed.

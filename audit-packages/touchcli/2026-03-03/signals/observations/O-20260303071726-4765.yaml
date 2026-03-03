@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303071726-4765
+pattern: "Heartbeat monitor: no open signals, claims valid until tonight"
+context: "swarm maintenance cycle with locked queue (2026-03-03 07:16 CST)"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Arrival completed as worker. Active claims unchanged: S-094 and S-108 work-locked, TTL expiry 2026-03-03 21:25:50/21:39:03 CST. No open signals available for claim. field-claim expired cleanup found none. One transient SQLite lock observed during parallel read, resolved by serialized retry without data drift.

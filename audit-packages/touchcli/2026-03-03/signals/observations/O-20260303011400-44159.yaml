@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303011400-44159
+pattern: "o-20260303-heartbeat"
+context: "signal-consistency"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Reimported S-076/S-077/S-078 from YAML to DB, cleared stale S-076 claim via cleanup_nonactive; DB now shows S-076,S-077,S-078 completed and no active claims.

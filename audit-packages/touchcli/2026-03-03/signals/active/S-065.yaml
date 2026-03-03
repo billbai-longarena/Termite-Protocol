@@ -1,0 +1,16 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify signals, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: S-065
+type: HOLE
+title: "Enforce notification ownership on read/delete endpoints"
+status: completed
+weight: 9
+ttl_days: 14
+created: 2026-03-02
+last_touched: 2026-03-02
+owner: termite-codex
+module: "agent_service"
+tags: ["security","notifications"]
+next: "Verify cross-user access is rejected with 403 and notification state remains unchanged"
+touch_count: 1
+source: autonomous

@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303002503-31558
+pattern: "frontend-relationshipgraph-layout-test-hardening"
+context: "heartbeat-worker-maintenance"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Expanded RelationshipGraph.test.tsx from 4 to 6 cases. Added SVG topology assertions (node/edge counts, center node translate(200,200), edge stroke-width from strength) and low-churn style assertion (no high-risk class). Verified with vitest: 6/6 pass.

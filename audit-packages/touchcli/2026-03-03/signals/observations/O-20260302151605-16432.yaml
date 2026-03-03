@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302151605-16432
+pattern: "S-007 deployment readiness: RouterAgent + LLMRouter implemented (255+183 LOC), keyword fallback complete, OpenAI SDK configured. BLOCKER: Requires OPENAI_API_KEY for live testing. Recommended: Add integration test with mock/real API calls."
+context: "backend/python/agent_service (LLM routing framework ready)"
+reporter: "termite:2026-03-02:worker"
+confidence: high
+created: 2026-03-02
+source: autonomous
+detail: |
+  Missing: Live deployment validation, token usage monitoring, error recovery testing

@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:52Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260302195552-5448
+pattern: "heartbeat monitor: waiting for S-032 owner release"
+context: "signals claimed state"
+reporter: "termite:2026-03-02:worker"
+confidence: medium
+created: 2026-03-02
+source: autonomous
+detail: |
+  No open signals available; S-032 remains claimed by agent-langgraph-1.

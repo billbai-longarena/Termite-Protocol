@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T00:29:53Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303080739-32690
+pattern: "Scout monitor: strategic breath confirms queue still non-actionable"
+context: "scout heartbeat cycle on swarm (2026-03-03 08:07 CST)"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  State remains unchanged: claimed=2, completed=43, open=0. S-094/S-108 work locks still active with about 21.31h/21.53h before TTL expiry. No expired locks cleaned; continue non-preemptive monitoring.
