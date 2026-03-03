@@ -155,6 +155,49 @@ for obs_file in "${obs_files[@]}"; do
   fi
 done
 
+# ── DB Migration (if DB exists) ──────────────────────────────────────
+
+db_updated=0
+if [ "$APPLY" = true ] && has_db && has_sqlite; then
+  source "${SCRIPT_DIR}/termite-db.sh"
+  db_ensure
+
+  log_info "Updating DB records..."
+
+  if [ "$FORCE" = true ]; then
+    where_extra=""
+  else
+    where_extra="AND (quality_score IS NULL OR quality_score = 0.5)"
+  fi
+
+  for obs_file in "${obs_files[@]}"; do
+    obs_id=$(yaml_read "$obs_file" "id")
+    [ -z "$obs_id" ] && continue
+
+    # Read computed fields from YAML (or archived copy)
+    local_file="$obs_file"
+    archived_file="${ARCHIVE_OBS_DIR}/$(basename "$obs_file")"
+    [ -f "$archived_file" ] && local_file="$archived_file"
+
+    score=$(yaml_read "$local_file" "quality_score")
+    stype=$(yaml_read "$local_file" "source_type")
+    [ -z "$score" ] && continue
+
+    # Update quality_score and source_type
+    db_exec "UPDATE observations SET quality_score = ${score}, source_type = '$(db_escape "${stype:-deposit}")' WHERE id = '$(db_escape "$obs_id")' ${where_extra};" 2>/dev/null || true
+
+    # Mark archived in DB
+    should_archive=$(awk "BEGIN { print (${score} < ${ARCHIVE_THRESHOLD}) ? 1 : 0 }")
+    if [ "$should_archive" -eq 1 ]; then
+      db_exec "UPDATE observations SET quality = 'archived' WHERE id = '$(db_escape "$obs_id")';" 2>/dev/null || true
+    fi
+
+    db_updated=$((db_updated + 1))
+  done
+
+  log_info "DB updated: ${db_updated} records"
+fi
+
 # ── Summary ──────────────────────────────────────────────────────────
 
 computed=$((total - skipped))
