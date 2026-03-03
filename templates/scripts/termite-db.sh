@@ -33,6 +33,9 @@ db_ensure() {
   if [ "${current_ver:-1}" -lt 4 ]; then
     db_migrate_v3_to_v4
   fi
+  if [ "${current_ver:-1}" -lt 5 ]; then
+    db_migrate_v4_to_v5
+  fi
 }
 
 db_migrate_v2_to_v3() {
@@ -56,6 +59,16 @@ db_migrate_v3_to_v4() {
   db_exec "ALTER TABLE observations ADD COLUMN source_type TEXT DEFAULT 'deposit';" 2>/dev/null || true
   db_exec "INSERT OR REPLACE INTO schema_version(version) VALUES (4);"
   log_info "DB schema migration to v4 complete"
+}
+
+db_migrate_v4_to_v5() {
+  log_info "Migrating DB schema v4 → v5"
+  db_exec "ALTER TABLE signals ADD COLUMN parent_id TEXT DEFAULT NULL;" 2>/dev/null || true
+  db_exec "ALTER TABLE signals ADD COLUMN child_hint TEXT DEFAULT NULL;" 2>/dev/null || true
+  db_exec "ALTER TABLE signals ADD COLUMN depth INTEGER DEFAULT 0;" 2>/dev/null || true
+  db_exec "CREATE INDEX IF NOT EXISTS idx_signals_parent ON signals(parent_id);" 2>/dev/null || true
+  db_exec "INSERT OR REPLACE INTO schema_version(version) VALUES (5);"
+  log_info "DB schema migration to v5 complete"
 }
 
 db_exec() {
@@ -594,10 +607,10 @@ db_export_signal_yaml() {
   # Format single signal row as YAML, output to stdout
   # Args: signal_id
   local row
-  row=$(db_query "SELECT id,type,title,status,weight,ttl_days,created,last_touched,owner,module,tags,next_hint,touch_count,source,parked_reason,parked_conditions,parked_at FROM signals WHERE id='$(db_escape "$1")';")
+  row=$(db_query "SELECT id,type,title,status,weight,ttl_days,created,last_touched,owner,module,tags,next_hint,touch_count,source,parked_reason,parked_conditions,parked_at,parent_id,child_hint,depth FROM signals WHERE id='$(db_escape "$1")';")
   [ -z "$row" ] && return 1
 
-  IFS=$'\t' read -r id type title status weight ttl_days created last_touched owner module tags next_hint touch_count source parked_reason parked_conditions parked_at <<< "$row"
+  IFS=$'\t' read -r id type title status weight ttl_days created last_touched owner module tags next_hint touch_count source parked_reason parked_conditions parked_at parent_id child_hint depth <<< "$row"
   cat <<EOF
 # READ-ONLY — auto-exported from .termite.db ($(now_iso))
 # To modify signals, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
@@ -619,6 +632,9 @@ EOF
   [ -n "$parked_reason" ] && echo "parked_reason: ${parked_reason}"
   [ -n "$parked_conditions" ] && echo "parked_conditions: \"${parked_conditions}\""
   [ -n "$parked_at" ] && echo "parked_at: ${parked_at}"
+  [ -n "$parent_id" ] && echo "parent_id: ${parent_id}"
+  [ -n "$child_hint" ] && echo "child_hint: '${child_hint}'"
+  [ "${depth:-0}" -gt 0 ] && echo "depth: ${depth}"
   return 0
 }
 
@@ -689,6 +705,79 @@ tags: ${tags}
 EOF
   done <<< "$rows"
   return 0
+}
+
+# ── Signal Decomposition (v5.1) ──────────────────────────────────────
+
+db_signal_aggregate() {
+  # Auto-close parent signals when all children are done
+  # Returns number of parents auto-closed
+  local closed
+  closed=$(db_exec "
+    SELECT COUNT(*) FROM signals
+    WHERE id IN (
+      SELECT DISTINCT parent_id FROM signals
+      WHERE parent_id IS NOT NULL
+      GROUP BY parent_id
+      HAVING COUNT(*) = SUM(CASE WHEN status IN ('done','completed') THEN 1 ELSE 0 END)
+    )
+    AND status NOT IN ('done','completed','archived');
+  ")
+
+  if [ "${closed:-0}" -gt 0 ]; then
+    db_exec "
+      UPDATE signals SET status='done', last_touched='$(today_iso)'
+      WHERE id IN (
+        SELECT DISTINCT parent_id FROM signals
+        WHERE parent_id IS NOT NULL
+        GROUP BY parent_id
+        HAVING COUNT(*) = SUM(CASE WHEN status IN ('done','completed') THEN 1 ELSE 0 END)
+      )
+      AND status NOT IN ('done','completed','archived');
+    "
+    log_info "Auto-aggregated ${closed} parent signals to done"
+  fi
+
+  # Child blocked → parent weight escalation
+  db_exec "
+    UPDATE signals SET weight = MIN(weight + 10, 100)
+    WHERE id IN (
+      SELECT DISTINCT parent_id FROM signals
+      WHERE parent_id IS NOT NULL AND status = 'blocked'
+    )
+    AND status NOT IN ('done','completed','archived');
+  " 2>/dev/null || true
+
+  echo "${closed:-0}"
+}
+
+db_unclaimed_leaf_count() {
+  # Count open leaf signals (unclaimed, no active children)
+  db_exec "
+    SELECT COUNT(*) FROM signals s
+    WHERE s.status = 'open'
+      AND NOT EXISTS (
+        SELECT 1 FROM signals c
+        WHERE c.parent_id = s.id
+        AND c.status NOT IN ('done','completed','archived')
+      );
+  "
+}
+
+db_leaf_top_signal() {
+  # Return best unclaimed leaf signal (for .birth ## task)
+  db_query "
+    SELECT s.id, s.type, s.title, s.next_hint, s.child_hint, s.parent_id, s.module
+    FROM signals s
+    WHERE s.status = 'open'
+      AND NOT EXISTS (
+        SELECT 1 FROM signals c
+        WHERE c.parent_id = s.id
+        AND c.status NOT IN ('done','completed','archived')
+      )
+    ORDER BY s.weight DESC
+    LIMIT 1;
+  "
 }
 
 # ── Utility ───────────────────────────────────────────────────────────

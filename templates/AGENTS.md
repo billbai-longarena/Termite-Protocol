@@ -6,9 +6,9 @@
 > "白蚁协议"是心跳指令——收到后自动执行节律，自主判断并行动。
 > 完整协议规范在 `TERMITE_PROTOCOL.md`，本文件足够驱动日常行动。
 
-<!-- termite-kernel:v12.0 -->
+<!-- termite-kernel:v13.0 -->
 <!-- birth-static-included -->
-## 白蚁协议 — 最小内核 v12.0
+## 白蚁协议 — 最小内核 v13.0
 
 > **"白蚁协议"四个字 = 启动心跳，自动执行。**
 > **终极目标：维持三丘（开发丘·产品丘·客户丘）的持续发展与繁荣。**
@@ -20,6 +20,7 @@
 2. STATE→CASTE→PERMISSIONS   态势决定种姓，种姓决定权限
 3. ACTION∈PERMISSIONS→DO     在权限内行动
 4. DO→DEPOSIT(signal,weight,TTL,location)  行动后沉积信息素
+4b. DEPOSIT(complex)→DECOMPOSE(children,hint)  复合信号先分拆为原子子信号
 5. weight<threshold→EVAPORATE 低权重信号自动挥发
 6. weight>threshold→ESCALATE  高权重信号升级为热点
 7. sum(quality)≥3.0→EMERGE   质量加权涌现：deposit质量总和达阈值→涌现为规则

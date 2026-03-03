@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # field-cycle.sh — Post-commit metabolism cycle
-# Sequence: decay → drain → boundary detection → pulse → observation promotion → compression → rule archival
+# Sequence: decay → drain → boundary detection → signal aggregation → pulse → observation promotion → compression → rule archival
 # Typically triggered by post-commit hook.
 
 set -euo pipefail
@@ -10,9 +10,9 @@ source "${SCRIPT_DIR}/field-lib.sh"
 
 log_info "=== Metabolism cycle starting ==="
 
-# ── Step 1/7: Decay ────────────────────────────────────────────────────
+# ── Step 1/8: Decay ────────────────────────────────────────────────────
 
-log_info "Step 1/7: Decay"
+log_info "Step 1/8: Decay"
 if has_db; then
   source "${SCRIPT_DIR}/termite-db.sh"
   concentration=$(signal_concentration)
@@ -28,9 +28,9 @@ else
   "${SCRIPT_DIR}/field-decay.sh" || log_warn "Decay had warnings"
 fi
 
-# ── Step 2/7: Drain ────────────────────────────────────────────────────
+# ── Step 2/8: Drain ────────────────────────────────────────────────────
 
-log_info "Step 2/7: Drain"
+log_info "Step 2/8: Drain"
 if has_db; then
   db_drain_done
   log_info "Drain complete (DB atomic)"
@@ -38,9 +38,9 @@ else
   "${SCRIPT_DIR}/field-drain.sh" || log_warn "Drain had warnings"
 fi
 
-# ── Step 3/7: Boundary detection ───────────────────────────────────────
+# ── Step 3/8: Boundary detection ───────────────────────────────────────
 
-log_info "Step 3/7: Boundary detection"
+log_info "Step 3/8: Boundary detection"
 if has_db; then
   # Single SQL: park signals where touch_count >= threshold
   parked_count=$(db_exec "
@@ -84,14 +84,22 @@ elif has_signal_dir; then
   [ "$parked_count" -gt 0 ] && log_info "Parked ${parked_count} signals"
 fi
 
-# ── Step 4/7: Pulse ────────────────────────────────────────────────────
+# ── Step 4/8: Signal aggregation (v5.1) ──────────────────────────────
 
-log_info "Step 4/7: Pulse"
+log_info "Step 4/8: Signal aggregation"
+if has_db; then
+  agg_count=$(db_signal_aggregate 2>/dev/null || echo "0")
+  [ "${agg_count:-0}" -gt 0 ] && log_info "Aggregated ${agg_count} parent signals"
+fi
+
+# ── Step 5/8: Pulse ────────────────────────────────────────────────────
+
+log_info "Step 5/8: Pulse"
 "${SCRIPT_DIR}/field-pulse.sh" || log_warn "Pulse had warnings"
 
-# ── Step 5/7: Observation → Rule Promotion ─────────────────────────────
+# ── Step 6/8: Observation → Rule Promotion ─────────────────────────────
 
-log_info "Step 5/7: Observation promotion scan"
+log_info "Step 6/8: Observation promotion scan"
 
 # Rule quality gate (W-012a): reject degenerate rules before creation
 validate_rule_quality() {
@@ -310,9 +318,9 @@ RULEEOF
   rm -f "$tmpfile" "$score_file"
 fi
 
-# ── Step 6/7: Observation compression ──────────────────────────────────
+# ── Step 7/8: Observation compression ──────────────────────────────────
 
-log_info "Step 6/7: Observation compression"
+log_info "Step 7/8: Observation compression"
 if has_db; then
   db_obs_compress
   log_info "Compression complete (DB)"
@@ -322,9 +330,9 @@ else
   done || true
 fi
 
-# ── Step 7/7: Rule Archival ────────────────────────────────────────────
+# ── Step 8/8: Rule Archival ────────────────────────────────────────────
 
-log_info "Step 7/7: Rule archival scan"
+log_info "Step 8/8: Rule archival scan"
 
 if has_db; then
   db_archive_rules_stale

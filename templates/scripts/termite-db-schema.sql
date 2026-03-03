@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS schema_version (
   version INTEGER PRIMARY KEY,
   applied_at TEXT DEFAULT (datetime('now'))
 );
-INSERT OR IGNORE INTO schema_version(version) VALUES (4);
+INSERT OR IGNORE INTO schema_version(version) VALUES (5);
 
 -- Signals (replaces signals/active/*.yaml)
 CREATE TABLE IF NOT EXISTS signals (
@@ -28,12 +28,16 @@ CREATE TABLE IF NOT EXISTS signals (
   next_hint TEXT DEFAULT '',
   touch_count INTEGER DEFAULT 0,
   source TEXT DEFAULT 'autonomous',  -- autonomous|directive|emergent
+  parent_id TEXT DEFAULT NULL,         -- parent signal ID (NULL = top-level)
+  child_hint TEXT DEFAULT NULL,        -- JSON: strong model's directional guidance
+  depth INTEGER DEFAULT 0,            -- tree depth (top=0, max=3)
   parked_reason TEXT,
   parked_conditions TEXT,
   parked_at TEXT
 );
 CREATE INDEX IF NOT EXISTS idx_signals_status ON signals(status);
 CREATE INDEX IF NOT EXISTS idx_signals_type_weight ON signals(type, weight);
+CREATE INDEX IF NOT EXISTS idx_signals_parent ON signals(parent_id);
 
 -- Observations (replaces signals/observations/*.yaml)
 CREATE TABLE IF NOT EXISTS observations (

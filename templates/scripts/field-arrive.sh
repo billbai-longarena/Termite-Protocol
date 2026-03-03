@@ -386,6 +386,24 @@ if [ "${active_signals:-0}" -eq 0 ] && [ "$wip" != "fresh" ] && [ "$alarm" != "t
   situation="${situation}IDLE: Colony has no actionable signals. Either deposit a HOLE signal for new work, or exit session.\n"
 fi
 
+# v5.1: Decomposition hint — when signal-to-agent ratio is imbalanced
+if has_db; then
+  unclaimed_leaves=$(db_exec "
+    SELECT COUNT(*) FROM signals s
+    WHERE s.status = 'open'
+      AND NOT EXISTS (
+        SELECT 1 FROM signals c
+        WHERE c.parent_id = s.id
+        AND c.status NOT IN ('done','completed','archived')
+      );" 2>/dev/null || echo "0")
+  decompose_agents=$(db_exec "SELECT COUNT(*) FROM agents WHERE session_status='active';" 2>/dev/null || echo "1")
+  min_ratio="${TERMITE_DECOMPOSE_MIN_AGENT_RATIO:-0.5}"
+  needs_decompose=$(awk "BEGIN { print (${decompose_agents} > 1 && ${unclaimed_leaves} < ${decompose_agents} * ${min_ratio}) ? 1 : 0 }")
+  if [ "$needs_decompose" -eq 1 ]; then
+    situation="${situation}DECOMPOSE: ${decompose_agents} agents active but only ${unclaimed_leaves} unclaimed tasks. Consider decomposing complex signals into atomic sub-tasks using ./scripts/field-decompose.sh\n"
+  fi
+fi
+
 # ── Step 6.5: Update agent caste in DB ──────────────────────────────
 
 if has_db && [ -n "$AGENT_ID" ]; then
@@ -428,16 +446,35 @@ if has_db; then
   fi
 fi
 
-# Get top signal with next_hint for execution tier pre-selection
+# Get top signal with next_hint for .birth task section
+# v5.1: leaf-priority — show unclaimed leaf signals, not decomposed parents
 top_signal_hint=""
 if has_db; then
-  top_row=$(db_query "SELECT id,type,title,next_hint FROM signals
-    WHERE status NOT IN ('archived','parked','done','completed')
-    ORDER BY weight DESC LIMIT 1;" 2>/dev/null || true)
+  top_row=$(db_query "SELECT s.id, s.type, s.title, s.next_hint, s.child_hint, s.parent_id, s.module
+    FROM signals s
+    WHERE s.status = 'open'
+      AND NOT EXISTS (
+        SELECT 1 FROM signals c
+        WHERE c.parent_id = s.id
+        AND c.status NOT IN ('done','completed','archived')
+      )
+    ORDER BY s.weight DESC
+    LIMIT 1;" 2>/dev/null || true)
   if [ -n "$top_row" ]; then
-    IFS=$'\t' read -r ts_id ts_type ts_title ts_next <<< "$top_row"
+    IFS=$'\t' read -r ts_id ts_type ts_title ts_next ts_child_hint ts_parent ts_module <<< "$top_row"
     top_signal_hint="${ts_id}(${ts_type}): ${ts_title}"
     [ -n "$ts_next" ] && top_signal_hint="${top_signal_hint} → ${ts_next}"
+    # Include parent context and child_hint for decomposed signals
+    if [ -n "$ts_parent" ] && [ "$ts_parent" != "null" ] && [ "$ts_parent" != "" ]; then
+      parent_title=$(db_exec "SELECT title FROM signals WHERE id='$(db_escape "$ts_parent")';" 2>/dev/null || true)
+      [ -n "$parent_title" ] && top_signal_hint="${top_signal_hint}\n  parent: ${ts_parent} (${parent_title})"
+    fi
+    if [ -n "$ts_child_hint" ] && [ "$ts_child_hint" != "null" ] && [ "$ts_child_hint" != "" ]; then
+      top_signal_hint="${top_signal_hint}\n  hint: ${ts_child_hint}"
+    fi
+    if [ -n "$ts_module" ] && [ "$ts_module" != "null" ] && [ "$ts_module" != "" ]; then
+      top_signal_hint="${top_signal_hint}\n  files: ${ts_module}"
+    fi
   fi
 fi
 
