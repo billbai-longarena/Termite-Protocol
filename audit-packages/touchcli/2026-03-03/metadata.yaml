@@ -3,22 +3,22 @@
 # Protocol Nurse: read this first to understand the project context.
 
 project_name: "touchcli"
-export_date: "2026-03-03T07:50:45Z"
-protocol_version: "v3.4"
-kernel_version: "v10.0"
+export_date: "2026-03-03T13:53:43Z"
+protocol_version: "v5.1"
+kernel_version: "v5.1"
 
 # Duration & Volume
 run_duration_days: 1
-total_commits: 562
-signed_commits: 393
-signature_ratio_last_50: 0.96
+total_commits: 641
+signed_commits: 471
+signature_ratio_last_50: 0.98
 
 # Signal Inventory
-active_signals: 39
-pending_observations: 272
-active_rules: 21
-archived_items: 295
-pheromone_snapshots: 141
+active_signals: 24
+pending_observations: 332
+active_rules: 24
+archived_items: 349
+pheromone_snapshots: 175
 
 # Current State
 current_branch: "swarm"

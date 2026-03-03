@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:42Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303192548-16676
+pattern: "S-119|S-120|S-121|S-122|S-123"
+context: "Wave 1 (S-119/S-120) closed. Wave 2 (S-121/S-122/S-123) seeded."
+reporter: "termite:2026-03-03:worker"
+confidence: medium
+created: 2026-03-03
+source: autonomous
+detail: |
+  0

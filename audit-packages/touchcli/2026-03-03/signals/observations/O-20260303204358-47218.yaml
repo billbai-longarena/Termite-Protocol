@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:42Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303204358-47218
+pattern: "S-126 introduced one-command verify orchestrator for local matrix and optional staging/load gates"
+context: "scripts/s126-verify.sh + S-126_LOCAL_VERIFICATION_2026-03-03.md"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Added scripts/s126-verify.sh with modes (--local-only/--staging-only/--skip-load), executed local-only successfully (pass=6 fail=0 skip=0), and documented automation in S-126 report. Commit: c6c48e2.

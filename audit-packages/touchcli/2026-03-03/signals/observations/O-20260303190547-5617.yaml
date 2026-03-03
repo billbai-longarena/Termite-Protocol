@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:42Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303190547-5617
+pattern: "heartbeat-16-scout-deadline-alert"
+context: "Heartbeat #16 Scout: System fully ready for execution. HB#13 recommends Option 1B (complete WIP in 2h). Human has not given decision signal after 10+ hours. WIP will auto-rollback per Rule E-004 at 24h (2026-03-04 10:55 UTC) unless human chooses 1A/1B before then. Scout catalogs 13-14h remaining for human decision. System remains in quiescent state, no worker action until human signal."
+reporter: "termite:2026-03-03:worker"
+confidence: medium
+created: 2026-03-03
+source: autonomous
+detail: |
+  0

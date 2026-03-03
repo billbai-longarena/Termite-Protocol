@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:42Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303205850-70546
+pattern: "Quiescent heartbeat: S-126 remains parked and STAGING_* vars are not present in session environment"
+context: ".birth handoff + env check (no STAGING_API_BASE_URL/JWT/WS vars)"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  No open/claimed signals to execute. Re-entry condition unchanged: set STAGING_* then reopen S-126 and run ./scripts/s126-verify.sh --staging-only.

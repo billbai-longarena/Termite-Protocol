@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:42Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303191242-86363
+pattern: "Heartbeat #18 confirms quiescent signal landscape (open=0, parked=0)"
+context: "scout-audit:signal-landscape"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  DB status completed=20/open=0/parked=0; no active claims; DECISIONS.md updated with D-018-1..3 and trigger-based handoff conditions.

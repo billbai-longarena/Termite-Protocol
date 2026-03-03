@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:42Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303180806-4511
+pattern: "s-116-utcnow-compatibility"
+context: "Worker session: Fixed utcnow migration datetime incompatibilities. Created datetime_utils.py with safe helpers. Wrapped all DateTime defaults in lambda. Fixed 13 files with datetime comparison issues. Commit: a11a0c0. Tests: 307 pass, 40 fail (reduced from 41)."
+reporter: "termite:2026-03-03:worker"
+confidence: medium
+created: 2026-03-03
+source: autonomous
+detail: |
+  0
