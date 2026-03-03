@@ -152,6 +152,29 @@ yaml_write() {
   fi
 }
 
+yaml_read_block() {
+  # Usage: yaml_read_block <file> <field>
+  # Reads a YAML field that may be a block scalar (field: |) or inline value.
+  # Returns the full content as a single string (newlines replaced with spaces for block scalars).
+  local file="$1" field="$2"
+  [ -f "$file" ] || return 0
+  local first_line
+  first_line=$(grep -m1 "^${field}:" "$file" 2>/dev/null | sed "s/^${field}:[[:space:]]*//") || return 0
+  # Strip quotes from inline values
+  first_line=$(echo "$first_line" | sed 's/^["'"'"']\(.*\)["'"'"']$/\1/')
+  if [ "$first_line" = "|" ] || [ "$first_line" = "|-" ] || [ "$first_line" = "|+" ]; then
+    # Block scalar: read indented continuation lines, join with spaces
+    awk -v f="$field" '
+      BEGIN { capture=0 }
+      $0 ~ "^"f":[[:space:]]*[|]" { capture=1; next }
+      capture && /^[[:space:]][[:space:]]/ { sub(/^[[:space:]][[:space:]]/, ""); printf "%s ", $0; next }
+      capture && !/^[[:space:]][[:space:]]/ { exit }
+    ' "$file" | sed 's/[[:space:]]*$//'
+  else
+    echo "$first_line"
+  fi
+}
+
 yaml_read_list() {
   # Usage: yaml_read_list <file> <field>
   # Reads a YAML inline list field like: tags: [a, b, c]
