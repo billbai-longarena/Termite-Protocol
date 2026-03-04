@@ -4,7 +4,7 @@
 #
 # Usage:
 #   bash install.sh [OPTIONS] [TARGET_DIR]
-#   curl -fsSL <url>/install.sh | bash -s -- [OPTIONS] [TARGET_DIR]
+#   curl -fsSL https://raw.githubusercontent.com/billbai-longarena/Termite-Protocol/main/install.sh | bash -s -- [OPTIONS] [TARGET_DIR]
 #
 # Options:
 #   --upgrade   只更新协议核心文件，不动入口文件 / Update protocol files only, skip entry files
@@ -18,7 +18,7 @@ set -euo pipefail
 VERSION="1.1.0"
 
 # GitHub raw base URL — replace with your fork's URL, or set TERMITE_REPO_URL env var
-GITHUB_RAW_BASE="${TERMITE_REPO_URL:-https://raw.githubusercontent.com/__GITHUB_RAW_BASE__/main/templates}"
+GITHUB_RAW_BASE="${TERMITE_REPO_URL:-https://raw.githubusercontent.com/billbai-longarena/Termite-Protocol/main/templates}"
 
 # Protocol core files (updated during --upgrade)
 PROTOCOL_FILES=(
@@ -114,7 +114,7 @@ usage() {
 
 Usage:
   bash install.sh [OPTIONS] [TARGET_DIR]
-  curl -fsSL <url>/install.sh | bash -s -- [OPTIONS] [TARGET_DIR]
+  curl -fsSL https://raw.githubusercontent.com/billbai-longarena/Termite-Protocol/main/install.sh | bash -s -- [OPTIONS] [TARGET_DIR]
 
 Options:
   --upgrade   只更新协议核心文件，不动入口文件（CLAUDE.md / AGENTS.md）

@@ -9,6 +9,35 @@
 
 ---
 
+## Quick Install / 快速安装
+
+在你的项目目录中运行 / Run in your project directory:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/billbai-longarena/Termite-Protocol/main/install.sh | bash
+```
+
+记不住？用 git clone / Can't remember? Use git clone:
+
+```bash
+git clone https://github.com/billbai-longarena/Termite-Protocol /tmp/termite
+bash /tmp/termite/install.sh
+rm -rf /tmp/termite
+```
+
+升级 / Upgrade:
+
+```bash
+git clone https://github.com/billbai-longarena/Termite-Protocol /tmp/termite
+bash /tmp/termite/install.sh --upgrade
+rm -rf /tmp/termite
+```
+
+> 安装后编辑 `CLAUDE.md` / `AGENTS.md` 填入你的项目信息即可开始。
+> After install, edit `CLAUDE.md` / `AGENTS.md` with your project info and you're ready to go.
+
+---
+
 ## 为什么需要白蚁协议？ / Why Termite Protocol?
 
 ### 问题：AI Agent 的失忆症 / The Problem: AI Agent Amnesia
@@ -211,57 +240,17 @@ your-project/
 
 ### 第一步：安装协议 / Step 1: Install the Protocol
 
-**方法 A：一键安装脚本（推荐）/ Method A: One-click Install (Recommended)**
+参见上方 [Quick Install / 快速安装](#quick-install--快速安装)。安装脚本会自动完成：
+See [Quick Install](#quick-install--快速安装) above. The install script automatically:
 
-Clone 白蚁协议仓库后，在你的项目目录中运行安装脚本：
-After cloning the Termite Protocol repo, run the install script in your project directory:
-
-```bash
-# Clone 白蚁协议仓库 / Clone the Termite Protocol repo
-git clone https://github.com/<owner>/白蚁协议.git
-
-# 在你的项目中运行安装 / Run install in your project
-cd your-project
-bash /path/to/白蚁协议/install.sh
-```
-
-或通过远程一键安装（需配置 `TERMITE_REPO_URL`）：
-Or via remote one-click install (requires `TERMITE_REPO_URL`):
-
-```bash
-cd your-project
-curl -fsSL <github-raw-url>/install.sh | bash
-```
-
-升级协议（保留你填写的 CLAUDE.md / AGENTS.md）：
-Upgrade the protocol (preserves your customized CLAUDE.md / AGENTS.md):
-
-```bash
-bash /path/to/白蚁协议/install.sh --upgrade
-```
-
-安装脚本会自动完成：复制所有模板文件、创建 signals/ 目录结构、安装 git hooks、更新 .gitignore。
-The install script automatically: copies all template files, creates signals/ directory structure, installs git hooks, updates .gitignore.
+- 复制所有模板文件 / Copies all template files
+- 创建 `signals/` 目录结构 / Creates `signals/` directory structure
+- 安装 git hooks / Installs git hooks
+- 安装 Claude Code 插件 / Installs Claude Code plugin
+- 更新 `.gitignore` / Updates `.gitignore`
 
 > 详细选项：`bash install.sh --help`
 > Full options: `bash install.sh --help`
-
-**方法 B：手动复制 / Method B: Manual Copy**
-
-```
-templates/TERMITE_PROTOCOL.md  → 复制到项目根目录 / Copy to project root
-templates/CLAUDE.md            → 复制为项目根目录的 CLAUDE.md / Copy as CLAUDE.md in project root
-templates/AGENTS.md            → 复制为项目根目录的 AGENTS.md / Copy as AGENTS.md in project root
-templates/scripts/             → 复制到项目根目录的 scripts/ / Copy to project root scripts/
-templates/signals/             → 复制到项目根目录的 signals/ / Copy to project root signals/
-```
-
-手动安装 Git Hooks：
-Install Git Hooks manually:
-
-```bash
-./scripts/hooks/install.sh
-```
 
 ### 第二步：填写项目信息 / Step 2: Fill in Project Info
 
