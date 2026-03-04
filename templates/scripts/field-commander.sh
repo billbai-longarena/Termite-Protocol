@@ -14,7 +14,8 @@ source "${SCRIPT_DIR}/field-lib.sh" 2>/dev/null || true
 source "${SCRIPT_DIR}/termite-db.sh"
 
 COLONY_ROOT="${COLONY_ROOT:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
-db_init "${COLONY_ROOT}"
+export PROJECT_ROOT="${COLONY_ROOT}"
+db_ensure
 
 cmd_status() {
   local total open claimed done blocked
