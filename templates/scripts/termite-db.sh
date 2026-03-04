@@ -786,3 +786,29 @@ db_escape() {
   # Escape single quotes for SQL string literals
   echo "$1" | sed "s/'/''/g"
 }
+
+# --- Commander State ---
+
+db_commander_set() {
+  local key="$1" value="$2"
+  local now
+  now=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+  _db "INSERT OR REPLACE INTO commander_state (key, value, updated_at) VALUES ('$(db_escape "$key")', '$(db_escape "$value")', '$now');"
+}
+
+db_commander_get() {
+  local key="$1"
+  _db "SELECT value FROM commander_state WHERE key='$(db_escape "$key")';" | head -1
+}
+
+# --- Halt Log ---
+
+db_halt_log_insert() {
+  local reason="$1" cmdr_cycles="$2" colony_cycles="$3" total="$4" completed="$5"
+  local remaining="$6" commit_hash="$7" recommendation="$8"
+  _db "INSERT INTO halt_log (reason, commander_cycles, colony_cycles, signals_total, signals_completed, remaining_signals, last_commit_hash, recommendation) VALUES ('$(db_escape "$reason")', $cmdr_cycles, $colony_cycles, $total, $completed, '$(db_escape "$remaining")', '$(db_escape "$commit_hash")', '$(db_escape "$recommendation")');"
+}
+
+db_halt_log_latest() {
+  _db "SELECT * FROM halt_log ORDER BY halted_at DESC LIMIT 1;"
+}

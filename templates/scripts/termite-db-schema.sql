@@ -129,3 +129,26 @@ CREATE TABLE IF NOT EXISTS archive (
   archive_reason TEXT            -- done|decayed|promoted|merged|rule_expired
 );
 CREATE INDEX IF NOT EXISTS idx_archive_table ON archive(original_table);
+
+-- Commander state tracking (v6.0 - Commander extension)
+CREATE TABLE IF NOT EXISTS commander_state (
+    key TEXT PRIMARY KEY,
+    value TEXT NOT NULL,
+    updated_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now'))
+);
+
+-- Halt log (every circuit break recorded)
+CREATE TABLE IF NOT EXISTS halt_log (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    halted_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now')),
+    reason TEXT NOT NULL,
+    commander_cycles INTEGER DEFAULT 0,
+    colony_cycles INTEGER DEFAULT 0,
+    signals_total INTEGER DEFAULT 0,
+    signals_completed INTEGER DEFAULT 0,
+    remaining_signals TEXT DEFAULT '[]',
+    last_commit_hash TEXT,
+    recommendation TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_halt_log_time ON halt_log(halted_at DESC);
