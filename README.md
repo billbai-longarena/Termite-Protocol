@@ -324,6 +324,67 @@ You don't need to maintain these files manually. Agents and scripts maintain the
 
 ---
 
+## Termite Commander (推荐) / Termite Commander (Recommended)
+
+**手动管理蚁群太累？用 Commander 自动化。**
+**Managing a colony manually is tedious — use Commander to automate it.**
+
+[Termite Commander](https://github.com/billbai-longarena/TermiteCommander) 是白蚁协议的自主编排引擎。它让你只需一句话就能启动蚁群施工：
+[Termite Commander](https://github.com/billbai-longarena/TermiteCommander) is an autonomous orchestration engine for the Termite Protocol. One command to start colony execution:
+
+```bash
+# 安装 Commander / Install Commander
+git clone https://github.com/billbai-longarena/TermiteCommander.git
+cd TermiteCommander/commander && npm install && npm run build && npm link
+
+# 在你的项目中使用 / Use in your project
+cd ~/your-project
+termite-commander plan "实现OAuth认证系统" --plan PLAN.md --colony . --run
+```
+
+### Commander 做什么 / What Commander Does
+
+| 手动模式 / Manual | Commander 模式 / With Commander |
+|---|---|
+| 人工分解任务为信号 | 自动分解：一次 LLM 调用，按弱模型标准分解 |
+| Manually decompose tasks into signals | Auto-decompose: one LLM call, optimized for weak models |
+| 手动启动每个 Agent | 自动启动混合模型工人舰队 |
+| Manually start each agent | Auto-launch mixed-model worker fleet |
+| 手动监控进度 | 双心跳自动监控 + 停滞熔断 |
+| Manually monitor progress | Dual heartbeat monitoring + stall circuit breaker |
+| 手动查看蚁群状态 | TUI 实时仪表盘 |
+| Manually check colony state | Real-time TUI dashboard |
+
+### Claude Code / OpenCode 集成 / Integration
+
+Commander 作为 skill 集成到 Claude Code 和 OpenCode 中：
+Commander integrates as a skill in Claude Code and OpenCode:
+
+```
+# 在 Claude Code 中 / In Claude Code:
+> /commander 按照设计开始施工
+> /commander status
+
+# 或者自然语言 / Or natural language:
+> 让蚁群干活
+> deploy termites
+```
+
+### 混合模型配置 / Mixed-Model Configuration
+
+Commander 支持混合模型工人舰队：
+Commander supports mixed-model worker fleets:
+
+```bash
+# 1个强模型 + 2个弱模型 + 1个 Gemini
+export TERMITE_WORKERS=sonnet:1,haiku:2,gemini-flash:1
+```
+
+详见 [Commander README](https://github.com/billbai-longarena/TermiteCommander#readme)。
+See [Commander README](https://github.com/billbai-longarena/TermiteCommander#readme) for details.
+
+---
+
 ## 场基础设施 / Field Infrastructure
 
 场基础设施是 v3.0 "协议消融"的核心实现层。所有脚本位于 `scripts/` 目录。
