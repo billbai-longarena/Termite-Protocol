@@ -1053,3 +1053,53 @@
     and entry files for agents using OpenCode or other non-hook environments.
     (3) W-016: field-export-audit.sh now strictly filters out 'done' and 
     'completed' signals from the active_count metric.
+
+# ── 2026-03-06 session: PE-006 Prevention Kit ────────────────────────
+
+- date: 2026-03-06
+  type: protocol-evolution
+  id: PE-006
+  status: fixed
+  title: "Prevention Kit — finding-to-answer cards for audit reuse"
+  description: >
+    Added a lightweight prevention knowledge mechanism for recurring findings.
+    Each finding can be captured as a reusable card (symptoms, root cause,
+    standard fix, prevention checklist, regression checks), indexed for browsing,
+    and queried by finding ID or keywords.
+  design: audit-analysis/prevention-kit/README.md
+  files_changed:
+    - audit-analysis/prevention-kit/README.md
+    - audit-analysis/prevention-kit/INDEX.md
+    - audit-analysis/prevention-kit/CARD_TEMPLATE.md
+    - audit-analysis/prevention-kit/cards/F-001-grep-c-pipefail-double-zero.md
+    - audit-analysis/prevention-kit/cards/W-015-claim-lock-starvation.md
+    - audit-analysis/scripts/find-prevention.sh
+  notes: >
+    This enables "audit issue → find known answer quickly" workflow.
+    Query examples:
+    ./audit-analysis/scripts/find-prevention.sh W-015
+    ./audit-analysis/scripts/find-prevention.sh "claim starvation"
+
+- date: 2026-03-06
+  type: protocol-evolution
+  id: PE-007
+  status: fixed
+  title: "Discovery Knowledge Base — park non-urgent findings as reusable strategy cards"
+  description: >
+    Added a dedicated knowledge base for discovery-style documents from docs/plans.
+    The mechanism stores non-urgent insights as searchable cards with activation gates,
+    cooldown guards, scale risks, and minimal experiment guidance, so audits can
+    consult prior ideas without triggering immediate protocol iteration.
+  design: docs/knowledge-base/README.md
+  files_changed:
+    - docs/knowledge-base/README.md
+    - docs/knowledge-base/INDEX.md
+    - docs/knowledge-base/CARD_TEMPLATE.md
+    - docs/knowledge-base/cards/KB-001-signal-amplification-over-noise-filtering.md
+    - docs/knowledge-base/cards/KB-002-stateful-guidance-without-agent-classification.md
+    - audit-analysis/scripts/find-knowledge.sh
+  notes: >
+    Query examples:
+    ./audit-analysis/scripts/find-knowledge.sh KB-001
+    ./audit-analysis/scripts/find-knowledge.sh "noise filtering"
+    ./audit-analysis/scripts/find-knowledge.sh "W-013 quality regression"

@@ -94,6 +94,10 @@ A foundational re-examination of the protocol's core metaphor ("termites are bli
 
 ### Recent Work
 
+- **PE-007 Discovery Knowledge Base（发现型锦囊库）** — Added `docs/knowledge-base/` to park non-urgent discovery docs as reusable strategy cards with activation gates, cooldown guards, scale risks, and minimal experiment guidance. Added query script `audit-analysis/scripts/find-knowledge.sh` so audits can check existing ideas before triggering new protocol iterations.
+
+- **PE-006 Prevention Kit（锦囊预防库）** — Added `audit-analysis/prevention-kit/` with reusable finding cards, index, template, and query script (`audit-analysis/scripts/find-prevention.sh`). Purpose: convert recurring audit findings into searchable, action-oriented answer cards (symptoms, root cause, standard fix, prevention checklist, regression checks) so Nurse and agents can quickly reuse known solutions.
+
 - **Environment Filter Insight (F-009d)** — Codex observation confirmed: "仁者见仁智者见智" has no natural mechanism in LLMs (all models use same token processor, weak models lack sensory filtering). Three-layer engineering analysis: (1) .birth content quality gate — feasible, high reliability; (2) metabolism cycle archive low-quality deposits — feasible, medium reliability; (3) format noise reduction — low feasibility, skip. Key discovery: **signal amplification > noise filtering** (behavioral_template alone raised Haiku from 35.7% to 96.4% in A-005). Insight recorded, design deferred pending experimental data. See `docs/plans/2026-03-04-environment-filter-insight.md`.
 
 - **Signal Migration Script (TF-008)** — `field-migrate.sh` actively migrates pre-v5.0 observations: computes `quality_score` + `source_type` using existing heuristics, dry-run preview by default, `--apply` writes fields + archives low-quality (< 0.3) to `signals/.archive/observations/`. DB dual-write support. `install.sh --upgrade` now prints migration hint when old signals detected. Also added `yaml_read_block()` to field-lib.sh for multi-line YAML block scalar reading.
