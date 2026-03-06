@@ -1,0 +1,14 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-06T08:11:27Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260306160725-45764
+pattern: "S-032 plan consolidation"
+context: "docs/plan/three-step-plan.md"
+reporter: "termite:2026-03-06:worker"
+confidence: high
+created: 2026-03-06
+source: autonomous
+quality_score: deposit
+source_type: deposit
+detail: |
+  Consolidated 6+ duplicate plan versions into a single canonical source at docs/plan/three-step-plan.md. Archived legacy versions and set up a redirect at docs/index.md.
+merged_from: 0.9

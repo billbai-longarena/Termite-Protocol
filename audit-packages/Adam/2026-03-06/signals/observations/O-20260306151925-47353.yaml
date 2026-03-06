@@ -1,0 +1,14 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-06T08:11:27Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260306151925-47353
+pattern: "S-025 verification"
+context: "docs/project-audit.md"
+reporter: "termite:2026-03-06:worker"
+confidence: medium
+created: 2026-03-06
+source: autonomous
+quality_score: trace
+source_type: deposit
+detail: |
+  Verified existing project audit report. The document comprehensively covers project structure, signal status, and gaps. Signal S-025 was found open but deliverable already committed in 4925d4e.
+merged_from: 0.75

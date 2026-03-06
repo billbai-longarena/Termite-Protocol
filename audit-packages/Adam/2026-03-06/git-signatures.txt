@@ -1,0 +1,115 @@
+3162a15 2026-03-06 16:11:25 +0800 docs(plan): consolidate canonical plan and remove redundant files [WIP] [termite:2026-03-06:scout]
+04fddec 2026-03-06 16:10:39 +0800 docs(plan): consolidate three-step plan to docs/plan/three-step-plan.md and archive legacy docs [termite:2026-03-06:worker]
+0329717 2026-03-06 16:08:48 +0800 docs(ops): create runtime-artifacts.md with canonical artifact location and cleanup routine [termite:2026-03-06:scout]
+905ba23 2026-03-06 16:08:13 +0800 Add canonical three-step improvement plan entry point (S-020)
+2d2d95b 2026-03-06 16:07:20 +0800 docs(plan): consolidate three-step plan into canonical docs/plan/ [termite:2026-03-06:worker]
+56d0586 2026-03-06 16:05:31 +0800 chore(signals): finalize signal metadata after worker completion [termite:2026-03-06:worker]
+35568c9 2026-03-06 16:05:25 +0800 chore(signals): sync YAML state after worker session completion [termite:2026-03-06:worker]
+1e5edfd 2026-03-06 16:04:50 +0800 [WIP] worker: complete high-priority signal batch and synchronize state
+760a7eb 2026-03-06 16:04:23 +0800 worker: mark completed signals and export state [termite:2026-03-06:worker]
+8957dfa 2026-03-06 16:03:48 +0800 worker: create docs/worker/three-step-plan-canonical.md (S-038) [termite:2026-03-06:worker]
+b641b6c 2026-03-06 16:01:30 +0800 docs(ops): create db-yaml-sync.md documenting DB↔YAML synchronization workflow (S-036)
+baa8124 2026-03-06 15:59:48 +0800 chore(signals): mark S-035 as complete [termite:2026-03-06:worker]
+645018e 2026-03-06 15:58:17 +0800 scout: implement S-032 canonical plan entrypoint
+38ef0b9 2026-03-06 15:58:01 +0800 docs(ops): create runtime-artifacts-policy.md as canonical artifact reference
+373054d 2026-03-06 15:57:11 +0800 worker: implement S-033 single worker validation entrypoint
+e18a398 2026-03-06 15:55:39 +0800 scout: verify signals and exit - Step 1 locked
+c2180c6 2026-03-06 15:55:29 +0800 chore(signals): reconcile implemented signals S-028, S-029 to done [termite:2026-03-06:scout]
+5fec1de 2026-03-06 15:55:03 +0800 scout: final verification and immediate exit - context critical
+a14c037 2026-03-06 15:55:00 +0800 chore(signals): reconcile implemented signals S-028, S-029 to done [termite:2026-03-06:scout]
+6870937 2026-03-06 15:54:30 +0800 scout: verify signals and sync YAML→DB, exit MOLT
+54722dc 2026-03-06 15:54:29 +0800 chore(signals): reconcile implemented signals S-028, S-029 to done [termite:2026-03-06:scout]
+1fe79f2 2026-03-06 15:53:55 +0800 scout: final verification and exit - Step 1 complete
+29f71f7 2026-03-06 15:53:28 +0800 chore(signals): final reconciliation of implemented signals [termite:2026-03-06:scout]
+2e638e6 2026-03-06 15:53:14 +0800 chore(signals): reconcile implemented signals S-028, S-029 to done [termite:2026-03-06:scout]
+02a59c3 2026-03-06 15:53:13 +0800 scout: final verification of S-029 and S-028, prepare for exit
+f299b97 2026-03-06 15:52:59 +0800 chore(signals): reconcile implemented signals S-028, S-029 to done [termite:2026-03-06:scout]
+3a5b489 2026-03-06 15:52:44 +0800 chore(signals): final reconciliation of S-028, S-029 [termite:2026-03-06:scout]
+9a807bf 2026-03-06 15:52:36 +0800 scout: verify S-029 and S-028 completeness and release claims
+6335761 2026-03-06 15:52:11 +0800 chore(signals): reconcile implemented signals S-028, S-029 to done [termite:2026-03-06:scout]
+9682f9f 2026-03-06 15:51:50 +0800 chore(signals): reconcile signals with implemented codebase [termite:2026-03-06:scout]
+afe09a6 2026-03-06 15:51:37 +0800 scout: rapid verification of S-029 and S-028, exit MOLT
+d55bc63 2026-03-06 15:51:26 +0800 chore(signals): reconcile signals with implemented codebase [termite:2026-03-06:scout]
+35b210c 2026-03-06 15:51:01 +0800 chore(signals): sync YAML to DB and reconcile implemented signals [termite:2026-03-06:scout]
+a6501eb 2026-03-06 15:50:46 +0800 scout: verify high-weight signals and exit under context pressure
+cb58b5b 2026-03-06 15:50:27 +0800 chore(signals): reconcile signals with implemented codebase [termite:2026-03-06:scout]
+534a51f 2026-03-06 15:50:06 +0800 chore(signals): sync YAML to DB and reconcile implemented signals [termite:2026-03-06:scout]
+c3ff375 2026-03-06 15:49:45 +0800 scout: deposit final session observations and colony assessment
+1a689d1 2026-03-06 15:49:18 +0800 chore(signals): reconcile signals with implemented codebase [termite:2026-03-06:scout]
+d00771b 2026-03-06 15:49:08 +0800 scout(S-028): verify runtime artifacts and cleanup policy document
+6cd7e07 2026-03-06 15:48:48 +0800 chore(signals): synchronize signal states with implemented codebase [termite:2026-03-06:scout]
+f0060bf 2026-03-06 15:48:48 +0800 scout(S-029): verify canonical entry point and signal governance
+69f13e8 2026-03-06 15:48:33 +0800 chore(signals): synchronize signal states with implemented codebase [termite:2026-03-06:scout]
+249cf7c 2026-03-06 15:48:19 +0800 chore(signals): reconcile signals with implemented codebase [termite:2026-03-06:scout]
+9bb0972 2026-03-06 15:48:04 +0800 chore(signals): reconcile signals with implemented codebase [termite:2026-03-06:scout]
+941429a 2026-03-06 15:47:53 +0800 termite: deposit worker session observations [idle colony]
+a9ffc77 2026-03-06 15:47:37 +0800 chore(signals): final reconciliation of implemented signals [termite:2026-03-06:scout]
+a8d1028 2026-03-06 15:47:23 +0800 docs(S-028): verify runtime-artifacts policy document and release signal claim
+7a11c8c 2026-03-06 15:47:20 +0800 chore(signals): reconcile signal status with reality [termite:2026-03-06:scout]
+508b32e 2026-03-06 15:47:07 +0800 feat(S-030): verify worker validation script and release signal claim
+ce53d7f 2026-03-06 15:46:56 +0800 chore(signals): final reconciliation of signal states with codebase [termite:2026-03-06:worker]
+58ae54f 2026-03-06 15:46:29 +0800 docs(S-029): verify canonical three-step-plan entry point and release signal claim
+3059e6e 2026-03-06 15:46:26 +0800 chore(signals): reconcile signal status with codebase history [termite:2026-03-06:worker]
+6b4202b 2026-03-06 15:45:48 +0800 docs(ops): create runtime-artifacts.md to define artifact locations and cleanup [termite:2026-03-06:worker] [S-028]
+5f4a6f4 2026-03-06 15:45:20 +0800 docs(S-023): verify improvement plan document completion and release claim
+5b85023 2026-03-06 15:45:12 +0800 feat(fleet): create validate-worker.sh for unified worker validation [termite:2026-03-06:worker] [S-030]
+f111da0 2026-03-06 15:44:43 +0800 docs(S-027): verify three-step plan report completion and release signal claim
+480ad7e 2026-03-06 15:44:13 +0800 docs(ops): create three-step-plan-canonical.md as canonical entry point [termite:2026-03-06:worker] [S-029]
+e8982c0 2026-03-06 15:43:12 +0800 docs(S-021,S-017,S-012,S-009): scout verification batch - verify documentation completeness and scoring [termite:2026-03-06:scout]
+3cc35c5 2026-03-06 15:42:13 +0800 docs(S-005,S-007,S-026,S-018,S-014): scout verification session - create project audit, verify documentation artifacts [termite:2026-03-06:scout]
+a3a55a1 2026-03-06 15:40:25 +0800 docs(S-005): generate comprehensive project status audit to docs/project_audit.md [termite:2026-03-06:scout]
+e8a8f4b 2026-03-06 15:38:53 +0800 refactor: batch commit sessions 6-8 accumulated changes, resolve context saturation [termite:2026-03-06:scout]
+421eeaa 2026-03-06 15:34:56 +0800 docs(S-023): duplicate three-step plan for improvement tracking [termite:2026-03-06:scout]
+31b0682 2026-03-06 15:34:12 +0800 feat(S-004): implement reach-out strategy generation and strategy reports [termite:2026-03-06:scout]
+2fb3af8 2026-03-06 15:33:00 +0800 feat(S-004): implement mock lead processing loop and add sample lead [termite:2026-03-06:scout]
+942bd90 2026-03-06 15:29:29 +0800 docs(S-007): three-step plan executability verification checklist [termite:2026-03-06:scout]
+294e668 2026-03-06 15:29:17 +0800 feat(S-004): initialize AIworkspace structure and blackboard [termite:2026-03-06:scout]
+2a0b6a4 2026-03-06 15:28:59 +0800 docs(S-009): score and prioritize improvement candidates by impact/cost [termite:2026-03-06:scout]
+b958ead 2026-03-06 15:28:38 +0800 docs(S-011): snapshot of current project status and deliverables [termite:2026-03-06:scout]
+e23a93b 2026-03-06 15:28:08 +0800 docs(S-014): worker startup entry points and health check guide [termite:2026-03-06:scout]
+529cf1f 2026-03-06 15:27:26 +0800 docs(S-018): review worker-self-check.sh robustness and process cleanup [termite:2026-03-06:scout]
+2d85377 2026-03-06 15:26:21 +0800 docs(S-017): document usage of worker-self-check.sh [termite:2026-03-06:scout]
+0878ad8 2026-03-06 15:25:02 +0800 feat(S-016): add package.json with fleet:self-check:worker script [termite:2026-03-06:scout]
+48c7775 2026-03-06 15:23:25 +0800 docs(S-027): finalize three-step improvement plan report [termite:2026-03-06:scout]
+d66c40b 2026-03-06 15:22:43 +0800 docs: consolidate redundant plan files and backfill AGENTS.md [termite:2026-03-06:scout]
+130ae8f 2026-03-06 15:20:07 +0800 docs(S-005): inventory project status and generate project_audit.md [termite:2026-03-06:worker]
+e760a3d 2026-03-06 15:19:18 +0800 docs(S-020): enhance executable three-step improvement plan with detailed checklists and signal decomposition [termite:2026-03-06:worker]
+e9cfffa 2026-03-06 15:18:49 +0800 feat(S-018): improve robustness of worker-self-check with trap cleanup [termite:2026-03-06:worker]
+771c74d 2026-03-06 15:17:57 +0800 docs(S-024): verify feasibility and verifiability of three-step plan [termite:2026-03-06:worker]
+a45ae3d 2026-03-06 15:17:22 +0800 docs(S-026): executable improvement candidates based on audit and plan review [termite:2026-03-06:worker]
+8c170ea 2026-03-06 15:16:27 +0800 docs(S-024): feasibility review and verification checklist for three-step plan [termite:2026-03-06:worker]
+0e64058 2026-03-06 15:15:43 +0800 docs(S-021): generate three-step plan implementation checklist [termite:2026-03-06:worker]
+4925d4e 2026-03-06 15:15:19 +0800 docs(S-025): comprehensive project structure audit and module review [termite:2026-03-06:worker]
+e7621f2 2026-03-06 15:14:34 +0800 docs(S-026): generate improvement candidates for scripts and tests [termite:2026-03-06:worker]
+ebdd055 2026-03-06 15:14:11 +0800 docs(S-008): generate repository root fact list and inventory [termite:2026-03-06:worker]
+660cd61 2026-03-06 15:13:16 +0800 docs(S-027): generate final three-step plan report [termite:2026-03-06:worker]
+7e53e20 2026-03-06 15:04:05 +0800 docs: create three-step improvement plan for termite protocol [termite:2026-03-06:worker]
+8650903 2026-03-06 13:21:07 +0800 termite(worker): implement S-002 signal flow and worker records [termite:2026-03-06:worker]
+2b54814 2026-03-06 13:20:12 +0800 feat(S-002): implement autonomous sales loop skeleton per termite protocol [termite:2026-03-06:worker]
+
+# --- Unsigned commits (for IC-3 foreign body analysis) ---
+905ba23 2026-03-06 16:08:13 +0800 Add canonical three-step improvement plan entry point (S-020)
+1e5edfd 2026-03-06 16:04:50 +0800 [WIP] worker: complete high-priority signal batch and synchronize state
+b641b6c 2026-03-06 16:01:30 +0800 docs(ops): create db-yaml-sync.md documenting DB↔YAML synchronization workflow (S-036)
+645018e 2026-03-06 15:58:17 +0800 scout: implement S-032 canonical plan entrypoint
+38ef0b9 2026-03-06 15:58:01 +0800 docs(ops): create runtime-artifacts-policy.md as canonical artifact reference
+373054d 2026-03-06 15:57:11 +0800 worker: implement S-033 single worker validation entrypoint
+e18a398 2026-03-06 15:55:39 +0800 scout: verify signals and exit - Step 1 locked
+5fec1de 2026-03-06 15:55:03 +0800 scout: final verification and immediate exit - context critical
+6870937 2026-03-06 15:54:30 +0800 scout: verify signals and sync YAML→DB, exit MOLT
+1fe79f2 2026-03-06 15:53:55 +0800 scout: final verification and exit - Step 1 complete
+02a59c3 2026-03-06 15:53:13 +0800 scout: final verification of S-029 and S-028, prepare for exit
+9a807bf 2026-03-06 15:52:36 +0800 scout: verify S-029 and S-028 completeness and release claims
+afe09a6 2026-03-06 15:51:37 +0800 scout: rapid verification of S-029 and S-028, exit MOLT
+a6501eb 2026-03-06 15:50:46 +0800 scout: verify high-weight signals and exit under context pressure
+c3ff375 2026-03-06 15:49:45 +0800 scout: deposit final session observations and colony assessment
+d00771b 2026-03-06 15:49:08 +0800 scout(S-028): verify runtime artifacts and cleanup policy document
+f0060bf 2026-03-06 15:48:48 +0800 scout(S-029): verify canonical entry point and signal governance
+941429a 2026-03-06 15:47:53 +0800 termite: deposit worker session observations [idle colony]
+a8d1028 2026-03-06 15:47:23 +0800 docs(S-028): verify runtime-artifacts policy document and release signal claim
+508b32e 2026-03-06 15:47:07 +0800 feat(S-030): verify worker validation script and release signal claim
+58ae54f 2026-03-06 15:46:29 +0800 docs(S-029): verify canonical three-step-plan entry point and release signal claim
+5f4a6f4 2026-03-06 15:45:20 +0800 docs(S-023): verify improvement plan document completion and release claim
+f111da0 2026-03-06 15:44:43 +0800 docs(S-027): verify three-step plan report completion and release signal claim
+833cf29 2026-03-06 13:22:12 +0800 termite(worker): process S-003 - implement next signal; add records
+a4aca95 2026-03-06 13:21:51 +0800 feat(S-002): add runnable S-002_run.sh skeleton and log observations

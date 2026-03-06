@@ -1,0 +1,32 @@
+# Audit Package Metadata
+# This file describes the context of the export.
+# Protocol Nurse: read this first to understand the project context.
+
+project_name: "Adam"
+export_date: "2026-03-06T08:11:28Z"
+protocol_version: "v5.1"
+kernel_version: "v13.0"
+
+# Duration & Volume
+run_duration_days: 0
+total_commits: 90
+signed_commits: 88
+signature_ratio_last_50: 0.60
+
+# Signal Inventory
+active_signals: 6
+pending_observations: 27
+active_rules: 0
+archived_items: 40
+pheromone_snapshots: 102
+
+# Observation Quality (v5.0)
+observation_quality_mean: 0.81
+trace_count: 4
+deposit_count: 23
+
+# Current State
+current_branch: "main"
+current_alarm: false
+current_wip: "absent"
+current_build: "unknown"

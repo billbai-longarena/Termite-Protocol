@@ -1,0 +1,14 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-06T08:11:27Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260306151719-31091
+pattern: "S-020 verification"
+context: "docs/three-step-improvement-plan.md"
+reporter: "termite:2026-03-06:worker"
+confidence: medium
+created: 2026-03-06
+source: autonomous
+quality_score: deposit
+source_type: deposit
+detail: |
+  Verified docs/three-step-improvement-plan.md exists and contains the required three-step plan for protocol improvement. Signal S-020 was open but deliverable already committed in 7e53e20.
+merged_from: 0.9

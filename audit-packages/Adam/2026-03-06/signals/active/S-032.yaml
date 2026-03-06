@@ -1,0 +1,16 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-06T08:11:27Z)
+# To modify signals, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: S-032
+type: REPORT
+title: "Create docs/plan/three-step-plan.md as the single canonical three-step improvement plan and mark source references"
+status: open
+weight: 77
+ttl_days: 14
+created: 2026-03-06T08:09:15Z
+last_touched: 2026-03-06
+owner: unassigned
+module: "[]"
+tags: 3
+next: "directive"
+touch_count: 0
+source: 

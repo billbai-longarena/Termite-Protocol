@@ -1,0 +1,14 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-06T08:11:27Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260306160837-55976
+pattern: "Git metadata writes blocked in sandbox"
+context: ".git commit path"
+reporter: "termite:2026-03-06:worker"
+confidence: high
+created: 2026-03-06
+source: autonomous
+quality_score: deposit
+source_type: deposit
+detail: |
+  git commit failed with Operation not permitted creating .git/index.lock; file docs/operations/runtime-artifacts.md is implemented but uncommitted.
+merged_from: 0.9

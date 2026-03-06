@@ -1,0 +1,9 @@
+# Cross-session handoff quality from pheromone chain
+# predecessor_useful: true/false/null evaluation chain
+# Extracted from: Adam
+# Date: 2026-03-06
+total_handoffs: 102
+predecessor_useful_true: 51
+predecessor_useful_false: 2
+predecessor_useful_not_evaluated: 49
+useful_ratio: 0.96

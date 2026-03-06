@@ -1,0 +1,14 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-06T08:11:27Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260306151640-27621
+pattern: "S-019 implementation"
+context: "docs/project-audit.md"
+reporter: "termite:2026-03-06:worker"
+confidence: medium
+created: 2026-03-06
+source: autonomous
+quality_score: trace
+source_type: deposit
+detail: |
+  Verified existing project audit report and aligned signal S-019 with S-025 deliverable. Audit covers repository structure, signal queue status, and gaps in AGENTS.md.
+merged_from: 0.75

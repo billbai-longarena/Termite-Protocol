@@ -1,0 +1,14 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-06T08:11:27Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260306155804-82520
+pattern: "S-031 runtime-artifacts-policy canonical reference established"
+context: "docs/ops/runtime-artifacts-policy.md creates unified artifact management policy"
+reporter: "termite:2026-03-06:worker"
+confidence: high
+created: 2026-03-06
+source: autonomous
+quality_score: deposit
+source_type: deposit
+detail: |
+  Document covers 5 artifact categories (protocol, commander, workspace, business, VCS), 3 lifecycle policies, comprehensive cleanup procedures, size/rotation guidelines, workspace boundaries, and best practices for developers/operators/automation
+merged_from: 0.9

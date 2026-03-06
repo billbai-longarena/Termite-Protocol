@@ -1,0 +1,18 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-06T08:11:27Z)
+# To modify signals, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: S-016
+type: HOLE
+title: "在 package.json 增加脚本 fleet:self-check:worker 指向 scripts/fleet/worker-self-check.sh"
+status: parked
+weight: 28
+ttl_days: 14
+created: 2026-03-06T06:57:50Z
+last_touched: 2026-03-06
+owner: unassigned
+module: "[]"
+tags: 3
+next: "directive"
+touch_count: environment_boundary
+source: Touched 3x without resolution
+parked_reason: 2026-03-06
+parked_conditions: "0"
