@@ -221,6 +221,24 @@ else
   rules=$(yaml_read "$META_FILE" "active_rules" 2>/dev/null || echo "0")
   obs=$(yaml_read "$META_FILE" "pending_observations" 2>/dev/null || echo "0")
 
+  # Commander context (optional)
+  cmdr_detected=$(yaml_read "$META_FILE" "commander_detected" 2>/dev/null || echo "false")
+  cmdr_model=$(yaml_read "$META_FILE" "commander_model" 2>/dev/null || echo "")
+  cmdr_workers=$(yaml_read "$META_FILE" "worker_count" 2>/dev/null || echo "0")
+  cmdr_task_type=$(yaml_read "$META_FILE" "task_type" 2>/dev/null || echo "")
+  cmdr_halt=$(yaml_read "$META_FILE" "halt_reason" 2>/dev/null || echo "")
+  cmdr_duration=$(yaml_read "$META_FILE" "run_duration_seconds" 2>/dev/null || echo "0")
+
+  # Build Commander section for PR body
+  cmdr_section=""
+  if [ "$cmdr_detected" = "true" ]; then
+    cmdr_section="
+### Commander Context
+- Model: ${cmdr_model}, Workers: ${cmdr_workers}
+- Task type: ${cmdr_task_type}, Halt: ${cmdr_halt}
+- Run duration: ${cmdr_duration}s"
+  fi
+
   gh pr create --repo "$UPSTREAM" --head "$PR_HEAD" \
     --title "audit(${PROJECT_NAME}): $(today_iso)" \
     --body "$(cat <<PREOF
@@ -230,6 +248,7 @@ else
 - Protocol: ${proto_ver}, Kernel: ${kernel_ver}
 - Run duration: ${run_days} days, ${signed}/${total} signed commits (${sig_ratio} ratio)
 - ${active_sigs} active signals, ${rules} rules, ${obs} observations
+${cmdr_section}
 
 ### Contents
 Protocol artifacts only. No source code.

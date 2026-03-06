@@ -55,6 +55,18 @@ while [ $# -gt 0 ]; do
   esac
 done
 
+# Commander context variables (populated in Steps 7-9 if Commander detected)
+commander_detected=false
+commander_model=""
+worker_count=0
+task_type=""
+objective=""
+halt_reason=""
+halt_recommendation=""
+commander_cycles=0
+colony_cycles=0
+run_duration_seconds=0
+
 # Default output directory
 if [ -z "$OUT_DIR" ]; then
   OUT_DIR="${PROJECT_ROOT}/audit-package-$(today_iso)"
@@ -75,7 +87,7 @@ mkdir -p "$OUT_DIR"
 
 # ── 1. Signals Directory (complete copy) ─────────────────────────────
 
-log_info "Step 1/7: Copying signals directory"
+log_info "Step 1/10: Copying signals directory"
 
 if has_db; then
   source "${SCRIPT_DIR}/termite-db.sh"
@@ -127,7 +139,7 @@ fi
 
 # ── 2. Git Signatures (no code diffs) ────────────────────────────────
 
-log_info "Step 2/7: Extracting git signatures"
+log_info "Step 2/10: Extracting git signatures"
 
 sig_file="${OUT_DIR}/git-signatures.txt"
 
@@ -155,7 +167,7 @@ fi
 
 # ── 3. Pheromone Chain (from git history) ─────────────────────────────
 
-log_info "Step 3/7: Extracting pheromone chain"
+log_info "Step 3/10: Extracting pheromone chain"
 
 chain_file="${OUT_DIR}/pheromone-chain.jsonl"
 > "$chain_file"
@@ -212,7 +224,7 @@ fi
 
 # ── 4. Immune Log (from BLACKBOARD, stripped of business content) ─────
 
-log_info "Step 4/7: Extracting immune log"
+log_info "Step 4/10: Extracting immune log"
 
 immune_file="${OUT_DIR}/immune-log.txt"
 > "$immune_file"
@@ -243,7 +255,7 @@ fi
 
 # ── 5. Breath Snapshot ───────────────────────────────────────────────
 
-log_info "Step 5/7: Copying breath snapshot"
+log_info "Step 5/10: Copying breath snapshot"
 
 if [ -f "$BREATH_FILE" ]; then
   cp "$BREATH_FILE" "${OUT_DIR}/breath-snapshot.yaml"
@@ -264,7 +276,7 @@ fi
 
 # ── 6. Derived Metrics ──────────────────────────────────────────────
 
-log_info "Step 6/7: Computing derived metrics"
+log_info "Step 6/10: Computing derived metrics"
 
 # 6a. Caste distribution from git signatures
 caste_file="${OUT_DIR}/caste-distribution.yaml"
@@ -386,9 +398,212 @@ fi
 
 log_info "  Handoff quality stats computed"
 
-# ── 7. Metadata ──────────────────────────────────────────────────────
+# ── 7. Commander Input Signals ────────────────────────────────────────
 
-log_info "Step 7/7: Writing metadata"
+log_info "Step 7/10: Extracting Commander input signals"
+
+# Detect Commander presence
+commander_status_file="${PROJECT_ROOT}/.commander-status.json"
+commander_lock_file="${PROJECT_ROOT}/commander.lock"
+
+if [ -f "$commander_status_file" ] || [ -f "$commander_lock_file" ]; then
+  commander_detected=true
+  mkdir -p "${OUT_DIR}/commander"
+  log_info "  Commander detected"
+
+  # 7a. Objective — extract from .commander-status.json
+  if [ -f "$commander_status_file" ]; then
+    objective=$(grep -o '"objective"[[:space:]]*:[[:space:]]*"[^"]*"' "$commander_status_file" 2>/dev/null \
+      | head -1 | sed 's/.*:[[:space:]]*"//;s/"$//' || true)
+    if [ -n "$objective" ]; then
+      echo "$objective" > "${OUT_DIR}/commander/objective.txt"
+      log_info "  objective.txt written (${#objective} chars)"
+    fi
+
+    # 7b. Task type
+    task_type=$(grep -o '"taskType"[[:space:]]*:[[:space:]]*"[^"]*"' "$commander_status_file" 2>/dev/null \
+      | head -1 | sed 's/.*:[[:space:]]*"//;s/"$//' || true)
+    if [ -n "$task_type" ]; then
+      echo "$task_type" > "${OUT_DIR}/commander/task-type.txt"
+      log_info "  task-type.txt written: ${task_type}"
+    fi
+  fi
+
+  # 7c. DIRECTIVE.md (truncated to 10KB)
+  if [ -f "${PROJECT_ROOT}/DIRECTIVE.md" ]; then
+    head -c 10240 "${PROJECT_ROOT}/DIRECTIVE.md" > "${OUT_DIR}/commander/directive.md"
+    log_info "  directive.md copied (truncated to 10KB)"
+  fi
+
+  # 7d. PLAN.md (truncated to 20KB)
+  if [ -f "${PROJECT_ROOT}/PLAN.md" ]; then
+    head -c 20480 "${PROJECT_ROOT}/PLAN.md" > "${OUT_DIR}/commander/plan.md"
+    log_info "  plan.md copied (truncated to 20KB)"
+  fi
+else
+  log_info "  No Commander detected — skipping"
+fi
+
+# ── 8. Commander Fleet Signals ────────────────────────────────────────
+
+log_info "Step 8/10: Extracting Commander fleet signals"
+
+if [ "$commander_detected" = true ] && [ -f "$commander_status_file" ]; then
+  fleet_file="${OUT_DIR}/commander/fleet.yaml"
+
+  # Extract commander model
+  commander_model=$(grep -o '"model"[[:space:]]*:[[:space:]]*"[^"]*"' "$commander_status_file" 2>/dev/null \
+    | head -1 | sed 's/.*:[[:space:]]*"//;s/"$//' || true)
+
+  # Extract default worker CLI and model
+  default_worker_cli=$(grep -o '"defaultWorkerCli"[[:space:]]*:[[:space:]]*"[^"]*"' "$commander_status_file" 2>/dev/null \
+    | head -1 | sed 's/.*:[[:space:]]*"//;s/"$//' || true)
+  default_worker_model=$(grep -o '"defaultWorkerModel"[[:space:]]*:[[:space:]]*"[^"]*"' "$commander_status_file" 2>/dev/null \
+    | head -1 | sed 's/.*:[[:space:]]*"//;s/"$//' || true)
+
+  # Extract active/running worker counts
+  active_workers=$(grep -o '"activeWorkers"[[:space:]]*:[[:space:]]*[0-9]*' "$commander_status_file" 2>/dev/null \
+    | head -1 | sed 's/.*:[[:space:]]*//' || true)
+  running_workers=$(grep -o '"runningWorkers"[[:space:]]*:[[:space:]]*[0-9]*' "$commander_status_file" 2>/dev/null \
+    | head -1 | sed 's/.*:[[:space:]]*//' || true)
+  worker_count="${active_workers:-0}"
+
+  cat > "$fleet_file" <<EOF
+# Commander Fleet Configuration
+# Extracted from: ${PROJECT_NAME}
+# Date: $(today_iso)
+models:
+  commander: "${commander_model:-unknown}"
+  default_worker_cli: "${default_worker_cli:-unknown}"
+  default_worker_model: "${default_worker_model:-unknown}"
+heartbeat:
+  active_workers: ${active_workers:-0}
+  running_workers: ${running_workers:-0}
+EOF
+
+  # Extract individual worker entries
+  # Workers are JSON objects in a "workers" array — extract each worker's fields
+  if grep -q '"workers"' "$commander_status_file" 2>/dev/null; then
+    echo "workers:" >> "$fleet_file"
+    # Use awk to extract worker objects between [ and ] after "workers":
+    # Each worker has id, cli, model, status fields
+    awk '
+      /"workers"[[:space:]]*:/ { in_workers=1; next }
+      in_workers && /\]/ { in_workers=0; next }
+      in_workers && /"id"/ {
+        gsub(/.*"id"[[:space:]]*:[[:space:]]*"/, ""); gsub(/".*/, "");
+        wid=$0
+      }
+      in_workers && /"cli"/ {
+        gsub(/.*"cli"[[:space:]]*:[[:space:]]*"/, ""); gsub(/".*/, "");
+        wcli=$0
+      }
+      in_workers && /"model"/ {
+        gsub(/.*"model"[[:space:]]*:[[:space:]]*"/, ""); gsub(/".*/, "");
+        wmodel=$0
+      }
+      in_workers && /"status"/ {
+        gsub(/.*"status"[[:space:]]*:[[:space:]]*"/, ""); gsub(/".*/, "");
+        wstatus=$0
+        printf "  - id: \"%s\"\n    cli: \"%s\"\n    model: \"%s\"\n    status: \"%s\"\n", wid, wcli, wmodel, wstatus
+        wid=""; wcli=""; wmodel=""; wstatus=""
+      }
+    ' "$commander_status_file" >> "$fleet_file" 2>/dev/null || true
+  fi
+
+  log_info "  fleet.yaml written (commander: ${commander_model:-unknown}, workers: ${worker_count})"
+else
+  log_info "  No Commander fleet data — skipping"
+fi
+
+# ── 9. Commander Lifecycle Signals ────────────────────────────────────
+
+log_info "Step 9/10: Extracting Commander lifecycle signals"
+
+if [ "$commander_detected" = true ]; then
+  # 9a. Halt summary
+  halt_file="${OUT_DIR}/commander/halt-summary.yaml"
+
+  # Try DB first (halt_log table)
+  halt_from_db=false
+  if has_db; then
+    halt_row=$(db_exec "SELECT reason, recommendation, halted_at, commander_cycles, colony_cycles FROM halt_log ORDER BY halted_at DESC LIMIT 1;" 2>/dev/null || true)
+    if [ -n "$halt_row" ]; then
+      halt_from_db=true
+      halt_reason=$(echo "$halt_row" | cut -d'|' -f1)
+      halt_recommendation=$(echo "$halt_row" | cut -d'|' -f2)
+      halt_at=$(echo "$halt_row" | cut -d'|' -f3)
+      commander_cycles=$(echo "$halt_row" | cut -d'|' -f4)
+      colony_cycles=$(echo "$halt_row" | cut -d'|' -f5)
+
+      cat > "$halt_file" <<EOF
+# Commander Halt Summary (from DB)
+# Extracted from: ${PROJECT_NAME}
+# Date: $(today_iso)
+halt_reason: "${halt_reason}"
+halt_recommendation: "${halt_recommendation}"
+halted_at: "${halt_at}"
+commander_cycles: ${commander_cycles:-0}
+colony_cycles: ${colony_cycles:-0}
+source: "db"
+EOF
+      log_info "  halt-summary.yaml written from DB (reason: ${halt_reason})"
+    fi
+  fi
+
+  # Fallback: read HALT.md
+  if [ "$halt_from_db" = false ] && [ -f "${PROJECT_ROOT}/HALT.md" ]; then
+    cat > "$halt_file" <<EOF
+# Commander Halt Summary (from HALT.md)
+# Extracted from: ${PROJECT_NAME}
+# Date: $(today_iso)
+source: "file"
+EOF
+    # Extract reason from HALT.md (typically first meaningful line)
+    halt_reason=$(grep -m1 -E '(reason|Reason|REASON|halt|stopped|complete)' "${PROJECT_ROOT}/HALT.md" 2>/dev/null \
+      | sed 's/^[#* -]*//' | head -c 200 || true)
+    if [ -n "$halt_reason" ]; then
+      echo "halt_reason: \"${halt_reason}\"" >> "$halt_file"
+    fi
+    echo "---" >> "$halt_file"
+    # Append full HALT.md content (truncated to 5KB)
+    head -c 5120 "${PROJECT_ROOT}/HALT.md" >> "$halt_file"
+    log_info "  halt-summary.yaml written from HALT.md"
+  elif [ "$halt_from_db" = false ]; then
+    log_info "  No halt data found"
+  fi
+
+  # 9b. Events tail (last 100 lines)
+  events_log="${PROJECT_ROOT}/.commander.events.log"
+  if [ -f "$events_log" ]; then
+    tail -100 "$events_log" > "${OUT_DIR}/commander/events-tail.txt"
+    event_lines=$(wc -l < "${OUT_DIR}/commander/events-tail.txt" | tr -d ' ')
+    log_info "  events-tail.txt written (${event_lines} lines)"
+  fi
+
+  # 9c. Run duration from commander.lock startedAt
+  if [ -f "$commander_lock_file" ]; then
+    started_at=$(grep -o '"startedAt"[[:space:]]*:[[:space:]]*"[^"]*"' "$commander_lock_file" 2>/dev/null \
+      | head -1 | sed 's/.*:[[:space:]]*"//;s/"$//' || true)
+    if [ -n "$started_at" ]; then
+      # Try to compute epoch difference
+      start_epoch=$(date -j -f "%Y-%m-%dT%H:%M:%S" "${started_at%%.*}" "+%s" 2>/dev/null || \
+                    date -d "${started_at}" "+%s" 2>/dev/null || echo "")
+      if [ -n "$start_epoch" ]; then
+        now_epoch=$(date "+%s")
+        run_duration_seconds=$((now_epoch - start_epoch))
+        [ "$run_duration_seconds" -lt 0 ] && run_duration_seconds=0
+        log_info "  run_duration: ${run_duration_seconds}s"
+      fi
+    fi
+  fi
+else
+  log_info "  No Commander lifecycle data — skipping"
+fi
+
+# ── 10. Metadata ──────────────────────────────────────────────────────
+
+log_info "Step 10/10: Writing metadata"
 
 # Detect protocol version from TERMITE_PROTOCOL.md
 protocol_version="unknown"
@@ -464,6 +679,28 @@ current_wip: "$(check_wip)"
 current_build: "$(check_build)"
 EOF
 
+# Append Commander context if detected
+if [ "$commander_detected" = true ]; then
+  cat >> "${OUT_DIR}/metadata.yaml" <<EOF
+
+# Commander Context
+commander_detected: true
+commander_model: "${commander_model}"
+worker_count: ${worker_count}
+task_type: "${task_type}"
+objective_length: ${#objective}
+halt_reason: "${halt_reason}"
+commander_cycles: ${commander_cycles}
+run_duration_seconds: ${run_duration_seconds}
+EOF
+else
+  cat >> "${OUT_DIR}/metadata.yaml" <<EOF
+
+# Commander Context
+commander_detected: false
+EOF
+fi
+
 log_info "  Metadata written"
 
 # ── Package Summary ──────────────────────────────────────────────────
@@ -492,6 +729,7 @@ to evaluate protocol health and produce optimization recommendations.
 | `immune-log.txt` | Immune system findings from BLACKBOARD |
 | `blackboard-health.txt` | Colony health status table |
 | `breath-snapshot.yaml` | Latest .field-breath health snapshot |
+| `commander/` | Commander context: objective, fleet, halt, events (if Commander detected) |
 
 ## How to Use
 
@@ -527,5 +765,8 @@ log_info "  git-signatures.txt       — ${signed_commits}/${total_commits} sign
 log_info "  pheromone-chain.jsonl    — ${chain_count} handoff snapshots"
 log_info "  immune-log.txt           — immune system findings"
 log_info "  breath-snapshot.yaml     — current health"
+if [ "$commander_detected" = true ]; then
+  log_info "  commander/               — model: ${commander_model:-unknown}, workers: ${worker_count}, type: ${task_type:-unknown}, halt: ${halt_reason:-unknown}"
+fi
 echo ""
 echo "${OUT_DIR}"
