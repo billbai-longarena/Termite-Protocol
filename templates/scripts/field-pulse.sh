@@ -47,7 +47,9 @@ fi
 # ── Sense: Claim expiry ─────────────────────────────────────────────
 
 expired_claims=0
+cleaned_claims=0
 if has_db; then
+  cleaned_claims=$(db_claim_expire 1 2>/dev/null || echo "0")
   expired_claims=$(db_exec "SELECT COUNT(*) FROM claims WHERE datetime(claimed_at, '+' || ttl_hours || ' hours') < datetime('now');" 2>/dev/null || echo "0")
 elif [ -d "$CLAIMS_DIR" ]; then
   now_epoch=$(date +%s)
@@ -139,6 +141,7 @@ active_signals: ${active_count}
 high_weight_holes: ${high_holes}
 parked_signals: ${parked_count}
 expired_claims: ${expired_claims}
+cleaned_claims: ${cleaned_claims}
 blackboard: ${bb_status}
 concentration: ${concentration}
 effective_decay: ${effective_decay}
@@ -147,4 +150,4 @@ branch: $(current_branch)
 commit: $(current_commit_short)
 EOF
 
-log_info "Pulse written: alarm=${alarm} wip=${wip} build=${build} signals=${active_count} holes=${high_holes} parked=${parked_count} phase=${colony_phase}"
+log_info "Pulse written: alarm=${alarm} wip=${wip} build=${build} signals=${active_count} holes=${high_holes} parked=${parked_count} expired_claims=${expired_claims} cleaned_claims=${cleaned_claims} phase=${colony_phase}"

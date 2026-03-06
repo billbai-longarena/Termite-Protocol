@@ -799,7 +799,7 @@ output: "execution" | "judgment" | "direction"
 
 **蜕皮 (Molt)**：Context 超 80% 时——停止 → 结茧（写 WIP.md）→ 重生（请求新会话）。
 
-**并发协调**：信号认领使用 `signals/claims/*.lock` + git 乐观并发。工具：`./scripts/field-claim.sh claim|release|check|list|expired`。work 和 audit 互斥，review 不阻塞。
+**并发协调**：信号认领使用 `signals/claims/*.lock` + git 乐观并发。工具：`./scripts/field-claim.sh claim|complete|release|check|list|expired`。work 和 audit 互斥，review 不阻塞。
 
 ## 协议审计导出
 
@@ -1115,7 +1115,7 @@ submit_frequency: "session-end"  # session-end | weekly | manual
 1. **启动**：读入口文件 + BLACKBOARD + signals/active/*.yaml → 按瀑布选种姓
 2. **认领**：`./scripts/field-claim.sh claim S-xxx <op> <owner>` → git push + 3秒验证
 3. **执行**：最小原子动作 → 自检矩阵
-4. **沉淀**：更新信号 YAML → `field-claim.sh release` → 释放认领
+4. **沉淀**：完成任务用 `field-claim.sh complete`；未完成交接才 `field-claim.sh release`
 
 ### 优雅降级
 

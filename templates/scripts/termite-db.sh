@@ -306,11 +306,24 @@ db_claim_release() {
   db_transaction "
     DELETE FROM claims WHERE signal_id='$(db_escape "$signal_id")' AND operation='$(db_escape "$op")';
     UPDATE signals SET status=CASE
-      WHEN (SELECT COUNT(*) FROM claims WHERE signal_id='$(db_escape "$signal_id")') = 0 THEN 'open'
+      WHEN (SELECT COUNT(*) FROM claims WHERE signal_id='$(db_escape "$signal_id")') = 0
+       AND status='claimed' THEN 'open'
       ELSE status END,
       owner=CASE
-      WHEN (SELECT COUNT(*) FROM claims WHERE signal_id='$(db_escape "$signal_id")') = 0 THEN 'unassigned'
+      WHEN (SELECT COUNT(*) FROM claims WHERE signal_id='$(db_escape "$signal_id")') = 0
+       AND status='claimed' THEN 'unassigned'
       ELSE owner END
+      WHERE id='$(db_escape "$signal_id")';
+  "
+}
+
+db_claim_complete() {
+  # Args: signal_id [operation]
+  # Complete is terminal: clear all claims on the signal and mark signal done.
+  local signal_id="$1"
+  db_transaction "
+    DELETE FROM claims WHERE signal_id='$(db_escape "$signal_id")';
+    UPDATE signals SET status='done', owner='unassigned', last_touched='$(today_iso)'
       WHERE id='$(db_escape "$signal_id")';
   "
 }
@@ -336,7 +349,9 @@ db_claim_list() {
 }
 
 db_claim_expire() {
-  # Delete expired claims (by TTL or heartbeat timeout), reset signals
+  # Delete expired claims (by TTL or heartbeat timeout), reset signals.
+  # Args: [quiet] -- pass 1 to suppress log_info output.
+  local quiet="${1:-0}"
   local expired_ids
   
   # 1. Standard TTL expiration
@@ -350,6 +365,7 @@ db_claim_expire() {
   ")
   
   if [ -z "$expired_ids" ] && [ -z "$starved_ids" ]; then
+    echo "0"
     return 0
   fi
 
@@ -372,10 +388,17 @@ db_claim_expire() {
   "
   
   local total_cleaned=0
-  [ -n "$expired_ids" ] && total_cleaned=$((total_cleaned + $(echo "$expired_ids" | wc -l)))
-  [ -n "$starved_ids" ] && total_cleaned=$((total_cleaned + $(echo "$starved_ids" | wc -l)))
-  
-  log_info "Expired/starved claims cleaned: ${total_cleaned}"
+  if [ -n "$expired_ids" ]; then
+    total_cleaned=$((total_cleaned + $(echo "$expired_ids" | sed '/^[[:space:]]*$/d' | wc -l | tr -d ' ')))
+  fi
+  if [ -n "$starved_ids" ]; then
+    total_cleaned=$((total_cleaned + $(echo "$starved_ids" | sed '/^[[:space:]]*$/d' | wc -l | tr -d ' ')))
+  fi
+
+  if [ "$quiet" != "1" ] && [ "$total_cleaned" -gt 0 ]; then
+    log_info "Expired/starved claims cleaned: ${total_cleaned}"
+  fi
+  echo "${total_cleaned}"
 }
 
 # ── Pheromone Operations ──────────────────────────────────────────────

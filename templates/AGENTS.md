@@ -61,7 +61,7 @@ IF 不可执行:
 **核心循环：**
 1. **Claim**: 读 `signals/active/*.yaml`（回退: `BLACKBOARD.md`）→ 按权重选最高 → `./scripts/field-claim.sh claim S-xxx work <owner>`
 2. **Work**: 最小原子动作 → 自检 → 偏离则回判断
-3. **Deposit**: 更新信号状态/权重 → 沉积观察 → `./scripts/field-claim.sh release S-xxx work`
+3. **Deposit**: 更新信号状态/权重 → 沉积观察 → 完成则 `./scripts/field-claim.sh complete S-xxx work`；未完成交接才 `release`
 
 **互斥规则**: work⊥audit，review 不阻塞。冲突时跳过，选其他信号。
 **容错**: 失败必须写 HOLE + Next 指引。多步任务先写 Plan。

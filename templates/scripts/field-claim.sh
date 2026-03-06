@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # field-claim.sh — Concurrent signal claiming with mutual exclusion
-# Subcommands: claim, release, check, list, expired
+# Subcommands: claim, complete, release, check, list, expired
 # Uses file-based locks with git optimistic concurrency.
 
 set -euo pipefail
@@ -14,6 +14,7 @@ Usage: field-claim.sh <command> [args]
 
 Commands:
   claim   <signal-id> <operation> <owner>   Claim a signal for work
+  complete <signal-id> [operation]          Mark a claimed signal as done
   release <signal-id> <operation>           Release a claim
   check   <signal-id> <operation>           Check if operation is blocked
   list                                      List all active claims
@@ -151,6 +152,35 @@ do_release() {
   log_info "Released ${signal_id} ${op} claim"
 }
 
+# ── Complete ─────────────────────────────────────────────────────────
+
+do_complete() {
+  local signal_id="$1" op="${2:-work}"
+
+  if has_db; then
+    source "${SCRIPT_DIR}/termite-db.sh"
+    db_claim_complete "$signal_id" "$op"
+    log_info "Completed ${signal_id} (DB)"
+    return
+  fi
+
+  # YAML fallback: clear all claims for this signal and mark it done
+  local lock_file
+  for lock_file in "$CLAIMS_DIR"/${signal_id}.*.lock; do
+    [ -f "$lock_file" ] || continue
+    rm -f "$lock_file"
+  done
+
+  local signal_file="${ACTIVE_DIR}/${signal_id}.yaml"
+  if [ -f "$signal_file" ]; then
+    yaml_write "$signal_file" "status" "done"
+    yaml_write "$signal_file" "owner" "unassigned"
+    yaml_write "$signal_file" "last_touched" "$(today_iso)"
+  fi
+
+  log_info "Completed ${signal_id}"
+}
+
 # ── Check ────────────────────────────────────────────────────────────
 
 do_check() {
@@ -265,6 +295,10 @@ case "$cmd" in
   claim)
     [ $# -lt 3 ] && { log_error "Usage: claim <signal-id> <operation> <owner>"; exit 1; }
     do_claim "$1" "$2" "$3"
+    ;;
+  complete)
+    [ $# -lt 1 ] && { log_error "Usage: complete <signal-id> [operation]"; exit 1; }
+    do_complete "$1" "${2:-work}"
     ;;
   release)
     [ $# -lt 2 ] && { log_error "Usage: release <signal-id> <operation>"; exit 1; }
