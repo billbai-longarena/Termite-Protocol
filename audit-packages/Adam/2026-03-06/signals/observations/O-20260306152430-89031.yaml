@@ -1,0 +1,14 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-06T08:13:58Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260306152430-89031
+pattern: "Missing package.json"
+context: "/"
+reporter: "termite:2026-03-06:worker"
+confidence: high
+created: 2026-03-06
+source: autonomous
+quality_score: deposit
+source_type: deposit
+detail: |
+  package.json is missing in root, so fleet:self-check:worker script cannot be added as requested by S-016.
+merged_from: 0.85

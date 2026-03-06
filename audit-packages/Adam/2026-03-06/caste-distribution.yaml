@@ -1,0 +1,8 @@
+# Caste distribution from git commit signatures
+# Extracted from: Adam
+# Date: 2026-03-06
+distribution:
+  scout: 39
+  worker: 26
+first_signature: 2026-03-06
+last_signature: 2026-03-06

@@ -1,0 +1,14 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-06T08:13:58Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260306151932-48720
+pattern: "Root mixes runtime artifacts with durable docs"
+context: ".termite/worker/observations/S-022-root-status.md"
+reporter: "termite:2026-03-06:worker"
+confidence: high
+created: 2026-03-06
+source: autonomous
+quality_score: deposit
+source_type: deposit
+detail: |
+  Repository root currently contains many transient runtime artifacts (.birth.*, commander logs, lock/status files), which reduces scanability for worker exploration tasks. Consolidating runtime outputs under a dedicated subtree would lower noise and improve signal routing.
+merged_from: 0.9
