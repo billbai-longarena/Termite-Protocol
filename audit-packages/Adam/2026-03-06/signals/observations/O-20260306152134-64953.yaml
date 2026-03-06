@@ -1,0 +1,14 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-06T08:13:58Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260306152134-64953
+pattern: "S-026 verification"
+context: "docs/improvement-candidates.md"
+reporter: "termite:2026-03-06:worker"
+confidence: medium
+created: 2026-03-06
+source: autonomous
+quality_score: deposit
+source_type: deposit
+detail: |
+  Verified existing improvement candidates report. The document provides a structured, prioritized list of actionable improvements aligned with the three-step plan. Signal S-026 was open but deliverable already committed in a45ae3d.
+merged_from: 0.75

@@ -1,0 +1,5 @@
+# Rule health: hit_count vs disputed_count
+# disputed_ratio > 0.3 flags a rule for review
+# Extracted from: Adam
+# Date: 2026-03-06
+rules:

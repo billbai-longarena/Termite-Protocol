@@ -1,0 +1,14 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-06T08:13:58Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260306161154-82307
+pattern: "S-032 status sync"
+context: "docs/plan/three-step-plan.md"
+reporter: "termite:2026-03-06:worker"
+confidence: medium
+created: 2026-03-06
+source: autonomous
+quality_score: deposit
+source_type: deposit
+detail: |
+  S-032 already completed in previous commits (3162a15, 04fddec). Synchronizing signal status.
+merged_from: 0.75

@@ -1,0 +1,14 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-06T08:13:58Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260306152010-53902
+pattern: "S-005 implementation"
+context: "docs/project_audit.md"
+reporter: "termite:2026-03-06:worker"
+confidence: medium
+created: 2026-03-06
+source: autonomous
+quality_score: trace
+source_type: deposit
+detail: |
+  Consolidated project status inventory into docs/project_audit.md. This matches the requirements of signal S-005 and aligns with the existing audit findings in docs/project-audit.md.
+merged_from: 0.9

@@ -1,0 +1,14 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-06T08:13:58Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260306151323-4372
+pattern: "S-027 implementation"
+context: "docs/three-step-plan.md"
+reporter: "termite:2026-03-06:worker"
+confidence: medium
+created: 2026-03-06
+source: autonomous
+quality_score: deposit
+source_type: deposit
+detail: |
+  Generated the final three-step improvement plan report by consolidating existing drafts and aligning with the signal's target filename. Verified filename consistency and committed to main.
+merged_from: 0.75

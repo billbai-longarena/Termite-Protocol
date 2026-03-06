@@ -1,0 +1,16 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-06T08:13:58Z)
+# To modify signals, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: S-033
+type: REPORT
+title: "Create docs/ops/runtime-artifacts.md to define canonical runtime artifact location and cleanup routine"
+status: open
+weight: 84
+ttl_days: 14
+created: 2026-03-06T08:12:26Z
+last_touched: 2026-03-06
+owner: unassigned
+module: "[]"
+tags: 2
+next: "directive"
+touch_count: 0
+source: 
