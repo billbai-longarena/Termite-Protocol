@@ -9,6 +9,9 @@ node_modules/
 .birth
 .field-breath
 .pheromone
+.commander.events.log
+.commander.events.log.1
+.commander.log
 
 # Audit package exports (host project ephemeral output)
 audit-package-*/

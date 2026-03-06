@@ -95,6 +95,9 @@ GITIGNORE_RULES=".birth
 .birth.*
 .field-breath
 .pheromone
+.commander.events.log
+.commander.events.log.1
+.commander.log
 .termite.db
 .termite.db-wal
 .termite.db-shm
