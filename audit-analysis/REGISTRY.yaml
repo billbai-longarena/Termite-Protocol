@@ -1103,3 +1103,28 @@
     ./audit-analysis/scripts/find-knowledge.sh KB-001
     ./audit-analysis/scripts/find-knowledge.sh "noise filtering"
     ./audit-analysis/scripts/find-knowledge.sh "W-013 quality regression"
+
+- date: 2026-03-06
+  type: protocol-evolution
+  id: PE-008
+  status: fixed
+  title: "KB-003: Adaptive signal scheduling — continuous behavior bias + affinity recommendation"
+  description: >
+    Added knowledge card KB-003 based on comparative analysis between Termite Protocol
+    and classical swarm intelligence theory (Givigi & Schwartz Ch.6). Two experimental
+    hypotheses: H1 (behavior bias β computed from colony state, injected via .birth) and
+    H2 (affinity-based signal recommendation using agent module history). Both parked
+    pending cross-colony experimental validation.
+  files_changed:
+    - docs/knowledge-base/cards/KB-003-adaptive-signal-scheduling.md
+    - docs/knowledge-base/INDEX.md
+  related:
+    - "KB-001 (signal amplification — β explore mode is complementary)"
+    - "KB-002 (environment-side guidance — β is a concrete instance)"
+    - "W-013 (observation quality regression — affinity may reduce blind claims)"
+    - "W-015 (claim starvation — affinity reduces contention)"
+  notes: >
+    Source analysis and experiment design live in Commander repo:
+    docs/plans/2026-03-06-swarm-intelligence-comparative-analysis.md
+    docs/plans/2026-03-06-adaptive-signal-experiment-design.md
+    Activation requires completing experiments E1 (β) and E2 (affinity) on real colonies.
