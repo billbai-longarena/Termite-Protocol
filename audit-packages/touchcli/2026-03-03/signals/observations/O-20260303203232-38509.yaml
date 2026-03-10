@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:42Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303203232-38509
+pattern: "S-125 implemented automated strategy-memory compression with bounded actions and rolling history"
+context: "backend/python/agent_service/agents/strategy_agent.py + strategy agent tests"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Added _compress_memory_update to dedupe/truncate strategy_next_actions and cap strategy_history to latest 5 summaries. Verified with python3 -m pytest agent_service/tests/test_strategy_agent.py -q (16 passed). Commit: 44dbfa9.

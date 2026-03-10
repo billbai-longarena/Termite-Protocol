@@ -1,4 +1,4 @@
-# READ-ONLY — auto-exported from .termite.db (2026-03-03T07:50:45Z)
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:41Z)
 # To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
 id: O-20260303070719-60848
 pattern: "S-108 E2E integration complete: 3 integration tests added (PDF parsing, DOCX parsing, ingestion E2E flow). All 10 tests passing (7 unit + 3 E2E). Product Knowledge Base fully tested end-to-end."

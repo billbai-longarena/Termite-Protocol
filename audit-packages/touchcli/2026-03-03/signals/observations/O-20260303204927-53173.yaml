@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:42Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303204927-53173
+pattern: "Phase 4/5 boundary execution drift detected - Option 1A vs 1B mismatch"
+context: "swarm branch, signals S-124/125/126 analysis"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Heartbeat #17 selected Option 1A (UAT merge clean) but git shows Option 1B behavior (WIP preserved). Three high-weight signals unassigned. Human clarification needed before escalation.

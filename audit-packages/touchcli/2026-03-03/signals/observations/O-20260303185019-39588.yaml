@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:42Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303185019-39588
+pattern: "scheduled_reminders pydantic v2 cleanup"
+context: "backend/python/agent_service/api/scheduled_reminders.py"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Replaced class Config with ConfigDict(from_attributes=True); reminder tests pass; strict PydanticDeprecatedSince20 gate passes.
