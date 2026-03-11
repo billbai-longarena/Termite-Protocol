@@ -15,7 +15,7 @@ set -euo pipefail
 
 # ---------- Constants ----------
 
-VERSION="1.1.0"
+VERSION="1.1.1"
 
 # GitHub raw base URL — replace with your fork's URL, or set TERMITE_REPO_URL env var
 GITHUB_RAW_BASE="${TERMITE_REPO_URL:-https://raw.githubusercontent.com/billbai-longarena/Termite-Protocol/main/templates}"

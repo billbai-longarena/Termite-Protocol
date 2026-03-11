@@ -2,6 +2,17 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.1.1] - 2026-03-11
+
+### Fixed
+
+- Replaced GNU/BSD `stat` fallback chains with a shared cross-platform mtime helper in template scripts.
+- Fixed the GitHub Actions smoke test on Linux for first-arrival and pulse validation.
+
+### Notes
+
+- `v1.1.1` supersedes the initial `v1.1.0` packaging release as the recommended public tag.
+
 ## [1.1.0] - 2026-03-11
 
 ### Added

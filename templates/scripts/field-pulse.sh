@@ -83,7 +83,7 @@ esac
 
 bb_status="absent"
 if [ -f "$BLACKBOARD" ]; then
-  bb_mod=$(stat -f "%m" "$BLACKBOARD" 2>/dev/null || stat -c "%Y" "$BLACKBOARD" 2>/dev/null || echo 0)
+  bb_mod=$(file_mtime_epoch "$BLACKBOARD")
   bb_age=$(( ($(date +%s) - bb_mod) / 86400 ))
   if [ "$bb_age" -lt "$WIP_FRESHNESS_DAYS" ]; then
     bb_status="fresh"

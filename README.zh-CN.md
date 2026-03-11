@@ -183,7 +183,7 @@ your-project/
 ## 从这里开始
 
 - `QUICKSTART.md:1` — 首次安装、首次到达、首次信号
-- `docs/releases/v1.1.0.md:1` — 当前仓库打包发布说明
+- `docs/releases/v1.1.1.md:1` — 当前仓库打包发布说明
 - `docs/knowledge-base/README.md:1` — 概念卡片与协议洞察
 - `CONTRIBUTING.md:1` — 如何安全、高效地贡献
 - `SUPPORT.md:1` — 提问和报 bug 的分流方式

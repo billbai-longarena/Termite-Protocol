@@ -71,18 +71,29 @@ has_sqlite() {
   command -v sqlite3 >/dev/null 2>&1
 }
 
+file_mtime_epoch() {
+  local path="$1"
+  [ -e "$path" ] || { echo 0; return; }
+
+  if stat --version >/dev/null 2>&1; then
+    stat -c "%Y" "$path" 2>/dev/null || echo 0
+  else
+    stat -f "%m" "$path" 2>/dev/null || echo 0
+  fi
+}
+
 yaml_newer_than_db() {
   # Check if any YAML file in signals/ is newer than .termite.db
   # Returns 0 (true) if YAML edits detected, 1 otherwise
   [ -f "$TERMITE_DB" ] || return 1
   local db_mtime
-  db_mtime=$(stat -f "%m" "$TERMITE_DB" 2>/dev/null || stat -c "%Y" "$TERMITE_DB" 2>/dev/null || echo 0)
+  db_mtime=$(file_mtime_epoch "$TERMITE_DB")
   for dir in "$ACTIVE_DIR" "$OBS_DIR" "$RULES_DIR"; do
     [ -d "$dir" ] || continue
     for f in "$dir"/*.yaml; do
       [ -f "$f" ] || continue
       local f_mtime
-      f_mtime=$(stat -f "%m" "$f" 2>/dev/null || stat -c "%Y" "$f" 2>/dev/null || echo 0)
+      f_mtime=$(file_mtime_epoch "$f")
       if [ "$f_mtime" -gt "$db_mtime" ]; then
         return 0
       fi
@@ -472,7 +483,7 @@ check_wip() {
     return
   fi
   local mod_epoch now_epoch age_days
-  mod_epoch=$(stat -f "%m" "$WIP_FILE" 2>/dev/null || stat -c "%Y" "$WIP_FILE" 2>/dev/null || echo 0)
+  mod_epoch=$(file_mtime_epoch "$WIP_FILE")
   now_epoch=$(date +%s)
   age_days=$(( (now_epoch - mod_epoch) / 86400 ))
   if [ "$age_days" -lt "$WIP_FRESHNESS_DAYS" ]; then
@@ -512,7 +523,7 @@ check_breath_freshness() {
     return 1
   fi
   local mod_epoch now_epoch age_min
-  mod_epoch=$(stat -f "%m" "$BREATH_FILE" 2>/dev/null || stat -c "%Y" "$BREATH_FILE" 2>/dev/null || echo 0)
+  mod_epoch=$(file_mtime_epoch "$BREATH_FILE")
   now_epoch=$(date +%s)
   age_min=$(( (now_epoch - mod_epoch) / 60 ))
   [ "$age_min" -lt "$BREATH_MAX_AGE_MIN" ]
@@ -539,7 +550,7 @@ count_uncommitted_lines() {
 breath_age_minutes() {
   if [ ! -f "$BREATH_FILE" ]; then echo "unknown"; return; fi
   local mod_epoch now_epoch
-  mod_epoch=$(stat -f "%m" "$BREATH_FILE" 2>/dev/null || stat -c "%Y" "$BREATH_FILE" 2>/dev/null || echo 0)
+  mod_epoch=$(file_mtime_epoch "$BREATH_FILE")
   now_epoch=$(date +%s)
   echo $(( (now_epoch - mod_epoch) / 60 ))
 }

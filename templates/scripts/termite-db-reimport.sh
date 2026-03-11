@@ -45,8 +45,8 @@ if [ -d "$ACTIVE_DIR" ]; then
     [ -f "$f" ] || continue
 
     # Skip files that are older than DB (not edited)
-    local_mtime=$(stat -f "%m" "$f" 2>/dev/null || stat -c "%Y" "$f" 2>/dev/null || echo 0)
-    db_mtime=$(stat -f "%m" "$TERMITE_DB" 2>/dev/null || stat -c "%Y" "$TERMITE_DB" 2>/dev/null || echo 0)
+    local_mtime=$(file_mtime_epoch "$f")
+    db_mtime=$(file_mtime_epoch "$TERMITE_DB")
     [ "$local_mtime" -le "$db_mtime" ] && continue
 
     id=$(yaml_read "$f" "id")
@@ -94,8 +94,8 @@ if [ -d "$OBS_DIR" ]; then
   for f in "$OBS_DIR"/*.yaml; do
     [ -f "$f" ] || continue
 
-    local_mtime=$(stat -f "%m" "$f" 2>/dev/null || stat -c "%Y" "$f" 2>/dev/null || echo 0)
-    db_mtime=$(stat -f "%m" "$TERMITE_DB" 2>/dev/null || stat -c "%Y" "$TERMITE_DB" 2>/dev/null || echo 0)
+    local_mtime=$(file_mtime_epoch "$f")
+    db_mtime=$(file_mtime_epoch "$TERMITE_DB")
     [ "$local_mtime" -le "$db_mtime" ] && continue
 
     id=$(yaml_read "$f" "id")
@@ -133,8 +133,8 @@ if [ -d "$RULES_DIR" ]; then
   for f in "$RULES_DIR"/*.yaml; do
     [ -f "$f" ] || continue
 
-    local_mtime=$(stat -f "%m" "$f" 2>/dev/null || stat -c "%Y" "$f" 2>/dev/null || echo 0)
-    db_mtime=$(stat -f "%m" "$TERMITE_DB" 2>/dev/null || stat -c "%Y" "$TERMITE_DB" 2>/dev/null || echo 0)
+    local_mtime=$(file_mtime_epoch "$f")
+    db_mtime=$(file_mtime_epoch "$TERMITE_DB")
     [ "$local_mtime" -le "$db_mtime" ] && continue
 
     id=$(yaml_read "$f" "id")

@@ -183,7 +183,7 @@ your-project/
 ## Start Here
 
 - `QUICKSTART.md:1` — first install, first arrival, first signal
-- `docs/releases/v1.1.0.md:1` — release notes for this repository packaging release
+- `docs/releases/v1.1.1.md:1` — release notes for this repository packaging release
 - `docs/knowledge-base/README.md:1` — concept cards and protocol insights
 - `CONTRIBUTING.md:1` — how to contribute safely and efficiently
 - `SUPPORT.md:1` — where to ask questions vs. file issues
