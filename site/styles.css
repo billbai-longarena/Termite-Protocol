@@ -549,6 +549,59 @@ pre {
   color: var(--muted);
 }
 
+.connect-grid {
+  align-items: stretch;
+}
+
+.connect-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.connect-card__eyebrow {
+  display: inline-flex;
+  width: fit-content;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(110, 231, 249, 0.12);
+  color: #c9fbff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.connect-card__meta {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 0.93rem;
+}
+
+.connect-card .button {
+  width: 100%;
+  margin-top: 18px;
+}
+
+.contact-strip {
+  margin-top: 18px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  background: rgba(10, 20, 39, 0.62);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  color: var(--muted);
+}
+
+.inline-link {
+  color: #dffbff;
+  text-decoration: underline;
+  text-decoration-color: rgba(110, 231, 249, 0.55);
+  text-underline-offset: 4px;
+}
+
+.inline-link:hover,
+.inline-link:focus-visible {
+  color: var(--text);
+}
+
 .cta {
   padding: 26px;
   border-radius: 30px;

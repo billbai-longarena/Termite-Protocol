@@ -8,6 +8,7 @@ All notable changes to this project are documented in this file.
 
 - Marketing docs bundle with bilingual launch posts, long-form articles, and website homepage copy.
 - Static bilingual landing page in `site/` plus GitHub Pages deployment workflow.
+- Landing page newsletter, waitlist, direct contact entry, and configurable Plausible/GA4 analytics bootstrap.
 - README links to the new `docs/marketing/` promotion kit.
 
 ## [1.1.1] - 2026-03-11

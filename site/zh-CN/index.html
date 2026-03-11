@@ -21,6 +21,8 @@
   <link rel="alternate" hreflang="x-default" href="https://billbai-longarena.github.io/Termite-Protocol/">
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../styles.css">
+  <script defer src="../config.js"></script>
+  <script defer src="../analytics.js"></script>
 </head>
 <body>
   <header class="site-header">
@@ -35,8 +37,9 @@
         <a href="#proof">证据</a>
         <a href="#workflow">流程</a>
         <a href="#faq">FAQ</a>
-        <a class="nav__lang" href="../">English</a>
-        <a class="nav__repo" href="https://github.com/billbai-longarena/Termite-Protocol">GitHub</a>
+        <a href="#connect">联系</a>
+        <a class="nav__lang" href="../" data-analytics-event="language_switch_click" data-analytics-label="english" data-analytics-location="nav">English</a>
+        <a class="nav__repo" href="https://github.com/billbai-longarena/Termite-Protocol" data-analytics-event="repository_click" data-analytics-label="github_nav" data-analytics-location="nav">GitHub</a>
       </nav>
     </div>
   </header>
@@ -49,8 +52,8 @@
           <h1>无状态 AI Agent 需要“环境”，而不是“对话”。</h1>
           <p class="hero__lede">白蚁协议通过 SQLite 信号、原子认领、紧凑的 <code>.birth</code> 快照和跨会话场记忆，让新的 AI Agent 会话可以直接接上真实仓库工作。</p>
           <div class="hero__actions">
-            <a class="button button--primary" href="https://github.com/billbai-longarena/Termite-Protocol/blob/main/QUICKSTART.md">开始 60 秒冒烟测试</a>
-            <a class="button button--secondary" href="https://github.com/billbai-longarena/Termite-Protocol">查看仓库</a>
+            <a class="button button--primary" href="https://github.com/billbai-longarena/Termite-Protocol/blob/main/QUICKSTART.md" data-analytics-event="smoke_test_click" data-analytics-label="smoke_test" data-analytics-location="hero">开始 60 秒冒烟测试</a>
+            <a class="button button--secondary" href="https://github.com/billbai-longarena/Termite-Protocol" data-analytics-event="repository_click" data-analytics-label="view_repository" data-analytics-location="hero">查看仓库</a>
           </div>
           <div class="badge-row">
             <span class="badge badge--brand">环境优先协作</span>
@@ -242,14 +245,50 @@ sqlite3 .termite.db "select id,status,title from signals;"</code></pre>
       </div>
     </section>
 
+    <section class="section" id="connect">
+      <div class="container">
+        <div class="section__head">
+          <div class="section__kicker">保持联系</div>
+          <h2>Newsletter、Waitlist 和直接联系入口都放在这里。</h2>
+          <p>这个站点刻意保持轻量，所以当前最快的方式就是邮件。按你的目的选择入口，告诉我们你想如何把白蚁协议用进真实工程里。</p>
+        </div>
+        <div class="grid-3 connect-grid">
+          <article class="card connect-card">
+            <div class="connect-card__eyebrow">Newsletter</div>
+            <h3>接收发布更新和一线实践总结。</h3>
+            <p>订阅后可以收到新版本、审计结论，以及关于跨会话协作的新模式总结。</p>
+            <div class="connect-card__meta">人工维护列表，人工回复。</div>
+            <a class="button button--secondary" href="mailto:bill.bai@long-arena.com?subject=%E8%AE%A2%E9%98%85%E7%99%BD%E8%9A%81%E5%8D%8F%E8%AE%AE%20Newsletter&body=Bill%20%E4%BD%A0%E5%A5%BD%EF%BC%8C%0A%0A%E6%88%91%E6%83%B3%E8%AE%A2%E9%98%85%E7%99%BD%E8%9A%81%E5%8D%8F%E8%AE%AE%20Newsletter%E3%80%82%0A%0A%E5%A7%93%E5%90%8D%EF%BC%9A%0A%E8%A7%92%E8%89%B2%EF%BC%9A%0A%E5%85%AC%E5%8F%B8%20/%20%E5%9B%A2%E9%98%9F%EF%BC%9A%0A%E6%AD%A3%E5%9C%A8%E5%81%9A%E7%9A%84%E9%A1%B9%E7%9B%AE%EF%BC%9A%0A" data-analytics-event="newsletter_click" data-analytics-label="newsletter" data-analytics-location="connect">加入 Newsletter</a>
+          </article>
+          <article class="card connect-card">
+            <div class="connect-card__eyebrow">Waitlist</div>
+            <h3>告诉我们你的场景和节奏。</h3>
+            <p>如果你想了解试点、接入窗口或下一波生态能力进展，可以先加入 Waitlist。</p>
+            <div class="connect-card__meta">适合正在认真评估落地路径的团队。</div>
+            <a class="button button--primary" href="mailto:bill.bai@long-arena.com?subject=%E5%8A%A0%E5%85%A5%E7%99%BD%E8%9A%81%E5%8D%8F%E8%AE%AE%20Waitlist&body=Bill%20%E4%BD%A0%E5%A5%BD%EF%BC%8C%0A%0A%E6%88%91%E6%83%B3%E5%8A%A0%E5%85%A5%E7%99%BD%E8%9A%81%E5%8D%8F%E8%AE%AE%20Waitlist%E3%80%82%0A%0A%E5%A7%93%E5%90%8D%EF%BC%9A%0A%E5%85%AC%E5%8F%B8%20/%20%E5%9B%A2%E9%98%9F%EF%BC%9A%0A%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF%EF%BC%9A%0A%E9%A2%84%E8%AE%A1%E6%97%B6%E9%97%B4%EF%BC%9A%0A" data-analytics-event="waitlist_click" data-analytics-label="waitlist" data-analytics-location="connect">加入 Waitlist</a>
+          </article>
+          <article class="card connect-card">
+            <div class="connect-card__eyebrow">联系</div>
+            <h3>直接给 Bill 发邮件。</h3>
+            <p>合作、生产问题、研究交流，或者任何需要认真聊一聊的话题，都可以从这里开始。</p>
+            <div class="connect-card__meta">回复邮箱：bill.bai@long-arena.com</div>
+            <a class="button button--secondary" href="mailto:bill.bai@long-arena.com?subject=%E7%99%BD%E8%9A%81%E5%8D%8F%E8%AE%AE%E5%90%88%E4%BD%9C%E5%92%A8%E8%AF%A2&body=Bill%20%E4%BD%A0%E5%A5%BD%EF%BC%8C%0A%0A%E6%88%91%E6%83%B3%E5%92%8C%E4%BD%A0%E8%81%8A%E8%81%8A%E7%99%BD%E8%9A%81%E5%8D%8F%E8%AE%AE%E3%80%82%0A%0A%E5%A7%93%E5%90%8D%EF%BC%9A%0A%E5%85%AC%E5%8F%B8%20/%20%E5%9B%A2%E9%98%9F%EF%BC%9A%0A%E6%83%B3%E8%AE%A8%E8%AE%BA%E7%9A%84%E4%B8%BB%E9%A2%98%EF%BC%9A%0A" data-analytics-event="contact_click" data-analytics-label="contact" data-analytics-location="connect">联系 Bill</a>
+          </article>
+        </div>
+        <div class="contact-strip">
+          如果你更喜欢直接写邮件，也可以发到 <a class="inline-link" href="mailto:bill.bai@long-arena.com" data-analytics-event="contact_click" data-analytics-label="direct_email" data-analytics-location="connect_strip">bill.bai@long-arena.com</a>，顺手带上你的仓库类型、团队规模或计划推进的问题。
+        </div>
+      </div>
+    </section>
+
     <section class="section">
       <div class="container">
         <div class="cta">
           <h2>去测试一下：什么时候 stateless agents 不再像“失忆”一样工作。</h2>
           <p>跑一遍冒烟测试，翻一翻审计材料，然后在真实仓库里检验这套机制的边界。最快的入口还是仓库本身，最有价值的验证仍然是带着怀疑去实测。</p>
           <div class="cta__actions">
-            <a class="button button--primary" href="https://github.com/billbai-longarena/Termite-Protocol/blob/main/README.zh-CN.md">阅读文档</a>
-            <a class="button button--secondary" href="https://github.com/billbai-longarena/Termite-Protocol/discussions">参与讨论</a>
+            <a class="button button--primary" href="https://github.com/billbai-longarena/Termite-Protocol/blob/main/README.zh-CN.md" data-analytics-event="docs_click" data-analytics-label="read_docs" data-analytics-location="final_cta">阅读文档</a>
+            <a class="button button--secondary" href="https://github.com/billbai-longarena/Termite-Protocol/discussions" data-analytics-event="discussions_click" data-analytics-label="github_discussions" data-analytics-location="final_cta">参与讨论</a>
           </div>
         </div>
       </div>

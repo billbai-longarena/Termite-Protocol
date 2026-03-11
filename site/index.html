@@ -21,6 +21,8 @@
   <link rel="alternate" hreflang="x-default" href="https://billbai-longarena.github.io/Termite-Protocol/">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
+  <script defer src="config.js"></script>
+  <script defer src="analytics.js"></script>
 </head>
 <body>
   <header class="site-header">
@@ -35,8 +37,9 @@
         <a href="#proof">Proof</a>
         <a href="#workflow">Workflow</a>
         <a href="#faq">FAQ</a>
-        <a class="nav__lang" href="./zh-CN/">中文</a>
-        <a class="nav__repo" href="https://github.com/billbai-longarena/Termite-Protocol">GitHub</a>
+        <a href="#connect">Connect</a>
+        <a class="nav__lang" href="./zh-CN/" data-analytics-event="language_switch_click" data-analytics-label="zh_cn" data-analytics-location="nav">中文</a>
+        <a class="nav__repo" href="https://github.com/billbai-longarena/Termite-Protocol" data-analytics-event="repository_click" data-analytics-label="github_nav" data-analytics-location="nav">GitHub</a>
       </nav>
     </div>
   </header>
@@ -49,8 +52,8 @@
           <h1>Stateless AI agents need an environment, not a conversation.</h1>
           <p class="hero__lede">Termite Protocol lets fresh AI agent sessions pick up real repository work through SQLite signals, atomic claiming, compact <code>.birth</code> snapshots, and cross-session field memory.</p>
           <div class="hero__actions">
-            <a class="button button--primary" href="https://github.com/billbai-longarena/Termite-Protocol/blob/main/QUICKSTART.md">Try the 60-second smoke test</a>
-            <a class="button button--secondary" href="https://github.com/billbai-longarena/Termite-Protocol">View the repository</a>
+            <a class="button button--primary" href="https://github.com/billbai-longarena/Termite-Protocol/blob/main/QUICKSTART.md" data-analytics-event="smoke_test_click" data-analytics-label="smoke_test" data-analytics-location="hero">Try the 60-second smoke test</a>
+            <a class="button button--secondary" href="https://github.com/billbai-longarena/Termite-Protocol" data-analytics-event="repository_click" data-analytics-label="view_repository" data-analytics-location="hero">View the repository</a>
           </div>
           <div class="badge-row">
             <span class="badge badge--brand">Environment-first coordination</span>
@@ -242,14 +245,50 @@ sqlite3 .termite.db "select id,status,title from signals;"</code></pre>
       </div>
     </section>
 
+    <section class="section" id="connect">
+      <div class="container">
+        <div class="section__head">
+          <div class="section__kicker">Stay in touch</div>
+          <h2>Newsletter, waitlist, and direct contact all live here.</h2>
+          <p>The site is still intentionally lightweight, so the fastest path is email. Pick the path that matches your intent and tell us what you want to build with Termite Protocol.</p>
+        </div>
+        <div class="grid-3 connect-grid">
+          <article class="card connect-card">
+            <div class="connect-card__eyebrow">Newsletter</div>
+            <h3>Get release notes and field learnings.</h3>
+            <p>Subscribe for new releases, audit takeaways, and fresh patterns for cross-session collaboration.</p>
+            <div class="connect-card__meta">Manual list, direct human reply.</div>
+            <a class="button button--secondary" href="mailto:bill.bai@long-arena.com?subject=Subscribe%20to%20Termite%20Protocol%20newsletter&body=Hi%20Bill%2C%0A%0APlease%20add%20me%20to%20the%20Termite%20Protocol%20newsletter.%0A%0AName%3A%0ARole%3A%0ACompany%3A%0AWhat%20are%20you%20building%3F%3A%0A" data-analytics-event="newsletter_click" data-analytics-label="newsletter" data-analytics-location="connect">Join newsletter</a>
+          </article>
+          <article class="card connect-card">
+            <div class="connect-card__eyebrow">Waitlist</div>
+            <h3>Share your use case and timeline.</h3>
+            <p>Join the waitlist if you want pilot updates, onboarding availability, or a heads-up on the next ecosystem rollout.</p>
+            <div class="connect-card__meta">Best for teams exploring a real deployment path.</div>
+            <a class="button button--primary" href="mailto:bill.bai@long-arena.com?subject=Join%20Termite%20Protocol%20waitlist&body=Hi%20Bill%2C%0A%0AI%20would%20like%20to%20join%20the%20Termite%20Protocol%20waitlist.%0A%0AName%3A%0ATeam%20/%20Company%3A%0AUse%20case%3A%0ATimeline%3A%0A" data-analytics-event="waitlist_click" data-analytics-label="waitlist" data-analytics-location="connect">Join waitlist</a>
+          </article>
+          <article class="card connect-card">
+            <div class="connect-card__eyebrow">Contact</div>
+            <h3>Talk directly with Bill.</h3>
+            <p>Use this for partnerships, production questions, research collaboration, or anything that needs a real conversation.</p>
+            <div class="connect-card__meta">Response mailbox: bill.bai@long-arena.com</div>
+            <a class="button button--secondary" href="mailto:bill.bai@long-arena.com?subject=Termite%20Protocol%20inquiry&body=Hi%20Bill%2C%0A%0AI%20would%20like%20to%20talk%20about%20Termite%20Protocol.%0A%0AName%3A%0ATeam%20/%20Company%3A%0ATopic%3A%0A" data-analytics-event="contact_click" data-analytics-label="contact" data-analytics-location="connect">Email Bill</a>
+          </article>
+        </div>
+        <div class="contact-strip">
+          Prefer a plain email thread? Write to <a class="inline-link" href="mailto:bill.bai@long-arena.com" data-analytics-event="contact_click" data-analytics-label="direct_email" data-analytics-location="connect_strip">bill.bai@long-arena.com</a> and include your repository, team size, or rollout questions.
+        </div>
+      </div>
+    </section>
+
     <section class="section">
       <div class="container">
         <div class="cta">
           <h2>Test where stateless agents stop feeling stateless.</h2>
           <p>Run the smoke test, inspect the audit materials, and stress the assumptions in a real repository. The fastest path is the repo itself; the strongest proof is still skeptical field use.</p>
           <div class="cta__actions">
-            <a class="button button--primary" href="https://github.com/billbai-longarena/Termite-Protocol/blob/main/README.md">Read the docs</a>
-            <a class="button button--secondary" href="https://github.com/billbai-longarena/Termite-Protocol/discussions">Join Discussions</a>
+            <a class="button button--primary" href="https://github.com/billbai-longarena/Termite-Protocol/blob/main/README.md" data-analytics-event="docs_click" data-analytics-label="read_docs" data-analytics-location="final_cta">Read the docs</a>
+            <a class="button button--secondary" href="https://github.com/billbai-longarena/Termite-Protocol/discussions" data-analytics-event="discussions_click" data-analytics-label="github_discussions" data-analytics-location="final_cta">Join Discussions</a>
           </div>
         </div>
       </div>
