@@ -8,13 +8,15 @@
 
 **让无状态的 AI Agent 像白蚁一样协作：无需对话，无需记忆，通过环境自发涌现秩序。**
 
-[官网](https://billbai-longarena.github.io/Termite-Protocol/) · [快速上手](QUICKSTART.md) · [最新 Release](https://github.com/billbai-longarena/Termite-Protocol/releases/tag/v1.1.1)
+[官网](https://billbai-longarena.github.io/Termite-Protocol/) · [新访客入口](docs/marketing/start-here.md) · [快速上手](QUICKSTART.md) · [最新 Release](https://github.com/billbai-longarena/Termite-Protocol/releases/tag/v1.1.1)
 
 ![白蚁协议总览](docs/assets/termite-overview.svg)
 
+> 第一次来这个仓库，建议先看 `docs/marketing/start-here.md`，再跑 `QUICKSTART.md` 里的 smoke test，最后看 `docs/releases/v1.1.1.md`。
+
 ## 30 秒看懂
 
-**白蚁协议** 是一套面向 AI 编码 Agent 的跨会话协作框架。
+**白蚁协议** 是一套面向无状态 AI 编码 Agent 的环境优先协作协议。
 
 它解决的是当前工具链里的一个结构性矛盾：
 
@@ -66,8 +68,8 @@
 | `0227` SalesTouch | 生产环境 | — | — | 稳定生产参考蚁丘 |
 | `A-001` OpenAgentEngine | 2 Codex | 54 | — | 首个审计闭环完成 |
 | `A-003` ReactiveArmor | Codex + 2 Haiku | 121 | 24 | 弱模型能循环，但判断差 |
-| `A-005` touchcli | Codex + 2 Haiku | 130 | 6 | 牧羊效应验证 |
-| `A-006` touchcli | 5 模型 | 562 | 113 | 吞吐最高，也暴露饥饿和稀释问题 |
+| `A-005` [touchcli](https://github.com/billbai-longarena/touchcli) | Codex + 2 Haiku | 130 | 6 | 牧羊效应验证 |
+| `A-006` [touchcli](https://github.com/billbai-longarena/touchcli) | 5 模型 | 562 | 113 | 吞吐最高，也暴露饥饿和稀释问题 |
 
 ## 什么时候适合用
 
@@ -109,6 +111,8 @@ sqlite3 .termite.db "select id,status,title from signals;"
 - `.termite.db` 中的一条初始信号，例如 `S-001 | open | ...`
 - 首次到达后 `field-pulse.sh` 输出里的 `signals=1`
 - 自动计算出的 `.birth` 快照
+
+可以配合 `docs/marketing/smoke-test-proof.md:1` 查看一份已验证的成功输出样例。
 
 完整上手请看 `QUICKSTART.md:1`。
 
@@ -184,7 +188,9 @@ your-project/
 
 ## 从这里开始
 
+- `docs/marketing/start-here.md:1` — 新访客最该先看的 3 个链接
 - `QUICKSTART.md:1` — 首次安装、首次到达、首次信号
+- `docs/marketing/smoke-test-proof.md:1` — 已验证的 smoke test 固定素材与成功标记
 - `docs/releases/v1.1.1.md:1` — 当前仓库打包发布说明
 - `docs/knowledge-base/README.md:1` — 概念卡片与协议洞察
 - `docs/marketing/README.md:1` — 发布文案、长文草稿与首页文案

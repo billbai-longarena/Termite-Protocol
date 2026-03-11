@@ -1,10 +1,12 @@
 # Termite Protocol Quick Start / 白蚁协议快速上手
 
-This guide gets a fresh project from zero to a successful first arrival.
+If you are evaluating the project for the first time, open `docs/marketing/start-here.md` first.
+
+This guide gets a fresh project from zero to a successful first arrival and verified smoke test.
 
 本文档帮助你在一个全新目录里完成安装、创世、首次验证。
 
-## 1. Fastest path
+## 1. Fastest path to the 60-second smoke test
 
 ```bash
 mkdir termite-demo && cd termite-demo
@@ -43,6 +45,8 @@ You should now have:
 - an initial signal row in `.termite.db`, such as `S-001 | open | ...`
 - pulse output reporting at least one active signal
 - `scripts/` with field utilities installed
+
+For a captured successful run and a terminal-style asset you can reuse externally, see `docs/marketing/smoke-test-proof.md`.
 
 ## 4. What happened during genesis
 
