@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented in this file.
 
+## [Unreleased]
+
+### Added
+
+- Marketing docs bundle with bilingual launch posts, long-form articles, and website homepage copy.
+- README links to the new `docs/marketing/` promotion kit.
+
 ## [1.1.1] - 2026-03-11
 
 ### Fixed
