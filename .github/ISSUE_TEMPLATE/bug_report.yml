@@ -1,0 +1,68 @@
+name: Bug report
+description: Report a reproducible problem in install, upgrade, docs, or protocol behavior.
+title: "[Bug] "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for filing a bug. Please include exact commands and outputs so we can reproduce quickly.
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      description: The release tag or commit SHA you tested.
+      placeholder: v1.1.0
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Installation
+        - Upgrade
+        - README / Quick Start
+        - Signal claiming
+        - field-arrive / genesis
+        - Audit / export
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction steps
+      description: Exact commands and files changed.
+      placeholder: |
+        1. Create a fresh folder
+        2. Run ...
+        3. Observe ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, shell, Git version, and anything else relevant.
+      placeholder: macOS 15, zsh, git 2.48, gh 2.86
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      description: Paste command output, `.birth`, or other safe-to-share diagnostics.

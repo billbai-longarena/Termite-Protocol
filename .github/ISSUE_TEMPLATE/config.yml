@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions and usage help
+    url: https://github.com/billbai-longarena/Termite-Protocol/discussions
+    about: Ask setup, usage, and design questions in Discussions.
+  - name: Support guide
+    url: https://github.com/billbai-longarena/Termite-Protocol/blob/main/SUPPORT.md
+    about: Check the support guide before opening a bug.
+  - name: Security policy
+    url: https://github.com/billbai-longarena/Termite-Protocol/security/policy
+    about: Please do not report vulnerabilities in public issues.

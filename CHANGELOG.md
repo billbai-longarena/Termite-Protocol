@@ -1,0 +1,24 @@
+# Changelog
+
+All notable changes to this project are documented in this file.
+
+## [1.1.0] - 2026-03-11
+
+### Added
+
+- Release-ready README and Quick Start positioning for new users.
+- Community health files: `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `SUPPORT.md`, and `CITATION.cff`.
+- GitHub issue templates, pull request template, release note configuration, and a smoke-test workflow.
+- Visual assets for repository overview and social preview in `docs/assets/`.
+- Maintainer-facing growth metrics guide in `docs/maintainers/community-growth.md`.
+- Release notes in `docs/releases/v1.1.0.md`.
+
+### Changed
+
+- Reframed `README.md` and `README.zh-CN.md` around a faster onboarding path, clearer positioning, and stronger proof points.
+- Rewrote `QUICKSTART.md` around a 60-second smoke test and first-run verification.
+- Reduced emphasis on Termite Commander and repositioned it as an optional companion.
+
+### Notes
+
+- This is the first public GitHub release for the repository.

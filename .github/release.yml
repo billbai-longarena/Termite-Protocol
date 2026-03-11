@@ -1,0 +1,17 @@
+changelog:
+  categories:
+    - title: Protocol
+      labels:
+        - protocol
+    - title: Tooling
+      labels:
+        - tooling
+    - title: Documentation
+      labels:
+        - documentation
+    - title: Community
+      labels:
+        - community
+    - title: Research
+      labels:
+        - research

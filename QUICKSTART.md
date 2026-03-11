@@ -1,59 +1,140 @@
-# 白蚁协议快速上手指南 (Quick Start)
+# Termite Protocol Quick Start / 白蚁协议快速上手
 
-本文档介绍如何在全新的项目中安装并初始化白蚁协议（Termite Protocol）。
+This guide gets a fresh project from zero to a successful first arrival.
 
-## 1. 安装 (Installation)
+本文档帮助你在一个全新目录里完成安装、创世、首次验证。
 
-在你的项目根目录下，运行以下命令进行一键安装。这将下载协议的核心脚本和模板文件。
+## 1. Fastest path
 
 ```bash
-# 设置协议模板仓库地址
-# 注意：请确保使用正确的 raw.githubusercontent.com 地址
-export TERMITE_REPO_URL=https://raw.githubusercontent.com/billbai-longarena/Termite-Protocol/main/templates
-
-# 下载并运行安装脚本
+mkdir termite-demo && cd termite-demo
 curl -fsSL https://raw.githubusercontent.com/billbai-longarena/Termite-Protocol/main/install.sh | bash
-```
-
-或者使用单行命令：
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/billbai-longarena/Termite-Protocol/main/install.sh | \
-TERMITE_REPO_URL=https://raw.githubusercontent.com/billbai-longarena/Termite-Protocol/main/templates bash
-```
-
-### 安装选项
-
-- `bash -s -- --upgrade`：升级模式，只更新核心协议文件，保留你的配置文件（如 `CLAUDE.md`, `AGENTS.md`）。
-- `bash -s -- --force`：强制模式，覆盖文件时不创建备份。
-
-## 2. 创世 (Genesis)
-
-“创世”是白蚁协议在全新环境下的自动初始化过程。它会自动探测你的项目类型（语言、构建工具），并生成初始的上下文文件。
-
-### 如何触发创世
-
-安装完成后，只需运行“到达”脚本：
-
-```bash
 ./scripts/field-arrive.sh
 ```
 
-### 创世过程详解
+If this works, you should see a generated colony scaffold plus an initial signal stored in the local SQLite field.
 
-当你第一次运行 `field-arrive.sh` 时，如果系统中没有 `BLACKBOARD.md` 和活跃信号，脚本会自动执行 `scripts/field-genesis.sh`，完成以下工作：
+如果执行成功，你会看到协议脚手架和一个初始信号。
 
-1.  **环境探测**：自动识别项目语言（如 Python, Node, Go, Rust 等）和构建工具（如 npm, cargo, pip 等）。
-2.  **生成黑板 (Blackboard)**：在根目录创建 `BLACKBOARD.md`，填入探测到的项目信息和基本骨架。
-3.  **生成初始信号**：创建一个 `EXPLORE` 类型的信号（通常是 `S-001`），任务是“探索项目结构、验证构建环境、完善黑板”。
+## 2. What the installer does
 
-### 验证成功
+`install.sh` will:
 
-创世完成后，你应该能看到：
-- 根目录下生成了 `BLACKBOARD.md` 文件。
-- `signals/active/` 目录下出现了一个新的 `.yaml` 信号文件（例如 `S-001.yaml`）。
+- copy protocol templates into your current project
+- create `signals/` runtime directories
+- install protocol scripts and git hooks
+- write entry files such as `CLAUDE.md` and `AGENTS.md`
+- prepare the repo for the first `.birth` snapshot
 
-## 3. 下一步
+## 3. Verify the first run
 
-1.  **编辑配置**：打开 `CLAUDE.md` 和 `AGENTS.md`，根据你的项目需求填写相关信息。
-2.  **开始工作**：启动你的 AI Agent，让它根据 S-001 信号的指示开始工作。
+Run these checks after `field-arrive.sh`:
+
+```bash
+ls -la
+./scripts/field-pulse.sh
+sqlite3 .termite.db "select id,status,title from signals;"
+```
+
+You should now have:
+
+- `BLACKBOARD.md`
+- `.birth`
+- an initial signal row in `.termite.db`, such as `S-001 | open | ...`
+- pulse output reporting at least one active signal
+- `scripts/` with field utilities installed
+
+## 4. What happened during genesis
+
+On the first arrival, `scripts/field-arrive.sh` checks whether the project already has a blackboard and active signals.
+
+If not, it triggers `scripts/field-genesis.sh`, which will:
+
+1. detect the project environment
+2. create `BLACKBOARD.md`
+3. create an initial `EXPLORE` signal
+4. leave enough context for the next agent to continue
+
+## 5. Fill in project-specific context
+
+Before assigning real work, edit:
+
+- `CLAUDE.md`
+- `AGENTS.md`
+
+Add your project’s:
+
+- overview
+- tech stack
+- route table or module map
+- validation checklist
+- key constraints and safety rules
+
+## 6. Common install options
+
+```bash
+bash install.sh --help
+bash install.sh --upgrade
+bash install.sh --force
+```
+
+- `--upgrade`: update protocol files while preserving entry files such as `CLAUDE.md` and `AGENTS.md`
+- `--force`: overwrite files without creating backups
+
+## 7. Local smoke test for maintainers
+
+If you are validating the repository itself:
+
+```bash
+bash -n install.sh templates/scripts/*.sh templates/scripts/hooks/* templates/claude-plugin/scripts/*.sh
+tmp_dir=$(mktemp -d)
+bash install.sh "$tmp_dir"
+(
+  cd "$tmp_dir"
+  ./scripts/field-arrive.sh
+  ./scripts/field-pulse.sh
+  sqlite3 .termite.db "select id,status,title from signals;"
+)
+rm -rf "$tmp_dir"
+```
+
+## 8. Troubleshooting
+
+### `field-arrive.sh` fails immediately
+
+Check:
+
+- shell is `bash`
+- scripts are executable
+- the target directory is writable
+- your machine has the basic tools used by the scripts
+
+### `.birth` was not created
+
+Run:
+
+```bash
+./scripts/field-arrive.sh
+ls -la .birth*
+```
+
+If genesis did not run, inspect whether the directory already contains old protocol state.
+
+### No initial signal appeared
+
+Check:
+
+```bash
+./scripts/field-pulse.sh
+sqlite3 .termite.db "select id,status,title from signals;"
+cat BLACKBOARD.md
+```
+
+If the project already had state, arrival may have reused it instead of bootstrapping a new colony. On a fresh repo, the initial signal is stored in SQLite even when `signals/active/` has no YAML snapshot yet.
+
+## 9. Next steps
+
+- Read `README.md:1` for positioning, use cases, and proof.
+- Read `CONTRIBUTING.md:1` if you plan to contribute.
+- Read `SUPPORT.md:1` for questions and bug-report routing.
+- Read `SECURITY.md:1` for vulnerability reporting.
