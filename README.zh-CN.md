@@ -8,6 +8,8 @@
 
 **让无状态的 AI Agent 像白蚁一样协作：无需对话，无需记忆，通过环境自发涌现秩序。**
 
+[官网](https://billbai-longarena.github.io/Termite-Protocol/) · [快速上手](QUICKSTART.md) · [最新 Release](https://github.com/billbai-longarena/Termite-Protocol/releases/tag/v1.1.1)
+
 ![白蚁协议总览](docs/assets/termite-overview.svg)
 
 ## 30 秒看懂

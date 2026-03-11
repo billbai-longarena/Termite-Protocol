@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Termite Protocol — Cross-session collaboration for stateless AI coding agents</title>
+  <meta name="description" content="Let stateless AI agents coordinate through shared state instead of conversation. SQLite signals, atomic claiming, .birth snapshots, and cross-session field memory.">
+  <meta name="theme-color" content="#07111f">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Termite Protocol">
+  <meta property="og:description" content="Stateless AI agents collaborate through the environment, not conversation.">
+  <meta property="og:url" content="https://billbai-longarena.github.io/Termite-Protocol/">
+  <meta property="og:image" content="https://billbai-longarena.github.io/Termite-Protocol/assets/social-preview.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Termite Protocol">
+  <meta name="twitter:description" content="Stateless AI agents collaborate through the environment, not conversation.">
+  <meta name="twitter:image" content="https://billbai-longarena.github.io/Termite-Protocol/assets/social-preview.png">
+  <link rel="canonical" href="https://billbai-longarena.github.io/Termite-Protocol/">
+  <link rel="alternate" hreflang="en" href="https://billbai-longarena.github.io/Termite-Protocol/">
+  <link rel="alternate" hreflang="zh-CN" href="https://billbai-longarena.github.io/Termite-Protocol/zh-CN/">
+  <link rel="alternate" hreflang="x-default" href="https://billbai-longarena.github.io/Termite-Protocol/">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="./">
+        <img class="brand__mark" src="assets/favicon.svg" alt="Termite Protocol logo">
+        <span class="brand__text">Termite Protocol</span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="#problem">Problem</a>
+        <a href="#mechanism">Mechanism</a>
+        <a href="#proof">Proof</a>
+        <a href="#workflow">Workflow</a>
+        <a href="#faq">FAQ</a>
+        <a class="nav__lang" href="./zh-CN/">中文</a>
+        <a class="nav__repo" href="https://github.com/billbai-longarena/Termite-Protocol">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero__grid">
+        <div>
+          <div class="eyebrow"><span class="eyebrow__dot"></span>Cross-session coordination for AI coding agents</div>
+          <h1>Stateless AI agents need an environment, not a conversation.</h1>
+          <p class="hero__lede">Termite Protocol lets fresh AI agent sessions pick up real repository work through SQLite signals, atomic claiming, compact <code>.birth</code> snapshots, and cross-session field memory.</p>
+          <div class="hero__actions">
+            <a class="button button--primary" href="https://github.com/billbai-longarena/Termite-Protocol/blob/main/QUICKSTART.md">Try the 60-second smoke test</a>
+            <a class="button button--secondary" href="https://github.com/billbai-longarena/Termite-Protocol">View the repository</a>
+          </div>
+          <div class="badge-row">
+            <span class="badge badge--brand">Environment-first coordination</span>
+            <span class="badge badge--success">Mixed-strength model leverage</span>
+            <span class="badge badge--warning">Audit-backed design</span>
+          </div>
+          <div class="hero__stats">
+            <div class="stat-pill"><div class="stat-pill__value">6</div><div class="stat-pill__label">production colonies</div></div>
+            <div class="stat-pill"><div class="stat-pill__value">4</div><div class="stat-pill__label">multi-model audits</div></div>
+            <div class="stat-pill"><div class="stat-pill__value">900+</div><div class="stat-pill__label">total commits</div></div>
+            <div class="stat-pill"><div class="stat-pill__value">96.4%</div><div class="stat-pill__label">A-005 observation quality</div></div>
+          </div>
+        </div>
+        <div class="hero__right">
+          <div class="panel visual">
+            <img src="assets/termite-overview.svg" alt="Termite Protocol overview diagram">
+            <div class="visual__caption">
+              <strong>The field carries the coordination.</strong>
+              <span>Signals persist in SQLite, claims stay atomic, and new sessions read a bounded operational snapshot instead of replaying a long conversation.</span>
+            </div>
+          </div>
+          <div class="hero__notes">
+            <div class="note-card"><strong><code>.birth</code> ≤ 800 tokens</strong><span>Fresh sessions read an arrival snapshot instead of a giant rulebook.</span></div>
+            <div class="note-card"><strong>Atomic signal claiming</strong><span>No scheduler bottleneck, no double-assignment, no conversation overhead.</span></div>
+            <div class="note-card"><strong>Shepherd Effect</strong><span>One strong model can seed field patterns that weaker workers follow.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="problem">
+      <div class="container">
+        <div class="section__head">
+          <div class="section__kicker">Problem</div>
+          <h2>The session ends. The context disappears. The project does not.</h2>
+          <p>Most AI coding agents are stateless. Every new session risks rediscovering the same structure, repeating the same mistakes, and losing the same design context. Conversation-heavy coordination helps only until context cost, drift, and weaker models start to dominate.</p>
+        </div>
+        <div class="grid-3">
+          <article class="card">
+            <h3>Stateless sessions</h3>
+            <p>Each session starts clean, so continuity has to come from somewhere outside the model.</p>
+          </article>
+          <article class="card">
+            <h3>Coordination drift</h3>
+            <p>Chat-based handoffs paraphrase state again and again, which compounds ambiguity and loss.</p>
+          </article>
+          <article class="card">
+            <h3>Weak model failure</h3>
+            <p>Cheaper models often fail at initiating high-quality patterns on their own, especially over multi-turn conversations.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="mechanism">
+      <div class="container">
+        <div class="section__head">
+          <div class="section__kicker">Mechanism</div>
+          <h2>Put coordination in the field.</h2>
+          <p>Termite Protocol moves collaboration into the repository environment itself. Instead of preserving continuity through an ever-growing chat log, it writes operational state directly into the field.</p>
+        </div>
+        <div class="grid-2">
+          <article class="card">
+            <h3>Environment-first coordination</h3>
+            <p>Agents do not need to talk to each other. They sense shared state and continue the work.</p>
+            <ul>
+              <li>signals in SQLite</li>
+              <li>field memory in observations</li>
+              <li>arrival hints in <code>.birth</code></li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Bounded context cost</h3>
+            <p><code>.birth</code> compresses the current colony state into a compact operational snapshot, so fresh sessions do not reload a 28K-token protocol document.</p>
+          </article>
+          <article class="card">
+            <h3>Mixed-strength model leverage</h3>
+            <p>Strong models can seed patterns that weaker workers follow, improving colony-wide output quality without making every worker equally expensive.</p>
+          </article>
+          <article class="card code-card">
+            <div class="code-card__label">60-second smoke test</div>
+            <pre><code>mkdir termite-demo &amp;&amp; cd termite-demo
+curl -fsSL https://raw.githubusercontent.com/
+billbai-longarena/Termite-Protocol/main/install.sh | bash
+./scripts/field-arrive.sh
+./scripts/field-pulse.sh
+sqlite3 .termite.db "select id,status,title from signals;"</code></pre>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="proof">
+      <div class="container">
+        <div class="section__head">
+          <div class="section__kicker">Proof</div>
+          <h2>Backed by field data, not just architecture diagrams.</h2>
+          <p>The protocol has been exercised across real colonies and audit packages, including a Shepherd Effect configuration where one strong model and two weaker workers reached <strong>96.4% observation quality</strong>.</p>
+        </div>
+        <div class="metrics">
+          <div class="metric"><strong>6</strong><span>production colonies</span></div>
+          <div class="metric"><strong>4</strong><span>multi-model audit experiments</span></div>
+          <div class="metric"><strong>900+</strong><span>total commits</span></div>
+          <div class="metric"><strong>96.4%</strong><span>A-005 observation quality</span></div>
+        </div>
+        <div class="grid-3">
+          <article class="card compare-card">
+            <div class="compare-card__eyebrow">A-003 · weak-only</div>
+            <div class="compare-card__score">35.7%</div>
+            <div class="compare-card__meta">Observation quality · 0% handoff quality</div>
+            <p>Weak models can execute the loop, but they struggle to sustain judgment and structure independently.</p>
+          </article>
+          <article class="card compare-card">
+            <div class="compare-card__eyebrow">A-005 · Shepherd Effect</div>
+            <div class="compare-card__score">96.4%</div>
+            <div class="compare-card__meta">Observation quality · 99% handoff quality</div>
+            <p>One strong model seeds the field, later weaker workers imitate the pattern, and the colony behaves far above weak-only quality.</p>
+          </article>
+          <article class="card compare-card">
+            <div class="compare-card__eyebrow">A-006 · 5-model mix</div>
+            <div class="compare-card__score">57%</div>
+            <div class="compare-card__meta">Observation quality · 100% handoff quality</div>
+            <p>Scale boosts throughput, but the field still needs mechanisms that prevent dilution and starvation.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="workflow">
+      <div class="container">
+        <div class="section__head">
+          <div class="section__kicker">Workflow</div>
+          <h2>Fresh sessions become continuous work.</h2>
+          <p>Each new agent reads a bounded snapshot, claims work atomically, executes, and writes observations back into the field for the next session.</p>
+        </div>
+        <div class="steps">
+          <article class="step"><div class="step__num">1</div><h3>Arrive</h3><p><code>field-arrive.sh</code> computes <code>.birth</code> from the current colony state.</p></article>
+          <article class="step"><div class="step__num">2</div><h3>Claim</h3><p><code>field-claim.sh</code> atomically claims the next unassigned signal.</p></article>
+          <article class="step"><div class="step__num">3</div><h3>Act</h3><p>The agent completes work using the field snapshot instead of replaying full chat history.</p></article>
+          <article class="step"><div class="step__num">4</div><h3>Deposit</h3><p><code>field-deposit.sh</code> leaves observations, decisions, and status for the next worker.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="fit">
+      <div class="container fit">
+        <article class="card fit--good">
+          <h3>Good fit</h3>
+          <ul>
+            <li>multi-agent parallel development</li>
+            <li>long-running repositories</li>
+            <li>strong + weak model mixes</li>
+            <li>audit-heavy engineering teams</li>
+            <li>large refactors with many separable tasks</li>
+          </ul>
+        </article>
+        <article class="card fit--bad">
+          <h3>Not for everything</h3>
+          <ul>
+            <li>tiny one-off tasks</li>
+            <li>purely exploratory work</li>
+            <li>small scripts with no continuity needs</li>
+            <li>cases where a single strong interactive agent is simpler</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="container">
+        <div class="section__head">
+          <div class="section__kicker">FAQ</div>
+          <h2>What people usually ask first.</h2>
+        </div>
+        <div class="faq">
+          <details open>
+            <summary>How is this different from conversation-based multi-agent tools?</summary>
+            <p>Conversation is not the coordination backbone. The environment is. The repository stores signals, field memory, and recovery hints so the workflow survives session boundaries.</p>
+          </details>
+          <details>
+            <summary>Do I need a separate automation layer to use it?</summary>
+            <p>No. The protocol is installable and usable on its own. Automation layers can sit on top later, but they are optional companions, not prerequisites.</p>
+          </details>
+          <details>
+            <summary>Does this replace strong models?</summary>
+            <p>No. It makes strong models more leverageable and weaker models more usable inside the same field.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="cta">
+          <h2>Test where stateless agents stop feeling stateless.</h2>
+          <p>Run the smoke test, inspect the audit materials, and stress the assumptions in a real repository. The fastest path is the repo itself; the strongest proof is still skeptical field use.</p>
+          <div class="cta__actions">
+            <a class="button button--primary" href="https://github.com/billbai-longarena/Termite-Protocol/blob/main/README.md">Read the docs</a>
+            <a class="button button--secondary" href="https://github.com/billbai-longarena/Termite-Protocol/discussions">Join Discussions</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div>
+        <strong>Termite Protocol</strong>
+        <div>Cross-session collaboration for stateless AI coding agents.</div>
+      </div>
+      <div class="footer__links">
+        <a href="https://github.com/billbai-longarena/Termite-Protocol/blob/main/QUICKSTART.md">Quick Start</a>
+        <a href="https://github.com/billbai-longarena/Termite-Protocol/releases/tag/v1.1.1">Latest Release</a>
+        <a href="https://github.com/billbai-longarena/Termite-Protocol/blob/main/docs/knowledge-base/README.md">Knowledge Base</a>
+        <a href="https://github.com/billbai-longarena/Termite-Protocol">GitHub</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

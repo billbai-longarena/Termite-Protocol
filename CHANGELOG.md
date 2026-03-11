@@ -7,6 +7,7 @@ All notable changes to this project are documented in this file.
 ### Added
 
 - Marketing docs bundle with bilingual launch posts, long-form articles, and website homepage copy.
+- Static bilingual landing page in `site/` plus GitHub Pages deployment workflow.
 - README links to the new `docs/marketing/` promotion kit.
 
 ## [1.1.1] - 2026-03-11

@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Termite Protocol overview</title>
+  <desc id="desc">Environment-centric collaboration for stateless AI agents.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0b1020"/>
+      <stop offset="100%" stop-color="#151f3f"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#172554"/>
+      <stop offset="100%" stop-color="#1e3a8a"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0%" stop-color="#22d3ee"/>
+      <stop offset="100%" stop-color="#a78bfa"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="16" stdDeviation="24" flood-color="#020617" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg)" rx="36"/>
+  <rect x="72" y="72" width="1456" height="756" rx="32" fill="#0f172a" opacity="0.42" stroke="#334155"/>
+
+  <text x="96" y="138" fill="#e2e8f0" font-family="Inter, Helvetica, Arial, sans-serif" font-size="54" font-weight="700">Termite Protocol</text>
+  <text x="96" y="188" fill="#93c5fd" font-family="Inter, Helvetica, Arial, sans-serif" font-size="26">Stateless AI agents collaborate through the environment, not conversation.</text>
+
+  <g filter="url(#shadow)">
+    <rect x="96" y="250" width="280" height="250" rx="28" fill="url(#card)" stroke="#60a5fa"/>
+    <text x="128" y="308" fill="#e0f2fe" font-family="Inter, Helvetica, Arial, sans-serif" font-size="30" font-weight="700">Agent A</text>
+    <text x="128" y="352" fill="#cbd5e1" font-family="Inter, Helvetica, Arial, sans-serif" font-size="22">Ephemeral session</text>
+    <text x="128" y="388" fill="#cbd5e1" font-family="Inter, Helvetica, Arial, sans-serif" font-size="22">Reads `.birth`</text>
+    <text x="128" y="424" fill="#cbd5e1" font-family="Inter, Helvetica, Arial, sans-serif" font-size="22">Claims a signal</text>
+    <text x="128" y="460" fill="#cbd5e1" font-family="Inter, Helvetica, Arial, sans-serif" font-size="22">Deposits observations</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="452" y="214" width="696" height="322" rx="32" fill="#111827" stroke="#38bdf8" stroke-width="2"/>
+    <rect x="482" y="252" width="636" height="12" rx="6" fill="url(#accent)"/>
+    <text x="514" y="316" fill="#f8fafc" font-family="Inter, Helvetica, Arial, sans-serif" font-size="34" font-weight="700">The environment carries the intelligence</text>
+    <text x="514" y="364" fill="#cbd5e1" font-family="Inter, Helvetica, Arial, sans-serif" font-size="24">• Signals persisted in SQLite</text>
+    <text x="514" y="404" fill="#cbd5e1" font-family="Inter, Helvetica, Arial, sans-serif" font-size="24">• `.birth` compresses state to ≤800 tokens</text>
+    <text x="514" y="444" fill="#cbd5e1" font-family="Inter, Helvetica, Arial, sans-serif" font-size="24">• Pheromones accumulate working knowledge across sessions</text>
+    <text x="514" y="484" fill="#cbd5e1" font-family="Inter, Helvetica, Arial, sans-serif" font-size="24">• Atomic claims prevent conflicts and bottlenecks</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="1224" y="250" width="280" height="250" rx="28" fill="url(#card)" stroke="#a78bfa"/>
+    <text x="1256" y="308" fill="#ede9fe" font-family="Inter, Helvetica, Arial, sans-serif" font-size="30" font-weight="700">Agent B</text>
+    <text x="1256" y="352" fill="#cbd5e1" font-family="Inter, Helvetica, Arial, sans-serif" font-size="22">Fresh session</text>
+    <text x="1256" y="388" fill="#cbd5e1" font-family="Inter, Helvetica, Arial, sans-serif" font-size="22">Reads the same field</text>
+    <text x="1256" y="424" fill="#cbd5e1" font-family="Inter, Helvetica, Arial, sans-serif" font-size="22">Picks next unclaimed task</text>
+    <text x="1256" y="460" fill="#cbd5e1" font-family="Inter, Helvetica, Arial, sans-serif" font-size="22">Keeps work moving</text>
+  </g>
+
+  <path d="M376 376 C 408 376, 420 376, 452 376" fill="none" stroke="url(#accent)" stroke-width="8" stroke-linecap="round"/>
+  <path d="M1148 376 C 1180 376, 1192 376, 1224 376" fill="none" stroke="url(#accent)" stroke-width="8" stroke-linecap="round"/>
+  <polygon points="448,376 422,360 422,392" fill="#67e8f9"/>
+  <polygon points="1228,376 1202,360 1202,392" fill="#c4b5fd"/>
+
+  <g filter="url(#shadow)">
+    <rect x="96" y="590" width="1408" height="172" rx="28" fill="#111827" stroke="#334155"/>
+    <text x="128" y="646" fill="#f8fafc" font-family="Inter, Helvetica, Arial, sans-serif" font-size="28" font-weight="700">Validated in real colonies</text>
+
+    <rect x="128" y="674" width="280" height="56" rx="18" fill="#0f172a" stroke="#1d4ed8"/>
+    <text x="156" y="710" fill="#bfdbfe" font-family="Inter, Helvetica, Arial, sans-serif" font-size="24">6 production colonies</text>
+
+    <rect x="438" y="674" width="280" height="56" rx="18" fill="#0f172a" stroke="#0891b2"/>
+    <text x="466" y="710" fill="#a5f3fc" font-family="Inter, Helvetica, Arial, sans-serif" font-size="24">4 multi-model audits</text>
+
+    <rect x="748" y="674" width="280" height="56" rx="18" fill="#0f172a" stroke="#7c3aed"/>
+    <text x="776" y="710" fill="#ddd6fe" font-family="Inter, Helvetica, Arial, sans-serif" font-size="24">900+ total commits</text>
+
+    <rect x="1058" y="674" width="414" height="56" rx="18" fill="#0f172a" stroke="#14b8a6"/>
+    <text x="1086" y="710" fill="#99f6e4" font-family="Inter, Helvetica, Arial, sans-serif" font-size="24">96.4% observation quality with Shepherd Effect</text>
+  </g>
+</svg>

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="title desc">
+  <title id="title">Termite Protocol social preview</title>
+  <desc id="desc">Stateless AI agents collaborate through the environment, not conversation.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0b1020"/>
+      <stop offset="100%" stop-color="#172554"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0%" stop-color="#22d3ee"/>
+      <stop offset="100%" stop-color="#a78bfa"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1280" height="640" fill="url(#bg)" rx="28"/>
+  <rect x="56" y="56" width="1168" height="528" rx="28" fill="#0f172a" opacity="0.42" stroke="#334155"/>
+  <rect x="88" y="94" width="340" height="12" rx="6" fill="url(#accent)"/>
+
+  <text x="88" y="180" fill="#e2e8f0" font-family="Inter, Helvetica, Arial, sans-serif" font-size="66" font-weight="700">Termite Protocol</text>
+  <text x="88" y="236" fill="#93c5fd" font-family="Inter, Helvetica, Arial, sans-serif" font-size="24">Stateless AI agents coordinate through shared state.</text>
+  <text x="88" y="280" fill="#cbd5e1" font-family="Inter, Helvetica, Arial, sans-serif" font-size="24">No conversation. No memory. Order emerges.</text>
+
+  <rect x="88" y="340" width="512" height="160" rx="24" fill="#111827" stroke="#38bdf8"/>
+  <text x="124" y="392" fill="#f8fafc" font-family="Inter, Helvetica, Arial, sans-serif" font-size="28" font-weight="700">Core ideas</text>
+  <text x="124" y="434" fill="#cbd5e1" font-family="Inter, Helvetica, Arial, sans-serif" font-size="24">• SQLite signals + atomic claiming</text>
+  <text x="124" y="470" fill="#cbd5e1" font-family="Inter, Helvetica, Arial, sans-serif" font-size="24">• `.birth` snapshot in ≤800 tokens</text>
+  <text x="124" y="506" fill="#cbd5e1" font-family="Inter, Helvetica, Arial, sans-serif" font-size="24">• Cross-session pheromone memory</text>
+
+  <rect x="664" y="148" width="492" height="352" rx="24" fill="#111827" stroke="#a78bfa"/>
+  <text x="704" y="206" fill="#f8fafc" font-family="Inter, Helvetica, Arial, sans-serif" font-size="28" font-weight="700">Validated in production-style audits</text>
+  <text x="704" y="258" fill="#ddd6fe" font-family="Inter, Helvetica, Arial, sans-serif" font-size="26">6 colonies</text>
+  <text x="704" y="300" fill="#ddd6fe" font-family="Inter, Helvetica, Arial, sans-serif" font-size="26">4 multi-model audit experiments</text>
+  <text x="704" y="342" fill="#ddd6fe" font-family="Inter, Helvetica, Arial, sans-serif" font-size="26">900+ commits</text>
+  <text x="704" y="384" fill="#99f6e4" font-family="Inter, Helvetica, Arial, sans-serif" font-size="26">96.4% observation quality in A-005</text>
+  <text x="704" y="436" fill="#cbd5e1" font-family="Inter, Helvetica, Arial, sans-serif" font-size="24">Cross-session collaboration for AI coding agents.</text>
+
+  <text x="88" y="560" fill="#94a3b8" font-family="Inter, Helvetica, Arial, sans-serif" font-size="24">github.com/billbai-longarena/Termite-Protocol</text>
+</svg>

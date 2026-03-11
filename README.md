@@ -8,6 +8,8 @@
 
 **Stateless AI agents collaborate like termites: no conversation, no memory, order emerges through the environment.**
 
+[Website](https://billbai-longarena.github.io/Termite-Protocol/) · [Quick Start](QUICKSTART.md) · [Latest Release](https://github.com/billbai-longarena/Termite-Protocol/releases/tag/v1.1.1)
+
 ![Termite Protocol overview](docs/assets/termite-overview.svg)
 
 ## In 30 Seconds

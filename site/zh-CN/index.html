@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>白蚁协议 Termite Protocol — 面向无状态 AI 编码 Agent 的跨会话协作框架</title>
+  <meta name="description" content="让无状态 AI Agent 通过 shared state 协作，而不是依赖对话。SQLite 信号、原子认领、.birth 快照、跨会话场记忆。">
+  <meta name="theme-color" content="#07111f">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="白蚁协议 Termite Protocol">
+  <meta property="og:description" content="让无状态 AI Agent 通过环境协作，而不是通过对话协作。">
+  <meta property="og:url" content="https://billbai-longarena.github.io/Termite-Protocol/zh-CN/">
+  <meta property="og:image" content="https://billbai-longarena.github.io/Termite-Protocol/assets/social-preview.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="白蚁协议 Termite Protocol">
+  <meta name="twitter:description" content="让无状态 AI Agent 通过环境协作，而不是通过对话协作。">
+  <meta name="twitter:image" content="https://billbai-longarena.github.io/Termite-Protocol/assets/social-preview.png">
+  <link rel="canonical" href="https://billbai-longarena.github.io/Termite-Protocol/zh-CN/">
+  <link rel="alternate" hreflang="en" href="https://billbai-longarena.github.io/Termite-Protocol/">
+  <link rel="alternate" hreflang="zh-CN" href="https://billbai-longarena.github.io/Termite-Protocol/zh-CN/">
+  <link rel="alternate" hreflang="x-default" href="https://billbai-longarena.github.io/Termite-Protocol/">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="./">
+        <img class="brand__mark" src="../assets/favicon.svg" alt="白蚁协议图标">
+        <span class="brand__text">白蚁协议 Termite Protocol</span>
+      </a>
+      <nav class="nav" aria-label="主导航">
+        <a href="#problem">问题</a>
+        <a href="#mechanism">机制</a>
+        <a href="#proof">证据</a>
+        <a href="#workflow">流程</a>
+        <a href="#faq">FAQ</a>
+        <a class="nav__lang" href="../">English</a>
+        <a class="nav__repo" href="https://github.com/billbai-longarena/Termite-Protocol">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero__grid">
+        <div>
+          <div class="eyebrow"><span class="eyebrow__dot"></span>AI 编码 Agent 的跨会话协作协议</div>
+          <h1>无状态 AI Agent 需要“环境”，而不是“对话”。</h1>
+          <p class="hero__lede">白蚁协议通过 SQLite 信号、原子认领、紧凑的 <code>.birth</code> 快照和跨会话场记忆，让新的 AI Agent 会话可以直接接上真实仓库工作。</p>
+          <div class="hero__actions">
+            <a class="button button--primary" href="https://github.com/billbai-longarena/Termite-Protocol/blob/main/QUICKSTART.md">开始 60 秒冒烟测试</a>
+            <a class="button button--secondary" href="https://github.com/billbai-longarena/Termite-Protocol">查看仓库</a>
+          </div>
+          <div class="badge-row">
+            <span class="badge badge--brand">环境优先协作</span>
+            <span class="badge badge--success">强弱模型混编杠杆</span>
+            <span class="badge badge--warning">带审计证据的设计</span>
+          </div>
+          <div class="hero__stats">
+            <div class="stat-pill"><div class="stat-pill__value">6</div><div class="stat-pill__label">生产蚁丘</div></div>
+            <div class="stat-pill"><div class="stat-pill__value">4</div><div class="stat-pill__label">多模型审计</div></div>
+            <div class="stat-pill"><div class="stat-pill__value">900+</div><div class="stat-pill__label">总 commits</div></div>
+            <div class="stat-pill"><div class="stat-pill__value">96.4%</div><div class="stat-pill__label">A-005 观察质量</div></div>
+          </div>
+        </div>
+        <div class="hero__right">
+          <div class="panel visual">
+            <img src="../assets/termite-overview.svg" alt="白蚁协议总览图">
+            <div class="visual__caption">
+              <strong>协作能力沉积在场里。</strong>
+              <span>信号持久化在 SQLite，任务认领保持原子性，而新会话读取的是有上界的运行快照，而不是越来越长的聊天历史。</span>
+            </div>
+          </div>
+          <div class="hero__notes">
+            <div class="note-card"><strong><code>.birth</code> ≤ 800 tokens</strong><span>新会话读到的是到达快照，而不是一大本规则手册。</span></div>
+            <div class="note-card"><strong>原子信号认领</strong><span>无调度器瓶颈、无双重分配、无对话式争抢。</span></div>
+            <div class="note-card"><strong>Shepherd Effect</strong><span>强模型先播种，弱模型沿着场中的结构继续做事。</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="problem">
+      <div class="container">
+        <div class="section__head">
+          <div class="section__kicker">问题</div>
+          <h2>会话结束了，上下文消失了，项目却还在继续。</h2>
+          <p>大多数 AI 编码 Agent 都是无状态的。每个新会话都可能重新摸索项目结构、重复犯错、再次丢失设计上下文。依赖对话的协调方式一旦遇到上下文成本、漂移和弱模型，很快就会变脆。</p>
+        </div>
+        <div class="grid-3">
+          <article class="card">
+            <h3>会话天然无状态</h3>
+            <p>每次会话都像从零开始，所以连续性必须来自模型之外的别处。</p>
+          </article>
+          <article class="card">
+            <h3>对话交接会漂移</h3>
+            <p>当状态被一次次转述，细节、判断和约定会在 handoff 中不断损耗。</p>
+          </article>
+          <article class="card">
+            <h3>弱模型先天吃亏</h3>
+            <p>便宜模型未必不能执行，但它们通常不擅长主动发起高质量、多轮稳定的工作模式。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="mechanism">
+      <div class="container">
+        <div class="section__head">
+          <div class="section__kicker">机制</div>
+          <h2>把协作能力放进“场”里。</h2>
+          <p>白蚁协议把协作能力放进仓库环境本身。它不靠越来越长的聊天历史维持连续性，而是把运行态直接写进场里。</p>
+        </div>
+        <div class="grid-2">
+          <article class="card">
+            <h3>环境优先协作</h3>
+            <p>Agent 不需要彼此对话，只需要感知共享状态并继续工作。</p>
+            <ul>
+              <li>信号在 SQLite 中</li>
+              <li>场记忆在 observations 中</li>
+              <li>到达提示在 <code>.birth</code> 中</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>有上界的上下文成本</h3>
+            <p><code>.birth</code> 把当前蚁丘状态压缩成紧凑快照，因此新会话不必重读 28K token 的协议文档。</p>
+          </article>
+          <article class="card">
+            <h3>强弱模型混编杠杆</h3>
+            <p>强模型先留下模式，弱模型沿着模式做事，从而提升整个蚁群的群体输出质量，而不是让每个工人都变得同样昂贵。</p>
+          </article>
+          <article class="card code-card">
+            <div class="code-card__label">60 秒冒烟测试</div>
+            <pre><code>mkdir termite-demo &amp;&amp; cd termite-demo
+curl -fsSL https://raw.githubusercontent.com/
+billbai-longarena/Termite-Protocol/main/install.sh | bash
+./scripts/field-arrive.sh
+./scripts/field-pulse.sh
+sqlite3 .termite.db "select id,status,title from signals;"</code></pre>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="proof">
+      <div class="container">
+        <div class="section__head">
+          <div class="section__kicker">证据</div>
+          <h2>不是只有架构图，还有真实场数据。</h2>
+          <p>这套协议已经在真实蚁丘和审计包中被反复演练，其中 Shepherd Effect 配置下，1 个强模型和 2 个弱工人实现了 <strong>96.4% 的观察质量</strong>。</p>
+        </div>
+        <div class="metrics">
+          <div class="metric"><strong>6</strong><span>生产蚁丘</span></div>
+          <div class="metric"><strong>4</strong><span>多模型审计实验</span></div>
+          <div class="metric"><strong>900+</strong><span>总 commits</span></div>
+          <div class="metric"><strong>96.4%</strong><span>A-005 观察质量</span></div>
+        </div>
+        <div class="grid-3">
+          <article class="card compare-card">
+            <div class="compare-card__eyebrow">A-003 · 纯弱模型</div>
+            <div class="compare-card__score">35.7%</div>
+            <div class="compare-card__meta">观察质量 · 交接质量 0%</div>
+            <p>弱模型可以执行协议循环，但很难独立维持判断力和结构质量。</p>
+          </article>
+          <article class="card compare-card">
+            <div class="compare-card__eyebrow">A-005 · 牧羊效应</div>
+            <div class="compare-card__score">96.4%</div>
+            <div class="compare-card__meta">观察质量 · 交接质量 99%</div>
+            <p>强模型先在场中播种，后续弱工人模仿模式，蚁群整体行为远高于纯弱模型质量。</p>
+          </article>
+          <article class="card compare-card">
+            <div class="compare-card__eyebrow">A-006 · 5 模型混合群</div>
+            <div class="compare-card__score">57%</div>
+            <div class="compare-card__meta">观察质量 · 交接质量 100%</div>
+            <p>规模提升吞吐，但场仍需要抑制稀释效应与饥饿问题的机制。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="workflow">
+      <div class="container">
+        <div class="section__head">
+          <div class="section__kicker">流程</div>
+          <h2>让新的会话，变成连续的工程工作。</h2>
+          <p>每个新 Agent 读取有上界的快照，原子认领任务，执行工作，再把观察写回场中，供下一个会话接力。</p>
+        </div>
+        <div class="steps">
+          <article class="step"><div class="step__num">1</div><h3>到达</h3><p><code>field-arrive.sh</code> 根据当前蚁丘状态计算 <code>.birth</code>。</p></article>
+          <article class="step"><div class="step__num">2</div><h3>认领</h3><p><code>field-claim.sh</code> 原子认领下一个未分配信号。</p></article>
+          <article class="step"><div class="step__num">3</div><h3>执行</h3><p>Agent 根据场快照完成工作，而不是重放一整段对话历史。</p></article>
+          <article class="step"><div class="step__num">4</div><h3>沉积</h3><p><code>field-deposit.sh</code> 把观察、决策和状态留给下一个工人。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="fit">
+      <div class="container fit">
+        <article class="card fit--good">
+          <h3>适合的场景</h3>
+          <ul>
+            <li>多 Agent 并行开发</li>
+            <li>长周期仓库</li>
+            <li>强弱模型混编</li>
+            <li>审计要求高的工程团队</li>
+            <li>大型可拆分重构</li>
+          </ul>
+        </article>
+        <article class="card fit--bad">
+          <h3>并不适合所有任务</h3>
+          <ul>
+            <li>很小的一次性任务</li>
+            <li>纯探索型工作</li>
+            <li>没有连续性需求的小脚本</li>
+            <li>直接用单个强模型更简单的场景</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="container">
+        <div class="section__head">
+          <div class="section__kicker">FAQ</div>
+          <h2>第一次看到这套协议时，通常会问什么？</h2>
+        </div>
+        <div class="faq">
+          <details open>
+            <summary>它和对话式多 Agent 工具有什么不同？</summary>
+            <p>白蚁协议不是把对话当主协调骨架，而是把环境当主协调骨架。信号、场记忆和恢复提示都沉积在仓库里，所以协作能力可以跨越会话边界保留下来。</p>
+          </details>
+          <details>
+            <summary>一定要有额外自动化层才能用吗？</summary>
+            <p>不需要。协议本身就可以单独安装、单独使用。自动化层只是后续可叠加的配套能力，不是前置条件。</p>
+          </details>
+          <details>
+            <summary>它会取代强模型吗？</summary>
+            <p>不会。它做的是放大强模型的杠杆，并让弱模型在同一个场中变得更可用。</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="cta">
+          <h2>去测试一下：什么时候 stateless agents 不再像“失忆”一样工作。</h2>
+          <p>跑一遍冒烟测试，翻一翻审计材料，然后在真实仓库里检验这套机制的边界。最快的入口还是仓库本身，最有价值的验证仍然是带着怀疑去实测。</p>
+          <div class="cta__actions">
+            <a class="button button--primary" href="https://github.com/billbai-longarena/Termite-Protocol/blob/main/README.zh-CN.md">阅读文档</a>
+            <a class="button button--secondary" href="https://github.com/billbai-longarena/Termite-Protocol/discussions">参与讨论</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div>
+        <strong>白蚁协议 Termite Protocol</strong>
+        <div>面向无状态 AI 编码 Agent 的跨会话协作框架。</div>
+      </div>
+      <div class="footer__links">
+        <a href="https://github.com/billbai-longarena/Termite-Protocol/blob/main/QUICKSTART.md">Quick Start</a>
+        <a href="https://github.com/billbai-longarena/Termite-Protocol/releases/tag/v1.1.1">最新 Release</a>
+        <a href="https://github.com/billbai-longarena/Termite-Protocol/blob/main/docs/knowledge-base/README.md">知识库</a>
+        <a href="https://github.com/billbai-longarena/Termite-Protocol">GitHub</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
