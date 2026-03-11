@@ -586,6 +586,7 @@
   id: A-005
   status: closed
   host_project: touchcli
+  repo_url: https://github.com/billbai-longarena/touchcli
   package: audit-packages/touchcli/2026-03-02/
   significance: "First Codex shepherd + Haiku swarm experiment — most significant protocol discovery"
   experiment_config:
@@ -828,6 +829,7 @@
   id: A-006
   status: open
   host_project: touchcli
+  repo_url: https://github.com/billbai-longarena/touchcli
   package: audit-packages/touchcli/2026-03-03/
   significance: "First 5-agent, 5-model heterogeneous swarm experiment"
   experiment_config:

@@ -1,0 +1,19 @@
+<svg width="1280" height="720" viewBox="0 0 1280 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1280" height="720" fill="#F4EFE4"/>
+  <rect x="72" y="62" width="1136" height="596" rx="24" fill="#16181D"/>
+  <rect x="72" y="62" width="1136" height="596" rx="24" stroke="#2E323A" stroke-width="2"/>
+  <circle cx="122" cy="108" r="10" fill="#F25F58"/>
+  <circle cx="154" cy="108" r="10" fill="#F3C969"/>
+  <circle cx="186" cy="108" r="10" fill="#61C554"/>
+  <text x="232" y="115" fill="#D8DEE9" font-family="Menlo, Monaco, Consolas, monospace" font-size="22">termite smoke test / 2026-03-11</text>
+  <text x="108" y="168" fill="#8FBCBB" font-family="Menlo, Monaco, Consolas, monospace" font-size="22">$ bash install.sh "$tmp_dir"</text>
+  <text x="108" y="208" fill="#E5E9F0" font-family="Menlo, Monaco, Consolas, monospace" font-size="22">[termite:install] Installation complete!</text>
+  <text x="108" y="262" fill="#8FBCBB" font-family="Menlo, Monaco, Consolas, monospace" font-size="22">$ ./scripts/field-arrive.sh</text>
+  <text x="108" y="302" fill="#E5E9F0" font-family="Menlo, Monaco, Consolas, monospace" font-size="22">[termite:info] Generated S-001: Map unknown project - verify build, test, document structure (DB)</text>
+  <text x="108" y="342" fill="#E5E9F0" font-family="Menlo, Monaco, Consolas, monospace" font-size="22">[termite:info] .birth written (143 words, ~185 tokens, caste=scout)</text>
+  <text x="108" y="396" fill="#8FBCBB" font-family="Menlo, Monaco, Consolas, monospace" font-size="22">$ ./scripts/field-pulse.sh</text>
+  <text x="108" y="436" fill="#E5E9F0" font-family="Menlo, Monaco, Consolas, monospace" font-size="22">[termite:info] Pulse written: alarm=false ... signals=1 ... phase=genesis</text>
+  <text x="108" y="490" fill="#8FBCBB" font-family="Menlo, Monaco, Consolas, monospace" font-size="22">$ sqlite3 .termite.db "select id,status,title from signals;"</text>
+  <text x="108" y="530" fill="#A3BE8C" font-family="Menlo, Monaco, Consolas, monospace" font-size="22">S-001|open|Map unknown project - verify build, test, document structure</text>
+  <text x="108" y="598" fill="#D8DEE9" font-family="Menlo, Monaco, Consolas, monospace" font-size="24">Fixed asset for README, release notes, and community posts.</text>
+</svg>

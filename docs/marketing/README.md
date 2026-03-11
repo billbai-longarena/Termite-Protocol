@@ -6,6 +6,9 @@ This folder contains ready-to-use outward-facing materials for promoting Termite
 
 - `docs/marketing/launch-post-en.md` — English launch copy for social posts, forums, and community channels
 - `docs/marketing/launch-post-zh-CN.md` — 中文发布文案，适合社媒、群聊、论坛和博客引流
+- `docs/marketing/promotion-strategy-zh-CN.md` — 中文推广战略与 90 天执行计划
+- `docs/marketing/start-here.md` — first-time visitor entry page with the 3 recommended links
+- `docs/marketing/smoke-test-proof.md` — fixed smoke test proof asset and success markers
 - `docs/marketing/shepherd-effect-article-en.md` — English long-form article draft
 - `docs/marketing/shepherd-effect-article-zh-CN.md` — 中文长文草稿
 - `docs/marketing/website-homepage-copy-en.md` — English homepage copy deck

@@ -2,7 +2,7 @@
 
 ## Meta
 
-- **Title**: Termite Protocol — Cross-session collaboration for stateless AI coding agents
+- **Title**: Termite Protocol — Environment-first coordination for stateless AI coding agents
 - **Description**: Let stateless AI agents coordinate through shared state instead of conversation. SQLite signals, atomic claiming, `.birth` snapshots, and cross-session field memory.
 - **Open Graph Title**: Termite Protocol
 - **Open Graph Description**: Stateless AI agents collaborate through the environment, not conversation.
@@ -11,7 +11,7 @@
 
 ### Eyebrow
 
-Cross-session coordination for AI coding agents
+Environment-first coordination for stateless AI coding agents
 
 ### Headline
 

@@ -8,13 +8,15 @@
 
 **Stateless AI agents collaborate like termites: no conversation, no memory, order emerges through the environment.**
 
-[Website](https://billbai-longarena.github.io/Termite-Protocol/) · [Quick Start](QUICKSTART.md) · [Latest Release](https://github.com/billbai-longarena/Termite-Protocol/releases/tag/v1.1.1)
+[Website](https://billbai-longarena.github.io/Termite-Protocol/) · [Start Here](docs/marketing/start-here.md) · [Quick Start](QUICKSTART.md) · [Latest Release](https://github.com/billbai-longarena/Termite-Protocol/releases/tag/v1.1.1)
 
 ![Termite Protocol overview](docs/assets/termite-overview.svg)
 
+> New here? Open `docs/marketing/start-here.md`, run the `QUICKSTART.md` smoke test, then check `docs/releases/v1.1.1.md`.
+
 ## In 30 Seconds
 
-**Termite Protocol** is a cross-session collaboration framework for AI coding agents.
+**Termite Protocol** is an environment-first coordination protocol for stateless AI coding agents.
 
 It addresses a structural mismatch in today’s tooling:
 
@@ -66,8 +68,8 @@ This is why Termite is not just “more agent orchestration.” It is a protocol
 | `0227` SalesTouch | Production | — | — | Stable production reference colony |
 | `A-001` OpenAgentEngine | 2 Codex | 54 | — | First audit loop closed |
 | `A-003` ReactiveArmor | Codex + 2 Haiku | 121 | 24 | Weak models can loop, but not judge well |
-| `A-005` touchcli | Codex + 2 Haiku | 130 | 6 | Shepherd Effect validated |
-| `A-006` touchcli | 5 models | 562 | 113 | Highest throughput; starvation and dilution surfaced |
+| `A-005` [touchcli](https://github.com/billbai-longarena/touchcli) | Codex + 2 Haiku | 130 | 6 | Shepherd Effect validated |
+| `A-006` [touchcli](https://github.com/billbai-longarena/touchcli) | 5 models | 562 | 113 | Highest throughput; starvation and dilution surfaced |
 
 ## When To Use It
 
@@ -109,6 +111,8 @@ A successful first run should give you:
 - an initial signal in `.termite.db` such as `S-001 | open | ...`
 - pulse output showing `signals=1` after the first arrival
 - a computed `.birth` snapshot
+
+See `docs/marketing/smoke-test-proof.md` for a captured successful run from March 11, 2026.
 
 For a fuller walkthrough, see `QUICKSTART.md:1`.
 
@@ -184,7 +188,9 @@ your-project/
 
 ## Start Here
 
+- `docs/marketing/start-here.md:1` — the first 3 links for a new visitor
 - `QUICKSTART.md:1` — first install, first arrival, first signal
+- `docs/marketing/smoke-test-proof.md:1` — a verified smoke test capture and success markers
 - `docs/releases/v1.1.1.md:1` — release notes for this repository packaging release
 - `docs/knowledge-base/README.md:1` — concept cards and protocol insights
 - `docs/marketing/README.md:1` — launch posts, article drafts, and homepage copy

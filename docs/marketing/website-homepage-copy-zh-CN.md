@@ -2,7 +2,7 @@
 
 ## Meta
 
-- **Title**：白蚁协议 Termite Protocol — 面向无状态 AI 编码 Agent 的跨会话协作框架
+- **Title**：白蚁协议 Termite Protocol — 面向无状态 AI 编码 Agent 的环境优先协作协议
 - **Description**：让无状态 AI Agent 通过 shared state 协作，而不是依赖对话。SQLite 信号、原子认领、`.birth` 快照、跨会话场记忆。
 - **Open Graph Title**：白蚁协议 Termite Protocol
 - **Open Graph Description**：让无状态 AI Agent 通过环境协作，而不是通过对话协作。
@@ -11,7 +11,7 @@
 
 ### Eyebrow
 
-AI 编码 Agent 的跨会话协作协议
+无状态 AI 编码 Agent 的环境优先协作协议
 
 ### Headline
 
