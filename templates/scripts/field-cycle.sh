@@ -42,25 +42,8 @@ fi
 
 log_info "Step 3/8: Boundary detection"
 if has_db; then
-  # Single SQL: park signals where touch_count >= threshold
-  parked_count=$(db_exec "
-    SELECT COUNT(*) FROM signals
-    WHERE touch_count >= ${BOUNDARY_TOUCH_THRESHOLD}
-      AND type IN ('BLOCKED','HOLE')
-      AND status NOT IN ('parked','done','archived');
-  ")
+  parked_count=$(db_signal_park_boundary "$BOUNDARY_TOUCH_THRESHOLD")
   if [ "${parked_count:-0}" -gt 0 ]; then
-    db_exec "
-      UPDATE signals SET
-        status='parked',
-        parked_reason='environment_boundary',
-        parked_conditions='Touched ' || touch_count || 'x without resolution',
-        parked_at='$(today_iso)',
-        weight=CASE WHEN weight > ($ESCALATE_THRESHOLD-10) THEN ($ESCALATE_THRESHOLD-10) ELSE weight END
-      WHERE touch_count >= $BOUNDARY_TOUCH_THRESHOLD
-        AND type IN ('BLOCKED','HOLE')
-        AND status NOT IN ('parked','done','archived');
-    "
     log_info "Parked ${parked_count} signals (DB)"
   fi
 elif has_signal_dir; then

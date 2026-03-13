@@ -608,6 +608,30 @@
     ]
   },
   {
+    "id": "O-20260303154502-78539",
+    "score": 0.0,
+    "pattern": "QUALITY_AUDIT_SUBMITTED",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
+    "id": "O-20260303154602-81238",
+    "score": 0.0,
+    "pattern": "QUALITY_AUDIT_REPORT_V1",
+    "detail_len": 1,
+    "confidence": "medium",
+    "reasons": [
+      "+0.10 context adds info",
+      "-0.30 degenerate pattern",
+      "-0.30 degenerate detail"
+    ]
+  },
+  {
     "id": "O-20260302181618-99270",
     "score": 0.3,
     "pattern": "strategic-review",
