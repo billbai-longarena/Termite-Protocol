@@ -52,6 +52,7 @@ docs/plans/             ← Design documents for major features.
 - **Protocol version**: v5.1 (signal dependency graph: parent-child decomposition, leaf-priority .birth, auto-aggregation, Rule 4b DECOMPOSE)
 - **Field lib version**: v22.0
 - **Entry kernel versions**: Claude v13.0, Agents v13.0
+- **Experimental feature**: TR1 advisory recommendation + instrumentation landed behind `TERMITE_EXPERIMENT` (`C0`, `TR1-shadow`, `TR1-live`, `TR1-live-beta`), with DB schema v6 for `signal_events` and `agent_module_stats`
 - **Host project colonies validated**: 0227/SalesTouch (production stable), OpenAgentEngine (audited, 7 findings closed), ReactiveArmor (weak model experiment, 6 findings), touchcli (A-005 Codex shepherd 2 findings closed; A-006 5-model heterogeneous swarm 5 findings open)
 
 ### Known Issues

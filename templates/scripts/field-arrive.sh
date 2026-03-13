@@ -441,40 +441,155 @@ behavioral_template=""
 if has_db; then
   obs_ex=$(db_obs_best_example 2>/dev/null || true)
   if [ -n "$obs_ex" ]; then
-    IFS=$'\t' read -r bt_pattern bt_context bt_detail <<< "$obs_ex"
+    IFS=$'	' read -r bt_pattern bt_context bt_detail <<< "$obs_ex"
     behavioral_template="example: pattern=\"${bt_pattern}\" context=\"${bt_context}\" detail=\"${bt_detail}\""
   fi
 fi
 
+format_task_hint() {
+  local signal_id="$1" signal_type="$2" signal_title="$3"
+  local signal_next="$4" signal_child_hint="$5" signal_parent="$6" signal_module="$7"
+  local hint="${signal_id}(${signal_type}): ${signal_title}"
+  if [ -n "$signal_next" ] && [ "$signal_next" != "null" ]; then
+    hint="${hint} → ${signal_next}"
+  fi
+  if [ -n "$signal_parent" ] && [ "$signal_parent" != "null" ] && [ "$signal_parent" != "" ]; then
+    local parent_title
+    parent_title=$(db_exec "SELECT title FROM signals WHERE id='$(db_escape "$signal_parent")';" 2>/dev/null || true)
+    [ -n "$parent_title" ] && hint="${hint}
+  parent: ${signal_parent} (${parent_title})"
+  fi
+  if [ -n "$signal_child_hint" ] && [ "$signal_child_hint" != "null" ] && [ "$signal_child_hint" != "" ]; then
+    hint="${hint}
+  hint: ${signal_child_hint}"
+  fi
+  if [ -n "$signal_module" ] && [ "$signal_module" != "null" ] && [ "$signal_module" != "" ] && [ "$signal_module" != "[]" ]; then
+    hint="${hint}
+  files: ${signal_module}"
+  fi
+  printf '%s' "$hint"
+}
+
 # Get top signal with next_hint for .birth task section
 # v5.1: leaf-priority — show unclaimed leaf signals, not decomposed parents
+tr1_mode=""
+tr1_arm="C0"
+tr1_show_recommendation="false"
+tr1_beta_enabled="false"
+tr1_beta="0.00"
+tr1_mode_hint=""
+tr1_event_meta='{}'
+top_signal_id=""
 top_signal_hint=""
+recommended_signal_id=""
+recommended_task_hint=""
+recommended_task_why=""
 if has_db; then
-  top_row=$(db_query "SELECT s.id, s.type, s.title, s.next_hint, s.child_hint, s.parent_id, s.module
-    FROM signals s
-    WHERE s.status = 'open'
-      AND NOT EXISTS (
-        SELECT 1 FROM signals c
-        WHERE c.parent_id = s.id
-        AND c.status NOT IN ('done','completed','archived')
-      )
-    ORDER BY s.weight DESC
-    LIMIT 1;" 2>/dev/null || true)
+  tr1_mode=$(tr1_experiment_mode 2>/dev/null || true)
+  tr1_arm=$(tr1_event_experiment 2>/dev/null || echo "C0")
+  case "$tr1_mode" in
+    TR1-live)
+      tr1_show_recommendation="true"
+      ;;
+    TR1-live-beta)
+      tr1_show_recommendation="true"
+      tr1_beta_enabled="true"
+      ;;
+  esac
+
+  top_row=$(db_leaf_top_signal 2>/dev/null || true)
   if [ -n "$top_row" ]; then
-    IFS=$'\t' read -r ts_id ts_type ts_title ts_next ts_child_hint ts_parent ts_module <<< "$top_row"
-    top_signal_hint="${ts_id}(${ts_type}): ${ts_title}"
-    [ -n "$ts_next" ] && top_signal_hint="${top_signal_hint} → ${ts_next}"
-    # Include parent context and child_hint for decomposed signals
-    if [ -n "$ts_parent" ] && [ "$ts_parent" != "null" ] && [ "$ts_parent" != "" ]; then
-      parent_title=$(db_exec "SELECT title FROM signals WHERE id='$(db_escape "$ts_parent")';" 2>/dev/null || true)
-      [ -n "$parent_title" ] && top_signal_hint="${top_signal_hint}\n  parent: ${ts_parent} (${parent_title})"
+    IFS=$'	' read -r ts_id ts_type ts_title ts_next ts_child_hint ts_parent ts_module <<< "$top_row"
+    top_signal_id="$ts_id"
+    top_signal_hint=$(format_task_hint "$ts_id" "$ts_type" "$ts_title" "$ts_next" "$ts_child_hint" "$ts_parent" "$ts_module")
+  fi
+
+  if [ -n "$tr1_mode" ] && [ -n "$AGENT_ID" ]; then
+    weight_urgency="0.40"
+    weight_affinity="0.25"
+    weight_finish="0.20"
+    weight_coverage="0.15"
+
+    if [ "$tr1_beta_enabled" = "true" ]; then
+      tr1_beta=$(db_tr1_beta 2>/dev/null || echo "0.00")
+      if awk -v beta="$tr1_beta" 'BEGIN { exit !(beta < 0.30) }'; then
+        weight_urgency="0.55"
+        weight_affinity="0.20"
+        weight_finish="0.20"
+        weight_coverage="0.05"
+        tr1_mode_hint="β=${tr1_beta} → execute tightly on urgent, finishable work"
+      elif awk -v beta="$tr1_beta" 'BEGIN { exit !(beta <= 0.70) }'; then
+        tr1_mode_hint="β=${tr1_beta} → stay balanced; prefer fit without over-focusing hotspots"
+      else
+        weight_urgency="0.25"
+        weight_affinity="0.20"
+        weight_finish="0.10"
+        weight_coverage="0.45"
+        tr1_mode_hint="β=${tr1_beta} → explore slightly beyond hotspot modules; prefer under-covered work if finishable"
+      fi
     fi
-    if [ -n "$ts_child_hint" ] && [ "$ts_child_hint" != "null" ] && [ "$ts_child_hint" != "" ]; then
-      top_signal_hint="${top_signal_hint}\n  hint: ${ts_child_hint}"
+
+    best_score=""
+    best_affinity="0.50"
+    best_finish="0.50"
+    best_urgency="0.00"
+    best_coverage="1.00"
+    best_id=""
+    best_type=""
+    best_title=""
+    best_next=""
+    best_child_hint=""
+    best_parent=""
+    best_module=""
+
+    candidate_rows=$(db_tr1_candidate_rows 5 2>/dev/null || true)
+    while IFS=$'	' read -r cand_id cand_type cand_title cand_next cand_child_hint cand_parent cand_module cand_weight cand_touch; do
+      [ -z "$cand_id" ] && continue
+      module_key=$(normalize_module_key "$cand_module")
+      urgency=$(awk -v weight="${cand_weight:-0}" 'BEGIN { value = weight / 100.0; if (value < 0) value = 0; if (value > 1) value = 1; printf "%.2f", value }')
+      affinity=$(db_agent_module_affinity "$AGENT_ID" "$module_key" 2>/dev/null || echo "0.50")
+      finish_probability=$(db_signal_finish_probability "$cand_type" "$module_key" 2>/dev/null || echo "0.50")
+      coverage_gap=$(db_module_coverage_gap "$module_key" 2>/dev/null || echo "1.00")
+      readiness="1.00"
+      [ "$module_key" = "_none_" ] && readiness="0.70"
+      if [ "${cand_touch:-0}" -ge 2 ]; then
+        readiness="0.40"
+      fi
+      score=$(awk         -v urgency="$urgency"         -v affinity="$affinity"         -v finish="$finish_probability"         -v coverage="$coverage_gap"         -v readiness="$readiness"         -v wu="$weight_urgency"         -v wa="$weight_affinity"         -v wf="$weight_finish"         -v wc="$weight_coverage"         'BEGIN {
+          value = (wu * urgency) + (wa * affinity) + (wf * finish) + (wc * coverage)
+          value = value * readiness
+          if (value < 0) value = 0
+          if (value > 1) value = 1
+          printf "%.2f", value
+        }')
+      if [ -z "$best_score" ] || awk -v lhs="$score" -v rhs="$best_score" 'BEGIN { exit !(lhs > rhs) }'; then
+        best_score="$score"
+        best_affinity="$affinity"
+        best_finish="$finish_probability"
+        best_urgency="$urgency"
+        best_coverage="$coverage_gap"
+        best_id="$cand_id"
+        best_type="$cand_type"
+        best_title="$cand_title"
+        best_next="$cand_next"
+        best_child_hint="$cand_child_hint"
+        best_parent="$cand_parent"
+        best_module="$cand_module"
+      fi
+    done <<< "$candidate_rows"
+
+    if [ -n "$best_id" ]; then
+      recommended_signal_id="$best_id"
+      recommended_task_hint=$(format_task_hint "$best_id" "$best_type" "$best_title" "$best_next" "$best_child_hint" "$best_parent" "$best_module")
+      if [ "$tr1_beta_enabled" = "true" ]; then
+        recommended_task_why="why: coverage_gap=${best_coverage} affinity=${best_affinity} urgency=${best_urgency}"
+      else
+        recommended_task_why="why: affinity=${best_affinity} finish_prob=${best_finish} urgency=${best_urgency}"
+      fi
     fi
-    if [ -n "$ts_module" ] && [ "$ts_module" != "null" ] && [ "$ts_module" != "" ]; then
-      top_signal_hint="${top_signal_hint}\n  files: ${ts_module}"
-    fi
+
+    tr1_event_meta=$(json_object "top_signal_id" "${top_signal_id:-}" "recommended_signal_id" "${recommended_signal_id:-}" "mode" "$tr1_arm")
+    log_info "TR1 ${tr1_arm}: top=${top_signal_id:-none} recommended=${recommended_signal_id:-none} beta=${tr1_beta}"
   fi
 fi
 
@@ -574,7 +689,23 @@ write_birth_unified() {
   # ── ## task (200-350 tokens, state-driven) ──
   echo ""
   echo "## task"
-  if [ -n "$top_signal_hint" ]; then
+  if [ "$tr1_show_recommendation" = "true" ] && [ -n "$recommended_task_hint" ]; then
+    if [ -n "$tr1_mode_hint" ]; then
+      echo "mode_hint:"
+      echo "  $tr1_mode_hint"
+      echo ""
+    fi
+    echo "top_task:"
+    if [ -n "$top_signal_hint" ]; then
+      echo -e "$top_signal_hint" | sed 's/^/  /'
+    else
+      echo "$(echo -e "$situation" | sed '/^$/d' | head -3 | sed 's/^/  /')"
+    fi
+    echo ""
+    echo "recommended_task:"
+    echo -e "$recommended_task_hint" | sed 's/^/  /'
+    [ -n "$recommended_task_why" ] && echo "  $recommended_task_why"
+  elif [ -n "$top_signal_hint" ]; then
     echo "$top_signal_hint"
   else
     echo "$(echo -e "$situation" | sed '/^$/d' | head -3)"
@@ -719,6 +850,16 @@ fi
 # Also write default .birth for backward compatibility
 if [ -n "$AGENT_ID" ] && [ "$BIRTH_FILE" != "${PROJECT_ROOT}/.birth" ]; then
   cp "$BIRTH_FILE" "${PROJECT_ROOT}/.birth"
+fi
+
+if has_db && [ -n "$AGENT_ID" ] && [ -n "$top_signal_id" ]; then
+  if [ "$tr1_event_meta" = '{}' ]; then
+    tr1_event_meta=$(json_object "top_signal_id" "${top_signal_id:-}" "recommended_signal_id" "${recommended_signal_id:-}" "mode" "$tr1_arm")
+  fi
+  db_signal_event_record "$top_signal_id" "$AGENT_ID" "birth_viewed" "$tr1_arm" "$tr1_event_meta"
+  if [ "$tr1_show_recommendation" = "true" ] && [ -n "$recommended_signal_id" ]; then
+    db_signal_event_record "$recommended_signal_id" "$AGENT_ID" "recommended_presented" "$tr1_arm" "$tr1_event_meta"
+  fi
 fi
 
 # ── Token budget check ───────────────────────────────────────────────

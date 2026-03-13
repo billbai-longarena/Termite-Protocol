@@ -6,6 +6,29 @@
 
 ---
 
+## v5.1.1 — TR1 Experimental Advisory Recommendation (2026-03-08)
+
+### Changes
+- **Experiment-gated TR1 rollout**: `TERMITE_EXPERIMENT=TR1-shadow | TR1-live | TR1-live-beta` enables shadow ranking, live advisory recommendation, and β-weighted advisory mode without changing atomic claim semantics.
+- **Advisory `.birth` recommendation**: `field-arrive.sh` now computes `recommended_task` from urgency, agent-module affinity, finish probability, coverage gap, and readiness. `TR1-shadow` records only; `TR1-live` displays the recommendation; `TR1-live-beta` also injects `mode_hint`.
+- **Phase 0 baseline instrumentation**: control runs with no `TERMITE_EXPERIMENT` now record `C0` `birth_viewed` / claim / done / park / stale events, so baseline data can be collected before any recommendation is shown.
+- **DB schema v6**: adds `signal_events` and `agent_module_stats` tables plus supporting indexes for recommendation analysis.
+- **Outcome instrumentation**: `field-claim.sh`, `field-cycle.sh`, and `termite-db.sh` now record `recommended_claimed`, `non_recommended_claimed`, `done`, `parked`, `stale`, and `reopened` events, and keep per-agent per-module outcome counters.
+- **Cold-start scoring fallback**: `finish_probability` now falls back to colony-level history when a module has insufficient history, reducing random recommendations on new modules.
+- **Protocol version**: remains `v5.1` — TR1 is experimental and advisory only.
+
+### Action Required
+- Run `install.sh --upgrade` to get the new field scripts and DB schema migration before evaluating TR1.
+- Let `field-arrive.sh` run once in each upgraded host project so `.termite.db` can auto-migrate to schema v6.
+
+### Action Optional
+- **Phase 0 baseline**: leave `TERMITE_EXPERIMENT` unset and collect at least 7 days or 30 claims of instrumentation data.
+- **Phase 1 shadow**: set `TERMITE_EXPERIMENT=TR1-shadow` to compare shadow recommendations against the visible `top_task`.
+- **Phase 2 advisory**: set `TERMITE_EXPERIMENT=TR1-live` to show `recommended_task` without β bias.
+- **Phase 3 advisory + β**: set `TERMITE_EXPERIMENT=TR1-live-beta` to add `mode_hint` and β-adjusted weighting.
+
+---
+
 ## v5.1 — Signal Dependency Graph (2026-03-03)
 
 ### Changes

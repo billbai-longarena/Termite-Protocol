@@ -44,6 +44,72 @@ DECOMPOSE_MAX_DEPTH="${TERMITE_DECOMPOSE_MAX_DEPTH:-3}"
 DECOMPOSE_MIN_AGENT_RATIO="${TERMITE_DECOMPOSE_MIN_AGENT_RATIO:-0.5}"
 DECOMPOSE_BLOCKED_ESCALATION="${TERMITE_DECOMPOSE_BLOCKED_ESCALATION:-10}"
 
+# ── Experiment Flags & Common Helpers ────────────────────────────────
+
+tr1_experiment_mode() {
+  local token
+  for token in $(printf "%s" "${TERMITE_EXPERIMENT:-}" | tr ',' ' '); do
+    case "$token" in
+      TR1-live-beta|TR1-live|TR1-shadow)
+        echo "$token"
+        return 0
+        ;;
+    esac
+  done
+  return 1
+}
+
+tr1_experiment_enabled() {
+  [ -n "$(tr1_experiment_mode 2>/dev/null || true)" ]
+}
+
+tr1_event_experiment() {
+  local mode
+  mode=$(tr1_experiment_mode 2>/dev/null || true)
+  if [ -n "$mode" ]; then
+    printf '%s' "$mode"
+  else
+    printf '%s' 'C0'
+  fi
+}
+
+normalize_module_key() {
+  local raw="${1:-}"
+  raw=$(printf "%s" "$raw" | tr -d '\r' | sed 's/^[[:space:]]*//; s/[[:space:]]*$//')
+  case "$raw" in
+    ""|"[]"|"null") echo "_none_" ;;
+    *) echo "$raw" ;;
+  esac
+}
+
+json_get_field() {
+  local payload="${1:-}" key="${2:-}"
+  printf "%s" "$payload" | sed -n "s/.*\"${key}\":\"\([^\"]*\)\".*/\1/p"
+}
+
+json_escape() {
+  local raw="${1:-}"
+  raw=${raw//\\/\\\\}
+  raw=${raw//\"/\\\"}
+  raw=${raw//$'\n'/\\n}
+  raw=${raw//$'\r'/\\r}
+  raw=${raw//$'\t'/\\t}
+  printf '%s' "$raw"
+}
+
+json_object() {
+  local sep="" key value
+  printf '{'
+  while [ "$#" -gt 1 ]; do
+    key="$1"
+    value="$2"
+    shift 2
+    printf '%s"%s":"%s"' "$sep" "$(json_escape "$key")" "$(json_escape "$value")"
+    sep=','
+  done
+  printf '}'
+}
+
 # ── Logging ──────────────────────────────────────────────────────────
 
 log_info()  { echo "[termite:info]  $*" >&2; }

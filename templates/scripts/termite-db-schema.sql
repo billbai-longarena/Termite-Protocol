@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS schema_version (
   version INTEGER PRIMARY KEY,
   applied_at TEXT DEFAULT (datetime('now'))
 );
-INSERT OR IGNORE INTO schema_version(version) VALUES (5);
+INSERT OR IGNORE INTO schema_version(version) VALUES (6);
 
 -- Signals (replaces signals/active/*.yaml)
 CREATE TABLE IF NOT EXISTS signals (
@@ -81,6 +81,32 @@ CREATE TABLE IF NOT EXISTS claims (
   ttl_hours INTEGER DEFAULT 24,
   PRIMARY KEY (signal_id, operation)
 );
+
+-- Signal events (TR1 instrumentation)
+CREATE TABLE IF NOT EXISTS signal_events (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  timestamp TEXT NOT NULL,
+  signal_id TEXT NOT NULL,
+  agent_id TEXT,
+  event_type TEXT NOT NULL,
+  experiment TEXT,
+  meta TEXT DEFAULT '{}'
+);
+CREATE INDEX IF NOT EXISTS idx_signal_events_signal_time ON signal_events(signal_id, timestamp DESC);
+CREATE INDEX IF NOT EXISTS idx_signal_events_agent_time ON signal_events(agent_id, timestamp DESC);
+
+-- Agent-module outcome stats (TR1 instrumentation)
+CREATE TABLE IF NOT EXISTS agent_module_stats (
+  agent_id TEXT NOT NULL,
+  module_key TEXT NOT NULL,
+  claimed_count INTEGER DEFAULT 0,
+  done_count INTEGER DEFAULT 0,
+  parked_count INTEGER DEFAULT 0,
+  stale_count INTEGER DEFAULT 0,
+  last_updated TEXT NOT NULL,
+  PRIMARY KEY (agent_id, module_key)
+);
+CREATE INDEX IF NOT EXISTS idx_agent_module_stats_updated ON agent_module_stats(last_updated DESC);
 
 -- Pheromone history (replaces .pheromone last-writer-wins)
 CREATE TABLE IF NOT EXISTS pheromone_history (

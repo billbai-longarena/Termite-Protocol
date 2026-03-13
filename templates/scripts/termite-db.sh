@@ -32,9 +32,15 @@ db_ensure() {
   fi
   if [ "${current_ver:-1}" -lt 4 ]; then
     db_migrate_v3_to_v4
+    current_ver=4
   fi
   if [ "${current_ver:-1}" -lt 5 ]; then
     db_migrate_v4_to_v5
+    current_ver=5
+  fi
+  if [ "${current_ver:-1}" -lt 6 ]; then
+    db_migrate_v5_to_v6
+    current_ver=6
   fi
 }
 
@@ -69,6 +75,17 @@ db_migrate_v4_to_v5() {
   db_exec "CREATE INDEX IF NOT EXISTS idx_signals_parent ON signals(parent_id);" 2>/dev/null || true
   db_exec "INSERT OR REPLACE INTO schema_version(version) VALUES (5);"
   log_info "DB schema migration to v5 complete"
+}
+
+db_migrate_v5_to_v6() {
+  log_info "Migrating DB schema v5 → v6"
+  db_exec "CREATE TABLE IF NOT EXISTS signal_events (id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp TEXT NOT NULL, signal_id TEXT NOT NULL, agent_id TEXT, event_type TEXT NOT NULL, experiment TEXT, meta TEXT DEFAULT '{}');" 2>/dev/null || true
+  db_exec "CREATE INDEX IF NOT EXISTS idx_signal_events_signal_time ON signal_events(signal_id, timestamp DESC);" 2>/dev/null || true
+  db_exec "CREATE INDEX IF NOT EXISTS idx_signal_events_agent_time ON signal_events(agent_id, timestamp DESC);" 2>/dev/null || true
+  db_exec "CREATE TABLE IF NOT EXISTS agent_module_stats (agent_id TEXT NOT NULL, module_key TEXT NOT NULL, claimed_count INTEGER DEFAULT 0, done_count INTEGER DEFAULT 0, parked_count INTEGER DEFAULT 0, stale_count INTEGER DEFAULT 0, last_updated TEXT NOT NULL, PRIMARY KEY (agent_id, module_key));" 2>/dev/null || true
+  db_exec "CREATE INDEX IF NOT EXISTS idx_agent_module_stats_updated ON agent_module_stats(last_updated DESC);" 2>/dev/null || true
+  db_exec "INSERT OR REPLACE INTO schema_version(version) VALUES (6);"
+  log_info "DB schema migration to v6 complete"
 }
 
 db_exec() {
@@ -137,6 +154,234 @@ db_signal_by_weight() {
   local where=""
   [ -n "${2:-}" ] && where="WHERE $2"
   db_query "SELECT id,type,title,status,weight,owner FROM signals ${where} ORDER BY weight DESC LIMIT ${limit};"
+}
+
+db_signal_module_key() {
+  db_exec "SELECT CASE WHEN TRIM(COALESCE(module,'')) IN ('','[]','null') THEN '_none_' ELSE TRIM(module) END FROM signals WHERE id='$(db_escape "$1")' LIMIT 1;"
+}
+
+db_signal_owner() {
+  db_exec "SELECT owner FROM signals WHERE id='$(db_escape "$1")' LIMIT 1;"
+}
+
+db_signal_type() {
+  db_exec "SELECT type FROM signals WHERE id='$(db_escape "$1")' LIMIT 1;"
+}
+
+db_signal_event_record() {
+  local signal_id="$1" agent_id="${2:-}" event_type="$3" experiment="${4:-}" meta="${5:-}"
+  [ -n "$meta" ] || meta='{}'
+  local agent_sql="NULL" experiment_sql="NULL"
+  [ -n "$agent_id" ] && [ "$agent_id" != "unassigned" ] && agent_sql="'$(db_escape "$agent_id")'"
+  [ -n "$experiment" ] && experiment_sql="'$(db_escape "$experiment")'"
+  db_exec "INSERT INTO signal_events(timestamp,signal_id,agent_id,event_type,experiment,meta)
+    VALUES('$(now_iso)','$(db_escape "$signal_id")',${agent_sql},'$(db_escape "$event_type")',${experiment_sql},'$(db_escape "$meta")');"
+}
+
+db_signal_event_latest_recommendation() {
+  local agent_id="$1"
+  [ -z "$agent_id" ] && return 0
+  db_query "SELECT signal_id,event_type,COALESCE(experiment,'C0'),COALESCE(meta,'{}') FROM signal_events
+    WHERE agent_id='$(db_escape "$agent_id")'
+      AND event_type IN ('recommended_presented','birth_viewed')
+    ORDER BY id DESC LIMIT 1;"
+}
+
+db_agent_latest_experiment() {
+  local agent_id="$1"
+  [ -z "$agent_id" ] && return 0
+  db_exec "SELECT COALESCE(experiment,'C0') FROM signal_events
+    WHERE agent_id='$(db_escape "$agent_id")'
+      AND COALESCE(experiment,'') != ''
+    ORDER BY id DESC LIMIT 1;"
+}
+
+db_agent_module_stats_bump() {
+  local agent_id="$1" signal_id="$2" metric="$3"
+  case "$metric" in
+    claimed_count|done_count|parked_count|stale_count) ;;
+    *) log_error "Invalid agent_module_stats metric: ${metric}"; return 1 ;;
+  esac
+  [ -z "$agent_id" ] && return 0
+  [ "$agent_id" = "unassigned" ] && return 0
+  local module_key
+  module_key=$(db_signal_module_key "$signal_id")
+  module_key=$(normalize_module_key "$module_key")
+  db_transaction "
+    INSERT OR IGNORE INTO agent_module_stats(agent_id,module_key,last_updated)
+      VALUES('$(db_escape "$agent_id")','$(db_escape "$module_key")','$(now_iso)');
+    UPDATE agent_module_stats
+      SET ${metric} = ${metric} + 1,
+          last_updated='$(now_iso)'
+      WHERE agent_id='$(db_escape "$agent_id")'
+        AND module_key='$(db_escape "$module_key")';
+  "
+}
+
+db_agent_module_affinity() {
+  local agent_id="$1" module_key="$2"
+  [ -z "$agent_id" ] && { echo "0.50"; return; }
+  [ "$agent_id" = "unassigned" ] && { echo "0.50"; return; }
+  local row claimed_count done_count
+  row=$(db_query "SELECT claimed_count, done_count FROM agent_module_stats WHERE agent_id='$(db_escape "$agent_id")' AND module_key='$(db_escape "$module_key")' LIMIT 1;" 2>/dev/null || true)
+  if [ -z "$row" ]; then
+    echo "0.50"
+    return
+  fi
+  IFS=$'	' read -r claimed_count done_count <<< "$row"
+  awk -v claimed="${claimed_count:-0}" -v done="${done_count:-0}" 'BEGIN {
+    if (claimed <= 0) value = 0.5
+    else value = done / claimed
+    if (value < 0) value = 0
+    if (value > 1) value = 1
+    printf "%.2f", value
+  }'
+}
+
+db_signal_finish_probability() {
+  local signal_type="$1" module_key="$2"
+  local module_expr="CASE WHEN TRIM(COALESCE(module,'')) IN ('','[]','null') THEN '_none_' ELSE TRIM(module) END"
+  local total done_count
+  total=$(db_exec "SELECT COUNT(*)
+    FROM signal_events e
+    INNER JOIN signals s ON s.id = e.signal_id
+    WHERE e.event_type = 'claimed'
+      AND s.type='$(db_escape "$signal_type")'
+      AND ${module_expr}='$(db_escape "$module_key")';" 2>/dev/null || echo "0")
+  if [ "${total:-0}" -gt 0 ]; then
+    done_count=$(db_exec "SELECT COUNT(*)
+      FROM signal_events e
+      INNER JOIN signals s ON s.id = e.signal_id
+      WHERE e.event_type = 'done'
+        AND s.type='$(db_escape "$signal_type")'
+        AND ${module_expr}='$(db_escape "$module_key")';" 2>/dev/null || echo "0")
+  else
+    total=$(db_exec "SELECT COUNT(*)
+      FROM signal_events e
+      INNER JOIN signals s ON s.id = e.signal_id
+      WHERE e.event_type = 'claimed'
+        AND s.type='$(db_escape "$signal_type")';" 2>/dev/null || echo "0")
+    if [ "${total:-0}" -gt 0 ]; then
+      done_count=$(db_exec "SELECT COUNT(*)
+        FROM signal_events e
+        INNER JOIN signals s ON s.id = e.signal_id
+        WHERE e.event_type = 'done'
+          AND s.type='$(db_escape "$signal_type")';" 2>/dev/null || echo "0")
+    else
+      total=$(db_exec "SELECT COUNT(*) FROM signals WHERE type='$(db_escape "$signal_type")';" 2>/dev/null || echo "0")
+      if [ "${total:-0}" -eq 0 ]; then
+        echo "0.50"
+        return
+      fi
+      done_count=$(db_exec "SELECT COUNT(*) FROM signals WHERE type='$(db_escape "$signal_type")' AND status IN ('done','completed');" 2>/dev/null || echo "0")
+    fi
+  fi
+  awk -v total="${total:-0}" -v done="${done_count:-0}" 'BEGIN {
+    if (total <= 0) value = 0.5
+    else value = done / total
+    if (value < 0) value = 0
+    if (value > 1) value = 1
+    printf "%.2f", value
+  }'
+}
+
+db_module_coverage_gap() {
+  local module_key="$1"
+  local module_expr="CASE WHEN TRIM(COALESCE(s.module,'')) IN ('','[]','null') THEN '_none_' ELSE TRIM(s.module) END"
+  local total count
+  total=$(db_exec "SELECT COUNT(*) FROM signals s WHERE s.status='open' AND NOT EXISTS (SELECT 1 FROM signals c WHERE c.parent_id = s.id AND c.status NOT IN ('done','completed','archived'));" 2>/dev/null || echo "0")
+  if [ "${total:-0}" -eq 0 ]; then
+    echo "1.00"
+    return
+  fi
+  count=$(db_exec "SELECT COUNT(*) FROM signals s WHERE s.status='open' AND ${module_expr}='$(db_escape "$module_key")' AND NOT EXISTS (SELECT 1 FROM signals c WHERE c.parent_id = s.id AND c.status NOT IN ('done','completed','archived'));" 2>/dev/null || echo "0")
+  awk -v total="${total:-0}" -v count="${count:-0}" 'BEGIN {
+    if (total <= 0) gap = 1.0
+    else gap = 1.0 - (count / total)
+    if (gap < 0) gap = 0
+    if (gap > 1) gap = 1
+    printf "%.2f", gap
+  }'
+}
+
+db_tr1_beta() {
+  local module_expr="CASE WHEN TRIM(COALESCE(module,'')) IN ('','[]','null') THEN '_none_' ELSE TRIM(module) END"
+  local open_count max_count stale_count blocked_count
+  open_count=$(db_exec "SELECT COUNT(*) FROM signals WHERE status='open';" 2>/dev/null || echo "0")
+  [ "${open_count:-0}" -eq 0 ] && { echo "0.00"; return; }
+  max_count=$(db_exec "SELECT COALESCE(MAX(cnt),0) FROM (SELECT COUNT(*) AS cnt FROM signals WHERE status='open' GROUP BY ${module_expr});" 2>/dev/null || echo "0")
+  stale_count=$(db_exec "SELECT COUNT(DISTINCT s.id)
+    FROM signals s
+    WHERE s.status='open'
+      AND EXISTS (
+        SELECT 1 FROM signal_events e
+        WHERE e.signal_id = s.id
+          AND e.event_type IN ('stale','reopened')
+      );" 2>/dev/null || echo "0")
+  blocked_count=$(db_exec "SELECT COUNT(*) FROM signals WHERE status='open' AND (type='BLOCKED' OR touch_count >= ${BOUNDARY_TOUCH_THRESHOLD});" 2>/dev/null || echo "0")
+  awk -v open="${open_count:-0}" -v maxc="${max_count:-0}" -v stale="${stale_count:-0}" -v blocked="${blocked_count:-0}" 'BEGIN {
+    if (open <= 0) beta = 0
+    else {
+      C = 1 - (maxc / open)
+      S = stale / open
+      B = blocked / open
+      beta = 0.5 * C + 0.3 * S + 0.2 * B
+    }
+    if (beta < 0) beta = 0
+    if (beta > 1) beta = 1
+    printf "%.2f", beta
+  }'
+}
+
+db_tr1_candidate_rows() {
+  local limit="${1:-5}"
+  db_query "
+    SELECT s.id,
+           s.type,
+           s.title,
+           COALESCE(NULLIF(s.next_hint,''), 'null'),
+           COALESCE(NULLIF(s.child_hint,''), 'null'),
+           COALESCE(NULLIF(s.parent_id,''), 'null'),
+           COALESCE(NULLIF(s.module,''), 'null'),
+           s.weight,
+           s.touch_count
+    FROM signals s
+    WHERE s.status = 'open'
+      AND NOT EXISTS (
+        SELECT 1 FROM signals c
+        WHERE c.parent_id = s.id
+          AND c.status NOT IN ('done','completed','archived')
+      )
+    ORDER BY s.weight DESC
+    LIMIT ${limit};
+  "
+}
+
+db_signal_park_boundary() {
+  local threshold="${1:-$BOUNDARY_TOUCH_THRESHOLD}"
+  local rows count experiment owner signal_id
+  rows=$(db_query "SELECT id, owner FROM signals WHERE touch_count >= ${threshold} AND type IN ('BLOCKED','HOLE') AND status NOT IN ('parked','done','archived');" 2>/dev/null || true)
+  [ -z "$rows" ] && { echo "0"; return 0; }
+  count=$(printf "%s
+" "$rows" | sed '/^[[:space:]]*$/d' | wc -l | tr -d ' ')
+  db_exec "
+    UPDATE signals SET
+      status='parked',
+      parked_reason='environment_boundary',
+      parked_conditions='Touched ' || touch_count || 'x without resolution',
+      parked_at='$(today_iso)',
+      weight=CASE WHEN weight > (${ESCALATE_THRESHOLD}-10) THEN (${ESCALATE_THRESHOLD}-10) ELSE weight END
+    WHERE touch_count >= ${threshold}
+      AND type IN ('BLOCKED','HOLE')
+      AND status NOT IN ('parked','done','archived');
+  "
+  experiment=$(tr1_event_experiment 2>/dev/null || echo "C0")
+  while IFS=$'	' read -r signal_id owner; do
+    [ -z "$signal_id" ] && continue
+    db_signal_event_record "$signal_id" "$owner" "parked" "$experiment" '{"reason":"environment_boundary"}'
+    db_agent_module_stats_bump "$owner" "$signal_id" "parked_count"
+  done <<< "$rows"
+  echo "${count:-0}"
 }
 
 # ── Observation CRUD ─────────────────────────────────────────────────
@@ -352,19 +597,19 @@ db_claim_expire() {
   # Delete expired claims (by TTL or heartbeat timeout), reset signals.
   # Args: [quiet] -- pass 1 to suppress log_info output.
   local quiet="${1:-0}"
-  local expired_ids
-  
+  local expired_rows starved_rows experiment signal_id operation owner
+
   # 1. Standard TTL expiration
-  expired_ids=$(db_query "SELECT signal_id,operation FROM claims WHERE datetime(claimed_at, '+' || ttl_hours || ' hours') < datetime('now');")
-  
+  expired_rows=$(db_query "SELECT signal_id,operation,owner FROM claims WHERE datetime(claimed_at, '+' || ttl_hours || ' hours') < datetime('now');")
+
   # 2. Heartbeat timeout (W-015): auto-release if >10 heartbeats have passed since claim
-  local starved_ids
-  starved_ids=$(db_query "
-    SELECT signal_id, operation FROM claims 
-    WHERE (SELECT COUNT(*) FROM pheromone_history WHERE timestamp > claims.claimed_at) >= 10;
+  starved_rows=$(db_query "
+    SELECT signal_id, operation, owner FROM claims
+    WHERE datetime(claimed_at, '+' || ttl_hours || ' hours') >= datetime('now')
+      AND (SELECT COUNT(*) FROM pheromone_history WHERE timestamp > claims.claimed_at) >= 10;
   ")
-  
-  if [ -z "$expired_ids" ] && [ -z "$starved_ids" ]; then
+
+  if [ -z "$expired_rows" ] && [ -z "$starved_rows" ]; then
     echo "0"
     return 0
   fi
@@ -374,25 +619,41 @@ db_claim_expire() {
     UPDATE signals SET status='stale', owner='unassigned'
       WHERE id IN (SELECT signal_id FROM claims WHERE datetime(claimed_at, '+' || ttl_hours || ' hours') < datetime('now'))
       AND id NOT IN (SELECT signal_id FROM claims WHERE datetime(claimed_at, '+' || ttl_hours || ' hours') >= datetime('now'));
-      
+
     -- Reset signals for starved claims
     UPDATE signals SET status='open', owner='unassigned'
       WHERE id IN (
-        SELECT signal_id FROM claims 
-        WHERE (SELECT COUNT(*) FROM pheromone_history WHERE timestamp > claims.claimed_at) >= 10
+        SELECT signal_id FROM claims
+        WHERE datetime(claimed_at, '+' || ttl_hours || ' hours') >= datetime('now')
+          AND (SELECT COUNT(*) FROM pheromone_history WHERE timestamp > claims.claimed_at) >= 10
       );
-      
+
     -- Delete claims
     DELETE FROM claims WHERE datetime(claimed_at, '+' || ttl_hours || ' hours') < datetime('now');
-    DELETE FROM claims WHERE (SELECT COUNT(*) FROM pheromone_history WHERE timestamp > claims.claimed_at) >= 10;
+    DELETE FROM claims WHERE datetime(claimed_at, '+' || ttl_hours || ' hours') >= datetime('now') AND (SELECT COUNT(*) FROM pheromone_history WHERE timestamp > claims.claimed_at) >= 10;
   "
-  
-  local total_cleaned=0
-  if [ -n "$expired_ids" ]; then
-    total_cleaned=$((total_cleaned + $(echo "$expired_ids" | sed '/^[[:space:]]*$/d' | wc -l | tr -d ' ')))
+
+  experiment=$(tr1_event_experiment 2>/dev/null || echo "C0")
+  if [ -n "$expired_rows" ]; then
+    while IFS=$'	' read -r signal_id operation owner; do
+      [ -z "$signal_id" ] && continue
+      db_signal_event_record "$signal_id" "$owner" "stale" "$experiment" "$(json_object "operation" "$operation" "reason" "claim_ttl")"
+      db_agent_module_stats_bump "$owner" "$signal_id" "stale_count"
+    done <<< "$expired_rows"
   fi
-  if [ -n "$starved_ids" ]; then
-    total_cleaned=$((total_cleaned + $(echo "$starved_ids" | sed '/^[[:space:]]*$/d' | wc -l | tr -d ' ')))
+  if [ -n "$starved_rows" ]; then
+    while IFS=$'	' read -r signal_id operation owner; do
+      [ -z "$signal_id" ] && continue
+      db_signal_event_record "$signal_id" "$owner" "reopened" "$experiment" "$(json_object "operation" "$operation" "reason" "claim_starved")"
+    done <<< "$starved_rows"
+  fi
+
+  local total_cleaned=0
+  if [ -n "$expired_rows" ]; then
+    total_cleaned=$((total_cleaned + $(echo "$expired_rows" | sed '/^[[:space:]]*$/d' | wc -l | tr -d ' ')))
+  fi
+  if [ -n "$starved_rows" ]; then
+    total_cleaned=$((total_cleaned + $(echo "$starved_rows" | sed '/^[[:space:]]*$/d' | wc -l | tr -d ' ')))
   fi
 
   if [ "$quiet" != "1" ] && [ "$total_cleaned" -gt 0 ]; then
@@ -790,7 +1051,13 @@ db_unclaimed_leaf_count() {
 db_leaf_top_signal() {
   # Return best unclaimed leaf signal (for .birth ## task)
   db_query "
-    SELECT s.id, s.type, s.title, s.next_hint, s.child_hint, s.parent_id, s.module
+    SELECT s.id,
+           s.type,
+           s.title,
+           COALESCE(NULLIF(s.next_hint,''), 'null'),
+           COALESCE(NULLIF(s.child_hint,''), 'null'),
+           COALESCE(NULLIF(s.parent_id,''), 'null'),
+           COALESCE(NULLIF(s.module,''), 'null')
     FROM signals s
     WHERE s.status = 'open'
       AND NOT EXISTS (

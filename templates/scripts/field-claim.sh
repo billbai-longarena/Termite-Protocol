@@ -39,6 +39,49 @@ is_compatible() {
   return 1
 }
 
+record_claim_events() {
+  local signal_id="$1" op="$2" owner="$3"
+  local experiment latest rec_signal_id top_signal_id event_type event_experiment meta claim_meta
+  experiment=$(tr1_event_experiment 2>/dev/null || echo "C0")
+  latest=$(db_signal_event_latest_recommendation "$owner" 2>/dev/null || true)
+  if [ -n "$latest" ]; then
+    IFS=$'	' read -r rec_signal_id event_type event_experiment meta <<< "$latest"
+    if [ "$experiment" = "C0" ] && [ -n "$event_experiment" ] && [ "$event_experiment" != "C0" ]; then
+      experiment="$event_experiment"
+    fi
+  fi
+  db_signal_event_record "$signal_id" "$owner" "claimed" "$experiment" "$(json_object "operation" "$op")"
+
+  [ "$op" != "work" ] && return 0
+
+  db_agent_module_stats_bump "$owner" "$signal_id" "claimed_count"
+  [ -z "$latest" ] && return 0
+
+  if [ "$event_type" = "birth_viewed" ]; then
+    rec_signal_id=$(json_get_field "$meta" "recommended_signal_id")
+  fi
+  top_signal_id=$(json_get_field "$meta" "top_signal_id")
+  [ -z "$rec_signal_id" ] && return 0
+
+  claim_meta=$(json_object "recommended_signal_id" "$rec_signal_id" "top_signal_id" "${top_signal_id:-}")
+  if [ "$signal_id" = "$rec_signal_id" ]; then
+    db_signal_event_record "$signal_id" "$owner" "recommended_claimed" "$experiment" "$claim_meta"
+  else
+    db_signal_event_record "$signal_id" "$owner" "non_recommended_claimed" "$experiment" "$claim_meta"
+  fi
+}
+
+record_done_event() {
+  local signal_id="$1" op="$2" owner="$3"
+  local experiment
+  experiment=$(tr1_event_experiment 2>/dev/null || echo "C0")
+  if [ "$experiment" = "C0" ] && [ -n "$owner" ] && [ "$owner" != "unassigned" ]; then
+    experiment=$(db_agent_latest_experiment "$owner" 2>/dev/null || echo "C0")
+  fi
+  db_signal_event_record "$signal_id" "$owner" "done" "$experiment" "$(json_object "operation" "$op")"
+  [ "$op" = "work" ] && db_agent_module_stats_bump "$owner" "$signal_id" "done_count"
+}
+
 # ── Claim ────────────────────────────────────────────────────────────
 
 do_claim() {
@@ -49,6 +92,7 @@ do_claim() {
     source "${SCRIPT_DIR}/termite-db.sh"
     db_claim_create "$signal_id" "$op" "$owner" "$(current_commit_short)" "$CLAIM_TTL_HOURS" \
       || { log_error "Claim blocked or failed"; exit 1; }
+    record_claim_events "$signal_id" "$op" "$owner"
     log_info "Claimed ${signal_id} for ${op} by ${owner} (atomic)"
     return
   fi
@@ -159,7 +203,10 @@ do_complete() {
 
   if has_db; then
     source "${SCRIPT_DIR}/termite-db.sh"
+    local signal_owner
+    signal_owner=$(db_signal_owner "$signal_id" 2>/dev/null || true)
     db_claim_complete "$signal_id" "$op"
+    record_done_event "$signal_id" "$op" "$signal_owner"
     log_info "Completed ${signal_id} (DB)"
     return
   fi
