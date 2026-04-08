@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:42Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303203600-41460
+pattern: "S-124 added explicit websocket error-frame handling in conversation hub with user-visible system messages"
+context: "frontend/src/store/conversationStore.ts + conversationStore realtime tests"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  conversationStore now subscribes to error frames, writes [ERROR] system messages, sets store.error and lastAgentAction=error, and stops agentThinking. Tests verify error frame behavior. Commit: c66a9dc; frontend store tests 12/12 pass.

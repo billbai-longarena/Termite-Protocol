@@ -1,3 +1,81 @@
+682f14e 2026-03-03 21:01:30 +0800 [termite:2026-03-03:worker] WIP.md: S-126 blockage and Wave 1 strategy
+17e82b3 2026-03-03 21:00:28 +0800 [termite:2026-03-03:worker] Heartbeat #22: S-124 & S-125 verification complete
+d4e09f8 2026-03-03 20:52:21 +0800 [termite:2026-03-03:scout] [WIP] add DB-first signal closure tool and docs
+0c0d9c7 2026-03-03 20:51:59 +0800 [termite:2026-03-03:scout] Scout Coordination: Heartbeat #21 + #15 synthesis - Phase 5 ready, awaiting UAT merge decision
+8e6994a 2026-03-03 20:50:41 +0800 [termite:2026-03-03:scout] WIP.md: Heartbeat #15 Phase 5 test completion record
+643985b 2026-03-03 20:50:08 +0800 [termite:2026-03-03:scout] Phase 5 Intent Classifier test suite — Option 1B completion
+fc9b44d 2026-03-03 20:49:08 +0800 [termite:2026-03-03:scout] Heartbeat #21: Strategic landscape audit - Phase 4/5 boundary execution drift detected
+1c21948 2026-03-03 20:48:13 +0800 [termite:2026-03-03:scout] Scout Heartbeat #21: Strategic document refresh
+c6c48e2 2026-03-03 20:43:44 +0800 [termite:2026-03-03:worker] [WIP] S-126 add staged/local verify orchestrator
+6443d9b 2026-03-03 20:39:21 +0800 [termite:2026-03-03:worker] [WIP] S-126 local verification matrix and report
+c66a9dc 2026-03-03 20:35:51 +0800 [termite:2026-03-03:worker] [WIP] S-124 surface websocket error frames in conversation hub
+44dbfa9 2026-03-03 20:32:22 +0800 [termite:2026-03-03:worker] [WIP] S-125 add bounded strategy memory compression
+59d15d4 2026-03-03 20:27:40 +0800 [termite:2026-03-03:worker] [WIP] S-124 realtime router frame handling in conversation hub
+90d09e1 2026-03-03 19:47:29 +0800 [termite:2026-03-03:worker] [WIP] Complete S-123 voice+context intent fusion for zero-input routing
+0732a4b 2026-03-03 19:40:45 +0800 [termite:2026-03-03:scout] [WIP] Complete S-122 StrategyAgent SPIN plan generation path
+4eb3e9f 2026-03-03 19:35:15 +0800 [termite:2026-03-03:scout] [WIP] Complete S-121 async FAB queueing and record heartbeat audits
+b914f0c 2026-03-03 19:24:24 +0800 [termite:2026-03-03:worker] S-117/S-118: Phase 5 LLM Router integration and agent state persistence
+542b490 2026-03-03 19:19:54 +0800 [termite:2026-03-03:worker] MOLT Pheromone Heartbeat #18: Phase 4/5 UAT preparation complete, handoff ready
+f76b893 2026-03-03 19:18:35 +0800 [termite:2026-03-03:worker] [WIP] S-010: Implement MessageCardService for rich message types
+bf7472b 2026-03-03 19:17:11 +0800 [termite:2026-03-03:worker] [WIP] Update local database with Phase 5 schema and test data
+6b87d42 2026-03-03 19:16:59 +0800 [termite:2026-03-03:worker] [WIP] S-009: Extend CRM models and seed data for Phase 5
+a04104a 2026-03-03 19:16:52 +0800 [termite:2026-03-03:worker] Fix Docker Compose build context paths for UAT testing
+661c158 2026-03-03 19:13:08 +0800 [termite:2026-03-03:scout] Heartbeat #18: Quiescent state audit complete - zero open signals, system stable
+7e59c9a 2026-03-03 19:12:59 +0800 [termite:2026-03-03:worker] [WIP] Phase 5 migration foundation - CRM models and agent memory schema
+69d104d 2026-03-03 19:10:01 +0800 Revert "[termite:2026-03-03:scout] [WIP] Phase 5 LLM intent classifier refinement - pending human decision on gateway integration"
+f74aaf9 2026-03-03 19:09:58 +0800 [termite:2026-03-03:scout] Heartbeat #17: HUMAN DECISION RECORDED - Option 1A (UAT Merge, clean Phase 4), executing now
+66cd9a3 2026-03-03 19:06:16 +0800 [termite:2026-03-03:scout] Heartbeat #16: Signal count recalibration (28→23 completed, zero open, quiescent)
+65dcfe6 2026-03-03 19:05:13 +0800 [termite:2026-03-03:scout] Heartbeat #15: Signal landscape audit (zero open signals, quiescent state)
+14a2fc0 2026-03-03 19:01:35 +0800 [termite:2026-03-03:scout] Heartbeat #13: Strategic recommendation - Option 1B + complete WIP in 2h, Rule E-004 emerged
+d758943 2026-03-03 18:56:39 +0800 [termite:2026-03-03:scout] WIP.md Heartbeat #12: Phase 4/5 boundary clarity - three-path gateway BLOCKED
+eaccaa3 2026-03-03 18:56:20 +0800 [termite:2026-03-03:scout] [URGENT] Heartbeat #12: Phase 4/5 boundary clarity issue - three-path gateway BLOCKED pending human decision
+4b26586 2026-03-03 18:55:57 +0800 [termite:2026-03-03:scout] [WIP] Phase 5 LLM intent classifier refinement - pending human decision on gateway integration
+3654583 2026-03-03 18:53:27 +0800 [termite:2026-03-03:scout] WIP.md: Heartbeat #11 scout session complete - strategic review with three-path gateway
+cf63b6f 2026-03-03 18:53:08 +0800 [termite:2026-03-03:scout] Heartbeat #11: Strategic review - Phase 4 complete, three-path gateway for Phase 5
+8055d94 2026-03-03 18:51:15 +0800 [termite:2026-03-03:worker] Migrate scheduled reminder schema to Pydantic v2 ConfigDict
+a6b8ba4 2026-03-03 18:50:24 +0800 [termite:2026-03-03:worker] Heartbeat #10: Protocol compliance - Phase 4 complete, pushed to origin
+5b6b8c6 2026-03-03 18:47:39 +0800 [termite:2026-03-03:worker] Remove deprecated Pydantic config in router API models
+a8655f2 2026-03-03 18:44:32 +0800 [termite:2026-03-03:worker] Update WIP.md: Phase 4 Task 4.4 complete (E2E integration tests - 11/11 passing, p95=1.4ms)
+385f2ca 2026-03-03 18:43:58 +0800 [termite:2026-03-03:worker] Phase 4 Task 4.4: E2E integration tests - Router ↔ 5 Agents coordination (11/11 passing, p95=1.4ms SLA)
+284ab99 2026-03-03 18:41:19 +0800 [termite:2026-03-03:worker] Fix pytest pythonpath config and align specialized-agent smoke assertions
+c5d368c 2026-03-03 18:35:42 +0800 [termite:2026-03-03:worker] Update WIP.md - Task 4.2 completion summary (Memory + Coach agents)
+24d84af 2026-03-03 18:34:53 +0800 [termite:2026-03-03:worker] Fix Coach Agent tests - correct db_session test and capability count
+3d3ba10 2026-03-03 18:34:27 +0800 [termite:2026-03-03:worker] Refactor Memory and Coach agent tests - simplify fixtures
+6fee11f 2026-03-03 18:33:38 +0800 [termite:2026-03-03:worker] Fix test imports for Memory and Coach agents
+f6f5bcd 2026-03-03 18:33:13 +0800 [termite:2026-03-03:worker] Phase 4 Task 4.2: Coach Agent - Unit test suite
+cc1cb39 2026-03-03 18:33:11 +0800 [termite:2026-03-03:worker] Phase 4 Task 4.2: Memory Agent - Knowledge extraction & semantic search
+c050027 2026-03-03 18:31:13 +0800 [termite:2026-03-03:worker] Phase 4 Task 4.2: Sentinel Agent - Monitoring & anomaly detection
+d73c69a 2026-03-03 18:30:24 +0800 [termite:2026-03-03:worker] Phase 4 Task 4.2: Worker Agent - Action execution & message drafting
+4f0ae0c 2026-03-03 18:29:20 +0800 [termite:2026-03-03:worker] Phase 4 Task 4.2: Scout Agent - Add comprehensive unit test suite
+610e46d 2026-03-03 18:28:36 +0800 [termite:2026-03-03:worker] Task 4.2: harden specialized agent wrappers and add smoke tests
+49a2010 2026-03-03 18:25:05 +0800 [termite:2026-03-03:worker] Heartbeat #6: Agent services timezone hardening & utils module
+504fc90 2026-03-03 18:18:01 +0800 [termite:2026-03-03:worker] Doc: Create comprehensive session summary for datetime hardening completion
+4e3fcd1 2026-03-03 18:16:58 +0800 [termite:2026-03-03:worker] Fix: Apply datetime_utils in relationship_graph_service for timezone-safe comparison
+08e2ee5 2026-03-03 18:16:25 +0800 [termite:2026-03-03:worker] Fix: Apply datetime_utils in analytics_service for timezone-safe comparison
+5387229 2026-03-03 18:16:00 +0800 [termite:2026-03-03:worker] Fix: Apply datetime_utils helpers in zero_input_events_service and customer_timeline_service
+6cf25d3 2026-03-03 18:15:17 +0800 [termite:2026-03-03:worker] Fix: Apply datetime_utils helpers in message_card_service.py for timezone-safe comparisons
+2512513 2026-03-03 18:13:07 +0800 [termite:2026-03-03:worker] WIP.md: log heartbeat #6 timezone hardening verification and handoff risk
+58b46ba 2026-03-03 18:11:47 +0800 [termite:2026-03-03:worker] Fix: Update ResponseAggregator status logic and AggregatedResponse schema for Phase 4 compliance
+8e31d91 2026-03-03 18:10:27 +0800 [termite:2026-03-03:worker] Fix: Update response aggregator test for AgentResponse schema changes
+fc97207 2026-03-03 18:09:43 +0800 [termite:2026-03-03:worker] Refactor: Remove placeholder agent implementations from agent_registry.py
+a11a0c0 2026-03-03 18:07:54 +0800 [termite:2026-03-03:worker] Fix: Resolve datetime timezone-aware/naive comparison errors after utcnow migration
+8487004 2026-03-03 18:01:17 +0800 [termite:2026-03-03:worker] Refactor: replace deprecated datetime.utcnow() with timezone-aware datetime.now(timezone.utc) across backend and tests
+08ebddc 2026-03-03 17:37:42 +0800 [termite:2026-03-03:worker] S-116: Refactor 262+ datetime.utcnow() to datetime.now(timezone.utc) across backend
+545b6a7 2026-03-03 17:29:53 +0800 [termite:2026-03-03:scout] Scout Breath #5: Update WIP.md with Phase 4 completion status and technical debt audit findings
+b61197e 2026-03-03 17:27:11 +0800 [termite:2026-03-03:worker] Task 4.1+4.3 parallel completion: Agent Router + Docker CI/CD
+4775586 2026-03-03 17:26:22 +0800 [termite:2026-03-03:worker] Task 4.1: Add REST API endpoints and comprehensive test suite
+37bd664 2026-03-03 17:25:14 +0800 [termite:2026-03-03:worker] WIP.md: Update with Task 4.3 completion status
+3a12fd0 2026-03-03 17:24:32 +0800 [termite:2026-03-03:worker] Task 4.3: Add comprehensive verification checklist
+5ec8054 2026-03-03 17:23:50 +0800 [termite:2026-03-03:worker] Task 4.3: Docker orchestration & CI/CD pipeline setup
+3382af9 2026-03-03 17:21:15 +0800 WIP on swarm: abc4f23 [termite:2026-03-03:worker:v5.0][WIP] upgrade protocol baseline to v5.0 and harden upstream version check
+246f666 2026-03-03 17:21:15 +0800 index on swarm: abc4f23 [termite:2026-03-03:worker:v5.0][WIP] upgrade protocol baseline to v5.0 and harden upstream version check
+abc4f23 2026-03-03 17:12:18 +0800 [termite:2026-03-03:worker:v5.0][WIP] upgrade protocol baseline to v5.0 and harden upstream version check
+2ff9874 2026-03-03 16:17:00 +0800 [termite:2026-03-03:worker:v10.0] migrate coach service to LLM Gateway + fix missing httpx dep
+66ae557 2026-03-03 16:08:59 +0800 [termite:2026-03-03:worker:v10.0] align development env defaults with gateway-first routing
+5a32274 2026-03-03 16:08:44 +0800 [termite:2026-03-03:worker:v10.0] document and validate LLM Gateway env + e2e tests
+1b769ec 2026-03-03 16:08:28 +0800 [termite:2026-03-03:worker:v10.0] add unit tests for LLM Gateway SSE parser
+334df94 2026-03-03 16:07:46 +0800 [termite:2026-03-03:worker:v10.0] complete LLM Gateway migration in strategy advisor
+e66f2e2 2026-03-03 16:07:21 +0800 [termite:2026-03-03:worker:v10.0][WIP] classify uncommitted files: commit source changes and ignore runtime artifacts
 47721e6 2026-03-03 15:44:39 +0800 [termite:2026-03-03:worker][WIP] harden fixed-port dev flow and realtime/dashboard regression guardrails
 437ddde 2026-03-03 14:08:05 +0800 [termite:2026-03-03:worker][WIP] fix major test regressions and stabilize e2e customer creation
 d6abb51 2026-03-03 13:41:57 +0800 [termite:2026-03-03:worker][WIP] stabilize frontend tests and harden analytics/timeline endpoints
@@ -393,6 +471,7 @@ e03eef3 2026-03-02 01:24:16 +0800 [termite:2026-03-02:scout] 标记蚁丘进入�
 4ef0e71 2026-03-02 01:14:20 +0800 [termite:2026-03-02:scout] 补充技术栈、验证清单、命令手册
 
 # --- Unsigned commits (for IC-3 foreign body analysis) ---
+ac3c0e0 2026-03-03 20:03:29 +0800 Scout Heartbeat 20: Discovery and MOLT prep
 ae2252a 2026-03-03 07:56:46 +0800 [worker] Phase 3 Planning: Final Session Summary & Worker Handoff
 6a0d618 2026-03-03 07:49:25 +0800 [worker] Phase 3 Planning: Execution Roadmap Validation & WIP Documentation
 7d8f52a 2026-03-03 06:10:31 +0800 Heartbeat #85: S-107 Exploration Complete — 4h to MVP (MOLT READY)

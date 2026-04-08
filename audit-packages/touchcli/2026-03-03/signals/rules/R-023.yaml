@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:42Z)
+# To modify rules, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: R-023
+trigger: "When I observe: worker"
+action: "Follow the pattern described in trigger"
+source_observations: [O-20260303181149-39994,O-20260303181323-49297,O-20260303181509-61238,O-20260303181656-73547,O-20260303181851-84056,O-20260303182032-91221,O-20260303182220-98107,O-20260303182407-8336,O-20260303182547-16122,O-20260303182728-24926]
+hit_count: 0
+disputed_count: 0
+last_triggered: 2026-03-03
+created: 2026-03-03
+tags: []

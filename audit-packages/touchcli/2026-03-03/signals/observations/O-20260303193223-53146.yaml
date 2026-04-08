@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:42Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303193223-53146
+pattern: "S-121 completed: Product Knowledge Extraction queue path now uses Celery tasks per document"
+context: "worker-implementation:phase5-wave2"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Implemented KnowledgeService.queue_analysis and switched POST /api/v1/products/{product_id}/fab-analyze to async queued flow (returns task_ids). Added unit coverage in test_knowledge_service (queue success/no-docs). Verified: 12 passed test_knowledge_service + 20 passed test_fab_analysis.

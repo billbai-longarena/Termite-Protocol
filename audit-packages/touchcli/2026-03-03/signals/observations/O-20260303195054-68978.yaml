@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:42Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303195054-68978
+pattern: "Heartbeat confirms quiescent state after Phase 5 wave completion (open=0, no active claims)"
+context: "worker-heartbeat:post-wave-monitor"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  DB signals: completed=27, open=0; ALARM absent; branch swarm ahead origin by 4 commits pending push.

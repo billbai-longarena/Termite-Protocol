@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:42Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303203930-44255
+pattern: "S-126 local verification executed with 52/52 passing tests across backend websocket/e2e and frontend conversation store suites"
+context: "S-126_LOCAL_VERIFICATION_2026-03-03.md + local test commands"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Ran six local suites: test_generic_websocket(2), test_websocket_e2e(10), test_wave2_e2e(12), strategy_agent(16), conversationStore.realtime(2), conversationStore(10). Report committed as 6443d9b; staging/load verification remains pending.
