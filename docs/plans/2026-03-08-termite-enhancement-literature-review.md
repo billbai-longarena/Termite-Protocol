@@ -25,6 +25,12 @@
 - **应谨慎试验**：RAPTOR、Reflexion
 - **主要用于确认架构方向正确**：Nii 1986、Salemi et al. 2025/2026
 
+### 2026-08-31 补充：SwarmWorld
+
+Pal、Wang 与 Buehler 的 **SwarmWorld: Stigmergic technological evolution in societies of language-model agents**（arXiv:2608.26081）为“环境中介型 Agent 协作”提供了新的受控实验材料。论文中的初始同质 Agent 在持久化模拟世界中留下制品、复用和 fork 可执行程序，并形成探索、建造、维护和协调等动态行为；共享世界在技术组合广度与韧性上优于强力的 best-of-N 独立搜索基线，但独立搜索仍可能保留最强单件制品。
+
+这与白蚁协议的“无状态 Agent、环境承载连续性、制品与来源可继承”方向高度一致，但不能视为对白蚁协议的直接验证。SwarmWorld 研究物理化模拟环境中的同质 Agent，白蚁协议服务真实软件仓库中的异质、跨会话 Agent；前者的角色是事后涌现，后者的种姓是状态驱动的安全与路由机制。完整求同存异分析见 [`docs/research/swarmworld-and-termite-protocol.zh-CN.md`](../research/swarmworld-and-termite-protocol.zh-CN.md)。
+
 ---
 
 ## 研究问题
@@ -63,6 +69,7 @@
 | P2 | Shinn et al. (Reflexion) | verbal reinforcement / episodic memory | 把 stale / parked / failed attempt 转成高价值失败记忆 |
 | P3 | Nii (1986) | blackboard architecture | 理论上确认“环境承载智慧”路线是对的 |
 | P3 | Salemi et al. (2025/2026) | LLM blackboard outperforming master-slave baselines | 说明黑板式多 agent 架构在 LLM 时代仍有增益 |
+| 方向证据 | Pal, Wang & Buehler (2026), SwarmWorld | persistent-world stigmergy, executable inheritance, emergent roles | 为环境优先路线提供受控实验支持，并给出消融、留出评估和网络韧性指标 |
 
 ---
 
@@ -592,3 +599,8 @@ Dawid-Skene 启发很强，但如果落地成：
 7. Parth Sarthi et al. **RAPTOR: Recursive Abstractive Processing for Tree-Organized Retrieval**. arXiv:2401.18059
 8. Noah Shinn et al. **Reflexion: Language Agents with Verbal Reinforcement Learning**. arXiv:2303.11366 / NeurIPS 2023
 9. Alireza Salemi et al. **LLM-Based Multi-Agent Blackboard System for Information Discovery in Data Science**. arXiv:2510.01285
+10. Subhadeep Pal, Fiona Y. Wang, Markus J. Buehler. **SwarmWorld: Stigmergic technological evolution in societies of language-model agents**. arXiv:2608.26081, 2026. DOI: `10.48550/arXiv.2608.26081`
+
+## Prompt Chain（本次增补）
+
+- 2026-08-31：用户要求引用 SwarmWorld，并以求同存异的方式说明它与白蚁协议如何共同支持环境中介型 Agent 协作方向。由此新增独立对照文档，并将该论文补入本综述。

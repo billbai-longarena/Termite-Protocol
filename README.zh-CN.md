@@ -208,6 +208,14 @@ your-project/
 - `docs/plans/` — 设计文档、实验计划、协议演进记录
 - `docs/knowledge-base/` — 从实战中抽取出的高复用结论
 
+### 相关研究：SwarmWorld
+
+2026 年论文 [*SwarmWorld: Stigmergic technological evolution in societies of language-model agents*](https://doi.org/10.48550/arXiv.2608.26081) 独立研究了一个与白蚁协议高度相关的方向：初始同质的 Agent 通过持久化世界协调，积累可执行制品，并形成可变化的行为分工。
+
+SwarmWorld 是受控仿真实验；白蚁协议是服务真实软件仓库和异质、跨会话编码 Agent 的工程协议。论文并不直接验证白蚁协议，我们也不主张双方存在引用或影响关系。更准确的理解是：二者以不同方法为“环境中介型 Agent 协作”提供了互补证据，同时暴露了不同的机制与边界。
+
+完整对照见：[SwarmWorld 与白蚁协议](docs/research/swarmworld-and-termite-protocol.zh-CN.md)。
+
 ## 可选配套项目
 
 Termite Commander 是一个可选的自动化配套项目，用于脚本化调度和监督蚁群；**使用白蚁协议本身并不依赖它**。
