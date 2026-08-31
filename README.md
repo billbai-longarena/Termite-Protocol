@@ -208,6 +208,14 @@ This repository includes the materials behind the protocol claims:
 - `docs/plans/` — design docs, experiment plans, and protocol evolution notes
 - `docs/knowledge-base/` — concise reusable findings extracted from field work
 
+### Related research: SwarmWorld
+
+The 2026 paper [*SwarmWorld: Stigmergic technological evolution in societies of language-model agents*](https://doi.org/10.48550/arXiv.2608.26081) independently studies a closely related direction: initially homogeneous agents coordinate through a persistent world, accumulate executable artifacts, and develop changing behavioral specialization.
+
+SwarmWorld is a controlled simulation study; Termite Protocol is an engineering protocol for real software repositories and heterogeneous, cross-session coding agents. The paper does not directly validate Termite, and we do not claim a citation or influence relationship. Instead, the two projects provide complementary evidence for environment-mediated agent coordination while exposing different mechanisms and limitations.
+
+Read the full comparison: [SwarmWorld and Termite Protocol](docs/research/swarmworld-and-termite-protocol.md).
+
 ## Optional Companion
 
 Termite Commander is an optional automation companion for teams that want to script colony dispatch and supervision. It is **not required** to use the protocol itself.
