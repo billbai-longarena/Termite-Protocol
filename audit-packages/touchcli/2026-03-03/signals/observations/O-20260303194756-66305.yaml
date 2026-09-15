@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:42Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303194756-66305
+pattern: "S-123 completed: zero-input voice+context intent fusion implemented end-to-end"
+context: "worker-implementation:phase5-wave2"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Added context_hint to ProcessEventRequest and API wiring into multimodal router route(). Implemented context fusion in ZeroInputMultimodalRouter for voice mode (intent fallback + confidence boost + context entity rows). Updated multimodal router/API tests. Verification: 9 passed (router/api/service multimodal) + 7 passed (agent pipeline/realtime).,max_output_tokens:4000

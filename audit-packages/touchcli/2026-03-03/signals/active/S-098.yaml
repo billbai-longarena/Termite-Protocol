@@ -1,10 +1,10 @@
-# READ-ONLY — auto-exported from .termite.db (2026-03-03T07:50:43Z)
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:40Z)
 # To modify signals, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
 id: S-098
-type: work
+type: IMPLEMENT
 title: "Phase 14 Wave 3: Real-time Churn Risk Broadcast & Frontend Card Card Update"
 status: completed
-weight: 31
+weight: 16
 ttl_days: 14
 created: 2026-03-03
 last_touched: 2026-03-03

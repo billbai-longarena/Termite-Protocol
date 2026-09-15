@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:42Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303175529-145
+pattern: "legacy signal type normalization wired into db import paths"
+context: "scripts/termite-db-migrate.sh,scripts/termite-db-reimport.sh"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Added normalize_signal_type/infer_signal_type_from_title in field-lib.sh. Both migrate and reimport now canonicalize legacy types (e.g., work/todo/qa) into canonical runtime types before DB upsert.

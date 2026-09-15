@@ -1,10 +1,10 @@
-# READ-ONLY — auto-exported from .termite.db (2026-03-03T07:50:44Z)
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:40Z)
 # To modify signals, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
 id: S-110
 type: IMPLEMENT
 title: "Voice STT/TTS Full Integration"
 status: completed
-weight: 28
+weight: 13
 ttl_days: 21
 created: 2026-03-02 21:29:57
 last_touched: 2026-03-02

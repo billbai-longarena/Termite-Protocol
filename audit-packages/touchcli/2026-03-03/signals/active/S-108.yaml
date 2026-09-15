@@ -1,10 +1,10 @@
-# READ-ONLY — auto-exported from .termite.db (2026-03-03T07:50:44Z)
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:40Z)
 # To modify signals, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
 id: S-108
 type: IMPLEMENT
 title: "Product Knowledge Base Ingestion (S3 + parsing)"
-status: claimed
-weight: 27
+status: completed
+weight: 12
 ttl_days: 21
 created: 2026-03-02 21:29:57
 last_touched: 2026-03-03
@@ -12,5 +12,5 @@ owner: termite-1772487536-96252
 module: "backend"
 tags: fab,knowledge,phase2
 next: ""
-touch_count: 5
+touch_count: 7
 source: scout

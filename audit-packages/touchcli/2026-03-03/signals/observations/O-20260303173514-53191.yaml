@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:42Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303173514-53191
+pattern: "Scout Breath #2: Emergent rule R-022 + 3 decision points identified"
+context: "Phase 4 Task 4.2 blocked by handoff debt (datetime.utcnow + roleplay auth); Phase 5 planning gap (LLM tuning + realtime knowledge); S-116 status sync pending audit verification"
+reporter: "termite:2026-03-03:worker"
+confidence: medium
+created: 2026-03-03
+source: autonomous
+detail: |
+  0

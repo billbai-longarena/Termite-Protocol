@@ -1,12 +1,12 @@
-timestamp: 2026-03-03T06:04:22Z
+timestamp: 2026-03-03T13:53:39Z
 alarm: false
 wip: fresh
 build: unknown
-signature_ratio: 0.90
-active_signals: 1
+signature_ratio: 0.95
+active_signals: 0
 high_weight_holes: 0
-parked_signals: 0
+parked_signals: 1
 expired_claims: 0
 blackboard: 
 branch: swarm
-commit: d6abb51
+commit: 682f14e

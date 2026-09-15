@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:42Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303173543-56840
+pattern: "S-116 strategic decomposition audited"
+context: "scout review: signal landscape + BLACKBOARD drift + utcnow scope"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Audited S-116: 262 utcnow hits in backend/python (169 in agent_service; ~130 prod + 39 tests). Found narrative drift where BLACKBOARD historical table reuses S-116 semantics inconsistent with DB. Added DECISIONS audit section and updated S-116 next_hint with 3-stage worker execution plan. Released audit claim; signal remains open for implementation.

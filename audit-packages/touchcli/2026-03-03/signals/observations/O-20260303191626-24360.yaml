@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:42Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303191626-24360
+pattern: "Heartbeat confirms quiescent state (open=0, parked=0) with branch drift (birth=swarm, current=uat)"
+context: "worker-heartbeat:state-audit"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  ALARM none; no active claims; signals/active contains 20 completed snapshots; worktree has pre-existing backend changes untouched in this cycle.

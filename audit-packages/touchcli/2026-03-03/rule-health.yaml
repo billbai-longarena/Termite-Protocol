@@ -108,3 +108,18 @@ rules:
     hit_count: 0
     disputed_count: 0
     disputed_ratio: 0.00
+  - id: R-022
+    trigger: "When I observe: observation"
+    hit_count: 0
+    disputed_count: 0
+    disputed_ratio: 0.00
+  - id: R-023
+    trigger: "When I observe: worker"
+    hit_count: 0
+    disputed_count: 0
+    disputed_ratio: 0.00
+  - id: R-024
+    trigger: "When I observe: worker"
+    hit_count: 0
+    disputed_count: 0
+    disputed_ratio: 0.00

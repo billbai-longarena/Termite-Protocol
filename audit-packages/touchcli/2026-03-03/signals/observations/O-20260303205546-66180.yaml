@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:42Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303205546-66180
+pattern: "Quiescent worker cycle: no open signals, only S-126 parked behind staging boundary"
+context: ".termite.db runtime state after metabolism (completed=26, parked=1, claimed=0)"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  No executable claim target in this heartbeat. Re-entry condition remains STAGING_* readiness then reopen S-126 and run ./scripts/s126-verify.sh --staging-only.

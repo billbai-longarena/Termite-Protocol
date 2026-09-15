@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:42Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303191945-60369
+pattern: "Heartbeat confirms quiescent queue (open=0, parked=0), no claims; branch drift persists (birth=swarm, runtime=uat ahead 4)"
+context: "worker-heartbeat:quiescent-monitor"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  ALARM absent; DB status completed=20; no claimable signal in this cycle.

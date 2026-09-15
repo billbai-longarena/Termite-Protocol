@@ -1,0 +1,16 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:40Z)
+# To modify signals, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: S-120
+type: VERIFY
+title: "Phase 5: E2E Regression (Wave 1 Complete)"
+status: completed
+weight: 61
+ttl_days: 14
+created: 2026-03-03 11:23:10
+last_touched: 2026-03-03 11:25:41
+owner: unassigned
+module: "all"
+tags: ["qa", "integration", "e2e"]
+next: ""
+touch_count: 0
+source: autonomous

@@ -2,8 +2,8 @@
 # Extracted from: touchcli
 # Date: 2026-03-03
 distribution:
-  worker: 199
-  scout: 42
+  worker: 248
+  scout: 62
   molt: 6
   soldier: 1
 first_signature: 2026-03-02

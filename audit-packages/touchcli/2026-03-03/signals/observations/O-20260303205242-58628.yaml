@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:42Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303205242-58628
+pattern: "Scout governance applied: S-124/S-125 moved to done and S-126 parked with explicit reopen condition via DB-first close tool"
+context: "scripts/field-close-signal.sh + runtime signal state in .termite.db"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Implemented field-close-signal.sh (atomic claim cleanup + status transition + YAML refresh). Applied it to close S-124/S-125 and park S-126 due staging boundary. Current state: done=2 parked=1 open=0 claimed=0 for these signals.

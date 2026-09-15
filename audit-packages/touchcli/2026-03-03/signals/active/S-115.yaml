@@ -1,0 +1,16 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:40Z)
+# To modify signals, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: S-115
+type: HOLE
+title: "Refactor deprecated FastAPI on_event and datetime.utcnow usage"
+status: completed
+weight: 22
+ttl_days: 14
+created: 2026-03-03 09:24:09
+last_touched: 2026-03-03
+owner: termite-1772529886-97428
+module: "backend/python"
+tags: ["refactor", "backend", "debt"]
+next: "Worker: Replace @app.on_event with Lifespan context manager; replace datetime.utcnow() with datetime.now(timezone.utc)"
+touch_count: 2
+source: autonomous

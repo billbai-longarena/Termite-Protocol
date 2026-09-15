@@ -1,4 +1,4 @@
-# READ-ONLY — auto-exported from .termite.db (2026-03-03T07:50:45Z)
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:41Z)
 # To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
 id: O-20260303074008-7427
 pattern: "Heartbeat monitor: no-open queue persists; claims still within TTL"

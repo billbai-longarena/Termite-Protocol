@@ -2,8 +2,8 @@
 # predecessor_useful: true/false/null evaluation chain
 # Extracted from: touchcli
 # Date: 2026-03-03
-total_handoffs: 141
-predecessor_useful_true: 137
+total_handoffs: 175
+predecessor_useful_true: 171
 predecessor_useful_false: 0
 predecessor_useful_not_evaluated: 4
 useful_ratio: 1.00

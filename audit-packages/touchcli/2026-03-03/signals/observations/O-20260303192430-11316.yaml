@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:42Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303192430-11316
+pattern: "S-117|S-118"
+context: "Phase 5 Wave 1: S-117 (LLM Router) and S-118 (State Persistence) completed and verified."
+reporter: "termite:2026-03-03:worker"
+confidence: medium
+created: 2026-03-03
+source: autonomous
+detail: |
+  0

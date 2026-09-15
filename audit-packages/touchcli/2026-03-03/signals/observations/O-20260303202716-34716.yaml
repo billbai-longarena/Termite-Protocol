@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:42Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303202716-34716
+pattern: "S-124 router frames now mapped into conversation store with card-aware chunk parsing and cleanup-safe subscriptions"
+context: "frontend/src/store/conversationStore.ts + frontend/src/api/websocket.ts + new realtime tests"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Added handlers for intent/agent_start/chunk/agent_complete/alert/complete; chunk parser extracts MessageCard metadata from JSON payloads; added conversationStore.realtime tests (2) and verified 12/12 store tests pass.

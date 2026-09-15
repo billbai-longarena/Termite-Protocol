@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:42Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303201611-20435
+pattern: "v5.0 分层命令存在轻微闲置窗口"
+context: "测试5.0分层命令流程时，出现短时无任务推进/空转"
+reporter: "termite:2026-03-03:worker"
+confidence: medium
+created: 2026-03-03
+source: autonomous
+detail: |
+  复现条件：执行层级命令切换后，心跳继续但可执行work未及时认领；建议关注claim释放后到下一次调度的过渡。

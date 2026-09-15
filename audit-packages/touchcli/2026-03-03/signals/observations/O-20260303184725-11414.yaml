@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:42Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303184725-11414
+pattern: "router_api pydantic v2 deprecation warnings"
+context: "backend/python/agent_service/services/router/router_api.py"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  Removed class-based Config/json_encoders from RouteResponse and RouterStatus; strict warning-as-error pytest passes (45 passed).

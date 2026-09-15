@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:42Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303173748-88929
+pattern: "observation"
+context: "S-116 COMPLETED: Large-scale datetime refactoring (262 -> 0 utcnow instances). Replaced 407 total instances across 54 Python files with timezone-aware datetime.now(timezone.utc). Commit: 08ebddc. Phase 4 Task 4.2 now unblocked; roleplay auth issue remains (pre-existing)."
+reporter: "termite:2026-03-03:worker"
+confidence: medium
+created: 2026-03-03
+source: autonomous
+detail: |
+  0

@@ -1,0 +1,11 @@
+# READ-ONLY — auto-exported from .termite.db (2026-03-03T13:53:42Z)
+# To modify observations, edit the DB via scripts or use: ./scripts/termite-db-reimport.sh
+id: O-20260303190324-77610
+pattern: "signal-landscape-zero-open"
+context: "scout-heartbeat-14-audit"
+reporter: "termite:2026-03-03:worker"
+confidence: high
+created: 2026-03-03
+source: autonomous
+detail: |
+  DB shows completed=28/open=0; signals/active all completed; no signals/parked; DECISIONS.md updated with D-014/R-014 recommendations and handoff awaiting human 1A/1B/1C path selection.
